@@ -3,7 +3,7 @@ set(SOURCE_FILE_PATH ${SOURCE_PATH}/libgltf)
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}/libgltf
     ${SOURCE_FILE_PATH}
-    ${EXTERNAL_PATH}/rapidjson
+    ${EXTERNAL_PATH}/rapidjson/include
     )
 include_directories(${INCLUDE_PATH_LIST})
 
