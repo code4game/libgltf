@@ -79,8 +79,8 @@ if(${PLATFORM_WINDOWS})
 endif()
 
 option(LIBGLTF_BUILD_TOOLS "Build some tools" ON)
-option(LIBGLTF_GCOV "Build with gcov (debug, Linux builds only)" OFF)
-option(LIBGLTF_TEST "Build the test" OFF)
+option(LIBGLTF_COVERAGE_GCOV "Coverage gcov (debug, Linux builds only)" OFF)
+option(LIBGLTF_TEST_GTEST "Test with gtest" OFF)
 
 if(LIBGLTF_BUILD_GCOV AND PLATFORM_LINUX)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")

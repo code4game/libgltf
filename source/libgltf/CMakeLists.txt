@@ -3,6 +3,7 @@ set(SOURCE_FILE_PATH ${SOURCE_PATH}/libgltf)
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}/libgltf
     ${SOURCE_FILE_PATH}
+    ${EXTERNAL_PATH}/rapidjson
     )
 include_directories(${INCLUDE_PATH_LIST})
 
@@ -25,7 +26,7 @@ source_group("source" FILES ${SOURCE_FILE_LIST})
 
 set(LIBRARY_OUTPUT_PATH ${OUT_BIN_PATH})
 
-add_library(libgltf SHARED
+add_library(libgltf STATIC
     ${HEADER_FILE_LIST}
     ${SOURCE_FILE_LIST}
     )
