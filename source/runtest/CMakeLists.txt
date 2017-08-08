@@ -29,7 +29,7 @@ set(LIBRARY_PATH_LIST
     )
 link_libraries(${LIBRARY_PATH_LIST})
 
-set(LIBRARY_OUTPUT_PATH ${OUT_BIN_PATH})
+set(EXECUTABLE_OUTPUT_PATH ${INTERNAL_BIN_PATH})
 
 add_executable(runtest
     ${HEADER_FILE_LIST}
