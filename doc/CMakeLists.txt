@@ -1,0 +1,9 @@
+set(DOC_FILE_LIST
+    ${ROOT_PATH}/README.md
+    ${ROOT_PATH}/CONTRIBUTING.md
+    ${ROOT_PATH}/CHANGELOG
+    ${ROOT_PATH}/LICENSE
+    )
+
+add_custom_target(DOC SOURCES ${DOC_FILE_LIST})
+set_property(TARGET DOC PROPERTY FOLDER CMakePredefinedTargets)
