@@ -3,6 +3,7 @@ set(SOURCE_FILE_PATH ${SOURCE_PATH}/structgenerator)
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}
     ${SOURCE_FILE_PATH}
+    ${EXTERNAL_PATH}/rapidjson/include
     )
 include_directories(${INCLUDE_PATH_LIST})
 
