@@ -4,9 +4,36 @@
 
 namespace libgltf
 {
+    bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGLTF>& _pGLTF)
+    {
+        //
+        return false;
+    }
+
+    bool ParseByFile(const std::wstring& _sFilePath, std::shared_ptr<SGLTF>& _pGLTF)
+    {
+        //
+        return false;
+    }
+
+    SGLTF::SGLTF()
+    {
+        //
+    }
+
+    SProperty::SProperty()
+        : extensions(nullptr)
+        , extras(nullptr)
+    {
+        //
+    }
+
     SAsset::SAsset()
-        : Generator(L"")
-        , Version(L"")
+        : SProperty()
+        , version(L"")
+        , minVersion(nullptr)
+        , generator(nullptr)
+        , copyright(nullptr)
     {
         //
     }
@@ -16,30 +43,23 @@ namespace libgltf
         new(&_stAsset)SAsset;
     }
 
+    SChildOfRootProperty::SChildOfRootProperty()
+        : SProperty()
+    {
+        //
+    }
+
     SScene::SScene()
+        : SChildOfRootProperty()
+        , nodes()
     {
         //
     }
 
     SNode::SNode()
+        : SChildOfRootProperty()
     {
         //
     }
 
-    SGLTF::SGLTF()
-    {
-        //
-    }
-
-    bool ParseByString(const std::wstring& _sContent, SGLTF& _stGLTF)
-    {
-        //
-        return false;
-    }
-
-    bool ParseByFile(const std::wstring& _sFilePath, SGLTF& _stGLTF)
-    {
-        //
-        return false;
-    }
 }

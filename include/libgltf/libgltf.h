@@ -7,44 +7,75 @@
 
 namespace libgltf
 {
+    struct SGLTF;
+
+    bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGLTF>& _pGLTF);
+    bool ParseByFile(const std::wstring& _sFilePath, std::shared_ptr<SGLTF>& _pGLTF);
+
     struct SGLTF
     {
         SGLTF();
 
-        std::shared_ptr<struct SAsset> Asset;
-        std::vector<std::shared_ptr<struct SScene>> Scenes;
-        std::vector<std::shared_ptr<struct SNode>> Nodes;
+        std::shared_ptr<struct SAsset> asset;
+        std::shared_ptr<struct SScene> scene;
+        std::vector<std::shared_ptr<struct SScene>> scenes;
+        std::vector<std::shared_ptr<struct SNode>> nodes;
+        std::vector<std::shared_ptr<struct SMesh>> meshes;
+        std::vector<std::shared_ptr<struct SCamera>> cameras;
+        std::vector<std::shared_ptr<struct SSkin>> skins;
+        std::vector<std::shared_ptr<struct SAnimation>> animations;
+        std::vector<std::shared_ptr<struct SAccessor>> accessors;
+        std::vector<std::shared_ptr<struct SBufferView>> bufferViews;
+        std::vector<std::shared_ptr<struct SBuffer>> buffers;
+        std::vector<std::shared_ptr<struct SMaterial>> materials;
+        std::vector<std::shared_ptr<struct STexture>> textures;
+        std::vector<std::shared_ptr<struct SImage>> images;
+        std::vector<std::shared_ptr<struct SSampler>> samplers;
     };
 
-    bool ParseByString(const std::wstring& _sContent, SGLTF& _stGLTF);
-    bool ParseByFile(const std::wstring& _sFilePath, SGLTF& _stGLTF);
+    struct SProperty
+    {
+        SProperty();
 
-    struct SAsset
+        std::shared_ptr<std::vector<std::shared_ptr<struct SExtension>>> extensions;
+        std::shared_ptr<std::vector<std::shared_ptr<struct SExtra>>> extras;
+    };
+
+    struct SAsset : SProperty
     {
         SAsset();
 
-        std::wstring Generator;
-        std::wstring Version;
+        std::wstring version;
+        std::shared_ptr<std::wstring> minVersion;
+        std::shared_ptr<std::wstring> generator;
+        std::shared_ptr<std::wstring> copyright;
 
         static void Reset(SAsset& _stAsset);
     };
 
-    struct SScene
+    struct SChildOfRootProperty : SProperty
+    {
+        SChildOfRootProperty();
+
+        std::shared_ptr<std::wstring> name;
+    };
+
+    struct SScene : SChildOfRootProperty
     {
         SScene();
 
-        std::vector<std::shared_ptr<struct SNode>> Nodes;
+        std::vector<std::shared_ptr<struct SNode>> nodes;
     };
 
-    struct SNode
+    struct SNode : SChildOfRootProperty
     {
         SNode();
 
-        std::shared_ptr<struct SCamera> Camera;
-        std::shared_ptr<struct SSkin> Skin;
-        std::vector<std::shared_ptr<struct SMesh>> Meshes;
+        std::shared_ptr<struct SCamera> camera;
+        std::shared_ptr<struct SSkin> skin;
+        std::vector<std::shared_ptr<struct SMesh>> meshes;
 
-        std::vector<std::shared_ptr<struct SNode>> Children;
+        std::vector<std::shared_ptr<struct SNode>> children;
     };
 
     struct SMesh
