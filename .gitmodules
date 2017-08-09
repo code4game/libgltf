@@ -1,3 +1,6 @@
 [submodule "external/rapidjson"]
 	path = external/rapidjson
 	url = https://github.com/miloyip/rapidjson.git
+[submodule "external/glTF"]
+	path = external/glTF
+	url = https://github.com/KhronosGroup/glTF.git
