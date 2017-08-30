@@ -10,28 +10,6 @@ namespace libgltf
     struct SGLTF;
 
     bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGLTF>& _pGLTF);
-    bool ParseByFile(const std::wstring& _sFilePath, std::shared_ptr<SGLTF>& _pGLTF);
-
-    struct SGLTF
-    {
-        SGLTF();
-
-        std::shared_ptr<struct SAsset> asset;
-        std::shared_ptr<struct SScene> scene;
-        std::vector<std::shared_ptr<struct SScene>> scenes;
-        std::vector<std::shared_ptr<struct SNode>> nodes;
-        std::vector<std::shared_ptr<struct SMesh>> meshes;
-        std::vector<std::shared_ptr<struct SCamera>> cameras;
-        std::vector<std::shared_ptr<struct SSkin>> skins;
-        std::vector<std::shared_ptr<struct SAnimation>> animations;
-        std::vector<std::shared_ptr<struct SAccessor>> accessors;
-        std::vector<std::shared_ptr<struct SBufferView>> bufferViews;
-        std::vector<std::shared_ptr<struct SBuffer>> buffers;
-        std::vector<std::shared_ptr<struct SMaterial>> materials;
-        std::vector<std::shared_ptr<struct STexture>> textures;
-        std::vector<std::shared_ptr<struct SImage>> images;
-        std::vector<std::shared_ptr<struct SSampler>> samplers;
-    };
 
     struct SProperty
     {
@@ -39,6 +17,30 @@ namespace libgltf
 
         std::shared_ptr<std::vector<std::shared_ptr<struct SExtension>>> extensions;
         std::shared_ptr<std::vector<std::shared_ptr<struct SExtra>>> extras;
+    };
+
+    struct SGLTF : SProperty
+    {
+        SGLTF();
+
+        std::vector<std::wstring> extensionsUsed;
+        std::vector<std::wstring> extensionsRequired;
+
+        std::vector<std::shared_ptr<struct SAccessor>> accessors;
+        std::vector<std::shared_ptr<struct SAnimation>> animations;
+        std::shared_ptr<struct SAsset> asset;
+        std::vector<std::shared_ptr<struct SBuffer>> buffers;
+        std::vector<std::shared_ptr<struct SBufferView>> bufferViews;
+        std::vector<std::shared_ptr<struct SCamera>> cameras;
+        std::vector<std::shared_ptr<struct SImage>> images;
+        std::vector<std::shared_ptr<struct SMaterial>> materials;
+        std::vector<std::shared_ptr<struct SMesh>> meshes;
+        std::vector<std::shared_ptr<struct SNode>> nodes;
+        std::vector<std::shared_ptr<struct SSampler>> samplers;
+        std::shared_ptr<struct SId> scene;
+        std::vector<std::shared_ptr<struct SScene>> scenes;
+        std::vector<std::shared_ptr<struct SSkin>> skins;
+        std::vector<std::shared_ptr<struct STexture>> textures;
     };
 
     struct SAsset : SProperty
@@ -49,8 +51,6 @@ namespace libgltf
         std::shared_ptr<std::wstring> minVersion;
         std::shared_ptr<std::wstring> generator;
         std::shared_ptr<std::wstring> copyright;
-
-        static void Reset(SAsset& _stAsset);
     };
 
     struct SChildOfRootProperty : SProperty
@@ -119,10 +119,41 @@ namespace libgltf
         //
     };
 
-    struct SMaterial
+    struct SMaterial : SChildOfRootProperty
+    {
+        SMaterial();
+
+        std::shared_ptr<struct SMaterialPBRMetallicRoughness> pbrMetallicRoughness;
+        std::shared_ptr<struct SMaterialNormalTextureInfo> normalTexture;
+        std::shared_ptr<struct SMaterialOcclusionTextureInfo> occlusionTexture;
+        std::shared_ptr<struct SMaterialTextureInfo> emissiveTexture;
+        std::vector<float> emissiveFactor;
+        std::wstring alphaMode;
+        float alphaCutoff;
+        bool doubleSided;
+    };
+
+    struct SMaterialPBRMetallicRoughness
     {
         //
-        std::vector<std::shared_ptr<struct STexture>> Textures;
+    };
+
+    struct SMaterialNormalTextureInfo
+    {
+        //
+    };
+
+    struct SMaterialOcclusionTextureInfo
+    {
+        //
+    };
+
+    struct SMaterialTextureInfo : SProperty
+    {
+        SMaterialTextureInfo();
+
+        std::shared_ptr<struct SId> index;
+        int32_t texCoord;
     };
 
     struct STexture
@@ -132,13 +163,22 @@ namespace libgltf
         std::shared_ptr<struct SSampler> Sampler;
     };
 
-    struct SImage
+    struct SImage : SChildOfRootProperty
     {
-        //
+        SImage();
+
+        std::wstring uri;
+        std::wstring mimeType;
+        std::shared_ptr<SBufferView> bufferView;
     };
 
-    struct SSampler
+    struct SSampler : SChildOfRootProperty
     {
-        //
+        SSampler();
+
+        int32_t magFilter;
+        int32_t minFilter;
+        int32_t wrapS;
+        int32_t wrapT;
     };
 }

@@ -10,13 +10,13 @@ namespace libgltf
         return false;
     }
 
-    bool ParseByFile(const std::wstring& _sFilePath, std::shared_ptr<SGLTF>& _pGLTF)
-    {
-        //
-        return false;
-    }
-
     SGLTF::SGLTF()
+        : SProperty()
+        , extensionsUsed()
+        , extensionsRequired()
+        , accessors()
+        , animations()
+        , asset(nullptr)
     {
         //
     }
@@ -38,13 +38,9 @@ namespace libgltf
         //
     }
 
-    void SAsset::Reset(SAsset& _stAsset)
-    {
-        new(&_stAsset)SAsset;
-    }
-
     SChildOfRootProperty::SChildOfRootProperty()
         : SProperty()
+        , name(nullptr)
     {
         //
     }
@@ -62,4 +58,46 @@ namespace libgltf
         //
     }
 
+    SMaterial::SMaterial()
+        : SChildOfRootProperty()
+        , pbrMetallicRoughness(nullptr)
+        , normalTexture(nullptr)
+        , occlusionTexture(nullptr)
+        , emissiveTexture(nullptr)
+        , emissiveFactor(3)
+        , alphaMode(L"OPAQUE")
+        , alphaCutoff(0.5f)
+        , doubleSided(false)
+    {
+        emissiveFactor[0] = 0.0f;
+        emissiveFactor[1] = 0.0f;
+        emissiveFactor[2] = 0.0f;
+    }
+
+    SMaterialTextureInfo::SMaterialTextureInfo()
+        : SProperty()
+        , index(nullptr)
+        , texCoord(0)
+    {
+        //
+    }
+
+    SImage::SImage()
+        : SChildOfRootProperty()
+        , uri(L"")
+        , mimeType(L"")
+        , bufferView(nullptr)
+    {
+        //
+    }
+
+    SSampler::SSampler()
+        : SChildOfRootProperty()
+        , magFilter(0)
+        , minFilter(0)
+        , wrapS(0)
+        , wrapT(0)
+    {
+        //
+    }
 }
