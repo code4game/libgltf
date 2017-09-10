@@ -19,6 +19,8 @@ set(HEADER_FILE_LIST
 
 set(SOURCE_FILE_LIST
     ${SOURCE_FILE_PATH}/libgltf.cpp
+    ${SOURCE_FILE_PATH}/gltfdata.h
+    ${SOURCE_FILE_PATH}/gltfdata.cpp
     )
 
 source_group("header" FILES ${HEADER_FILE_LIST})

@@ -54,8 +54,13 @@ class C11TypeLibrary(object):
                 return (errorCode, errorMessage)
         return (0, u'')
 
-    def generate(self, headerFileName, sourceFileName):
-        with open(headerFileName, u'w') as headerFile:
+    def generate(self, headerFileName, sourceFileName, outputPath=None):
+        headerFilePath = headerFileName
+        sourceFilePath = sourceFileName
+        if outputPath != None:
+            headerFilePath = os.path.join(outputPath, headerFileName)
+            sourceFilePath = os.path.join(outputPath, sourceFileName)
+        with open(headerFilePath, u'w') as headerFile:
             headerFile.write(u'#pragma once\n')
             headerFile.write(u'\n')
             headerFile.write(u'#include <vector>\n')
@@ -73,7 +78,7 @@ class C11TypeLibrary(object):
                 if isinstance(c11Type, C11TypeStruct):
                     for c11TypeParentTypeName in c11Type.getParentTypeNames():
                         parentTypeNames.append(c11TypeParentTypeName)
-        with open(sourceFileName, u'w') as sourceFile:
+        with open(sourceFilePath, u'w') as sourceFile:
             sourceFile.write(u'#include "%s"\n' % headerFileName)
             sourceFile.write(u'\n')
             parentTypeNames = []
@@ -95,7 +100,13 @@ def JSONSchemaToC11(argv):
     parser = argparse.ArgumentParser(description=u'Generate c11 code by json schema.')
     parser.add_argument(u'schemaDirectory', metavar=u'schema_directory', type=type(u''), help=u'The directory contains all schema files')
     parser.add_argument(u'codeFileName', metavar=u'code_file_name', type=type(u''), help=u'The output filename of c11 code')
+    parser.add_argument(u'--output_path', type=type(u''), help=u'Set the output path')
     args = parser.parse_args(argv)
+
+    if args.output_path != None and not os.path.exists(args.output_path):
+        return (1, u'Invalid output path')
+    if args.output_path == None:
+        args.output_path = u'./'
 
     c11TypeLibrary = C11TypeLibrary()
     (errorCode, errorMessage) = c11TypeLibrary.addSchemaDirectory(args.schemaDirectory)
@@ -104,7 +115,7 @@ def JSONSchemaToC11(argv):
     (errorCode, errorMessage) = c11TypeLibrary.preprocess()
     if errorCode != 0:
         return (errorCode, errorMessage)
-    (errorCode, errorMessage) = c11TypeLibrary.generate(u'%s.h' % args.codeFileName, u'%s.cpp' % args.codeFileName)
+    (errorCode, errorMessage) = c11TypeLibrary.generate(u'%s.h' % args.codeFileName, u'%s.cpp' % args.codeFileName, outputPath=args.output_path)
     if errorCode != 0:
         return (errorCode, errorMessage)
     return (0, u'')
