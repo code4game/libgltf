@@ -1,3 +1,4 @@
 /.vscode
 /output
 /build
+/tools/jsonschematoc11/c11types/*.pyc
