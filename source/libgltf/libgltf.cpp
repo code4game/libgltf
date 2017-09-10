@@ -1,22 +1,100 @@
 #include "libgltf.h"
 
-#include <rapidjson/rapidjson.h>
-
 namespace libgltf
 {
-    SAsset::SAsset()
-        : Generator(L"")
-        , Version(L"")
+    SGlTFProperty::SGlTFProperty()
     {
         //
     }
 
-    void SAsset::Reset(SAsset& _stAsset)
+    SMaterial::SMaterial()
     {
-        new(&_stAsset)SAsset;
+        //
+    }
+
+    SAsset::SAsset()
+    {
+        //
+    }
+
+    SSampler::SSampler()
+    {
+        //
+    }
+
+    SAnimationSampler::SAnimationSampler()
+    {
+        //
+    }
+
+    SExtras::SExtras()
+    {
+        //
     }
 
     SScene::SScene()
+    {
+        //
+    }
+
+    SCameraPerspective::SCameraPerspective()
+    {
+        //
+    }
+
+    SBufferView::SBufferView()
+    {
+        //
+    }
+
+    SMaterialNormalTextureInfo::SMaterialNormalTextureInfo()
+    {
+        //
+    }
+
+    SMaterialOcclusionTextureInfo::SMaterialOcclusionTextureInfo()
+    {
+        //
+    }
+
+    SAccessorSparseValues::SAccessorSparseValues()
+    {
+        //
+    }
+
+    SAnimationChannelTarget::SAnimationChannelTarget()
+    {
+        //
+    }
+
+    SMesh::SMesh()
+    {
+        //
+    }
+
+    SAccessorSparse::SAccessorSparse()
+    {
+        //
+    }
+
+    SMeshPrimitive::SMeshPrimitive()
+    {
+        //
+    }
+
+    SExtension::SExtension()
+    {
+        //
+    }
+
+    SAnimationChannel::SAnimationChannel()
+    {
+        //
+    }
+
+
+
+    SAccessorSparseIndices::SAccessorSparseIndices()
     {
         //
     }
@@ -26,20 +104,54 @@ namespace libgltf
         //
     }
 
-    SGLTF::SGLTF()
+    SAnimation::SAnimation()
     {
         //
     }
 
-    bool ParseByString(const std::wstring& _sContent, SGLTF& _stGLTF)
+    SSkin::SSkin()
     {
         //
-        return false;
     }
 
-    bool ParseByFile(const std::wstring& _sFilePath, SGLTF& _stGLTF)
+    SMaterialPBRMetallicRoughness::SMaterialPBRMetallicRoughness()
     {
         //
-        return false;
     }
+
+    SCamera::SCamera()
+    {
+        //
+    }
+
+    SImage::SImage()
+    {
+        //
+    }
+
+    STexture::STexture()
+    {
+        //
+    }
+
+    SCameraOrthographic::SCameraOrthographic()
+    {
+        //
+    }
+
+    SBuffer::SBuffer()
+    {
+        //
+    }
+
+    SAccessor::SAccessor()
+    {
+        //
+    }
+
+    SGlTF::SGlTF()
+    {
+        //
+    }
+
 }
