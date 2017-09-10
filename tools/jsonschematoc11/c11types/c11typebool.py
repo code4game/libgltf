@@ -7,4 +7,3 @@ class C11TypeBool(C11Type):
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
-        self.typeName = u'bool'

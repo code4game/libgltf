@@ -100,22 +100,26 @@ class C11TypeStruct(C11Type):
             for parentCodeLine in parent.codeHeader(codeTypeNames):
                 codeLines.append(parentCodeLine)
 
-        codeLines.append(u'/*!\n * struct: %s\n' % self.codeTypeName())
+        codeLines.append(u'/*!')
+        codeLines.append(u' * struct: %s' % self.codeTypeName())
         if hasattr(self, u'description'):
-            codeLines.append(u' * ' + self.description + u'\n')
-        codeLines.append(u' */\n')
-        codeLines.append(u'struct %s%s\n' % (self.codeTypeName(), self.codeInheritTypes()))
-        codeLines.append(u'{\n')
-        codeLines.append(u'    %s();\n' % self.codeTypeName())
-        codeLines.append(u'\n')
+            codeLines.append(u' * ' + self.description)
+        codeLines.append(u' */')
+        codeLines.append(u'struct %s%s' % (self.codeTypeName(), self.codeInheritTypes()))
+        codeLines.append(u'{')
+        codeLines.append(u'    %s();' % self.codeTypeName())
+        codeLines.append(u'')
         for variable in self.getVariables():
             if variable.hasComment():
-                codeLines.append(u'    // %s\n' % variable.codeComment())
-            codeLines.append(u'    %s;\n' % variable.codeDeclare())
-        codeLines.append(u'};\n')
+                codeLines.append(u'    // %s' % variable.codeComment())
+            codeLines.append(u'    %s;' % variable.codeDeclare())
+        codeLines.append(u'};')
         return codeLines
 
     def codeSource(self, codeTypeNames):
         codeLines = []
-        codeLines.append(u'%s::%s() {}\n' % (self.codeTypeName(), self.codeTypeName()))
+        codeLines.append(u'%s::%s()' % (self.codeTypeName(), self.codeTypeName()))
+        codeLines.append(u'{')
+        codeLines.append(u'    //')
+        codeLines.append(u'}')
         return codeLines
