@@ -78,7 +78,6 @@ if(${PLATFORM_WINDOWS})
     add_definitions(-DUNICODE -D_UNICODE)
 endif()
 
-option(LIBGLTF_BUILD_TOOLS "Build some tools" ON)
 option(LIBGLTF_COVERAGE_GCOV "Coverage gcov (debug, Linux builds only)" OFF)
 option(LIBGLTF_TEST_GTEST "Test with gtest" OFF)
 
