@@ -170,8 +170,8 @@ class C11TypeLibrary(object):
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
-                headerFile.write(u'%sbool operator<<(%s _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
-                headerFile.write(u'%sbool operator<<(std::vector<%s> _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                headerFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                headerFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
                 headerFile.write(u'\n')
 
                 parentTypeNames.append(c11Type.codeTypeName())
@@ -202,7 +202,7 @@ class C11TypeLibrary(object):
             sourceFile.write(u'\n')
 
             sourceFile.write(u'%stemplate<typename TData>\n' % beginSpace)
-            sourceFile.write(u'%sbool operator<<(std::vector<TData> _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
             sourceFile.write(u'%s{\n' % beginSpace)
             sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
             sourceFile.write(u'%s    std::vector<TData> datas;\n' % beginSpace)
@@ -225,13 +225,13 @@ class C11TypeLibrary(object):
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
-                sourceFile.write(u'%sbool operator<<(%s _pData, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                sourceFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
                 sourceFile.write(u'%s{\n' % beginSpace)
                 sourceFile.write(u'%s    //\n' % beginSpace)
                 sourceFile.write(u'%s    return false;\n' % beginSpace)
                 sourceFile.write(u'%s}\n' % beginSpace)
                 sourceFile.write(u'\n')
-                sourceFile.write(u'%sbool operator<<(std::vector<%s> _pDatas, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                sourceFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
                 sourceFile.write(u'%s{\n' % beginSpace)
                 sourceFile.write(u'%s    return operator<< <%s>(_pDatas, _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
                 sourceFile.write(u'%s}\n' % beginSpace)
