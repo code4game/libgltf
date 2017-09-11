@@ -453,9 +453,9 @@ namespace libgltf
         {
             data_ptr->indices = _JsonValue[L"indices"].GetInt();
         }
-        if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsInt())
+        if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsArray())
         {
-            data_ptr->attributes = _JsonValue[L"attributes"].GetInt();
+            if (!(data_ptr->attributes << _JsonValue[L"attributes"])) return false;
         }
         if (_JsonValue.HasMember(L"material") && _JsonValue[L"material"].IsInt())
         {

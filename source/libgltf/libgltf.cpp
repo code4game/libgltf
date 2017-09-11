@@ -252,7 +252,7 @@ namespace libgltf
     SMeshPrimitive::SMeshPrimitive()
         : SGlTFProperty()
         , indices(0)
-        , attributes(0)
+        , attributes()
         , material(0)
         , mode(0)
         , targets()

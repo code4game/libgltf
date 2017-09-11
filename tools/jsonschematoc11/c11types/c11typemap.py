@@ -44,7 +44,7 @@ class C11TypeMap(C11Type):
         if not isinstance(self.c11Type, C11TypeStruct):
             return (0, None)
         schemaValueType = None
-        schemaValueItem = None
+        schemaValueItem = self.schemaValue
         if u'items' in self.schemaValue:
             schemaValueItem = self.schemaValue[u'items']
         if schemaValueItem == None:
