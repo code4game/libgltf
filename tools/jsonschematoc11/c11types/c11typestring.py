@@ -7,3 +7,12 @@ class C11TypeString(C11Type):
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
+
+    def codeDefaultValue(self):
+        return u'L""'
+
+    def codeJsonCheck(self):
+        return u'IsString()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'%s->%s = _JsonValue[L"%s"].GetString();' % (dataName, variableName, variableName)

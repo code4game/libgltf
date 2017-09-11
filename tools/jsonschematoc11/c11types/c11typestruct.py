@@ -5,6 +5,7 @@ from c11typeinteger import C11TypeInteger
 from c11typenumber import C11TypeNumber
 from c11typestring import C11TypeString
 from c11typearray import C11TypeArray
+from c11typemap import C11TypeMap
 from c11variable import C11Variable
 
 class C11TypeStruct(C11Type):
@@ -28,12 +29,13 @@ class C11TypeStruct(C11Type):
     def haveParents(self):
         return len(self.parents) > 0
 
-    def getParentTypeNames(self):
+    def getParentTypeNames(self, recursion=True):
         parentTypeNames = []
         for key in self.parents:
             parent = self.parents[key]
-            for parentParentTypeName in parent.getParentTypeNames():
-                parentTypeNames.append(parentParentTypeName)
+            if recursion:
+                for parentParentTypeName in parent.getParentTypeNames():
+                    parentTypeNames.append(parentParentTypeName)
             parentTypeNames.append(parent.codeTypeName())
         return parentTypeNames
 
@@ -99,6 +101,7 @@ class C11TypeStruct(C11Type):
                 continue
             for parentCodeLine in parent.codeHeader(codeTypeNames):
                 codeLines.append(parentCodeLine)
+            codeLines.append(u'')
 
         codeLines.append(u'/*!')
         codeLines.append(u' * struct: %s' % self.codeTypeName())
@@ -109,6 +112,9 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'{')
         codeLines.append(u'    %s();' % self.codeTypeName())
         codeLines.append(u'')
+        codeLines.append(u'    // Check valid')
+        codeLines.append(u'    operator bool() const;')
+        codeLines.append(u'')
         for variable in self.getVariables():
             if variable.hasComment():
                 codeLines.append(u'    // %s' % variable.codeComment())
@@ -118,8 +124,76 @@ class C11TypeStruct(C11Type):
 
     def codeSource(self, codeTypeNames):
         codeLines = []
+        if self.codeTypeName() in codeTypeNames:
+            return codeLines
+        for key in self.parents:
+            parent = self.parents[key]
+            if parent.codeTypeName() in codeTypeNames:
+                continue
+            for parentCodeLine in parent.codeSource(codeTypeNames):
+                codeLines.append(parentCodeLine)
+            codeLines.append(u'')
+
         codeLines.append(u'%s::%s()' % (self.codeTypeName(), self.codeTypeName()))
+        beginConstructorDefault = True
+        parentTypeNames = self.getParentTypeNames(recursion=False)
+        for parentTypeName in parentTypeNames:
+            if beginConstructorDefault:
+                codeLines.append(u'    : %s()' % parentTypeName)
+                beginConstructorDefault = False
+            else:
+                codeLines.append(u'    , %s()' % parentTypeName)
+        variables = self.getVariables()
+        for variable in variables:
+            if beginConstructorDefault:
+                codeLines.append(u'    : %s' % variable.codeConstructorDefault())
+                beginConstructorDefault = False
+            else:
+                codeLines.append(u'    , %s' % variable.codeConstructorDefault())
         codeLines.append(u'{')
         codeLines.append(u'    //')
         codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'%s::operator bool() const' % self.codeTypeName())
+        codeLines.append(u'{')
+        codeLines.append(u'    //')
+        codeLines.append(u'    return false;')
+        codeLines.append(u'}')
         return codeLines
+
+    def codeParserHeader(self):
+        codeLines = []
+        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        return codeLines
+
+    def codeParserSource(self):
+        codeLines = []
+        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(), self.codeTypeName()))
+
+        variables = self.getVariables()
+        for variable in variables:
+            codeParserLines = variable.codeParser()
+            for codeParserLine in codeParserLines:
+                codeLines.append(u'    %s' % codeParserLine)
+
+        codeLines.append(u'    _pData = data_ptr;')
+        codeLines.append(u'    return true;')
+        codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    return operator<< <%s>(_pDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'}')
+        return codeLines
+
+    def codeDefaultValue(self):
+        return u'nullptr'
+
+    def codeJsonCheck(self):
+        return u'IsObject()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)

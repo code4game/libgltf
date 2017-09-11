@@ -2,13 +2,14 @@
 
 #include <stdint.h>
 #include <vector>
+#include <map>
 #include <string>
 #include <memory>
 
 namespace libgltf
 {
     struct SGlTF;
-    bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGlTF>& _pGlTF);
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);
 
     /*!
      * struct: SGlTFProperty
@@ -16,6 +17,9 @@ namespace libgltf
     struct SGlTFProperty
     {
         SGlTFProperty();
+
+        // Check valid
+        operator bool() const;
 
         std::shared_ptr<struct SExtras> extras;
         std::shared_ptr<struct SExtension> extensions;
@@ -28,9 +32,13 @@ namespace libgltf
     {
         SGlTFChildofRootProperty();
 
+        // Check valid
+        operator bool() const;
+
         // The user-defined name of this object.
         std::wstring name;
     };
+
     /*!
      * struct: SMaterial
      * The material appearance of a primitive.
@@ -38,6 +46,9 @@ namespace libgltf
     struct SMaterial : SGlTFChildofRootProperty
     {
         SMaterial();
+
+        // Check valid
+        operator bool() const;
 
         // The alpha cutoff value of the material.
         float alphaCutoff;
@@ -65,6 +76,9 @@ namespace libgltf
     {
         SAsset();
 
+        // Check valid
+        operator bool() const;
+
         // The minimum glTF version that this asset targets.
         std::wstring minVersion;
         // The glTF version that this asset targets.
@@ -82,6 +96,9 @@ namespace libgltf
     struct SSampler : SGlTFChildofRootProperty
     {
         SSampler();
+
+        // Check valid
+        operator bool() const;
 
         // s wrapping mode.
         int32_t wrapS;
@@ -101,6 +118,9 @@ namespace libgltf
     {
         SAnimationSampler();
 
+        // Check valid
+        operator bool() const;
+
         // The index of an accessor containing keyframe input values, e.g., time.
         int32_t input;
         // The index of an accessor, containing keyframe output values.
@@ -117,6 +137,9 @@ namespace libgltf
     {
         SExtras();
 
+        // Check valid
+        operator bool() const;
+
     };
 
     /*!
@@ -126,6 +149,9 @@ namespace libgltf
     struct SScene : SGlTFChildofRootProperty
     {
         SScene();
+
+        // Check valid
+        operator bool() const;
 
         // The indices of each root node.
         std::vector<int32_t> nodes;
@@ -138,6 +164,9 @@ namespace libgltf
     struct SCameraPerspective : SGlTFProperty
     {
         SCameraPerspective();
+
+        // Check valid
+        operator bool() const;
 
         // The floating-point aspect ratio of the field of view.
         float aspectRatio;
@@ -156,6 +185,9 @@ namespace libgltf
     struct SBufferView : SGlTFChildofRootProperty
     {
         SBufferView();
+
+        // Check valid
+        operator bool() const;
 
         // The length of the bufferView in bytes.
         int32_t byteLength;
@@ -177,17 +209,24 @@ namespace libgltf
     {
         STextureInfo();
 
+        // Check valid
+        operator bool() const;
+
         // The index of the texture.
         int32_t index;
         // The set index of texture's TEXCOORD attribute used for texture coordinate mapping.
         int32_t texCoord;
     };
+
     /*!
      * struct: SMaterialNormalTextureInfo
      */
     struct SMaterialNormalTextureInfo : STextureInfo
     {
         SMaterialNormalTextureInfo();
+
+        // Check valid
+        operator bool() const;
 
         // The scalar multiplier applied to each normal vector of the normal texture.
         float scale;
@@ -200,6 +239,9 @@ namespace libgltf
     {
         SMaterialOcclusionTextureInfo();
 
+        // Check valid
+        operator bool() const;
+
         // A scalar multiplier controlling the amount of occlusion applied.
         float strength;
     };
@@ -211,6 +253,9 @@ namespace libgltf
     struct SAccessorSparseValues : SGlTFProperty
     {
         SAccessorSparseValues();
+
+        // Check valid
+        operator bool() const;
 
         // The index of the bufferView with sparse values. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target.
         int32_t bufferView;
@@ -226,6 +271,9 @@ namespace libgltf
     {
         SAnimationChannelTarget();
 
+        // Check valid
+        operator bool() const;
+
         // The index of the node to target.
         int32_t node;
         // The name of the node's TRS property to modify, or the "weights" of the Morph Targets it instantiates.
@@ -240,6 +288,9 @@ namespace libgltf
     {
         SMesh();
 
+        // Check valid
+        operator bool() const;
+
         // An array of primitives, each defining geometry to be rendered with a material.
         std::vector<std::shared_ptr<struct SMeshPrimitive>> primitives;
         // Array of weights to be applied to the Morph Targets.
@@ -253,6 +304,9 @@ namespace libgltf
     struct SAccessorSparse : SGlTFProperty
     {
         SAccessorSparse();
+
+        // Check valid
+        operator bool() const;
 
         // Number of entries stored in the sparse array.
         int32_t count;
@@ -270,10 +324,13 @@ namespace libgltf
     {
         SMeshPrimitive();
 
+        // Check valid
+        operator bool() const;
+
         // The index of the accessor that contains the indices.
         int32_t indices;
         // A dictionary object, where each key corresponds to mesh attribute semantic and each value is the index of the accessor containing attribute's data.
-        int32_t attributes;
+        std::map<std::wstring, int32_t> attributes;
         // The index of the material to apply to this primitive when rendering.
         int32_t material;
         // The type of primitives to render.
@@ -290,6 +347,9 @@ namespace libgltf
     {
         SExtension();
 
+        // Check valid
+        operator bool() const;
+
     };
 
     /*!
@@ -299,6 +359,9 @@ namespace libgltf
     struct SAnimationChannel : SGlTFProperty
     {
         SAnimationChannel();
+
+        // Check valid
+        operator bool() const;
 
         // The index of the node and TRS property to target.
         std::shared_ptr<struct SAnimationChannelTarget> target;
@@ -316,6 +379,9 @@ namespace libgltf
     {
         SAccessorSparseIndices();
 
+        // Check valid
+        operator bool() const;
+
         // The indices data type.
         int32_t componentType;
         // The index of the bufferView with sparse indices. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target.
@@ -331,6 +397,9 @@ namespace libgltf
     struct SNode : SGlTFChildofRootProperty
     {
         SNode();
+
+        // Check valid
+        operator bool() const;
 
         // The node's non-uniform scale.
         std::vector<float> scale;
@@ -360,6 +429,9 @@ namespace libgltf
     {
         SAnimation();
 
+        // Check valid
+        operator bool() const;
+
         // An array of channels, each of which targets an animation's sampler at a node's property. Different channels of the same animation can't have equal targets.
         std::vector<std::shared_ptr<struct SAnimationChannel>> channels;
         // An array of samplers that combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target).
@@ -373,6 +445,9 @@ namespace libgltf
     struct SSkin : SGlTFChildofRootProperty
     {
         SSkin();
+
+        // Check valid
+        operator bool() const;
 
         // Indices of skeleton nodes, used as joints in this skin.
         std::vector<int32_t> joints;
@@ -389,6 +464,9 @@ namespace libgltf
     struct SMaterialPBRMetallicRoughness : SGlTFProperty
     {
         SMaterialPBRMetallicRoughness();
+
+        // Check valid
+        operator bool() const;
 
         // The roughness of the material.
         float roughnessFactor;
@@ -410,6 +488,9 @@ namespace libgltf
     {
         SCamera();
 
+        // Check valid
+        operator bool() const;
+
         // Specifies if the camera uses a perspective or orthographic projection.
         std::wstring type;
         // A perspective camera containing properties to create a perspective projection matrix.
@@ -425,6 +506,9 @@ namespace libgltf
     struct SImage : SGlTFChildofRootProperty
     {
         SImage();
+
+        // Check valid
+        operator bool() const;
 
         // The image's MIME type.
         std::wstring mimeType;
@@ -442,6 +526,9 @@ namespace libgltf
     {
         STexture();
 
+        // Check valid
+        operator bool() const;
+
         // The index of the image used by this texture.
         int32_t source;
         // The index of the sampler used by this texture. When undefined, a sampler with repeat wrapping and auto filtering should be used.
@@ -455,6 +542,9 @@ namespace libgltf
     struct SCameraOrthographic : SGlTFProperty
     {
         SCameraOrthographic();
+
+        // Check valid
+        operator bool() const;
 
         // The floating-point horizontal magnification of the view. Must not be zero.
         float xmag;
@@ -474,6 +564,9 @@ namespace libgltf
     {
         SBuffer();
 
+        // Check valid
+        operator bool() const;
+
         // The length of the buffer in bytes.
         int32_t byteLength;
         // The uri of the buffer.
@@ -487,6 +580,9 @@ namespace libgltf
     struct SAccessor : SGlTFChildofRootProperty
     {
         SAccessor();
+
+        // Check valid
+        operator bool() const;
 
         // The number of attributes referenced by this accessor.
         int32_t count;
@@ -515,6 +611,9 @@ namespace libgltf
     struct SGlTF : SGlTFProperty
     {
         SGlTF();
+
+        // Check valid
+        operator bool() const;
 
         // An array of textures.
         std::vector<std::shared_ptr<struct STexture>> textures;

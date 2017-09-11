@@ -31,3 +31,12 @@ class C11Type(object):
 
     def codeSource(self, codeTypeNames):
         return [u'']
+
+    def codeDefaultValue(self):
+        return u''
+
+    def codeJsonCheck(self):
+        return None
+
+    def codeJsonSet(self, dataName, variableName):
+        return None
