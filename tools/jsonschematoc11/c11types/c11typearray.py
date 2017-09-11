@@ -61,3 +61,9 @@ class C11TypeArray(C11Type):
 
     def codeTypeName(self, withDeclare=False, asVariable=False):
         return u'%s<%s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
+
+    def codeJsonCheck(self):
+        return u'IsArray()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)

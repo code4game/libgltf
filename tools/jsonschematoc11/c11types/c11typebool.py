@@ -10,3 +10,9 @@ class C11TypeBool(C11Type):
 
     def codeDefaultValue(self):
         return u'false'
+
+    def codeJsonCheck(self):
+        return u'IsBool()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'%s->%s = _JsonValue[L"%s"].GetBool();' % (dataName, variableName, variableName)

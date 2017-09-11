@@ -19,6 +19,9 @@ namespace libgltf
     bool operator<<(std::shared_ptr<struct SSampler>& _pData, const WCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SSampler>>& _pDatas, const WCharValue& _JsonValue);
 
+    bool operator<<(std::shared_ptr<struct SGlTFChildofRootProperty>& _pData, const WCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SGlTFChildofRootProperty>>& _pDatas, const WCharValue& _JsonValue);
+
     bool operator<<(std::shared_ptr<struct SAnimationSampler>& _pData, const WCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SAnimationSampler>>& _pDatas, const WCharValue& _JsonValue);
 
@@ -96,5 +99,8 @@ namespace libgltf
 
     bool operator<<(std::shared_ptr<struct SGlTF>& _pData, const WCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SGlTF>>& _pDatas, const WCharValue& _JsonValue);
+
+    bool operator<<(std::shared_ptr<struct STextureInfo>& _pData, const WCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct STextureInfo>>& _pDatas, const WCharValue& _JsonValue);
 
 }

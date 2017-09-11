@@ -68,7 +68,14 @@ class C11Variable(object):
 
     def codeParser(self):
         codeLines = []
-        codeLines.append(u'if (_JsonValue.HasMember(L"%s"))' % self.name)
+        codeCheckLine = self.c11Type.codeJsonCheck()
+        if codeCheckLine == None or len(codeCheckLine) <= 0:
+            codeLines.append(u'if (_JsonValue.HasMember(L"%s"))' % self.name)
+        else:
+            codeLines.append(u'if (_JsonValue.HasMember(L"%s") && _JsonValue[L"%s"].%s)' % (self.name, self.name, codeCheckLine))
         codeLines.append(u'{')
+        codeSetLine = self.c11Type.codeJsonSet(u'data_ptr', self.name)
+        if codeSetLine != None and len(codeSetLine) > 0:
+            codeLines.append(u'    %s' % (codeSetLine))
         codeLines.append(u'}')
         return codeLines

@@ -34,3 +34,9 @@ class C11Type(object):
 
     def codeDefaultValue(self):
         return u''
+
+    def codeJsonCheck(self):
+        return None
+
+    def codeJsonSet(self, dataName, variableName):
+        return None

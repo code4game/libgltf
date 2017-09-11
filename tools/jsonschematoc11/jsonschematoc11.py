@@ -163,12 +163,8 @@ class C11TypeLibrary(object):
                 headerFile.write(u'{\n')
                 beginSpace = u'    '
 
-            parentTypeNames = []
             for key in self.c11Types:
                 c11Type = self.c11Types[key]
-                if c11Type.codeTypeName() in parentTypeNames:
-                    continue
-
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
@@ -179,10 +175,6 @@ class C11TypeLibrary(object):
                     else:
                         headerFile.write(u'%s%s\n' % (beginSpace, codeLine))
                 headerFile.write(u'\n')
-
-                parentTypeNames.append(c11Type.codeTypeName())
-                for c11TypeParentTypeName in c11Type.getParentTypeNames():
-                    parentTypeNames.append(c11TypeParentTypeName)
 
             if namespace != None:
                 headerFile.write(u'}\n')
@@ -222,13 +214,69 @@ class C11TypeLibrary(object):
             sourceFile.write(u'%s    return true;\n' % beginSpace)
             sourceFile.write(u'%s}\n' % beginSpace)
             sourceFile.write(u'\n')
-            
-            parentTypeNames = []
+
+            sourceFile.write(u'%stemplate<>\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<bool>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    std::vector<bool> datas;\n' % beginSpace)
+            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
+            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
+            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
+            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetBool();\n' % beginSpace)
+            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
+            sourceFile.write(u'%s    return true;\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+
+            sourceFile.write(u'%stemplate<>\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<int32_t>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    std::vector<int32_t> datas;\n' % beginSpace)
+            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
+            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
+            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
+            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetInt();\n' % beginSpace)
+            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
+            sourceFile.write(u'%s    return true;\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+
+            sourceFile.write(u'%stemplate<>\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<float>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    std::vector<float> datas;\n' % beginSpace)
+            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
+            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
+            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
+            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetFloat();\n' % beginSpace)
+            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
+            sourceFile.write(u'%s    return true;\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+
+            sourceFile.write(u'%stemplate<>\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<std::wstring>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    std::vector<std::wstring> datas;\n' % beginSpace)
+            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
+            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
+            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
+            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetString();\n' % beginSpace)
+            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
+            sourceFile.write(u'%s    return true;\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+
             for key in self.c11Types:
                 c11Type = self.c11Types[key]
-                if c11Type.codeTypeName() in parentTypeNames:
-                    continue
-
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
@@ -239,10 +287,6 @@ class C11TypeLibrary(object):
                     else:
                         sourceFile.write(u'%s%s\n' % (beginSpace, codeLine))
                 sourceFile.write(u'\n')
-
-                parentTypeNames.append(c11Type.codeTypeName())
-                for c11TypeParentTypeName in c11Type.getParentTypeNames():
-                    parentTypeNames.append(c11TypeParentTypeName)
 
             if namespace != None:
                 sourceFile.write(u'}\n')

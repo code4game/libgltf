@@ -176,9 +176,8 @@ class C11TypeStruct(C11Type):
         for variable in variables:
             codeParserLines = variable.codeParser()
             for codeParserLine in codeParserLines:
-                codeLines.append(codeParserLine)
+                codeLines.append(u'    %s' % codeParserLine)
 
-        codeLines.append(u'    //')
         codeLines.append(u'    _pData = data_ptr;')
         codeLines.append(u'    return true;')
         codeLines.append(u'}')
@@ -191,3 +190,9 @@ class C11TypeStruct(C11Type):
 
     def codeDefaultValue(self):
         return u'nullptr'
+
+    def codeJsonCheck(self):
+        return u'IsObject()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)

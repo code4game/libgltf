@@ -10,3 +10,9 @@ class C11TypeString(C11Type):
 
     def codeDefaultValue(self):
         return u'L""'
+
+    def codeJsonCheck(self):
+        return u'IsString()'
+
+    def codeJsonSet(self, dataName, variableName):
+        return u'%s->%s = _JsonValue[L"%s"].GetString();' % (dataName, variableName, variableName)
