@@ -13,6 +13,12 @@ namespace libgltf
     }
 
     template<typename TData>
+    bool operator<<(TData& _pDatas, const WCharValue& _JsonValue)
+    {
+        return false;
+    }
+
+    template<typename TData>
     bool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)
     {
         if (!_JsonValue.IsArray()) return false;
@@ -78,6 +84,37 @@ namespace libgltf
         if (len <= 0) return true;
         datas.resize(len);
         for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetString();
+        _pDatas = datas;
+        return true;
+    }
+
+    template<typename TData>
+    bool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)
+    {
+        if (!_JsonValue.IsObject()) return false;
+        std::map<std::wstring, TData> datas;
+        const WCharConstObject& json_object = _JsonValue.GetObject();
+        for (WCharConstObject::ConstMemberIterator it = json_object.MemberBegin(); it != json_object.MemberEnd(); ++it)
+        {
+            TData data;
+            if (!(data << it->value)) return false;
+            datas.insert(it->name, data);
+        }
+        _pDatas = datas;
+        return true;
+    }
+
+    template<>
+    bool operator<<(std::map<std::wstring, int32_t>& _pDatas, const WCharValue& _JsonValue)
+    {
+        if (!_JsonValue.IsObject()) return false;
+        std::map<std::wstring, int32_t> datas;
+        const WCharConstObject& json_object = _JsonValue.GetObject();
+        for (WCharConstObject::ConstMemberIterator it = json_object.MemberBegin(); it != json_object.MemberEnd(); ++it)
+        {
+            if (!it->value.IsInt()) return false;
+            datas.insert(std::make_pair(it->name.GetString(), it->value.GetInt()));
+        }
         _pDatas = datas;
         return true;
     }
@@ -453,7 +490,7 @@ namespace libgltf
         {
             data_ptr->indices = _JsonValue[L"indices"].GetInt();
         }
-        if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsArray())
+        if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsObject())
         {
             if (!(data_ptr->attributes << _JsonValue[L"attributes"])) return false;
         }

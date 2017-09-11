@@ -67,7 +67,7 @@ class C11TypeMap(C11Type):
         return u'%s<std::wstring, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
 
     def codeJsonCheck(self):
-        return u'IsArray()'
+        return u'IsObject()'
 
     def codeJsonSet(self, dataName, variableName):
         return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
