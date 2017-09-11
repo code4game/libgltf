@@ -65,3 +65,10 @@ class C11Variable(object):
 
     def codeConstructorDefault(self):
         return u'%s(%s)' % (self.name, self.c11Type.codeDefaultValue())
+
+    def codeParser(self):
+        codeLines = []
+        codeLines.append(u'if (_JsonValue.HasMember(L"%s"))' % self.name)
+        codeLines.append(u'{')
+        codeLines.append(u'}')
+        return codeLines

@@ -171,6 +171,13 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(), self.codeTypeName()))
+
+        variables = self.getVariables()
+        for variable in variables:
+            codeParserLines = variable.codeParser()
+            for codeParserLine in codeParserLines:
+                codeLines.append(codeParserLine)
+
         codeLines.append(u'    //')
         codeLines.append(u'    _pData = data_ptr;')
         codeLines.append(u'    return true;')
