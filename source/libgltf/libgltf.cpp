@@ -7,6 +7,11 @@ namespace libgltf
         //
     }
 
+    SGlTFChildofRootProperty::SGlTFChildofRootProperty()
+    {
+        //
+    }
+
     SMaterial::SMaterial()
     {
         //
@@ -43,6 +48,11 @@ namespace libgltf
     }
 
     SBufferView::SBufferView()
+    {
+        //
+    }
+
+    STextureInfo::STextureInfo()
     {
         //
     }

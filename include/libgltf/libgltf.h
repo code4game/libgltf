@@ -31,6 +31,7 @@ namespace libgltf
         // The user-defined name of this object.
         std::wstring name;
     };
+
     /*!
      * struct: SMaterial
      * The material appearance of a primitive.
@@ -182,6 +183,7 @@ namespace libgltf
         // The set index of texture's TEXCOORD attribute used for texture coordinate mapping.
         int32_t texCoord;
     };
+
     /*!
      * struct: SMaterialNormalTextureInfo
      */

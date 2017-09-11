@@ -99,6 +99,7 @@ class C11TypeStruct(C11Type):
                 continue
             for parentCodeLine in parent.codeHeader(codeTypeNames):
                 codeLines.append(parentCodeLine)
+            codeLines.append(u'')
 
         codeLines.append(u'/*!')
         codeLines.append(u' * struct: %s' % self.codeTypeName())
@@ -118,6 +119,16 @@ class C11TypeStruct(C11Type):
 
     def codeSource(self, codeTypeNames):
         codeLines = []
+        if self.codeTypeName() in codeTypeNames:
+            return codeLines
+        for key in self.parents:
+            parent = self.parents[key]
+            if parent.codeTypeName() in codeTypeNames:
+                continue
+            for parentCodeLine in parent.codeSource(codeTypeNames):
+                codeLines.append(parentCodeLine)
+            codeLines.append(u'')
+
         codeLines.append(u'%s::%s()' % (self.codeTypeName(), self.codeTypeName()))
         codeLines.append(u'{')
         codeLines.append(u'    //')
