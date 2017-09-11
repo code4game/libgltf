@@ -31,3 +31,6 @@ class C11Type(object):
 
     def codeSource(self, codeTypeNames):
         return [u'']
+
+    def codeDefaultValue(self):
+        return u''

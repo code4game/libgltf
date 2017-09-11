@@ -8,3 +8,6 @@ class C11TypeInteger(C11Type):
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
         self.typeName = u'int32_t'
+
+    def codeDefaultValue(self):
+        return u'0'

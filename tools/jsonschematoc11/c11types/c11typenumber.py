@@ -8,3 +8,6 @@ class C11TypeNumber(C11Type):
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
         self.typeName = u'float'
+
+    def codeDefaultValue(self):
+        return u'0.0f'

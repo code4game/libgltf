@@ -7,3 +7,6 @@ class C11TypeString(C11Type):
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
+
+    def codeDefaultValue(self):
+        return u'L""'

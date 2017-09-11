@@ -28,12 +28,13 @@ class C11TypeStruct(C11Type):
     def haveParents(self):
         return len(self.parents) > 0
 
-    def getParentTypeNames(self):
+    def getParentTypeNames(self, recursion=True):
         parentTypeNames = []
         for key in self.parents:
             parent = self.parents[key]
-            for parentParentTypeName in parent.getParentTypeNames():
-                parentTypeNames.append(parentParentTypeName)
+            if recursion:
+                for parentParentTypeName in parent.getParentTypeNames():
+                    parentTypeNames.append(parentParentTypeName)
             parentTypeNames.append(parent.codeTypeName())
         return parentTypeNames
 
@@ -133,6 +134,21 @@ class C11TypeStruct(C11Type):
             codeLines.append(u'')
 
         codeLines.append(u'%s::%s()' % (self.codeTypeName(), self.codeTypeName()))
+        beginConstructorDefault = True
+        parentTypeNames = self.getParentTypeNames(recursion=False)
+        for parentTypeName in parentTypeNames:
+            if beginConstructorDefault:
+                codeLines.append(u'    : %s()' % parentTypeName)
+                beginConstructorDefault = False
+            else:
+                codeLines.append(u'    , %s()' % parentTypeName)
+        variables = self.getVariables()
+        for variable in variables:
+            if beginConstructorDefault:
+                codeLines.append(u'    : %s' % variable.codeConstructorDefault())
+                beginConstructorDefault = False
+            else:
+                codeLines.append(u'    , %s' % variable.codeConstructorDefault())
         codeLines.append(u'{')
         codeLines.append(u'    //')
         codeLines.append(u'}')
@@ -143,3 +159,6 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'    return false;')
         codeLines.append(u'}')
         return codeLines
+
+    def codeDefaultValue(self):
+        return u'nullptr'
