@@ -60,13 +60,13 @@ class C11TypeLibrary(object):
                 return (errorCode, errorMessage)
         return (0, u'')
 
-    def generate(self, headerFileName, sourceFileName, outputHeaderPath=None, outputSourcePath=None, namespace=None):
-        headerFilePath = headerFileName
-        sourceFilePath = sourceFileName
+    def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, namespace=None):
+        headerFilePath = u'%s.h' % codeFileName
+        sourceFilePath = u'%s.cpp' % codeFileName
         if outputHeaderPath != None:
-            headerFilePath = os.path.join(outputHeaderPath, headerFileName)
+            headerFilePath = os.path.join(outputHeaderPath, headerFilePath)
         if outputSourcePath != None:
-            sourceFilePath = os.path.join(outputSourcePath, sourceFileName)
+            sourceFilePath = os.path.join(outputSourcePath, sourceFilePath)
 
         with open(headerFilePath, u'w') as headerFile:
             headerFile.write(u'#pragma once\n')
@@ -112,7 +112,7 @@ class C11TypeLibrary(object):
                 headerFile.write(u'}\n')
 
         with open(sourceFilePath, u'w') as sourceFile:
-            sourceFile.write(u'#include "%s"\n' % headerFileName)
+            sourceFile.write(u'#include "%s.h"\n' % codeFileName)
             sourceFile.write(u'\n')
 
             beginSpace = u''
@@ -138,6 +138,108 @@ class C11TypeLibrary(object):
                 if isinstance(c11Type, C11TypeStruct):
                     for c11TypeParentTypeName in c11Type.getParentTypeNames():
                         parentTypeNames.append(c11TypeParentTypeName)
+
+            if namespace != None:
+                sourceFile.write(u'}\n')
+
+        # generate parser
+        headerFilePath = u'%sparser.h' % codeFileName
+        sourceFilePath = u'%sparser.cpp' % codeFileName
+        if outputSourcePath != None:
+            headerFilePath = os.path.join(outputSourcePath, headerFilePath)
+            sourceFilePath = os.path.join(outputSourcePath, sourceFilePath)
+        with open(headerFilePath, u'w') as headerFile:
+            headerFile.write(u'#pragma once\n')
+            headerFile.write(u'\n')
+            headerFile.write(u'#include "%spch.h"\n' % codeFileName)
+            headerFile.write(u'#include "%s.h"\n' % codeFileName)
+            headerFile.write(u'\n')
+
+            beginSpace = u''
+            if namespace != None:
+                headerFile.write(u'namespace %s\n' % namespace)
+                headerFile.write(u'{\n')
+                beginSpace = u'    '
+
+            parentTypeNames = []
+            for key in self.c11Types:
+                c11Type = self.c11Types[key]
+                if c11Type.codeTypeName() in parentTypeNames:
+                    continue
+
+                if not isinstance(c11Type, C11TypeStruct):
+                    continue
+
+                headerFile.write(u'%sbool operator<<(%s _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                headerFile.write(u'%sbool operator<<(std::vector<%s> _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                headerFile.write(u'\n')
+
+                parentTypeNames.append(c11Type.codeTypeName())
+                for c11TypeParentTypeName in c11Type.getParentTypeNames():
+                    parentTypeNames.append(c11TypeParentTypeName)
+
+            if namespace != None:
+                headerFile.write(u'}\n')
+
+        with open(sourceFilePath, u'w') as sourceFile:
+            sourceFile.write(u'#include "%spch.h"\n' % codeFileName)
+            sourceFile.write(u'#include "%sparser.h"\n' % codeFileName)
+            sourceFile.write(u'\n')
+
+            beginSpace = u''
+            if namespace != None:
+                sourceFile.write(u'namespace %s\n' % namespace)
+                sourceFile.write(u'{\n')
+                beginSpace = u'    '
+
+            sourceFile.write(u'%sbool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGlTF>& _pGlTF)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    WCharDocument json_doc;\n' % beginSpace)
+            sourceFile.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % beginSpace)
+            sourceFile.write(u'%s    if (!json_doc.IsObject()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+
+            sourceFile.write(u'%stemplate<typename TData>\n' % beginSpace)
+            sourceFile.write(u'%sbool operator<<(std::vector<TData> _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
+            sourceFile.write(u'%s{\n' % beginSpace)
+            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    std::vector<TData> datas;\n' % beginSpace)
+            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
+            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
+            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
+            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;\n' % beginSpace)
+            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
+            sourceFile.write(u'%s    return true;\n' % beginSpace)
+            sourceFile.write(u'%s}\n' % beginSpace)
+            sourceFile.write(u'\n')
+            
+            parentTypeNames = []
+            for key in self.c11Types:
+                c11Type = self.c11Types[key]
+                if c11Type.codeTypeName() in parentTypeNames:
+                    continue
+
+                if not isinstance(c11Type, C11TypeStruct):
+                    continue
+
+                sourceFile.write(u'%sbool operator<<(%s _pData, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                sourceFile.write(u'%s{\n' % beginSpace)
+                sourceFile.write(u'%s    //\n' % beginSpace)
+                sourceFile.write(u'%s    return false;\n' % beginSpace)
+                sourceFile.write(u'%s}\n' % beginSpace)
+                sourceFile.write(u'\n')
+                sourceFile.write(u'%sbool operator<<(std::vector<%s> _pDatas, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                sourceFile.write(u'%s{\n' % beginSpace)
+                sourceFile.write(u'%s    return operator<< <%s>(_pDatas, _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                sourceFile.write(u'%s}\n' % beginSpace)
+                sourceFile.write(u'\n')
+
+                parentTypeNames.append(c11Type.codeTypeName())
+                for c11TypeParentTypeName in c11Type.getParentTypeNames():
+                    parentTypeNames.append(c11TypeParentTypeName)
 
             if namespace != None:
                 sourceFile.write(u'}\n')
@@ -169,7 +271,7 @@ def JSONSchemaToC11(argv):
     (errorCode, errorMessage) = c11TypeLibrary.preprocess()
     if errorCode != 0:
         return (errorCode, errorMessage)
-    (errorCode, errorMessage) = c11TypeLibrary.generate(u'%s.h' % args.codeFileName, u'%s.cpp' % args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, namespace=args.namespace)
+    (errorCode, errorMessage) = c11TypeLibrary.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, namespace=args.namespace)
     if errorCode != 0:
         return (errorCode, errorMessage)
     return (0, u'')
