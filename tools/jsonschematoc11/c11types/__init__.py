@@ -4,6 +4,7 @@ from c11typeinteger import C11TypeInteger
 from c11typenumber import C11TypeNumber
 from c11typestring import C11TypeString
 from c11typearray import C11TypeArray
+from c11typemap import C11TypeMap
 from c11typestruct import C11TypeStruct
 
 def BuildC11Type(schemaName, schemaValue):
@@ -22,6 +23,8 @@ def BuildC11Type(schemaName, schemaValue):
             c11Type = C11TypeString()
         elif schemaValueType == u'array':
             c11Type = C11TypeArray()
+        #elif schemaValueType == u'object':
+        #    c11Type = C11TypeMap()
     if c11Type == None:
         c11Type = C11TypeStruct()
     c11Type.setSchema(schemaName, schemaValue)

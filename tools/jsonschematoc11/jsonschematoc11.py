@@ -73,6 +73,7 @@ class C11TypeLibrary(object):
             headerFile.write(u'\n')
             headerFile.write(u'#include <stdint.h>\n')
             headerFile.write(u'#include <vector>\n')
+            headerFile.write(u'#include <map>\n')
             headerFile.write(u'#include <string>\n')
             headerFile.write(u'#include <memory>\n')
             headerFile.write(u'\n')

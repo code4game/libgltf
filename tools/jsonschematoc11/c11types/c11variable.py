@@ -4,6 +4,7 @@ from c11typeinteger import C11TypeInteger
 from c11typenumber import C11TypeNumber
 from c11typestring import C11TypeString
 from c11typearray import C11TypeArray
+from c11typemap import C11TypeMap
 from c11typenone import C11TypeNone
 
 class C11Variable(object):
@@ -16,12 +17,18 @@ class C11Variable(object):
             self.comment = schemaValue[u'description']
 
     def revise(self, c11Types):
+        variableSchemaValue = self.schemaValue
         if u'type' in self.schemaValue:
             schemaValueType = self.schemaValue[u'type']
+            if schemaValueType == u'object' and u'additionalProperties' in self.schemaValue:
+                schemaValueType = u'map'
+                variableSchemaValue = self.schemaValue[u'additionalProperties']
         elif u'$ref' in self.schemaValue:
             schemaValueType = self.schemaValue[u'$ref']
         elif u'allOf' in self.schemaValue and len(self.schemaValue[u'allOf']) > 0 and u'$ref' in self.schemaValue[u'allOf'][0]:
             schemaValueType = self.schemaValue[u'allOf'][0][u'$ref']
+            #schemaValueType = u'array'
+            #variableSchemaValue = self.schemaValue[u'allOf'][0]
         elif u'anyOf' in self.schemaValue and len(self.schemaValue[u'anyOf']) > 0:
             for schemaValueAnyOf in self.schemaValue[u'anyOf']:
                 if u'type' not in schemaValueAnyOf:
@@ -30,6 +37,7 @@ class C11Variable(object):
                 break
         else:
             return (0, None)
+
         if schemaValueType == u'bool' or schemaValueType == u'boolean':
             self.c11Type = C11TypeBool()
         elif schemaValueType == u'integer':
@@ -40,7 +48,10 @@ class C11Variable(object):
             self.c11Type = C11TypeString()
         elif schemaValueType == u'array':
             self.c11Type = C11TypeArray()
-            self.c11Type.setItemSchema(self.schemaValue)
+            self.c11Type.setItemSchema(variableSchemaValue)
+        elif schemaValueType == u'map':
+            self.c11Type = C11TypeMap()
+            self.c11Type.setItemSchema(variableSchemaValue)
         else:
             if schemaValueType not in c11Types:
                 if u'additionalProperties' in self.schemaValue:
