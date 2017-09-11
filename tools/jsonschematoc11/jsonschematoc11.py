@@ -152,7 +152,9 @@ class C11TypeLibrary(object):
             headerFile.write(u'#pragma once\n')
             headerFile.write(u'\n')
             headerFile.write(u'#include "%spch.h"\n' % codeFileName)
-            headerFile.write(u'#include "%s.h"\n' % codeFileName)
+            headerFile.write(u'\n')
+            headerFile.write(u'#include <memory>\n')
+            headerFile.write(u'#include <vector>\n')
             headerFile.write(u'\n')
 
             beginSpace = u''
@@ -170,8 +172,8 @@ class C11TypeLibrary(object):
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
-                headerFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
-                headerFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
+                headerFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(withDeclare=True, asVariable=True)))
+                headerFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(withDeclare=True, asVariable=True)))
                 headerFile.write(u'\n')
 
                 parentTypeNames.append(c11Type.codeTypeName())
@@ -184,6 +186,7 @@ class C11TypeLibrary(object):
         with open(sourceFilePath, u'w') as sourceFile:
             sourceFile.write(u'#include "%spch.h"\n' % codeFileName)
             sourceFile.write(u'#include "%sparser.h"\n' % codeFileName)
+            sourceFile.write(u'#include "%s.h"\n' % codeFileName)
             sourceFile.write(u'\n')
 
             beginSpace = u''

@@ -1,5 +1,6 @@
 #include "libgltfpch.h"
 #include "libgltfparser.h"
+#include "libgltf.h"
 
 namespace libgltf
 {
