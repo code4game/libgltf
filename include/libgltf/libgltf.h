@@ -9,7 +9,7 @@
 namespace libgltf
 {
     struct SGlTF;
-    bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGlTF>& _pGlTF);
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);
 
     /*!
      * struct: SGlTFProperty

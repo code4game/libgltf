@@ -4,7 +4,7 @@
 
 namespace libgltf
 {
-    bool ParseByString(const std::wstring& _sContent, std::shared_ptr<SGlTF>& _pGlTF)
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)
     {
         WCharDocument json_doc;
         json_doc.Parse(_sContent.c_str());
@@ -12,10 +12,40 @@ namespace libgltf
         return (_pGlTF << json_doc.GetObject());
     }
 
-    template<typename TData>
-    bool operator<<(TData& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(bool& _rData, const WCharValue& _JsonValue)
     {
+        if (!_JsonValue.IsBool()) return false;
+        _rData = _JsonValue.GetBool();
+        return true;
+    }
+
+    bool operator<<(int32_t& _rData, const WCharValue& _JsonValue)
+    {
+        if (!_JsonValue.IsInt()) return false;
+        _rData = _JsonValue.GetInt();
+        return true;
+    }
+
+    bool operator<<(float& _rData, const WCharValue& _JsonValue)
+    {
+        if (_JsonValue.IsFloat())
+        {
+            _rData = _JsonValue.GetFloat();
+            return true;
+        }
+        if (_JsonValue.IsInt())
+        {
+            _rData = static_cast<int32_t>(_JsonValue.GetInt());
+            return true;
+        }
         return false;
+    }
+
+    bool operator<<(std::wstring& _rData, const WCharValue& _JsonValue)
+    {
+        if (!_JsonValue.IsString()) return false;
+        _rData = _JsonValue.GetString();
+        return true;
     }
 
     template<typename TData>
@@ -32,88 +62,17 @@ namespace libgltf
         return true;
     }
 
-    template<>
-    bool operator<<(std::vector<bool>& _pDatas, const WCharValue& _JsonValue)
-    {
-        if (!_JsonValue.IsArray()) return false;
-        std::vector<bool> datas;
-        const WCharConstArray& json_array = _JsonValue.GetArray();
-        size_t len = json_array.Size();
-        if (len <= 0) return true;
-        datas.resize(len);
-        for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetBool();
-        _pDatas = datas;
-        return true;
-    }
-
-    template<>
-    bool operator<<(std::vector<int32_t>& _pDatas, const WCharValue& _JsonValue)
-    {
-        if (!_JsonValue.IsArray()) return false;
-        std::vector<int32_t> datas;
-        const WCharConstArray& json_array = _JsonValue.GetArray();
-        size_t len = json_array.Size();
-        if (len <= 0) return true;
-        datas.resize(len);
-        for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetInt();
-        _pDatas = datas;
-        return true;
-    }
-
-    template<>
-    bool operator<<(std::vector<float>& _pDatas, const WCharValue& _JsonValue)
-    {
-        if (!_JsonValue.IsArray()) return false;
-        std::vector<float> datas;
-        const WCharConstArray& json_array = _JsonValue.GetArray();
-        size_t len = json_array.Size();
-        if (len <= 0) return true;
-        datas.resize(len);
-        for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetFloat();
-        _pDatas = datas;
-        return true;
-    }
-
-    template<>
-    bool operator<<(std::vector<std::wstring>& _pDatas, const WCharValue& _JsonValue)
-    {
-        if (!_JsonValue.IsArray()) return false;
-        std::vector<std::wstring> datas;
-        const WCharConstArray& json_array = _JsonValue.GetArray();
-        size_t len = json_array.Size();
-        if (len <= 0) return true;
-        datas.resize(len);
-        for (size_t i = 0; i < len; ++i) datas[i] = json_array[static_cast<rapidjson::SizeType>(i)].GetString();
-        _pDatas = datas;
-        return true;
-    }
-
     template<typename TData>
     bool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)
     {
         if (!_JsonValue.IsObject()) return false;
         std::map<std::wstring, TData> datas;
         const WCharConstObject& json_object = _JsonValue.GetObject();
-        for (WCharConstObject::ConstMemberIterator it = json_object.MemberBegin(); it != json_object.MemberEnd(); ++it)
+        for (WCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)
         {
             TData data;
-            if (!(data << it->value)) return false;
-            datas.insert(it->name, data);
-        }
-        _pDatas = datas;
-        return true;
-    }
-
-    template<>
-    bool operator<<(std::map<std::wstring, int32_t>& _pDatas, const WCharValue& _JsonValue)
-    {
-        if (!_JsonValue.IsObject()) return false;
-        std::map<std::wstring, int32_t> datas;
-        const WCharConstObject& json_object = _JsonValue.GetObject();
-        for (WCharConstObject::ConstMemberIterator it = json_object.MemberBegin(); it != json_object.MemberEnd(); ++it)
-        {
-            if (!it->value.IsInt()) return false;
-            datas.insert(std::make_pair(it->name.GetString(), it->value.GetInt()));
+            if (!(data << cit->value)) return false;
+            datas.insert(std::make_pair(cit->name.GetString(), data));
         }
         _pDatas = datas;
         return true;
