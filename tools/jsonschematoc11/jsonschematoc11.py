@@ -172,8 +172,12 @@ class C11TypeLibrary(object):
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
-                headerFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(withDeclare=True, asVariable=True)))
-                headerFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(withDeclare=True, asVariable=True)))
+                codeLines = c11Type.codeParserHeader()
+                for codeLine in codeLines:
+                    if len(codeLine) <= 0:
+                        headerFile.write(u'\n')
+                    else:
+                        headerFile.write(u'%s%s\n' % (beginSpace, codeLine))
                 headerFile.write(u'\n')
 
                 parentTypeNames.append(c11Type.codeTypeName())
@@ -228,18 +232,12 @@ class C11TypeLibrary(object):
                 if not isinstance(c11Type, C11TypeStruct):
                     continue
 
-                sourceFile.write(u'%sbool operator<<(%s& _pData, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
-                sourceFile.write(u'%s{\n' % beginSpace)
-                sourceFile.write(u'%s    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();\n' % (beginSpace, c11Type.codeTypeName(), c11Type.codeTypeName()))
-                sourceFile.write(u'%s    //\n' % beginSpace)
-                sourceFile.write(u'%s    _pData = data_ptr;\n' % beginSpace)
-                sourceFile.write(u'%s    return true;\n' % beginSpace)
-                sourceFile.write(u'%s}\n' % beginSpace)
-                sourceFile.write(u'\n')
-                sourceFile.write(u'%sbool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue)\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
-                sourceFile.write(u'%s{\n' % beginSpace)
-                sourceFile.write(u'%s    return operator<< <%s>(_pDatas, _JsonValue);\n' % (beginSpace, c11Type.codeTypeName(asVariable=True)))
-                sourceFile.write(u'%s}\n' % beginSpace)
+                codeLines = c11Type.codeParserSource()
+                for codeLine in codeLines:
+                    if len(codeLine) <= 0:
+                        sourceFile.write(u'\n')
+                    else:
+                        sourceFile.write(u'%s%s\n' % (beginSpace, codeLine))
                 sourceFile.write(u'\n')
 
                 parentTypeNames.append(c11Type.codeTypeName())

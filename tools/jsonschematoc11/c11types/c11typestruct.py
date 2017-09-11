@@ -160,5 +160,27 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         return codeLines
 
+    def codeParserHeader(self):
+        codeLines = []
+        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        return codeLines
+
+    def codeParserSource(self):
+        codeLines = []
+        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(), self.codeTypeName()))
+        codeLines.append(u'    //')
+        codeLines.append(u'    _pData = data_ptr;')
+        codeLines.append(u'    return true;')
+        codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    return operator<< <%s>(_pDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'}')
+        return codeLines
+
     def codeDefaultValue(self):
         return u'nullptr'
