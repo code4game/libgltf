@@ -7,9 +7,21 @@ namespace libgltf
         //
     }
 
+    SGlTFProperty::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SGlTFChildofRootProperty::SGlTFChildofRootProperty()
     {
         //
+    }
+
+    SGlTFChildofRootProperty::operator bool() const
+    {
+        //
+        return false;
     }
 
     SMaterial::SMaterial()
@@ -17,9 +29,21 @@ namespace libgltf
         //
     }
 
+    SMaterial::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SAsset::SAsset()
     {
         //
+    }
+
+    SAsset::operator bool() const
+    {
+        //
+        return false;
     }
 
     SSampler::SSampler()
@@ -27,9 +51,21 @@ namespace libgltf
         //
     }
 
+    SSampler::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SAnimationSampler::SAnimationSampler()
     {
         //
+    }
+
+    SAnimationSampler::operator bool() const
+    {
+        //
+        return false;
     }
 
     SExtras::SExtras()
@@ -37,9 +73,21 @@ namespace libgltf
         //
     }
 
+    SExtras::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SScene::SScene()
     {
         //
+    }
+
+    SScene::operator bool() const
+    {
+        //
+        return false;
     }
 
     SCameraPerspective::SCameraPerspective()
@@ -47,9 +95,21 @@ namespace libgltf
         //
     }
 
+    SCameraPerspective::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SBufferView::SBufferView()
     {
         //
+    }
+
+    SBufferView::operator bool() const
+    {
+        //
+        return false;
     }
 
     STextureInfo::STextureInfo()
@@ -57,9 +117,21 @@ namespace libgltf
         //
     }
 
+    STextureInfo::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SMaterialNormalTextureInfo::SMaterialNormalTextureInfo()
     {
         //
+    }
+
+    SMaterialNormalTextureInfo::operator bool() const
+    {
+        //
+        return false;
     }
 
     SMaterialOcclusionTextureInfo::SMaterialOcclusionTextureInfo()
@@ -67,9 +139,21 @@ namespace libgltf
         //
     }
 
+    SMaterialOcclusionTextureInfo::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SAccessorSparseValues::SAccessorSparseValues()
     {
         //
+    }
+
+    SAccessorSparseValues::operator bool() const
+    {
+        //
+        return false;
     }
 
     SAnimationChannelTarget::SAnimationChannelTarget()
@@ -77,9 +161,21 @@ namespace libgltf
         //
     }
 
+    SAnimationChannelTarget::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SMesh::SMesh()
     {
         //
+    }
+
+    SMesh::operator bool() const
+    {
+        //
+        return false;
     }
 
     SAccessorSparse::SAccessorSparse()
@@ -87,9 +183,21 @@ namespace libgltf
         //
     }
 
+    SAccessorSparse::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SMeshPrimitive::SMeshPrimitive()
     {
         //
+    }
+
+    SMeshPrimitive::operator bool() const
+    {
+        //
+        return false;
     }
 
     SExtension::SExtension()
@@ -97,9 +205,21 @@ namespace libgltf
         //
     }
 
+    SExtension::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SAnimationChannel::SAnimationChannel()
     {
         //
+    }
+
+    SAnimationChannel::operator bool() const
+    {
+        //
+        return false;
     }
 
 
@@ -109,9 +229,21 @@ namespace libgltf
         //
     }
 
+    SAccessorSparseIndices::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SNode::SNode()
     {
         //
+    }
+
+    SNode::operator bool() const
+    {
+        //
+        return false;
     }
 
     SAnimation::SAnimation()
@@ -119,9 +251,21 @@ namespace libgltf
         //
     }
 
+    SAnimation::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SSkin::SSkin()
     {
         //
+    }
+
+    SSkin::operator bool() const
+    {
+        //
+        return false;
     }
 
     SMaterialPBRMetallicRoughness::SMaterialPBRMetallicRoughness()
@@ -129,9 +273,21 @@ namespace libgltf
         //
     }
 
+    SMaterialPBRMetallicRoughness::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SCamera::SCamera()
     {
         //
+    }
+
+    SCamera::operator bool() const
+    {
+        //
+        return false;
     }
 
     SImage::SImage()
@@ -139,9 +295,21 @@ namespace libgltf
         //
     }
 
+    SImage::operator bool() const
+    {
+        //
+        return false;
+    }
+
     STexture::STexture()
     {
         //
+    }
+
+    STexture::operator bool() const
+    {
+        //
+        return false;
     }
 
     SCameraOrthographic::SCameraOrthographic()
@@ -149,9 +317,21 @@ namespace libgltf
         //
     }
 
+    SCameraOrthographic::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SBuffer::SBuffer()
     {
         //
+    }
+
+    SBuffer::operator bool() const
+    {
+        //
+        return false;
     }
 
     SAccessor::SAccessor()
@@ -159,9 +339,21 @@ namespace libgltf
         //
     }
 
+    SAccessor::operator bool() const
+    {
+        //
+        return false;
+    }
+
     SGlTF::SGlTF()
     {
         //
+    }
+
+    SGlTF::operator bool() const
+    {
+        //
+        return false;
     }
 
 }

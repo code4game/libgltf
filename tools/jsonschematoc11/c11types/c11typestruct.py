@@ -110,6 +110,9 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'{')
         codeLines.append(u'    %s();' % self.codeTypeName())
         codeLines.append(u'')
+        codeLines.append(u'    // Check valid')
+        codeLines.append(u'    operator bool() const;')
+        codeLines.append(u'')
         for variable in self.getVariables():
             if variable.hasComment():
                 codeLines.append(u'    // %s' % variable.codeComment())
@@ -132,5 +135,11 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'%s::%s()' % (self.codeTypeName(), self.codeTypeName()))
         codeLines.append(u'{')
         codeLines.append(u'    //')
+        codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'%s::operator bool() const' % self.codeTypeName())
+        codeLines.append(u'{')
+        codeLines.append(u'    //')
+        codeLines.append(u'    return false;')
         codeLines.append(u'}')
         return codeLines

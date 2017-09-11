@@ -18,7 +18,9 @@ set(HEADER_FILE_LIST
     )
 
 set(SOURCE_FILE_LIST
+    ${SOURCE_FILE_PATH}/libgltfpch.h
     ${SOURCE_FILE_PATH}/libgltf.cpp
+    ${SOURCE_FILE_PATH}/libgltfparser.h
     ${SOURCE_FILE_PATH}/libgltfparser.cpp
     )
 

@@ -31,8 +31,14 @@ int main(int _iArgc, char* _pcArgv[])
     }
 
     std::shared_ptr<libgltf::SGlTF> gltf_data;
-    libgltf::ParseByString(input_content.str(), gltf_data);
+    if (libgltf::ParseByString(input_content.str(), gltf_data))
+    {
+        wprintf(L"Success\n");
+    }
+    else
+    {
+        wprintf(L"Failed\n");
+    }
 
-    //
     return 0;
 }
