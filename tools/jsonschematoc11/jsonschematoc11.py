@@ -26,7 +26,7 @@ class C11TypeLibrary(object):
             schema = json.load(schemaFile)
             if schema == None:
                 return (1, u'Can\'t parse the schema file %s' % schemaFilePath)
-            (c11Type, errorCode, errorMessage) = BuildC11Type(schemaFileName, schema)
+            (c11Type, errorCode, errorMessage) = BuildC11Type(schemaFileName, schema, isSchema=True)
             if errorCode != 0:
                 return (errorCode, u'Has error when build - %s' % errorMessage)
             (errorCode, errorMessage) = self.addC11Type(schemaFileName, c11Type)

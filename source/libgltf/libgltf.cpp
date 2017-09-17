@@ -82,8 +82,8 @@ namespace libgltf
 
     SAnimationSampler::SAnimationSampler()
         : SGlTFProperty()
-        , input(0)
-        , output(0)
+        , input(nullptr)
+        , output(nullptr)
         , interpolation(L"LINEAR")
     {
         //
@@ -138,7 +138,7 @@ namespace libgltf
     SBufferView::SBufferView()
         : SGlTFChildofRootProperty()
         , byteLength(0)
-        , buffer(0)
+        , buffer(nullptr)
         , byteOffset(0)
         , target(0)
         , byteStride(0)
@@ -154,7 +154,7 @@ namespace libgltf
 
     STextureInfo::STextureInfo()
         : SGlTFProperty()
-        , index(0)
+        , index(nullptr)
         , texCoord(0)
     {
         //
@@ -194,7 +194,7 @@ namespace libgltf
 
     SAccessorSparseValues::SAccessorSparseValues()
         : SGlTFProperty()
-        , bufferView(0)
+        , bufferView(nullptr)
         , byteOffset(0)
     {
         //
@@ -208,7 +208,7 @@ namespace libgltf
 
     SAnimationChannelTarget::SAnimationChannelTarget()
         : SGlTFProperty()
-        , node(0)
+        , node(nullptr)
         , path(L"")
     {
         //
@@ -251,9 +251,9 @@ namespace libgltf
 
     SMeshPrimitive::SMeshPrimitive()
         : SGlTFProperty()
-        , indices(0)
+        , indices(nullptr)
         , attributes()
-        , material(0)
+        , material(nullptr)
         , mode(4)
         , targets()
     {
@@ -280,7 +280,7 @@ namespace libgltf
     SAnimationChannel::SAnimationChannel()
         : SGlTFProperty()
         , target(nullptr)
-        , sampler(0)
+        , sampler(nullptr)
     {
         //
     }
@@ -291,12 +291,27 @@ namespace libgltf
         return true;
     }
 
+    SGlTFId::SGlTFId()
+        : int32_tValue(0)
+    {
+        //
+    }
 
+    SGlTFId::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SGlTFId::operator int32_t() const
+    {
+        return int32_tValue;
+    }
 
     SAccessorSparseIndices::SAccessorSparseIndices()
         : SGlTFProperty()
         , componentType(0)
-        , bufferView(0)
+        , bufferView(nullptr)
         , byteOffset(0)
     {
         //
@@ -313,10 +328,10 @@ namespace libgltf
         , scale({ 1.000000f, 1.000000f, 1.000000f })
         , rotation({ 0.000000f, 0.000000f, 0.000000f, 1.000000f })
         , matrix({ 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f })
-        , mesh(0)
-        , camera(0)
+        , mesh(nullptr)
+        , camera(nullptr)
         , weights()
-        , skin(0)
+        , skin(nullptr)
         , translation({ 0.000000f, 0.000000f, 0.000000f })
         , children()
     {
@@ -346,8 +361,8 @@ namespace libgltf
     SSkin::SSkin()
         : SGlTFChildofRootProperty()
         , joints()
-        , inverseBindMatrices(0)
-        , skeleton(0)
+        , inverseBindMatrices(nullptr)
+        , skeleton(nullptr)
     {
         //
     }
@@ -393,7 +408,7 @@ namespace libgltf
     SImage::SImage()
         : SGlTFChildofRootProperty()
         , mimeType(L"")
-        , bufferView(0)
+        , bufferView(nullptr)
         , uri(L"")
     {
         //
@@ -407,8 +422,8 @@ namespace libgltf
 
     STexture::STexture()
         : SGlTFChildofRootProperty()
-        , source(0)
-        , sampler(0)
+        , source(nullptr)
+        , sampler(nullptr)
     {
         //
     }
@@ -454,7 +469,7 @@ namespace libgltf
         , count(0)
         , min()
         , max()
-        , bufferView(0)
+        , bufferView(nullptr)
         , componentType(0)
         , byteOffset(0)
         , sparse(nullptr)
@@ -478,7 +493,7 @@ namespace libgltf
         , extensionsUsed()
         , samplers()
         , scenes()
-        , scene(0)
+        , scene(nullptr)
         , extensionsRequired()
         , meshes()
         , animations()

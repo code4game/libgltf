@@ -13,18 +13,32 @@ class C11TypeStruct(C11Type):
         C11Type.__init__(self)
         self.parents = dict()
         self.variables = dict()
+        self.c11Type = None
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
-        if u'allOf' in schemaValue:
-            schemaValueAllOf = schemaValue[u'allOf']
-            for schemaValueAllOfItem in schemaValueAllOf:
-                if u'$ref' in schemaValueAllOfItem:
-                    self.parents[schemaValueAllOfItem[u'$ref']] = None
-        if u'properties' in schemaValue:
-            schemaValueProperties = schemaValue[u'properties']
-            for key in schemaValueProperties:
-                self.variables[key] = C11Variable(key, schemaValueProperties[key])
+        if u'type' in schemaValue:
+            schemaValueType = schemaValue[u'type']
+            if schemaValueType == u'bool' or schemaValueType == u'boolean':
+                self.c11Type = C11TypeBool()
+            elif schemaValueType == u'integer':
+                self.c11Type = C11TypeInteger()
+            elif schemaValueType == u'number':
+                self.c11Type = C11TypeNumber()
+            elif schemaValueType == u'string':
+                self.c11Type = C11TypeString()
+            elif schemaValueType == u'array':
+                self.c11Type = C11TypeArray()
+        if self.c11Type == None:
+            if u'allOf' in schemaValue:
+                schemaValueAllOf = schemaValue[u'allOf']
+                for schemaValueAllOfItem in schemaValueAllOf:
+                    if u'$ref' in schemaValueAllOfItem:
+                        self.parents[schemaValueAllOfItem[u'$ref']] = None
+            if u'properties' in schemaValue:
+                schemaValueProperties = schemaValue[u'properties']
+                for key in schemaValueProperties:
+                    self.variables[key] = C11Variable(key, schemaValueProperties[key])
 
     def haveParents(self):
         return len(self.parents) > 0
@@ -114,6 +128,11 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'')
         codeLines.append(u'    // Check valid')
         codeLines.append(u'    operator bool() const;')
+        if self.c11Type != None:
+            codeLines.append(u'')
+            codeLines.append(u'    operator %s() const;' % self.c11Type.codeTypeName())
+            codeLines.append(u'')
+            codeLines.append(u'    %s %sValue;' % (self.c11Type.codeTypeName(), self.c11Type.codeTypeName()))
         codeLines.append(u'')
         for variable in self.getVariables():
             if variable.hasComment():
@@ -143,6 +162,12 @@ class C11TypeStruct(C11Type):
                 beginConstructorDefault = False
             else:
                 codeLines.append(u'    , %s()' % parentTypeName)
+        if self.c11Type != None:
+            if beginConstructorDefault:
+                codeLines.append(u'    : %sValue(%s)' % (self.c11Type.codeTypeName(), self.c11Type.codeDefaultValue(None)))
+                beginConstructorDefault = False
+            else:
+                codeLines.append(u'    , %sValue(%s)' % (self.c11Type.codeTypeName(), self.c11Type.codeDefaultValue(None)))
         variables = self.getVariables()
         for variable in variables:
             if beginConstructorDefault:
@@ -159,6 +184,12 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'    //TODO:')
         codeLines.append(u'    return true;')
         codeLines.append(u'}')
+        if self.c11Type != None:
+            codeLines.append(u'')
+            codeLines.append(u'%s::operator %s() const' % (self.codeTypeName(), self.c11Type.codeTypeName()))
+            codeLines.append(u'{')
+            codeLines.append(u'    return %sValue;' % (self.c11Type.codeTypeName()))
+            codeLines.append(u'}')
         return codeLines
 
     def codeParserHeader(self):
@@ -173,11 +204,21 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'{')
         codeLines.append(u'    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(), self.codeTypeName()))
 
-        variables = self.getVariables()
-        for variable in variables:
-            codeParserLines = variable.codeParser()
-            for codeParserLine in codeParserLines:
-                codeLines.append(u'    %s' % codeParserLine)
+        parentTypes = self.getParentTypeNames(recursion=False)
+        for parentType in parentTypes:
+            codeLines.append(u'    {')
+            codeLines.append(u'        std::shared_ptr<%s> super_ptr = data_ptr;' % parentType)
+            codeLines.append(u'        if (!(super_ptr << _JsonValue)) return false;')
+            codeLines.append(u'    }')
+
+        if self.c11Type != None:
+            codeLines.append(u'    if (!(data_ptr->%sValue << _JsonValue)) return false;' % self.c11Type.codeTypeName())
+        else:
+            variables = self.getVariables()
+            for variable in variables:
+                codeParserLines = variable.codeParser()
+                for codeParserLine in codeParserLines:
+                    codeLines.append(u'    %s' % codeParserLine)
 
         codeLines.append(u'    _pData = data_ptr;')
         codeLines.append(u'    return true;')
@@ -193,7 +234,9 @@ class C11TypeStruct(C11Type):
         return u'nullptr'
 
     def codeJsonCheck(self):
-        return u'IsObject()'
+        if self.c11Type == None:
+            return u'IsObject()'
+        return self.c11Type.codeJsonCheck()
 
     def codeJsonSet(self, dataName, variableName):
         return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
