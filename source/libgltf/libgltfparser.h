@@ -64,6 +64,9 @@ namespace libgltf
     bool operator<<(std::shared_ptr<struct SAnimationChannel>& _pData, const WCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SAnimationChannel>>& _pDatas, const WCharValue& _JsonValue);
 
+    bool operator<<(std::shared_ptr<struct SGlTFId>& _pData, const WCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SGlTFId>>& _pDatas, const WCharValue& _JsonValue);
+
     bool operator<<(std::shared_ptr<struct SAccessorSparseIndices>& _pData, const WCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SAccessorSparseIndices>>& _pDatas, const WCharValue& _JsonValue);
 

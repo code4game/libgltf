@@ -7,11 +7,11 @@ from c11typearray import C11TypeArray
 from c11typemap import C11TypeMap
 from c11typestruct import C11TypeStruct
 
-def BuildC11Type(schemaName, schemaValue):
+def BuildC11Type(schemaName, schemaValue, isSchema=False):
     if u'title' not in schemaValue:
         return (None, 1, u'can\'t get the attribute `title` in %s' % schemaName)
     c11Type = None
-    if u'type' in schemaValue:
+    if not isSchema and u'type' in schemaValue:
         schemaValueType = schemaValue[u'type']
         if schemaValueType == u'bool' or schemaValueType == u'boolean':
             c11Type = C11TypeBool()

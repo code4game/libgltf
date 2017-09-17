@@ -32,7 +32,10 @@ class C11Type(object):
     def codeSource(self, codeTypeNames):
         return [u'']
 
-    def codeDefaultValue(self):
+    def codeDefaultValue(self, schemaDefaultValue):
+        return u''
+
+    def codeDefaultValueArray(self, schemaDefaultValue):
         return u''
 
     def codeJsonCheck(self):

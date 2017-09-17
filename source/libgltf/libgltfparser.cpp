@@ -35,7 +35,7 @@ namespace libgltf
         }
         if (_JsonValue.IsInt())
         {
-            _rData = static_cast<int32_t>(_JsonValue.GetInt());
+            _rData = static_cast<float>(_JsonValue.GetInt());
             return true;
         }
         return false;
@@ -101,6 +101,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMaterial>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterial> data_ptr = !!_pData ? _pData : std::make_shared<SMaterial>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"alphaCutoff") && _JsonValue[L"alphaCutoff"].IsFloat())
         {
             data_ptr->alphaCutoff = _JsonValue[L"alphaCutoff"].GetFloat();
@@ -145,6 +149,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAsset>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAsset> data_ptr = !!_pData ? _pData : std::make_shared<SAsset>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"minVersion") && _JsonValue[L"minVersion"].IsString())
         {
             data_ptr->minVersion = _JsonValue[L"minVersion"].GetString();
@@ -173,6 +181,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SSampler>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SSampler> data_ptr = !!_pData ? _pData : std::make_shared<SSampler>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"wrapS") && _JsonValue[L"wrapS"].IsInt())
         {
             data_ptr->wrapS = _JsonValue[L"wrapS"].GetInt();
@@ -201,6 +213,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SGlTFChildofRootProperty>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTFChildofRootProperty> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFChildofRootProperty>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"name") && _JsonValue[L"name"].IsString())
         {
             data_ptr->name = _JsonValue[L"name"].GetString();
@@ -217,13 +233,17 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAnimationSampler>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationSampler> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationSampler>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"input") && _JsonValue[L"input"].IsInt())
         {
-            data_ptr->input = _JsonValue[L"input"].GetInt();
+            if (!(data_ptr->input << _JsonValue[L"input"])) return false;
         }
         if (_JsonValue.HasMember(L"output") && _JsonValue[L"output"].IsInt())
         {
-            data_ptr->output = _JsonValue[L"output"].GetInt();
+            if (!(data_ptr->output << _JsonValue[L"output"])) return false;
         }
         if (_JsonValue.HasMember(L"interpolation") && _JsonValue[L"interpolation"].IsString())
         {
@@ -253,6 +273,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SScene>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SScene> data_ptr = !!_pData ? _pData : std::make_shared<SScene>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"nodes") && _JsonValue[L"nodes"].IsArray())
         {
             if (!(data_ptr->nodes << _JsonValue[L"nodes"])) return false;
@@ -269,6 +293,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SCameraPerspective>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SCameraPerspective> data_ptr = !!_pData ? _pData : std::make_shared<SCameraPerspective>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"aspectRatio") && _JsonValue[L"aspectRatio"].IsFloat())
         {
             data_ptr->aspectRatio = _JsonValue[L"aspectRatio"].GetFloat();
@@ -297,13 +325,17 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SBufferView>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SBufferView> data_ptr = !!_pData ? _pData : std::make_shared<SBufferView>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"byteLength") && _JsonValue[L"byteLength"].IsInt())
         {
             data_ptr->byteLength = _JsonValue[L"byteLength"].GetInt();
         }
         if (_JsonValue.HasMember(L"buffer") && _JsonValue[L"buffer"].IsInt())
         {
-            data_ptr->buffer = _JsonValue[L"buffer"].GetInt();
+            if (!(data_ptr->buffer << _JsonValue[L"buffer"])) return false;
         }
         if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
         {
@@ -329,6 +361,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMaterialNormalTextureInfo>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialNormalTextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialNormalTextureInfo>();
+        {
+            std::shared_ptr<STextureInfo> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"scale") && _JsonValue[L"scale"].IsFloat())
         {
             data_ptr->scale = _JsonValue[L"scale"].GetFloat();
@@ -345,6 +381,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMaterialOcclusionTextureInfo>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialOcclusionTextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialOcclusionTextureInfo>();
+        {
+            std::shared_ptr<STextureInfo> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"strength") && _JsonValue[L"strength"].IsFloat())
         {
             data_ptr->strength = _JsonValue[L"strength"].GetFloat();
@@ -361,9 +401,13 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAccessorSparseValues>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparseValues> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparseValues>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
         {
-            data_ptr->bufferView = _JsonValue[L"bufferView"].GetInt();
+            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
         }
         if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
         {
@@ -381,9 +425,13 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAnimationChannelTarget>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationChannelTarget> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationChannelTarget>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"node") && _JsonValue[L"node"].IsInt())
         {
-            data_ptr->node = _JsonValue[L"node"].GetInt();
+            if (!(data_ptr->node << _JsonValue[L"node"])) return false;
         }
         if (_JsonValue.HasMember(L"path") && _JsonValue[L"path"].IsString())
         {
@@ -401,6 +449,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMesh>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMesh> data_ptr = !!_pData ? _pData : std::make_shared<SMesh>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"primitives") && _JsonValue[L"primitives"].IsArray())
         {
             if (!(data_ptr->primitives << _JsonValue[L"primitives"])) return false;
@@ -421,6 +473,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAccessorSparse>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparse> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparse>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"count") && _JsonValue[L"count"].IsInt())
         {
             data_ptr->count = _JsonValue[L"count"].GetInt();
@@ -445,9 +501,13 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMeshPrimitive>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMeshPrimitive> data_ptr = !!_pData ? _pData : std::make_shared<SMeshPrimitive>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"indices") && _JsonValue[L"indices"].IsInt())
         {
-            data_ptr->indices = _JsonValue[L"indices"].GetInt();
+            if (!(data_ptr->indices << _JsonValue[L"indices"])) return false;
         }
         if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsObject())
         {
@@ -455,7 +515,7 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(L"material") && _JsonValue[L"material"].IsInt())
         {
-            data_ptr->material = _JsonValue[L"material"].GetInt();
+            if (!(data_ptr->material << _JsonValue[L"material"])) return false;
         }
         if (_JsonValue.HasMember(L"mode") && _JsonValue[L"mode"].IsInt())
         {
@@ -489,13 +549,17 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAnimationChannel>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationChannel> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationChannel>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"target") && _JsonValue[L"target"].IsObject())
         {
             if (!(data_ptr->target << _JsonValue[L"target"])) return false;
         }
         if (_JsonValue.HasMember(L"sampler") && _JsonValue[L"sampler"].IsInt())
         {
-            data_ptr->sampler = _JsonValue[L"sampler"].GetInt();
+            if (!(data_ptr->sampler << _JsonValue[L"sampler"])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -506,16 +570,33 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAnimationChannel>>(_pDatas, _JsonValue);
     }
 
+    bool operator<<(std::shared_ptr<SGlTFId>& _pData, const WCharValue& _JsonValue)
+    {
+        std::shared_ptr<SGlTFId> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFId>();
+        if (!(data_ptr->int32_tValue << _JsonValue)) return false;
+        _pData = data_ptr;
+        return true;
+    }
+
+    bool operator<<(std::vector<std::shared_ptr<SGlTFId>>& _pDatas, const WCharValue& _JsonValue)
+    {
+        return operator<< <std::shared_ptr<SGlTFId>>(_pDatas, _JsonValue);
+    }
+
     bool operator<<(std::shared_ptr<SAccessorSparseIndices>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparseIndices> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparseIndices>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"componentType") && _JsonValue[L"componentType"].IsInt())
         {
             data_ptr->componentType = _JsonValue[L"componentType"].GetInt();
         }
         if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
         {
-            data_ptr->bufferView = _JsonValue[L"bufferView"].GetInt();
+            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
         }
         if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
         {
@@ -533,6 +614,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SNode>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SNode> data_ptr = !!_pData ? _pData : std::make_shared<SNode>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"scale") && _JsonValue[L"scale"].IsArray())
         {
             if (!(data_ptr->scale << _JsonValue[L"scale"])) return false;
@@ -547,11 +632,11 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(L"mesh") && _JsonValue[L"mesh"].IsInt())
         {
-            data_ptr->mesh = _JsonValue[L"mesh"].GetInt();
+            if (!(data_ptr->mesh << _JsonValue[L"mesh"])) return false;
         }
         if (_JsonValue.HasMember(L"camera") && _JsonValue[L"camera"].IsInt())
         {
-            data_ptr->camera = _JsonValue[L"camera"].GetInt();
+            if (!(data_ptr->camera << _JsonValue[L"camera"])) return false;
         }
         if (_JsonValue.HasMember(L"weights") && _JsonValue[L"weights"].IsArray())
         {
@@ -559,7 +644,7 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(L"skin") && _JsonValue[L"skin"].IsInt())
         {
-            data_ptr->skin = _JsonValue[L"skin"].GetInt();
+            if (!(data_ptr->skin << _JsonValue[L"skin"])) return false;
         }
         if (_JsonValue.HasMember(L"translation") && _JsonValue[L"translation"].IsArray())
         {
@@ -581,6 +666,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAnimation>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimation> data_ptr = !!_pData ? _pData : std::make_shared<SAnimation>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"channels") && _JsonValue[L"channels"].IsArray())
         {
             if (!(data_ptr->channels << _JsonValue[L"channels"])) return false;
@@ -601,17 +690,21 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SSkin>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SSkin> data_ptr = !!_pData ? _pData : std::make_shared<SSkin>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"joints") && _JsonValue[L"joints"].IsArray())
         {
             if (!(data_ptr->joints << _JsonValue[L"joints"])) return false;
         }
         if (_JsonValue.HasMember(L"inverseBindMatrices") && _JsonValue[L"inverseBindMatrices"].IsInt())
         {
-            data_ptr->inverseBindMatrices = _JsonValue[L"inverseBindMatrices"].GetInt();
+            if (!(data_ptr->inverseBindMatrices << _JsonValue[L"inverseBindMatrices"])) return false;
         }
         if (_JsonValue.HasMember(L"skeleton") && _JsonValue[L"skeleton"].IsInt())
         {
-            data_ptr->skeleton = _JsonValue[L"skeleton"].GetInt();
+            if (!(data_ptr->skeleton << _JsonValue[L"skeleton"])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -625,6 +718,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SMaterialPBRMetallicRoughness>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialPBRMetallicRoughness> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialPBRMetallicRoughness>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"roughnessFactor") && _JsonValue[L"roughnessFactor"].IsFloat())
         {
             data_ptr->roughnessFactor = _JsonValue[L"roughnessFactor"].GetFloat();
@@ -657,6 +754,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SCamera>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SCamera> data_ptr = !!_pData ? _pData : std::make_shared<SCamera>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"type") && _JsonValue[L"type"].IsString())
         {
             data_ptr->type = _JsonValue[L"type"].GetString();
@@ -681,13 +782,17 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SImage>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SImage> data_ptr = !!_pData ? _pData : std::make_shared<SImage>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"mimeType") && _JsonValue[L"mimeType"].IsString())
         {
             data_ptr->mimeType = _JsonValue[L"mimeType"].GetString();
         }
         if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
         {
-            data_ptr->bufferView = _JsonValue[L"bufferView"].GetInt();
+            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
         }
         if (_JsonValue.HasMember(L"uri") && _JsonValue[L"uri"].IsString())
         {
@@ -705,13 +810,17 @@ namespace libgltf
     bool operator<<(std::shared_ptr<STexture>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<STexture> data_ptr = !!_pData ? _pData : std::make_shared<STexture>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"source") && _JsonValue[L"source"].IsInt())
         {
-            data_ptr->source = _JsonValue[L"source"].GetInt();
+            if (!(data_ptr->source << _JsonValue[L"source"])) return false;
         }
         if (_JsonValue.HasMember(L"sampler") && _JsonValue[L"sampler"].IsInt())
         {
-            data_ptr->sampler = _JsonValue[L"sampler"].GetInt();
+            if (!(data_ptr->sampler << _JsonValue[L"sampler"])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -725,6 +834,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SCameraOrthographic>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SCameraOrthographic> data_ptr = !!_pData ? _pData : std::make_shared<SCameraOrthographic>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"xmag") && _JsonValue[L"xmag"].IsFloat())
         {
             data_ptr->xmag = _JsonValue[L"xmag"].GetFloat();
@@ -753,6 +866,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SBuffer>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SBuffer> data_ptr = !!_pData ? _pData : std::make_shared<SBuffer>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"byteLength") && _JsonValue[L"byteLength"].IsInt())
         {
             data_ptr->byteLength = _JsonValue[L"byteLength"].GetInt();
@@ -773,6 +890,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SAccessor>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessor> data_ptr = !!_pData ? _pData : std::make_shared<SAccessor>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"count") && _JsonValue[L"count"].IsInt())
         {
             data_ptr->count = _JsonValue[L"count"].GetInt();
@@ -787,7 +908,7 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
         {
-            data_ptr->bufferView = _JsonValue[L"bufferView"].GetInt();
+            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
         }
         if (_JsonValue.HasMember(L"componentType") && _JsonValue[L"componentType"].IsInt())
         {
@@ -821,6 +942,10 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SGlTF>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTF> data_ptr = !!_pData ? _pData : std::make_shared<SGlTF>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"textures") && _JsonValue[L"textures"].IsArray())
         {
             if (!(data_ptr->textures << _JsonValue[L"textures"])) return false;
@@ -847,7 +972,7 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(L"scene") && _JsonValue[L"scene"].IsInt())
         {
-            data_ptr->scene = _JsonValue[L"scene"].GetInt();
+            if (!(data_ptr->scene << _JsonValue[L"scene"])) return false;
         }
         if (_JsonValue.HasMember(L"extensionsRequired") && _JsonValue[L"extensionsRequired"].IsArray())
         {
@@ -901,9 +1026,13 @@ namespace libgltf
     bool operator<<(std::shared_ptr<STextureInfo>& _pData, const WCharValue& _JsonValue)
     {
         std::shared_ptr<STextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<STextureInfo>();
+        {
+            std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
         if (_JsonValue.HasMember(L"index") && _JsonValue[L"index"].IsInt())
         {
-            data_ptr->index = _JsonValue[L"index"].GetInt();
+            if (!(data_ptr->index << _JsonValue[L"index"])) return false;
         }
         if (_JsonValue.HasMember(L"texCoord") && _JsonValue[L"texCoord"].IsInt())
         {
