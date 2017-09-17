@@ -75,7 +75,10 @@ class C11Variable(object):
         return u'%s %s' % (self.c11Type.codeTypeName(withDeclare=True, asVariable=True), self.name)
 
     def codeConstructorDefault(self):
-        return u'%s(%s)' % (self.name, self.c11Type.codeDefaultValue())
+        schemaDefaultValue = None
+        if u'default' in self.schemaValue:
+            schemaDefaultValue = self.schemaValue[u'default']
+        return u'%s(%s)' % (self.name, self.c11Type.codeDefaultValue(schemaDefaultValue))
 
     def codeParser(self):
         codeLines = []

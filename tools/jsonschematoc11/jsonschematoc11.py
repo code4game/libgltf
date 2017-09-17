@@ -226,7 +226,7 @@ class C11TypeLibrary(object):
             sourceFile.write(u'%s    }\n' % beginSpace)
             sourceFile.write(u'%s    if (_JsonValue.IsInt())\n' % beginSpace)
             sourceFile.write(u'%s    {\n' % beginSpace)
-            sourceFile.write(u'%s        _rData = static_cast<int32_t>(_JsonValue.GetInt());\n' % beginSpace)
+            sourceFile.write(u'%s        _rData = static_cast<float>(_JsonValue.GetInt());\n' % beginSpace)
             sourceFile.write(u'%s        return true;\n' % beginSpace)
             sourceFile.write(u'%s    }\n' % beginSpace)
             sourceFile.write(u'%s    return false;\n' % beginSpace)

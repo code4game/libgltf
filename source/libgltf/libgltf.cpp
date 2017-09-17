@@ -11,8 +11,8 @@ namespace libgltf
 
     SGlTFProperty::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SGlTFChildofRootProperty::SGlTFChildofRootProperty()
@@ -24,28 +24,28 @@ namespace libgltf
 
     SGlTFChildofRootProperty::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMaterial::SMaterial()
         : SGlTFChildofRootProperty()
-        , alphaCutoff(0.0f)
+        , alphaCutoff(0.500000f)
         , emissiveTexture(nullptr)
         , pbrMetallicRoughness(nullptr)
         , occlusionTexture(nullptr)
-        , alphaMode(L"")
+        , alphaMode(L"OPAQUE")
         , doubleSided(false)
         , normalTexture(nullptr)
-        , emissiveFactor()
+        , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
     {
         //
     }
 
     SMaterial::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAsset::SAsset()
@@ -60,39 +60,39 @@ namespace libgltf
 
     SAsset::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SSampler::SSampler()
         : SGlTFChildofRootProperty()
-        , wrapS(0)
+        , wrapS(10497)
         , minFilter(0)
         , magFilter(0)
-        , wrapT(0)
+        , wrapT(10497)
     {
         //
     }
 
     SSampler::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAnimationSampler::SAnimationSampler()
         : SGlTFProperty()
         , input(0)
         , output(0)
-        , interpolation(L"")
+        , interpolation(L"LINEAR")
     {
         //
     }
 
     SAnimationSampler::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SExtras::SExtras()
@@ -102,8 +102,8 @@ namespace libgltf
 
     SExtras::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SScene::SScene()
@@ -115,8 +115,8 @@ namespace libgltf
 
     SScene::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SCameraPerspective::SCameraPerspective()
@@ -131,8 +131,8 @@ namespace libgltf
 
     SCameraPerspective::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SBufferView::SBufferView()
@@ -148,8 +148,8 @@ namespace libgltf
 
     SBufferView::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     STextureInfo::STextureInfo()
@@ -162,34 +162,34 @@ namespace libgltf
 
     STextureInfo::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMaterialNormalTextureInfo::SMaterialNormalTextureInfo()
         : STextureInfo()
-        , scale(0.0f)
+        , scale(1.000000f)
     {
         //
     }
 
     SMaterialNormalTextureInfo::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMaterialOcclusionTextureInfo::SMaterialOcclusionTextureInfo()
         : STextureInfo()
-        , strength(0.0f)
+        , strength(1.000000f)
     {
         //
     }
 
     SMaterialOcclusionTextureInfo::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAccessorSparseValues::SAccessorSparseValues()
@@ -202,8 +202,8 @@ namespace libgltf
 
     SAccessorSparseValues::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAnimationChannelTarget::SAnimationChannelTarget()
@@ -216,8 +216,8 @@ namespace libgltf
 
     SAnimationChannelTarget::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMesh::SMesh()
@@ -230,8 +230,8 @@ namespace libgltf
 
     SMesh::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAccessorSparse::SAccessorSparse()
@@ -245,8 +245,8 @@ namespace libgltf
 
     SAccessorSparse::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMeshPrimitive::SMeshPrimitive()
@@ -254,7 +254,7 @@ namespace libgltf
         , indices(0)
         , attributes()
         , material(0)
-        , mode(0)
+        , mode(4)
         , targets()
     {
         //
@@ -262,8 +262,8 @@ namespace libgltf
 
     SMeshPrimitive::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SExtension::SExtension()
@@ -273,8 +273,8 @@ namespace libgltf
 
     SExtension::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAnimationChannel::SAnimationChannel()
@@ -287,8 +287,8 @@ namespace libgltf
 
     SAnimationChannel::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
 
@@ -304,20 +304,20 @@ namespace libgltf
 
     SAccessorSparseIndices::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SNode::SNode()
         : SGlTFChildofRootProperty()
-        , scale()
-        , rotation()
-        , matrix()
+        , scale({ 1.000000f, 1.000000f, 1.000000f })
+        , rotation({ 0.000000f, 0.000000f, 0.000000f, 1.000000f })
+        , matrix({ 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f, 0.000000f, 0.000000f, 0.000000f, 0.000000f, 1.000000f })
         , mesh(0)
         , camera(0)
         , weights()
         , skin(0)
-        , translation()
+        , translation({ 0.000000f, 0.000000f, 0.000000f })
         , children()
     {
         //
@@ -325,8 +325,8 @@ namespace libgltf
 
     SNode::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAnimation::SAnimation()
@@ -339,8 +339,8 @@ namespace libgltf
 
     SAnimation::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SSkin::SSkin()
@@ -354,16 +354,16 @@ namespace libgltf
 
     SSkin::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SMaterialPBRMetallicRoughness::SMaterialPBRMetallicRoughness()
         : SGlTFProperty()
-        , roughnessFactor(0.0f)
+        , roughnessFactor(1.000000f)
         , baseColorTexture(nullptr)
-        , metallicFactor(0.0f)
-        , baseColorFactor()
+        , metallicFactor(1.000000f)
+        , baseColorFactor({ 1.000000f, 1.000000f, 1.000000f, 1.000000f })
         , metallicRoughnessTexture(nullptr)
     {
         //
@@ -371,8 +371,8 @@ namespace libgltf
 
     SMaterialPBRMetallicRoughness::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SCamera::SCamera()
@@ -386,8 +386,8 @@ namespace libgltf
 
     SCamera::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SImage::SImage()
@@ -401,8 +401,8 @@ namespace libgltf
 
     SImage::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     STexture::STexture()
@@ -415,8 +415,8 @@ namespace libgltf
 
     STexture::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SCameraOrthographic::SCameraOrthographic()
@@ -431,8 +431,8 @@ namespace libgltf
 
     SCameraOrthographic::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SBuffer::SBuffer()
@@ -445,8 +445,8 @@ namespace libgltf
 
     SBuffer::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SAccessor::SAccessor()
@@ -466,8 +466,8 @@ namespace libgltf
 
     SAccessor::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
     SGlTF::SGlTF()
@@ -495,8 +495,8 @@ namespace libgltf
 
     SGlTF::operator bool() const
     {
-        //
-        return false;
+        //TODO:
+        return true;
     }
 
 }

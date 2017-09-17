@@ -156,8 +156,8 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'')
         codeLines.append(u'%s::operator bool() const' % self.codeTypeName())
         codeLines.append(u'{')
-        codeLines.append(u'    //')
-        codeLines.append(u'    return false;')
+        codeLines.append(u'    //TODO:')
+        codeLines.append(u'    return true;')
         codeLines.append(u'}')
         return codeLines
 
@@ -189,7 +189,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         return codeLines
 
-    def codeDefaultValue(self):
+    def codeDefaultValue(self, schemaDefaultValue):
         return u'nullptr'
 
     def codeJsonCheck(self):

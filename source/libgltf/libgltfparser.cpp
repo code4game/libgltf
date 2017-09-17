@@ -35,7 +35,7 @@ namespace libgltf
         }
         if (_JsonValue.IsInt())
         {
-            _rData = static_cast<int32_t>(_JsonValue.GetInt());
+            _rData = static_cast<float>(_JsonValue.GetInt());
             return true;
         }
         return false;

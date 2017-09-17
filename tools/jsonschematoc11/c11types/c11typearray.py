@@ -70,6 +70,11 @@ class C11TypeArray(C11Type):
     def codeTypeName(self, withDeclare=False, asVariable=False):
         return u'%s<%s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
 
+    def codeDefaultValue(self, schemaDefaultValue):
+        if schemaDefaultValue == None:
+            return u''
+        return self.c11Type.codeDefaultValueArray(schemaDefaultValue)
+
     def codeJsonCheck(self):
         return u'IsArray()'
 
