@@ -26,7 +26,7 @@ class C11TypeLibrary(object):
             schema = json.load(schemaFile)
             if schema == None:
                 return (1, u'Can\'t parse the schema file %s' % schemaFilePath)
-            (c11Type, errorCode, errorMessage) = BuildC11Type(schemaFileName, schema)
+            (c11Type, errorCode, errorMessage) = BuildC11Type(schemaFileName, schema, isSchema=True)
             if errorCode != 0:
                 return (errorCode, u'Has error when build - %s' % errorMessage)
             (errorCode, errorMessage) = self.addC11Type(schemaFileName, c11Type)
@@ -226,7 +226,7 @@ class C11TypeLibrary(object):
             sourceFile.write(u'%s    }\n' % beginSpace)
             sourceFile.write(u'%s    if (_JsonValue.IsInt())\n' % beginSpace)
             sourceFile.write(u'%s    {\n' % beginSpace)
-            sourceFile.write(u'%s        _rData = static_cast<int32_t>(_JsonValue.GetInt());\n' % beginSpace)
+            sourceFile.write(u'%s        _rData = static_cast<float>(_JsonValue.GetInt());\n' % beginSpace)
             sourceFile.write(u'%s        return true;\n' % beginSpace)
             sourceFile.write(u'%s    }\n' % beginSpace)
             sourceFile.write(u'%s    return false;\n' % beginSpace)
