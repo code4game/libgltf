@@ -36,9 +36,16 @@ add_executable(runtest
     ${SOURCE_FILE_LIST}
     )
 
+if(${PLATFORM_WINDOWS})
 set(DEPENDANCY_LIST
     libgltf
     )
+else()
+set(DEPENDANCY_LIST
+    gltf
+    )
+endif()
+
 add_dependencies(runtest ${DEPENDANCY_LIST})
 
 set_target_properties(runtest PROPERTIES FOLDER main)
