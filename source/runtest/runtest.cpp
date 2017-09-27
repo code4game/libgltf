@@ -1,8 +1,8 @@
 #include "runtest.h"
 
-int32_t main(int32_t _iArgc, uint8_t* _pcArgv[])
+int main(int _iArgc, char** _pcArg)
 {
-    libgltf::SGLTF gltf_data;
+    std::shared_ptr<libgltf::SGLTF> gltf_data;
     libgltf::ParseByString(L"", gltf_data);
     //
     return 0;
