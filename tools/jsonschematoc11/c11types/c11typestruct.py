@@ -1,6 +1,6 @@
 '''struct type'''
 
-from jsonschematoc11.c11types.c11type import C11Type
+from c11type import C11Type
 from c11typebool import C11TypeBool
 from c11typeinteger import C11TypeInteger
 from c11typenumber import C11TypeNumber
