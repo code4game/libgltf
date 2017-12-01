@@ -1,14 +1,16 @@
-from c11type import C11Type
-from c11typenone import C11TypeNone
+'''struct type'''
+
+from jsonschematoc11.c11types.c11type import C11Type
 from c11typebool import C11TypeBool
 from c11typeinteger import C11TypeInteger
 from c11typenumber import C11TypeNumber
 from c11typestring import C11TypeString
 from c11typearray import C11TypeArray
-from c11typemap import C11TypeMap
 from c11variable import C11Variable
 
 class C11TypeStruct(C11Type):
+    '''struct type'''
+
     def __init__(self):
         C11Type.__init__(self)
         self.parents = dict()
