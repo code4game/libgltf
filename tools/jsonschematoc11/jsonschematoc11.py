@@ -26,27 +26,28 @@ class C11TypeLibrary(object):
             schema = json.load(schemaFile)
             if schema == None:
                 return (1, u'Can\'t parse the schema file %s' % schemaFilePath)
-            (c11Type, errorCode, errorMessage) = BuildC11Type(schemaFileName, schema, isSchema=True)
-            if errorCode != 0:
-                return (errorCode, u'Has error when build - %s' % errorMessage)
-            (errorCode, errorMessage) = self.addC11Type(schemaFileName, c11Type)
-            if errorCode != 0:
-                return (errorCode, u'Has error when add - %s' % errorMessage)
+            (c11Type, error_code, error_message) = BuildC11Type(schemaFileName, schema, isSchema=True)
+            if error_code != 0:
+                return (error_code, u'Has error when build - %s' % error_message)
+            (error_code, error_message) = self.addC11Type(schemaFileName, c11Type)
+            if error_code != 0:
+                return (error_code, u'Has error when add - %s' % error_message)
         return (0, u'')
 
     def addSchemaDirectory(self, schemaDirectory):
         if not os.path.isdir(schemaDirectory):
             return (1, u'The schema directory (%s) is not a valid directory' % schemaDirectory)
-        
-        for rootPath, directionNames, fileNames in os.walk(schemaDirectory, topdown=False):
-            for fileName in fileNames:
-                if not fileName.endswith(u'schema.json'):
+
+        for root_path, _, file_names in os.walk(schemaDirectory, topdown=False):
+            for file_name in file_names:
+                if not file_name.endswith(u'schema.json'):
                     continue
-                (errorCode, errorMessage) = self.addSchema(rootPath, fileName)
-                if errorCode != 0:
-                    return (errorCode, errorMessage)
+                (error_code, error_message) = self.addSchema(root_path, file_name)
+                if error_code != 0:
+                    return (error_code, error_message)
         return (0, u'')
 
+    @classmethod
     def codeHeaderParser(self):
         codeLines = []
         codeLines.append(u'struct SGlTF;')
@@ -55,9 +56,9 @@ class C11TypeLibrary(object):
 
     def preprocess(self):
         for key in self.c11Types:
-            (errorCode, errorMessage) = self.c11Types[key].revise(self.c11Types)
-            if errorCode != 0:
-                return (errorCode, errorMessage)
+            (error_code, error_message) = self.c11Types[key].revise(self.c11Types)
+            if error_code != 0:
+                return (error_code, error_message)
         return (0, u'')
 
     def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, namespace=None):
@@ -310,21 +311,21 @@ def JSONSchemaToC11(argv):
         args.output_source_path = u'./'
 
     c11TypeLibrary = C11TypeLibrary()
-    (errorCode, errorMessage) = c11TypeLibrary.addSchemaDirectory(args.schemaDirectory)
-    if errorCode != 0:
-        return (errorCode, errorMessage)
-    (errorCode, errorMessage) = c11TypeLibrary.preprocess()
-    if errorCode != 0:
-        return (errorCode, errorMessage)
-    (errorCode, errorMessage) = c11TypeLibrary.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, namespace=args.namespace)
-    if errorCode != 0:
-        return (errorCode, errorMessage)
+    (error_code, error_message) = c11TypeLibrary.addSchemaDirectory(args.schemaDirectory)
+    if error_code != 0:
+        return (error_code, error_message)
+    (error_code, error_message) = c11TypeLibrary.preprocess()
+    if error_code != 0:
+        return (error_code, error_message)
+    (error_code, error_message) = c11TypeLibrary.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, namespace=args.namespace)
+    if error_code != 0:
+        return (error_code, error_message)
     return (0, u'')
 
 if __name__ == u'__main__':
-    (errorCode, errorMessage) = JSONSchemaToC11(sys.argv[1:])
-    if errorCode != 0:
-        logger.error(errorMessage)
+    (error_code, error_message) = JSONSchemaToC11(sys.argv[1:])
+    if error_code != 0:
+        logger.error(error_message)
     else:
         logger.info(u'Success')
-    exit(errorCode)
+    exit(error_code)

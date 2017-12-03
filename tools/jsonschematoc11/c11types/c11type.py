@@ -29,17 +29,20 @@ class C11Type(object):
     def codeHeader(self, codeTypeNames):
         return [u'']
 
-    def codeSource(self, codeTypeNames):
+    @classmethod
+    def codeSource(cls, codeTypeNames):
         return [u'']
 
     def codeDefaultValue(self, schemaDefaultValue):
         return u''
 
-    def codeDefaultValueArray(self, schemaDefaultValue):
+    @classmethod
+    def codeDefaultValueArray(cls, schemaDefaultValue):
         return u''
 
     def codeJsonCheck(self):
         return None
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return None
