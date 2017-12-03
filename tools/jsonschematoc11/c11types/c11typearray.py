@@ -36,10 +36,12 @@ class C11TypeArray(C11Type):
         self.typeName = u'std::vector'
         self.schemaValue = schemaValue
         if u'items' in schemaValue:
-            (c11Type, errorCode, errorMessage) = self.buildC11Type(schemaValue[u'items'])
+            (c11_type, error_code, error_message) = self.buildC11Type(schemaValue[u'items'])
         elif u'$ref' in schemaValue:
-            (c11Type, errorCode, errorMessage) = self.buildC11Type(schemaValue[u'$ref'])
-        self.c11Type = c11Type
+            (c11_type, error_code, error_message) = self.buildC11Type(schemaValue[u'$ref'])
+        if error_code != 0:
+            print error_message
+        self.c11Type = c11_type
 
     def revise(self, c11Types):
         from c11typestruct import C11TypeStruct
