@@ -5,7 +5,12 @@ sudo: required
 matrix:
   include:
     - os: linux
+      env:
+        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: osx
+      osx_image: xcode8.3
+      env:
+        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 script:
   - set -e
