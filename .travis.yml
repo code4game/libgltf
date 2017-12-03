@@ -19,17 +19,17 @@ branches:
     - master
 
 install:
-  - sudo pip install cpp-coveralls
+  - if [ $RUN_COVERALLS = true ]; then sudo pip install cpp-coveralls; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then unset -f cd; fi
 
 script:
   - set -e
   - mkdir ./build && cd ./build
-  - if [ "$RUN_COVERALLS"x = "false"x ]; then cmake ./../; fi
-  - if [ "$RUN_COVERALLS"x = "true"x ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; fi
+  - if [ $RUN_COVERALLS = false ]; then cmake ./../; fi
+  - if [ $RUN_COVERALLS = true ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; fi
   - make
   - cd ./../
 
 after_success:
-  - if [ "$RUN_COVERALLS"x = "true"x ]; then ./output/bin/linux/runtest; fi
-  - if [ "$RUN_COVERALLS"x = "true"x ]; then coveralls --exclude build/ --gcov-options '\-lp'; fi
+  - if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest; fi
+  - if [ $RUN_COVERALLS = true ]; then coveralls --gcov-options '\-lp'; fi
