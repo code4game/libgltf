@@ -47,4 +47,11 @@ before_build:
   - cd ..
 
 build_script:
-  - msbuild build/libgltf.sln
+  - if "%TARGET_VSENV%" equ "VS14_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
+  - if "%TARGET_VSENV%" equ "VS14_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+  - if "%TARGET_VSENV%" equ "VS14_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+  - if "%TARGET_VSENV%" equ "VS14_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+  - if "%TARGET_VSENV%" equ "VS15_WIN32" msbuild build/libgltf.sln /p:Platform="x86"
+  - if "%TARGET_VSENV%" equ "VS15_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+  - if "%TARGET_VSENV%" equ "VS15_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+  - if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
