@@ -30,6 +30,7 @@ branches:
     - master
 
 install:
+  - git submodule update --init
   - mkdir build
   - cd build
   - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=DEBUG;RELEASE -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
