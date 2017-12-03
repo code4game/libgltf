@@ -6,7 +6,8 @@ class C11TypeArray(C11Type):
         self.typeName = u'std::vector'
         self.c11Type = None
 
-    def buildC11Type(self, schemaValue):
+    @classmethod
+    def buildC11Type(cls, schemaValue):
         c11Type = None
         schemaValueType = None
         if u'type' in schemaValue:
