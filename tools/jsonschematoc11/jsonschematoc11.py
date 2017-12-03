@@ -249,7 +249,7 @@ class C11TypeLibrary(object):
             sourceFile.write(u'%s    std::vector<TData> datas;\n' % beginSpace)
             sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
             sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
-            sourceFile.write(u'%s    if (len <= 0) return true;\n' % beginSpace)
+            sourceFile.write(u'%s    if (len == 0) return true;\n' % beginSpace)
             sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
             sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;\n' % beginSpace)
             sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)

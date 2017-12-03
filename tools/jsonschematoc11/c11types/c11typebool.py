@@ -8,13 +8,17 @@ class C11TypeBool(C11Type):
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
 
-    def codeDefaultValue(self, schemaDefaultValue):
-        if schemaDefaultValue != None and schemaDefaultValue == True:
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
+        if schemaDefaultValue is not None and schemaDefaultValue is True:
             return u'true'
         return u'false'
 
-    def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+    @classmethod
+    def codeDefaultValueArray(cls, schemaDefaultValue):
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''
         for i in range(0, len(schemaDefaultValue)):
@@ -25,8 +29,10 @@ class C11TypeBool(C11Type):
         codeDefauleValue = codeDefauleValue[0:len(codeDefauleValue) - 2]
         return u'{ %s }' % codeDefauleValue
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return u'IsBool()'
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[L"%s"].GetBool();' % (dataName, variableName, variableName)

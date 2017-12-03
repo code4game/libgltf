@@ -12,13 +12,17 @@ class C11TypeString(C11Type):
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
 
-    def codeDefaultValue(self, schemaDefaultValue):
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
         if schemaDefaultValue != None:
             return u'L"%s"' % schemaDefaultValue
         return u'L""'
 
+    @classmethod
     def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue is None or isinstance(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         code_default_value = u''
         for i in range(0, len(schemaDefaultValue)):
@@ -30,5 +34,6 @@ class C11TypeString(C11Type):
     def codeJsonCheck(cls):
         return u'IsString()'
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[L"%s"].GetString();' % (dataName, variableName, variableName)

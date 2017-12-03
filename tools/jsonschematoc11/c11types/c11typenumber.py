@@ -9,13 +9,17 @@ class C11TypeNumber(C11Type):
         C11Type.setSchema(self, schemaName, schemaValue)
         self.typeName = u'float'
 
-    def codeDefaultValue(self, schemaDefaultValue):
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
         if schemaDefaultValue != None:
             return u'%ff' % schemaDefaultValue
         return u'0.0f'
 
-    def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+    @classmethod
+    def codeDefaultValueArray(cls, schemaDefaultValue):
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''
         for i in range(0, len(schemaDefaultValue)):
@@ -23,8 +27,10 @@ class C11TypeNumber(C11Type):
         codeDefauleValue = codeDefauleValue[0:len(codeDefauleValue) - 2]
         return u'{ %s }' % codeDefauleValue
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return u'IsFloat()'
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[L"%s"].GetFloat();' % (dataName, variableName, variableName)

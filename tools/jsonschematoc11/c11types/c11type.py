@@ -1,4 +1,8 @@
+'''basic type'''
+
 class C11Type(object):
+    '''basic type'''
+
     def __init__(self):
         self.schemaName = None
         self.schemaValue = None
@@ -14,7 +18,8 @@ class C11Type(object):
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']
 
-    def revise(self, c11Types):
+    @classmethod
+    def revise(cls, c11Types):
         return (0, u'')
 
     def codeTypeName(self, withDeclare=False, asVariable=False):
@@ -26,21 +31,24 @@ class C11Type(object):
     def codeSetDefaultInConstructor(self):
         pass
 
-    def codeHeader(self, codeTypeNames):
+    @classmethod
+    def codeHeader(cls, codeTypeNames):
         return [u'']
 
     @classmethod
     def codeSource(cls, codeTypeNames):
         return [u'']
 
-    def codeDefaultValue(self, schemaDefaultValue):
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
         return u''
 
     @classmethod
     def codeDefaultValueArray(cls, schemaDefaultValue):
         return u''
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return None
 
     @classmethod

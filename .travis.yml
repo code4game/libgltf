@@ -1,0 +1,20 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+    - os: osx
+
+install:
+  - if [ $TRAVIS_OS_NAME == osx ]; then unset -f cd; fi
+
+script:
+  - set -e
+  - mkdir ./build && cd ./build
+  - cmake ./../
+  - make
+  - cd ./../
+
+branches:
+  only:
+    - master
