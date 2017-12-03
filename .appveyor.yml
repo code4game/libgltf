@@ -14,7 +14,7 @@ platform:
   - x86
   - x64
   - ARM
-  - Any CPU
+#  - Any CPU
 
 branches:
   only:
@@ -45,3 +45,6 @@ before_build:
   - if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
   - if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
   - cd ..
+
+build_script:
+  - msbuild build/libgltf.sln
