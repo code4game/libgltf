@@ -35,7 +35,6 @@ before_build:
   - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN32))
   - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN64))
   - if %TARGET_VSENV%==VS14_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-  - if %TARGET_VSENV%==VS14_WIN64 call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
   - if %TARGET_VSENV%==VS14_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
   - if %TARGET_VSENV%==VS15_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
   - if %TARGET_VSENV%==VS15_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -43,4 +42,4 @@ before_build:
 build_script:
   - mkdir build
   - cd build
-  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=$(configuration) -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
+  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=DEBUG;RELEASE -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
