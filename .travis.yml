@@ -23,7 +23,7 @@ script:
   - set -e
   - mkdir ./build && cd ./build
   - if [ "$RUN_COVERALLS"x = "false"x ]; then cmake ./../; fi
-  - if [ "$RUN_COVERALLS"x = "true"x ]; then cmake -D LIBGLTF_COVERAGE_GCOV=True ./../; fi
+  - if [ "$RUN_COVERALLS"x = "true"x ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; fi
   - make
   - cd ./../
 
