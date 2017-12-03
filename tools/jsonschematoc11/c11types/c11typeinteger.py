@@ -14,8 +14,9 @@ class C11TypeInteger(C11Type):
             return u'%d' % schemaDefaultValue
         return u'0'
 
-    def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+    @classmethod
+    def codeDefaultValueArray(cls, schemaDefaultValue):
+        if schemaDefaultValue is None or isinstance(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''
         for i in range(0, len(schemaDefaultValue)):
@@ -23,8 +24,10 @@ class C11TypeInteger(C11Type):
         codeDefauleValue = codeDefauleValue[0:len(codeDefauleValue) - 2]
         return u'{ %s }' % codeDefauleValue
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return u'IsInt()'
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[L"%s"].GetInt();' % (dataName, variableName, variableName)

@@ -10,7 +10,8 @@ class C11TypeMap(C11Type):
         self.typeName = u'std::map'
         self.c11Type = None
 
-    def buildC11Type(self, schemaValue):
+    @classmethod
+    def buildC11Type(cls, schemaValue):
         c11Type = None
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
@@ -38,9 +39,9 @@ class C11TypeMap(C11Type):
         self.typeName = u'std::map'
         self.schemaValue = schemaValue
         if u'items' in schemaValue:
-            (c11Type, errorCode, errorMessage) = self.buildC11Type(schemaValue[u'items'])
+            (c11Type, _, _) = self.buildC11Type(schemaValue[u'items'])
         elif u'$ref' in schemaValue:
-            (c11Type, errorCode, errorMessage) = self.buildC11Type(schemaValue[u'$ref'])
+            (c11Type, _, _) = self.buildC11Type(schemaValue[u'$ref'])
         self.c11Type = c11Type
 
     def revise(self, c11Types):
@@ -70,8 +71,10 @@ class C11TypeMap(C11Type):
     def codeTypeName(self, withDeclare=False, asVariable=False):
         return u'%s<std::wstring, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return u'IsObject()'
 
-    def codeJsonSet(self, dataName, variableName):
+    @classmethod
+    def codeJsonSet(cls, dataName, variableName):
         return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)

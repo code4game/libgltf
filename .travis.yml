@@ -27,10 +27,8 @@ install:
   - echo $LC_ALL
 
 script:
-  - echo "TRAVIS_TAG - $TRAVIS_TAG"
   - set -e
-  - mkdir ./build
-  - cd ./build
+  - mkdir ./build; cd ./build
   - cmake ./../
   - make
   - cd ./../
