@@ -3,7 +3,16 @@ language: cpp
 matrix:
   include:
     - os: linux
+      env:
+        - RUN_COVERALLS=false
+    - os: linux
+      env:
+        - RUN_COVERALLS=true
     - os: osx
+
+branches:
+  only:
+    - master
 
 install:
   - if [ $TRAVIS_OS_NAME == osx ]; then unset -f cd; fi
@@ -11,10 +20,11 @@ install:
 script:
   - set -e
   - mkdir ./build && cd ./build
-  - cmake ./../
+  - if [ "$RUN_COVERALLS"x = "false"x ]; then cmake ./../; fi
+  - if [ "$RUN_COVERALLS"x = "true"x ]; then cmake -D LIBGLTF_COVERAGE_GCOV=True ./../; fi
   - make
   - cd ./../
 
-branches:
-  only:
-    - master
+after_success:
+  - if [ "$RUN_COVERALLS"x = "true"x ]; then ./output/bin/runtest; fi
+  - if [ "$RUN_COVERALLS"x = "true"x ]; then coveralls --exclude build/ --gcov-options '\-lp'; fi
