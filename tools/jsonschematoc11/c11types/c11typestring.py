@@ -1,6 +1,10 @@
+'''string'''
+
 from c11type import C11Type
 
 class C11TypeString(C11Type):
+    '''strig type'''
+
     def __init__(self):
         C11Type.__init__(self)
         self.typeName = u'std::wstring'
@@ -14,15 +18,16 @@ class C11TypeString(C11Type):
         return u'L""'
 
     def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+        if schemaDefaultValue is None or isinstance(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
             return u''
-        codeDefauleValue = u''
+        code_default_value = u''
         for i in range(0, len(schemaDefaultValue)):
-            codeDefauleValue = codeDefauleValue + u'L"%s", ' % schemaDefaultValue[i]
-        codeDefauleValue = codeDefauleValue[0:len(codeDefauleValue) - 2]
-        return u'{ %s }' % codeDefauleValue
+            code_default_value = code_default_value + u'L"%s", ' % schemaDefaultValue[i]
+        code_default_value = code_default_value[0:len(code_default_value) - 2]
+        return u'{ %s }' % code_default_value
 
-    def codeJsonCheck(self):
+    @classmethod
+    def codeJsonCheck(cls):
         return u'IsString()'
 
     def codeJsonSet(self, dataName, variableName):
