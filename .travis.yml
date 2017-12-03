@@ -9,6 +9,8 @@ matrix:
       env:
         - RUN_COVERALLS=true
     - os: osx
+      env:
+        - RUN_COVERALLS=false
 
 branches:
   only:
