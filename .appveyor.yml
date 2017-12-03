@@ -12,10 +12,10 @@ environment:
       VISUAL_STUDIO_VERSION: 14
       TARGET_PLATFORM: Win64
       CMAKE_GENERATOR: Visual Studio 14 2015 Win64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      VISUAL_STUDIO_VERSION: 15
-      TARGET_PLATFORM: Win32
-      CMAKE_GENERATOR: Visual Studio 15 2017
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#      VISUAL_STUDIO_VERSION: 15
+#      TARGET_PLATFORM: Win32
+#      CMAKE_GENERATOR: Visual Studio 15 2017
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VISUAL_STUDIO_VERSION: 15
       TARGET_PLATFORM: Win64
@@ -33,7 +33,7 @@ install:
   - git submodule update --init
   - mkdir build
   - cd build
-  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=$(configuration) -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
+  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
   - cd ..
 
 before_build:
