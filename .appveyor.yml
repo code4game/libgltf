@@ -11,7 +11,7 @@ configuration:
   - Release
 
 platform:
-  - x86
+  - Any CPU
   - x64
 
 branches:
