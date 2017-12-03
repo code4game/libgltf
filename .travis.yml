@@ -8,9 +8,6 @@ matrix:
     - os: osx
       osx_image: xcode9
 
-install:
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install cmake && brew install cppcheck; fi
-
 script:
   - set -e
   - mkdir ./build && cd ./build

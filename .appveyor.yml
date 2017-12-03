@@ -6,15 +6,19 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VISUAL_STUDIO_VERSION: 14
+      TARGET_PLATFORM: Win32
       CMAKE_GENERATOR: Visual Studio 14 2015
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VISUAL_STUDIO_VERSION: 14
+      TARGET_PLATFORM: Win64
       CMAKE_GENERATOR: Visual Studio 14 2015 Win64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VISUAL_STUDIO_VERSION: 15
+      TARGET_PLATFORM: Win32
       CMAKE_GENERATOR: Visual Studio 15 2017
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VISUAL_STUDIO_VERSION: 15
+      TARGET_PLATFORM: Win64
       CMAKE_GENERATOR: Visual Studio 15 2017 Win64
 
 configuration:
@@ -26,8 +30,15 @@ branches:
     - master
 
 before_build:
-  - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - call "C:\Program Files (x86)\Microsoft Visual Studio %VISUAL_STUDIO_VERSION%.0\VC\vcvarsall.bat" x86_amd64
+  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN32))
+  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN64))
+  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN32))
+  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN64))
+  - if %TARGET_VSENV%==VS14_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+  - if %TARGET_VSENV%==VS14_WIN64 call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+  - if %TARGET_VSENV%==VS14_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+  - if %TARGET_VSENV%==VS15_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - if %TARGET_VSENV%==VS15_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 build_script:
   - mkdir build
