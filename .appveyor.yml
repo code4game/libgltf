@@ -32,6 +32,8 @@ init:
 
 install:
   - git submodule update --init
+
+before_build:
   - mkdir build
   - cd build
   - if "%TARGET_VSENV%" equ "VS14_WIN32" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
