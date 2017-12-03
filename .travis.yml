@@ -1,7 +1,5 @@
 language: cpp
 
-sudo: required
-
 matrix:
   include:
     - os: linux
@@ -19,7 +17,7 @@ branches:
     - master
 
 install:
-  - if [ $RUN_COVERALLS = true ]; then sudo pip install cpp-coveralls; fi
+  - if [ $RUN_COVERALLS = true ]; then pip install --user cpp-coveralls; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then unset -f cd; fi
 
 script:
