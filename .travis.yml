@@ -26,5 +26,5 @@ script:
   - cd ./../
 
 after_success:
-  - if [ "$RUN_COVERALLS"x = "true"x ]; then ./output/bin/runtest; fi
+  - if [ "$RUN_COVERALLS"x = "true"x ]; then ./output/bin/linux/runtest; fi
   - if [ "$RUN_COVERALLS"x = "true"x ]; then coveralls --exclude build/ --gcov-options '\-lp'; fi
