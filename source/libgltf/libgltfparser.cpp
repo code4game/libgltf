@@ -55,7 +55,7 @@ namespace libgltf
         std::vector<TData> datas;
         const WCharConstArray& json_array = _JsonValue.GetArray();
         size_t len = json_array.Size();
-        if (len <= 0) return true;
+        if (len == 0) return true;
         datas.resize(len);
         for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;
         _pDatas = datas;

@@ -6,11 +6,6 @@ matrix:
   include:
     - os: linux
     - os: osx
-      osx_image: xcode8.3
-
-install:
-  - echo $LANG
-  - echo $LC_ALL
 
 script:
   - set -e
