@@ -6,12 +6,16 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CMAKE_GENERATOR: Visual Studio 14 2015
+      CMAKE_COMPILER: MSVC_14
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CMAKE_GENERATOR: Visual Studio 14 2015 Win64
+      CMAKE_COMPILER: MSVC_14
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       CMAKE_GENERATOR: Visual Studio 15 2017
+      CMAKE_COMPILER: MSVC_15
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       CMAKE_GENERATOR: Visual Studio 15 2017 Win64
+      CMAKE_COMPILER: MSVC_15
 
 configuration:
   - Debug
@@ -28,4 +32,4 @@ before_build:
 build_script:
   - mkdir build
   - cd build
-  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=$(configuration) -D CMAKE_CXX_COMPILER_ID=MSVC ../
+  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_BUILD_TYPE=$(configuration) -D CMAKE_CXX_COMPILER_ID=%CMAKE_COMPILER% ../

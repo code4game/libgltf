@@ -12,6 +12,9 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
+install:
+  - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install cmake && brew install cppcheck; fi
+
 script:
   - set -e
   - mkdir ./build && cd ./build
