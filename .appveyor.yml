@@ -20,9 +20,9 @@ branches:
 
 init:
   - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN32))
-  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ ""Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
-  - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ ""Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
-  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ ""Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
+  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
+  - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
+  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
 
 install:
   - git submodule update --init
