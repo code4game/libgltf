@@ -4,6 +4,10 @@ matrix:
   include:
     - os: linux
     - os: osx
+      osx_image: xcode8.3
+
+install:
+  - if [ $TRAVIS_OS_NAME == osx ]; thenunset -f cd; fi
 
 script:
   - set -e
