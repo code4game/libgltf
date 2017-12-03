@@ -1,12 +1,9 @@
 language: cpp
 
-sudo: required
-
 matrix:
   include:
     - os: linux
     - os: osx
-      osx_image: xcode8
 
 script:
   - set -e
