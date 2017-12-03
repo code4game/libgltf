@@ -18,7 +18,8 @@ class C11Type(object):
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']
 
-    def revise(self, c11Types):
+    @classmethod
+    def revise(cls, c11Types):
         return (0, u'')
 
     def codeTypeName(self, withDeclare=False, asVariable=False):

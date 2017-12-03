@@ -9,7 +9,8 @@ class C11TypeInteger(C11Type):
         C11Type.setSchema(self, schemaName, schemaValue)
         self.typeName = u'int32_t'
 
-    def codeDefaultValue(self, schemaDefaultValue):
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
         if schemaDefaultValue != None:
             return u'%d' % schemaDefaultValue
         return u'0'

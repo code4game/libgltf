@@ -15,8 +15,11 @@ class C11TypeNumber(C11Type):
             return u'%ff' % schemaDefaultValue
         return u'0.0f'
 
-    def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+    @classmethod
+    def codeDefaultValueArray(cls, schemaDefaultValue):
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''
         for i in range(0, len(schemaDefaultValue)):

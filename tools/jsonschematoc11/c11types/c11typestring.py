@@ -18,8 +18,11 @@ class C11TypeString(C11Type):
             return u'L"%s"' % schemaDefaultValue
         return u'L""'
 
+    @classmethod
     def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue is None or isinstance(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         code_default_value = u''
         for i in range(0, len(schemaDefaultValue)):

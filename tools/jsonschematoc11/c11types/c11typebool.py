@@ -8,14 +8,17 @@ class C11TypeBool(C11Type):
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
 
-    def codeDefaultValue(self, schemaDefaultValue):
-        if schemaDefaultValue != None and schemaDefaultValue == True:
+    @classmethod
+    def codeDefaultValue(cls, schemaDefaultValue):
+        if schemaDefaultValue is not None and schemaDefaultValue is True:
             return u'true'
         return u'false'
 
     @classmethod
     def codeDefaultValueArray(cls, schemaDefaultValue):
-        if schemaDefaultValue == None or type(schemaDefaultValue) != list or len(schemaDefaultValue) <= 0:
+        if schemaDefaultValue is None\
+            or isinstance(schemaDefaultValue) is not list\
+            or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''
         for i in range(0, len(schemaDefaultValue)):
