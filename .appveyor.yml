@@ -19,10 +19,10 @@ branches:
     - master
 
 init:
-  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN32))
-  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN64))
-  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN32))
-  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN64))
+  - if $(platform)==x86 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN32))
+  - if $(platform)==x64 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN64))
+  - if $(platform)==x86 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN32))
+  - if $(platform)==x64 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN64))
 
 install:
   - git submodule update --init
