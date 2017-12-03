@@ -11,8 +11,10 @@ configuration:
   - Release
 
 platform:
-  - Any CPU
+  - x86
   - x64
+  - ARM
+  - Any CPU
 
 branches:
   only:
@@ -21,8 +23,12 @@ branches:
 init:
   - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN32))
   - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
+  - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ARM))
+  - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ANYCPU))
   - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
   - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
+  - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ARM))
+  - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ANYCPU))
 
 install:
   - git submodule update --init
@@ -30,6 +36,10 @@ install:
   - cd build
   - if "%TARGET_VSENV%" equ "VS14_WIN32" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
   - if "%TARGET_VSENV%" equ "VS14_WIN64" cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+  - if "%TARGET_VSENV%" equ "VS14_ARM" cmake -G "Visual Studio 14 2015 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../ ../
+  - if "%TARGET_VSENV%" equ "VS14_ANYCPU" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
   - if "%TARGET_VSENV%" equ "VS15_WIN32" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
   - if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+  - if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+  - if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
   - cd ..
