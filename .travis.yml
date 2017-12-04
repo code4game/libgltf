@@ -6,10 +6,9 @@ matrix:
   - os: linux
     env:
       - RUN_COVERALLS=true
-      - ALLOW_FAILURES=true
   - os: osx
   allow_failures:
-    - env: ALLOW_FAILURES=true
+    - env: RUN_COVERALLS=true
 
 branches:
   only:
