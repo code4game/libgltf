@@ -67,7 +67,7 @@ artifacts:
   path: libgltf.*.zip
 
 deploy:
-  release: libgltf.$(appveyor_build_version).$(platform)
+  release: $(appveyor_repo_tag_name)
   description: 'Release'
   provider: GitHub
   auth_token:
