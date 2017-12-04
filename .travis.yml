@@ -29,4 +29,4 @@ after_success:
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BarramundiFish.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --exclude ./build/ --exclude ./output/ --gcov-options '\-lp'; fi
+- if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --exclude ./build/ --gcov-options '\-lp'; fi
