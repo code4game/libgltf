@@ -29,5 +29,7 @@ script:
   - cd ./../
 
 after_success:
-  - if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest; fi
+  - if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/BarramundiFish.gltf; fi
+  - if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.gltf; fi
+  - if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
   - if [ $RUN_COVERALLS = true ]; then coveralls --gcov-options '\-lp'; fi

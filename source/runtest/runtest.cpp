@@ -15,14 +15,14 @@ int main(int _iArgc, char* _pcArgv[])
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    if (_iArgc <= 1) return 0;
+    if (_iArgc <= 1) return 1;
 
     std::wstringstream input_content;
     {
         std::wifstream input_file(_pcArgv[1], std::ios::in | std::ios::binary);
         if (!input_file.is_open())
         {
-            return 0;
+            return 1;
         }
 
         input_content << input_file.rdbuf();
@@ -38,6 +38,7 @@ int main(int _iArgc, char* _pcArgv[])
     else
     {
         wprintf(L"Failed\n");
+        return 1;
     }
 
     return 0;
