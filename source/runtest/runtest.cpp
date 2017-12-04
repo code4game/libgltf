@@ -17,12 +17,12 @@ int main(int _iArgc, char* _pcArgv[])
 
     int error_code = 1;
 
-    std::wstring input_file_path;
+    std::string input_file_path;
     for (int i = 1; i < _iArgc; ++i)
     {
-        std::wstringstream argument;
+        std::stringstream argument;
         argument << _pcArgv[i];
-        if (argument.str() == L"--coveralls")
+        if (argument.str() == "--coveralls")
         {
             error_code = 0;
         }
@@ -34,16 +34,16 @@ int main(int _iArgc, char* _pcArgv[])
 
     if (input_file_path.length() <= 0)
     {
-        wprintf(L"Command line format: runtest [--test] input_file_path\n");
+        printf("Command line format: runtest [--test] input_file_path\n");
         return error_code;
     }
 
     std::wstringstream input_content;
     {
-        std::wifstream input_file(input_file_path, std::ios::in | std::ios::binary);
+        std::wifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
         if (!input_file.is_open())
         {
-            wprintf(L"Can't open the file %s\n", input_file_path.c_str());
+            printf("Can't open the file %s\n", input_file_path.c_str());
             return error_code;
         }
 
@@ -55,11 +55,11 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::SGlTF> gltf_data;
     if (gltf_data << input_content.str())
     {
-        wprintf(L"Success\n");
+        printf("Success\n");
     }
     else
     {
-        wprintf(L"Failed\n");
+        printf("Failed\n");
         return error_code;
     }
 
