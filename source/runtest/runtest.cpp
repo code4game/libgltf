@@ -15,22 +15,36 @@ int main(int _iArgc, char* _pcArgv[])
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    if (_iArgc <= 1)
+    int error_code = 1;
+
+    std::wstring input_file_path;
+    for (int i = 1; i < _iArgc; ++i)
     {
-        wprintf(L"Command line format: runtest [input file path]\n");
-        return 1;
+        std::wstringstream argument;
+        argument << _pcArgv[i];
+        if (argument.str() == L"--coveralls")
+        {
+            error_code = 0;
+        }
+        else
+        {
+            input_file_path = argument.str();
+        }
     }
 
-    std::wstringstream input_file_path;
-    input_file_path << _pcArgv[1];
+    if (input_file_path.length() <= 0)
+    {
+        wprintf(L"Command line format: runtest [--test] input_file_path\n");
+        return error_code;
+    }
 
     std::wstringstream input_content;
     {
-        std::wifstream input_file(_pcArgv[1], std::ios::in | std::ios::binary);
+        std::wifstream input_file(input_file_path, std::ios::in | std::ios::binary);
         if (!input_file.is_open())
         {
-            wprintf(L"Can't open the file %s\n", input_file_path.str().c_str());
-            return 1;
+            wprintf(L"Can't open the file %s\n", input_file_path.c_str());
+            return error_code;
         }
 
         input_content << input_file.rdbuf();
@@ -46,7 +60,7 @@ int main(int _iArgc, char* _pcArgv[])
     else
     {
         wprintf(L"Failed\n");
-        return 1;
+        return error_code;
     }
 
     return 0;

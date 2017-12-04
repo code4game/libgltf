@@ -1,7 +1,5 @@
 language: cpp
 
-env: # important!
-
 matrix:
   include:
   - os: linux
@@ -9,8 +7,6 @@ matrix:
     env:
       - RUN_COVERALLS=true
   - os: osx
-  allow_failures:
-  - env: RUN_COVERALLS=true
 
 branches:
   only:
@@ -28,9 +24,9 @@ script:
 - cd ./../
 
 after_success:
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./nothing.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/BarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./nothing.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BarramundiFish.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --gcov-options '\-lp'; fi
