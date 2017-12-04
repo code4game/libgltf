@@ -8,7 +8,7 @@ matrix:
       - RUN_COVERALLS=true
   - os: osx
   allow_failures:
-    - env: RUN_COVERALLS=true
+  - env: RUN_COVERALLS=true
 
 branches:
   only:
