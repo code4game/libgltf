@@ -52,6 +52,6 @@ deploy:
   file: "libgltf.$TRAVIS_TAG.$TRAVIS_OS_NAME.tar.gz"
   skip_cleanup: true
   on:
-    condition: $DEPLOY_RELEASE=true
+    condition: $DEPLOY_RELEASE = true
     tags: true
     all_branches: false
