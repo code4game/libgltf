@@ -16,21 +16,20 @@ branches:
     - master
 
 install:
-- if [ $RUN_COVERALLS = true ]; then pip install --user cpp-coveralls; fi
-- if [ $TRAVIS_OS_NAME = osx ]; then unset -f cd; fi
+- if [ $RUN_COVERALLS == true ]; then pip install --user cpp-coveralls; fi
+- if [ $TRAVIS_OS_NAME == osx ]; then unset -f cd; fi
 
 script:
 - set -e
 - mkdir ./build && cd ./build
-- if [ $RUN_COVERALLS != true ]; then cmake ./../; fi
-- if [ $RUN_COVERALLS = true ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; fi
+- if [ $RUN_COVERALLS == true ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; else cmake ./../; fi
 - make
 - cd ./../
 
 after_success:
-- if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest; fi
-- if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./nothing.gltf; fi
-- if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/BarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.gltf; fi
-- if [ $RUN_COVERALLS = true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
-- if [ $RUN_COVERALLS = true ]; then coveralls --exclude ./external/ --gcov-options '\-lp'; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./nothing.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/BarramundiFish.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --gcov-options '\-lp'; fi
