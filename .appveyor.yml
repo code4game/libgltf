@@ -63,17 +63,17 @@ after_build:
 
 artifacts:
 - name: libgltf.$(platform)
-  path: /libgltf.*.zip/
+  path: libgltf.*.zip
 
-#deploy:
-#  release: libgltf.$(appveyor_build_version).$(platform)
-#  description: 'Release'
-#  provider: GitHub
-#  auth_token:
-#    secure: $(github_oauth_token_encrypted)
-#  artifact: libgltf.$(appveyor_repo_tag_name).$(platform).zip
-#  draft: false
-#  prerelease: false
-#  on:
-#    branch: master
-#    appveyor_repo_tag: true
+deploy:
+  release: libgltf.$(appveyor_build_version).$(platform)
+  description: 'Release'
+  provider: GitHub
+  auth_token:
+    secure: $(github_oauth_token_encrypted)
+  artifact: libgltf.$(appveyor_repo_tag_name).$(platform).zip
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
