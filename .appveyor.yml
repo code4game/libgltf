@@ -1,6 +1,6 @@
 version: 1.0.{build}
 build:
-  verbosity: normal
+  verbosity: minimal
 
 image:
   - Visual Studio 2015
@@ -55,3 +55,7 @@ build_script:
   - if "%TARGET_VSENV%" equ "VS15_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
   - if "%TARGET_VSENV%" equ "VS15_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
   - if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+
+artifacts:
+  - name: $(appveyor_project_name)-v$(appveyor_build_version).$(platform)
+    path: output\**\*
