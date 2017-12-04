@@ -1,5 +1,7 @@
 language: cpp
 
+env: # important!
+
 matrix:
   include:
   - os: linux
