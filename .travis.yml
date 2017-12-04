@@ -15,6 +15,7 @@ matrix:
 branches:
   only:
   - master
+  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 install:
 - if [ $RUN_COVERALLS == true ]; then pip install --user cpp-coveralls; fi
