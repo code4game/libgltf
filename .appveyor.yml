@@ -59,7 +59,7 @@ build_script:
 - if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
 
 after_build:
-- 7z a libgltf.$(appveyor_repo_tag_name).$(platform).zip %APPVEYOR_BUILD_FOLDER%\output\
+- 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
 
 artifacts:
 - name: libgltf.$(appveyor_repo_tag_name).$(platform)
