@@ -62,7 +62,7 @@ after_build:
 - 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
 
 artifacts:
-- name: libgltf.$(appveyor_repo_tag_name).$(platform)
+- name: libgltf.$(platform)
   path: /libgltf.*.zip/
 
 #deploy:
