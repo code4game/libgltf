@@ -1,62 +1,79 @@
-version: 1.0.{build}
+version: 0.0.{build}
 
 build:
   verbosity: minimal
 
 image:
-  - Visual Studio 2015
-  - Visual Studio 2017
+- Visual Studio 2015
+#- Visual Studio 2017
 
 configuration:
-#  - Debug
-  - Release
+#- Debug
+- Release
 
 platform:
-  - x86
-  - x64
-  - ARM
-#  - Any CPU
+- x86
+- x64
+- ARM
+#- Any CPU
 
 branches:
   only:
-    - master
+  - master
+  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 init:
-  - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN32))
-  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
-  - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ARM))
-  - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ANYCPU))
-  - if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
-  - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
-  - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ARM))
-  - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ANYCPU))
+- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN32))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
+- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ARM))
+- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ANYCPU))
+- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
+- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ARM))
+- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ANYCPU))
 
 install:
-  - git submodule update --init
+- git submodule update --init
 
 before_build:
-  - mkdir build
-  - cd build
-  - if "%TARGET_VSENV%" equ "VS14_WIN32" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
-  - if "%TARGET_VSENV%" equ "VS14_WIN64" cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
-  - if "%TARGET_VSENV%" equ "VS14_ARM" cmake -G "Visual Studio 14 2015 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../ ../
-  - if "%TARGET_VSENV%" equ "VS14_ANYCPU" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
-  - if "%TARGET_VSENV%" equ "VS15_WIN32" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
-  - if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
-  - if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
-  - if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
-  - cd ..
+- mkdir build
+- cd build
+- if "%TARGET_VSENV%" equ "VS14_WIN32" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS14_WIN64" cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS14_ARM" cmake -G "Visual Studio 14 2015 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../ ../
+- if "%TARGET_VSENV%" equ "VS14_ANYCPU" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS15_WIN32" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- cd ..
 
 build_script:
-  - if "%TARGET_VSENV%" equ "VS14_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
-  - if "%TARGET_VSENV%" equ "VS14_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
-  - if "%TARGET_VSENV%" equ "VS14_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
-  - if "%TARGET_VSENV%" equ "VS14_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
-  - if "%TARGET_VSENV%" equ "VS15_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
-  - if "%TARGET_VSENV%" equ "VS15_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
-  - if "%TARGET_VSENV%" equ "VS15_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
-  - if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+- if "%TARGET_VSENV%" equ "VS14_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
+- if "%TARGET_VSENV%" equ "VS14_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+- if "%TARGET_VSENV%" equ "VS14_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+- if "%TARGET_VSENV%" equ "VS14_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+- if "%TARGET_VSENV%" equ "VS15_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
+- if "%TARGET_VSENV%" equ "VS15_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+- if "%TARGET_VSENV%" equ "VS15_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+- if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+
+after_build:
+- 7z a libgltf.$(appveyor_repo_tag_name).$(platform).zip %APPVEYOR_BUILD_FOLDER%\output\
 
 artifacts:
-  - name: $(appveyor_project_name)-v$(appveyor_build_version).$(platform)
-    path: output\**\*
+- name: libgltf.$(appveyor_repo_tag_name).$(platform)
+  path: libgltf.$(appveyor_repo_tag_name).$(platform).zip
+
+#deploy:
+#  release: libgltf.$(appveyor_build_version).$(platform)
+#  description: 'Release'
+#  provider: GitHub
+#  auth_token:
+#    secure: $(github_oauth_token_encrypted)
+#  artifact: libgltf.$(appveyor_repo_tag_name).$(platform).zip
+#  draft: false
+#  prerelease: false
+#  on:
+#    branch: master
+#    appveyor_repo_tag: true
