@@ -27,6 +27,10 @@ after_success:
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./nothing.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BoxAnimated.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/Cameras.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/RiggedSimple.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/TextureCoordinateTest.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/TriangleWithoutIndices.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --exclude ./build/CMakeFiles/ --gcov-options '\-lp'; fi
