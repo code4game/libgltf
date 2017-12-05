@@ -21,15 +21,15 @@ class C11TypeLibrary(object):
         return (0, u'')
 
     def addSchema(self, rootPath, schemaFileName):
-        schemaFilePath = os.path.join(rootPath, schemaFileName)
-        with open(schemaFilePath, u'r') as schemaFile:
-            schema = json.load(schemaFile)
-            if schema == None:
-                return (1, u'Can\'t parse the schema file %s' % schemaFilePath)
-            (c11Type, error_code, error_message) = BuildC11Type(schemaFileName, schema, isSchema=True)
+        schema_file_path = os.path.join(rootPath, schemaFileName)
+        with open(schema_file_path, u'r') as schema_file:
+            schema = json.load(schema_file)
+            if schema is None:
+                return (1, u'Can\'t parse the schema file %s' % schema_file_path)
+            (c11_type, error_code, error_message) = BuildC11Type(schemaFileName, schema, isSchema=True)
             if error_code != 0:
                 return (error_code, u'Has error when build - %s' % error_message)
-            (error_code, error_message) = self.addC11Type(schemaFileName, c11Type)
+            (error_code, error_message) = self.addC11Type(schemaFileName, c11_type)
             if error_code != 0:
                 return (error_code, u'Has error when add - %s' % error_message)
         return (0, u'')
@@ -49,10 +49,10 @@ class C11TypeLibrary(object):
 
     @classmethod
     def codeHeaderParser(self):
-        codeLines = []
-        codeLines.append(u'struct SGlTF;')
-        codeLines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);')
-        return codeLines
+        code_lines = []
+        code_lines.append(u'struct SGlTF;')
+        code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);')
+        return code_lines
 
     def preprocess(self):
         for key in self.c11Types:
@@ -61,234 +61,234 @@ class C11TypeLibrary(object):
                 return (error_code, error_message)
         return (0, u'')
 
-    def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, namespace=None):
-        headerFilePath = u'%s.h' % codeFileName
-        sourceFilePath = u'%s.cpp' % codeFileName
-        if outputHeaderPath != None:
-            headerFilePath = os.path.join(outputHeaderPath, headerFilePath)
-        if outputSourcePath != None:
-            sourceFilePath = os.path.join(outputSourcePath, sourceFilePath)
+    def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, nameSpace=None):
+        header_file_path = u'%s.h' % codeFileName
+        source_file_path = u'%s.cpp' % codeFileName
+        if outputHeaderPath is not None:
+            header_file_path = os.path.join(outputHeaderPath, header_file_path)
+        if outputSourcePath is not None:
+            source_file_path = os.path.join(outputSourcePath, source_file_path)
 
-        with open(headerFilePath, u'w') as headerFile:
-            headerFile.write(u'#pragma once\n')
-            headerFile.write(u'\n')
-            headerFile.write(u'#include <stdint.h>\n')
-            headerFile.write(u'#include <vector>\n')
-            headerFile.write(u'#include <map>\n')
-            headerFile.write(u'#include <string>\n')
-            headerFile.write(u'#include <memory>\n')
-            headerFile.write(u'\n')
+        with open(header_file_path, u'w') as header_file:
+            header_file.write(u'#pragma once\n')
+            header_file.write(u'\n')
+            header_file.write(u'#include <stdint.h>\n')
+            header_file.write(u'#include <vector>\n')
+            header_file.write(u'#include <map>\n')
+            header_file.write(u'#include <string>\n')
+            header_file.write(u'#include <memory>\n')
+            header_file.write(u'\n')
 
-            beginSpace = u''
-            if namespace != None:
-                headerFile.write(u'namespace %s\n' % namespace)
-                headerFile.write(u'{\n')
-                beginSpace = u'    '
+            begin_space = u''
+            if nameSpace is not None:
+                header_file.write(u'namespace %s\n' % nameSpace)
+                header_file.write(u'{\n')
+                begin_space = u'    '
 
-            codeHeaderParserLines = self.codeHeaderParser()
-            for codeHeaderParserLine in codeHeaderParserLines:
-                codeHeaderParserLine = u'%s%s\n' % (beginSpace, codeHeaderParserLine)
-                headerFile.write(codeHeaderParserLine)
-            if len(codeHeaderParserLines) > 0:
-                headerFile.write(u'\n')
+            code_header_parser_lines = self.codeHeaderParser()
+            for code_header_parser_line in code_header_parser_lines:
+                code_header_parser_line = u'%s%s\n' % (begin_space, code_header_parser_line)
+                header_file.write(code_header_parser_line)
+            if code_header_parser_lines:
+                header_file.write(u'\n')
 
-            parentTypeNames = []
+            parent_type_names = []
             for key in self.c11Types:
-                c11Type = self.c11Types[key]
-                if c11Type.codeTypeName() in parentTypeNames:
+                c11_type = self.c11Types[key]
+                if c11_type.codeTypeName() in parent_type_names:
                     continue
 
-                c11TypeCodeLines = c11Type.codeHeader(parentTypeNames)
-                for c11TypeCodeLine in c11TypeCodeLines:
-                    if len(c11TypeCodeLine) > 0:
-                        c11TypeCodeLine = u'%s%s' % (beginSpace, c11TypeCodeLine)
-                    headerFile.write(u'%s\n' % c11TypeCodeLine)
-                headerFile.write(u'\n')
+                c11_type_code_lines = c11_type.codeHeader(parent_type_names)
+                for c11_type_code_line in c11_type_code_lines:
+                    if c11_type_code_line:
+                        c11_type_code_line = u'%s%s' % (begin_space, c11_type_code_line)
+                    header_file.write(u'%s\n' % c11_type_code_line)
+                header_file.write(u'\n')
 
-                parentTypeNames.append(c11Type.codeTypeName())
-                if isinstance(c11Type, C11TypeStruct):
-                    for c11TypeParentTypeName in c11Type.getParentTypeNames():
-                        parentTypeNames.append(c11TypeParentTypeName)
+                parent_type_names.append(c11_type.codeTypeName())
+                if isinstance(c11_type, C11TypeStruct):
+                    for c11_type_parent_type_name in c11_type.getparent_type_names():
+                        parent_type_names.append(c11_type_parent_type_name)
 
-            if namespace != None:
-                headerFile.write(u'}\n')
+            if nameSpace != None:
+                header_file.write(u'}\n')
 
-        with open(sourceFilePath, u'w') as sourceFile:
-            sourceFile.write(u'#include "%s.h"\n' % codeFileName)
-            sourceFile.write(u'\n')
+        with open(source_file_path, u'w') as source_file:
+            source_file.write(u'#include "%s.h"\n' % codeFileName)
+            source_file.write(u'\n')
 
-            beginSpace = u''
-            if namespace != None:
-                sourceFile.write(u'namespace %s\n' % namespace)
-                sourceFile.write(u'{\n')
-                beginSpace = u'    '
+            begin_space = u''
+            if nameSpace != None:
+                source_file.write(u'namespace %s\n' % nameSpace)
+                source_file.write(u'{\n')
+                begin_space = u'    '
 
-            parentTypeNames = []
+            parent_type_names = []
             for key in self.c11Types:
-                c11Type = self.c11Types[key]
-                if c11Type.codeTypeName() in parentTypeNames:
+                c11_type = self.c11Types[key]
+                if c11_type.codeTypeName() in parent_type_names:
                     continue
 
-                c11TypeCodeLines = c11Type.codeSource(parentTypeNames)
-                for c11TypeCodeLine in c11TypeCodeLines:
-                    if len(c11TypeCodeLine) > 0:
-                        c11TypeCodeLine = u'%s%s' % (beginSpace, c11TypeCodeLine)
-                    sourceFile.write(u'%s\n' % c11TypeCodeLine)
-                sourceFile.write(u'\n')
+                c11_type_code_lines = c11_type.codeSource(parent_type_names)
+                for c11_type_code_line in c11_type_code_lines:
+                    if c11_type_code_line:
+                        c11_type_code_line = u'%s%s' % (begin_space, c11_type_code_line)
+                    source_file.write(u'%s\n' % c11_type_code_line)
+                source_file.write(u'\n')
 
-                parentTypeNames.append(c11Type.codeTypeName())
-                if isinstance(c11Type, C11TypeStruct):
-                    for c11TypeParentTypeName in c11Type.getParentTypeNames():
-                        parentTypeNames.append(c11TypeParentTypeName)
+                parent_type_names.append(c11_type.codeTypeName())
+                if isinstance(c11_type, C11TypeStruct):
+                    for c11_type_parent_type_name in c11_type.getparent_type_names():
+                        parent_type_names.append(c11_type_parent_type_name)
 
-            if namespace != None:
-                sourceFile.write(u'}\n')
+            if nameSpace != None:
+                source_file.write(u'}\n')
 
         # generate parser
-        headerFilePath = u'%sparser.h' % codeFileName
-        sourceFilePath = u'%sparser.cpp' % codeFileName
+        header_file_path = u'%sparser.h' % codeFileName
+        source_file_path = u'%sparser.cpp' % codeFileName
         if outputSourcePath != None:
-            headerFilePath = os.path.join(outputSourcePath, headerFilePath)
-            sourceFilePath = os.path.join(outputSourcePath, sourceFilePath)
-        with open(headerFilePath, u'w') as headerFile:
-            headerFile.write(u'#pragma once\n')
-            headerFile.write(u'\n')
-            headerFile.write(u'#include "%spch.h"\n' % codeFileName)
-            headerFile.write(u'\n')
-            headerFile.write(u'#include <memory>\n')
-            headerFile.write(u'#include <vector>\n')
-            headerFile.write(u'\n')
+            header_file_path = os.path.join(outputSourcePath, header_file_path)
+            source_file_path = os.path.join(outputSourcePath, source_file_path)
+        with open(header_file_path, u'w') as header_file:
+            header_file.write(u'#pragma once\n')
+            header_file.write(u'\n')
+            header_file.write(u'#include "%spch.h"\n' % codeFileName)
+            header_file.write(u'\n')
+            header_file.write(u'#include <memory>\n')
+            header_file.write(u'#include <vector>\n')
+            header_file.write(u'\n')
 
-            beginSpace = u''
-            if namespace != None:
-                headerFile.write(u'namespace %s\n' % namespace)
-                headerFile.write(u'{\n')
-                beginSpace = u'    '
-
-            for key in self.c11Types:
-                c11Type = self.c11Types[key]
-                if not isinstance(c11Type, C11TypeStruct):
-                    continue
-
-                codeLines = c11Type.codeParserHeader()
-                for codeLine in codeLines:
-                    if len(codeLine) <= 0:
-                        headerFile.write(u'\n')
-                    else:
-                        headerFile.write(u'%s%s\n' % (beginSpace, codeLine))
-                headerFile.write(u'\n')
-
-            if namespace != None:
-                headerFile.write(u'}\n')
-
-        with open(sourceFilePath, u'w') as sourceFile:
-            sourceFile.write(u'#include "%spch.h"\n' % codeFileName)
-            sourceFile.write(u'#include "%sparser.h"\n' % codeFileName)
-            sourceFile.write(u'#include "%s.h"\n' % codeFileName)
-            sourceFile.write(u'\n')
-
-            beginSpace = u''
-            if namespace != None:
-                sourceFile.write(u'namespace %s\n' % namespace)
-                sourceFile.write(u'{\n')
-                beginSpace = u'    '
-
-            sourceFile.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    WCharDocument json_doc;\n' % beginSpace)
-            sourceFile.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % beginSpace)
-            sourceFile.write(u'%s    if (!json_doc.IsObject()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%sbool operator<<(bool& _rData, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (!_JsonValue.IsBool()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    _rData = _JsonValue.GetBool();\n' % beginSpace)
-            sourceFile.write(u'%s    return true;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%sbool operator<<(int32_t& _rData, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (!_JsonValue.IsInt()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    _rData = _JsonValue.GetInt();\n' % beginSpace)
-            sourceFile.write(u'%s    return true;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%sbool operator<<(float& _rData, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (_JsonValue.IsFloat())\n' % beginSpace)
-            sourceFile.write(u'%s    {\n' % beginSpace)
-            sourceFile.write(u'%s        _rData = _JsonValue.GetFloat();\n' % beginSpace)
-            sourceFile.write(u'%s        return true;\n' % beginSpace)
-            sourceFile.write(u'%s    }\n' % beginSpace)
-            sourceFile.write(u'%s    if (_JsonValue.IsInt())\n' % beginSpace)
-            sourceFile.write(u'%s    {\n' % beginSpace)
-            sourceFile.write(u'%s        _rData = static_cast<float>(_JsonValue.GetInt());\n' % beginSpace)
-            sourceFile.write(u'%s        return true;\n' % beginSpace)
-            sourceFile.write(u'%s    }\n' % beginSpace)
-            sourceFile.write(u'%s    return false;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%sbool operator<<(std::wstring& _rData, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (!_JsonValue.IsString()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    _rData = _JsonValue.GetString();\n' % beginSpace)
-            sourceFile.write(u'%s    return true;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%stemplate<typename TData>\n' % beginSpace)
-            sourceFile.write(u'%sbool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    std::vector<TData> datas;\n' % beginSpace)
-            sourceFile.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % beginSpace)
-            sourceFile.write(u'%s    size_t len = json_array.Size();\n' % beginSpace)
-            sourceFile.write(u'%s    if (len == 0) return true;\n' % beginSpace)
-            sourceFile.write(u'%s    datas.resize(len);\n' % beginSpace)
-            sourceFile.write(u'%s    for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
-            sourceFile.write(u'%s    return true;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
-
-            sourceFile.write(u'%stemplate<typename TData>\n' % beginSpace)
-            sourceFile.write(u'%sbool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)\n' % beginSpace)
-            sourceFile.write(u'%s{\n' % beginSpace)
-            sourceFile.write(u'%s    if (!_JsonValue.IsObject()) return false;\n' % beginSpace)
-            sourceFile.write(u'%s    std::map<std::wstring, TData> datas;\n' % beginSpace)
-            sourceFile.write(u'%s    const WCharConstObject& json_object = _JsonValue.GetObject();\n' % beginSpace)
-            sourceFile.write(u'%s    for (WCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % beginSpace)
-            sourceFile.write(u'%s    {\n' % beginSpace)
-            sourceFile.write(u'%s        TData data;\n' % beginSpace)
-            sourceFile.write(u'%s        if (!(data << cit->value)) return false;\n' % beginSpace)
-            sourceFile.write(u'%s        datas.insert(std::make_pair(cit->name.GetString(), data));\n' % beginSpace)
-            sourceFile.write(u'%s    }\n' % beginSpace)
-            sourceFile.write(u'%s    _pDatas = datas;\n' % beginSpace)
-            sourceFile.write(u'%s    return true;\n' % beginSpace)
-            sourceFile.write(u'%s}\n' % beginSpace)
-            sourceFile.write(u'\n')
+            begin_space = u''
+            if nameSpace != None:
+                header_file.write(u'namespace %s\n' % nameSpace)
+                header_file.write(u'{\n')
+                begin_space = u'    '
 
             for key in self.c11Types:
-                c11Type = self.c11Types[key]
-                if not isinstance(c11Type, C11TypeStruct):
+                c11_type = self.c11Types[key]
+                if not isinstance(c11_type, C11TypeStruct):
                     continue
 
-                codeLines = c11Type.codeParserSource()
-                for codeLine in codeLines:
-                    if len(codeLine) <= 0:
-                        sourceFile.write(u'\n')
+                code_lines = c11_type.codeParserHeader()
+                for code_line in code_lines:
+                    if not code_line:
+                        header_file.write(u'\n')
                     else:
-                        sourceFile.write(u'%s%s\n' % (beginSpace, codeLine))
-                sourceFile.write(u'\n')
+                        header_file.write(u'%s%s\n' % (begin_space, code_line))
+                header_file.write(u'\n')
 
-            if namespace != None:
-                sourceFile.write(u'}\n')
+            if nameSpace != None:
+                header_file.write(u'}\n')
+
+        with open(source_file_path, u'w') as source_file:
+            source_file.write(u'#include "%spch.h"\n' % codeFileName)
+            source_file.write(u'#include "%sparser.h"\n' % codeFileName)
+            source_file.write(u'#include "%s.h"\n' % codeFileName)
+            source_file.write(u'\n')
+
+            begin_space = u''
+            if nameSpace != None:
+                source_file.write(u'namespace %s\n' % nameSpace)
+                source_file.write(u'{\n')
+                begin_space = u'    '
+
+            source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    WCharDocument json_doc;\n' % begin_space)
+            source_file.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % begin_space)
+            source_file.write(u'%s    if (!json_doc.IsObject()) return false;\n' % begin_space)
+            source_file.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%sbool operator<<(bool& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (!_JsonValue.IsBool()) return false;\n' % begin_space)
+            source_file.write(u'%s    _rData = _JsonValue.GetBool();\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%sbool operator<<(int32_t& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (!_JsonValue.IsInt()) return false;\n' % begin_space)
+            source_file.write(u'%s    _rData = _JsonValue.GetInt();\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%sbool operator<<(float& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (_JsonValue.IsFloat())\n' % begin_space)
+            source_file.write(u'%s    {\n' % begin_space)
+            source_file.write(u'%s        _rData = _JsonValue.GetFloat();\n' % begin_space)
+            source_file.write(u'%s        return true;\n' % begin_space)
+            source_file.write(u'%s    }\n' % begin_space)
+            source_file.write(u'%s    if (_JsonValue.IsInt())\n' % begin_space)
+            source_file.write(u'%s    {\n' % begin_space)
+            source_file.write(u'%s        _rData = static_cast<float>(_JsonValue.GetInt());\n' % begin_space)
+            source_file.write(u'%s        return true;\n' % begin_space)
+            source_file.write(u'%s    }\n' % begin_space)
+            source_file.write(u'%s    return false;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%sbool operator<<(std::wstring& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (!_JsonValue.IsString()) return false;\n' % begin_space)
+            source_file.write(u'%s    _rData = _JsonValue.GetString();\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%stemplate<typename TData>\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % begin_space)
+            source_file.write(u'%s    std::vector<TData> datas;\n' % begin_space)
+            source_file.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % begin_space)
+            source_file.write(u'%s    size_t len = json_array.Size();\n' % begin_space)
+            source_file.write(u'%s    if (len == 0) return true;\n' % begin_space)
+            source_file.write(u'%s    datas.resize(len);\n' % begin_space)
+            source_file.write(u'%s    for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;\n' % begin_space)
+            source_file.write(u'%s    _pDatas = datas;\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            source_file.write(u'%stemplate<typename TData>\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%s{\n' % begin_space)
+            source_file.write(u'%s    if (!_JsonValue.IsObject()) return false;\n' % begin_space)
+            source_file.write(u'%s    std::map<std::wstring, TData> datas;\n' % begin_space)
+            source_file.write(u'%s    const WCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
+            source_file.write(u'%s    for (WCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
+            source_file.write(u'%s    {\n' % begin_space)
+            source_file.write(u'%s        TData data;\n' % begin_space)
+            source_file.write(u'%s        if (!(data << cit->value)) return false;\n' % begin_space)
+            source_file.write(u'%s        datas.insert(std::make_pair(cit->name.GetString(), data));\n' % begin_space)
+            source_file.write(u'%s    }\n' % begin_space)
+            source_file.write(u'%s    _pDatas = datas;\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
+            source_file.write(u'%s}\n' % begin_space)
+            source_file.write(u'\n')
+
+            for key in self.c11Types:
+                c11_type = self.c11Types[key]
+                if not isinstance(c11_type, C11TypeStruct):
+                    continue
+
+                code_lines = c11_type.codeParserSource()
+                for code_line in code_lines:
+                    if not code_line:
+                        source_file.write(u'\n')
+                    else:
+                        source_file.write(u'%s%s\n' % (begin_space, code_line))
+                source_file.write(u'\n')
+
+            if nameSpace != None:
+                source_file.write(u'}\n')
 
         return (0, u'')
 
@@ -310,14 +310,14 @@ def JSONSchemaToC11(argv):
     if args.output_source_path == None:
         args.output_source_path = u'./'
 
-    c11TypeLibrary = C11TypeLibrary()
-    (error_code, error_message) = c11TypeLibrary.addSchemaDirectory(args.schemaDirectory)
+    c11_type_library = C11TypeLibrary()
+    (error_code, error_message) = c11_type_library.addSchemaDirectory(args.schemaDirectory)
     if error_code != 0:
         return (error_code, error_message)
-    (error_code, error_message) = c11TypeLibrary.preprocess()
+    (error_code, error_message) = c11_type_library.preprocess()
     if error_code != 0:
         return (error_code, error_message)
-    (error_code, error_message) = c11TypeLibrary.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, namespace=args.namespace)
+    (error_code, error_message) = c11_type_library.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, nameSpace=args.namespace)
     if error_code != 0:
         return (error_code, error_message)
     return (0, u'')
