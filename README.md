@@ -5,6 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/jkx8aoyafsn9ce4t?svg=true)](https://ci.appveyor.com/project/code4game/libgltf)
 [![Coverage Status](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
 [![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE)
 
