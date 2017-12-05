@@ -1,47 +1,81 @@
-version: 1.0.{build}
+version: 0.0.{build}
+
 build:
   verbosity: minimal
 
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VISUAL_STUDIO_VERSION: 14
-      TARGET_PLATFORM: Win32
-      CMAKE_GENERATOR: Visual Studio 14 2015
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VISUAL_STUDIO_VERSION: 14
-      TARGET_PLATFORM: Win64
-      CMAKE_GENERATOR: Visual Studio 14 2015 Win64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      VISUAL_STUDIO_VERSION: 15
-      TARGET_PLATFORM: Win32
-      CMAKE_GENERATOR: Visual Studio 15 2017
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      VISUAL_STUDIO_VERSION: 15
-      TARGET_PLATFORM: Win64
-      CMAKE_GENERATOR: Visual Studio 15 2017 Win64
+image:
+- Visual Studio 2015
+#- Visual Studio 2017
 
 configuration:
-  - Debug
-  - Release
+#- Debug
+- Release
+
+platform:
+- x86
+- x64
+- ARM
+#- Any CPU
 
 branches:
   only:
-    - master
+  - master
+  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
+init:
+- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN32))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_WIN64))
+- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ARM))
+- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2015" (set TARGET_VSENV=VS14_ANYCPU))
+- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN32))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
+- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ARM))
+- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ANYCPU))
 
 install:
-  - git submodule update --init
-  - mkdir build
-  - cd build
-  - cmake -G "%CMAKE_GENERATOR%" -D CMAKE_CXX_COMPILER_ID=MSVC_%VISUAL_STUDIO_VERSION% ../
-  - cd ..
+- git submodule update --init
 
 before_build:
-  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN32))
-  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==14 (set TARGET_VSENV=VS14_WIN64))
-  - if %TARGET_PLATFORM%==Win32 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN32))
-  - if %TARGET_PLATFORM%==Win64 (if %VISUAL_STUDIO_VERSION%==15 (set TARGET_VSENV=VS15_WIN64))
-  - if %TARGET_VSENV%==VS14_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-  - if %TARGET_VSENV%==VS14_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-  - if %TARGET_VSENV%==VS15_WIN32 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - if %TARGET_VSENV%==VS15_WIN64 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+- mkdir build
+- cd build
+- if "%TARGET_VSENV%" equ "VS14_WIN32" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS14_WIN64" cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS14_ARM" cmake -G "Visual Studio 14 2015 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../ ../
+- if "%TARGET_VSENV%" equ "VS14_ANYCPU" cmake -G "Visual Studio 14 2015" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_14 ../
+- if "%TARGET_VSENV%" equ "VS15_WIN32" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
+- cd ..
+
+build_script:
+- if "%TARGET_VSENV%" equ "VS14_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
+- if "%TARGET_VSENV%" equ "VS14_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+- if "%TARGET_VSENV%" equ "VS14_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+- if "%TARGET_VSENV%" equ "VS14_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+- if "%TARGET_VSENV%" equ "VS15_WIN32" msbuild build/libgltf.sln /p:Platform="Win32"
+- if "%TARGET_VSENV%" equ "VS15_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
+- if "%TARGET_VSENV%" equ "VS15_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
+- if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+
+after_build:
+- if "%APPVEYOR_REPO_TAG%" equ "true" 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+- if "%APPVEYOR_REPO_TAG%" neq "true" 7z a libgltf.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+
+artifacts:
+- name: libgltf.$(platform)
+  path: libgltf.*.zip
+
+deploy:
+  release: $(appveyor_repo_tag_name)
+  description: 'Release'
+  provider: GitHub
+  auth_token:
+    secure: pgUOkq6lXpXqW/BcFTYJR690JA4gAzsBYUtAjLv/E3CEOOgDKW68xGO3utC2Bjxx
+  artifact: libgltf.$(appveyor_repo_tag_name).$(platform).zip
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
+
