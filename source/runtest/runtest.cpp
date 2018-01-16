@@ -32,7 +32,7 @@ int main(int _iArgc, char* _pcArgv[])
         }
     }
 
-    if (input_file_path.length() <= 0)
+    if (input_file_path.length() == 0)
     {
         printf("Command line format: runtest [--coveralls] input_file_path\n");
         return error_code;
