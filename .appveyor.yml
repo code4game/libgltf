@@ -1,4 +1,4 @@
-version: 0.0.{build}
+version: 0.0.1.{build}
 
 build:
   verbosity: minimal
@@ -59,11 +59,11 @@ build_script:
 - if "%TARGET_VSENV%" equ "VS15_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
 
 after_build:
-- if "%APPVEYOR_REPO_TAG%" equ "true" 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
-- if "%APPVEYOR_REPO_TAG%" neq "true" 7z a libgltf.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+- if "%APPVEYOR_REPO_TAG%" equ "true" 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.windows.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+- if "%APPVEYOR_REPO_TAG%" neq "true" 7z a libgltf.windows.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
 
 artifacts:
-- name: libgltf.$(platform)
+- name: libgltf
   path: libgltf.*.zip
 
 deploy:
@@ -72,7 +72,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: pgUOkq6lXpXqW/BcFTYJR690JA4gAzsBYUtAjLv/E3CEOOgDKW68xGO3utC2Bjxx
-  artifact: libgltf.$(appveyor_repo_tag_name).$(platform).zip
+  artifact: libgltf.$(appveyor_repo_tag_name).windows.$(platform).zip
   draft: false
   prerelease: false
   on:
