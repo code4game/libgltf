@@ -33,10 +33,8 @@ test_win32:
         - cd build
         - 'cmake -G "Visual Studio 14 2015" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
+        - '../output/bin/win32/Debug/runtest.exe ../resource/example-2.0/AnimatedMorphCube.gltf'
         - cd ../
-        - cd output/bin/win32/Debug
-        - runtest.exe
-        - cd ../../../../
     tags:
         - win32
         - cmake
@@ -52,10 +50,8 @@ test_win64:
         - cd build
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
+        - '../output/bin/win32/Debug/runtest.exe ../resource/example-2.0/AnimatedMorphCube.gltf'
         - cd ../
-        - cd output/bin/win64/Debug
-        - runtest.exe
-        - cd ../../../../
     tags:
         - win64
         - cmake
@@ -68,14 +64,12 @@ test_linux:
         - cd build
         - 'cmake -LIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
         - make
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../nothing.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/AnimatedMorphCube.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/BarramundiFish.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/BoxAnimated.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/Cameras.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest ../resource/example-2.0/RiggedSimple.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/BoxAnimated.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/Cameras.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ../output/bin/linux/runtest --coveralls ../resource/example-2.0/RiggedSimple.gltf'
         - gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
         - gcovr --root=../source/ .
         - cd ../
