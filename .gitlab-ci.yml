@@ -33,7 +33,7 @@ test_win32:
         - cd build
         - 'cmake -G "Visual Studio 14 2015" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
-        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\AnimatedMorphCube.gltf'
+        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
         - cd ../
     tags:
         - win32
@@ -50,7 +50,7 @@ test_win64:
         - cd build
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
-        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\AnimatedMorphCube.gltf'
+        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
         - cd ../
     tags:
         - win64
