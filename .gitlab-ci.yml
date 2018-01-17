@@ -81,6 +81,21 @@ test_linux:
         - gcc
         - gcovr
 
+test_macos:
+    stage: build
+    script:
+        - mkdir build
+        - cd build
+        - 'cmake -G "Unix Makefiles" ../'
+        - make
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
+        - cd ../
+    tags:
+        - macos
+        - cmake
+        - make
+        - gcc
+
 build_win32:
     stage: build
     script:
