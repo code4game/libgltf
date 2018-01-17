@@ -1,8 +1,8 @@
 # libgltf
 
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/tyEjtQB)
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&style=flat-square)](https://twitter.com/C4gIo)
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg)](https://twitter.com/C4gIo)
+[![Join the chat at https://gitter.im/code4game/libgltf](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join Discord]](https://discord.gg/tyEjtQB)
 
 [![pipeline status](https://gitlab.com/c4g/gltf/libgltf/badges/master/pipeline.svg)](https://gitlab.com/c4g/gltf/libgltf/commits/master)
 [![Build Status](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
@@ -13,6 +13,8 @@
 [![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
+
+[![Donation]](https://patreon.com/c4gio)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
 
