@@ -144,8 +144,16 @@ namespace libgltf
     template<typename TData>
     bool operator>>(const std::map<GLTFString, TData>& _mDatas, GLTFCharValue& _JsonValue)
     {
-        //TODO:
-        return false;
+        if (_mDatas.empty() || !g_json_doc_ptr) return false;
+        _JsonValue.SetObject();
+        for (const std::pair<GLTFString, TData>& data : _mDatas)
+        {
+            GLTFCharValue json_value;
+            if (!(data.second >> json_value)) return false;
+            GLTFCharValue json_key(data.first.c_str(), g_json_doc_ptr->GetAllocator());
+            _JsonValue.AddMember(json_key, json_value, g_json_doc_ptr->GetAllocator());
+        }
+        return true;
     }
 
     bool operator<<(std::shared_ptr<SGlTFProperty>& _pData, const GLTFCharValue& _JsonValue)
