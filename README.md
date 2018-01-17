@@ -1,6 +1,8 @@
 # libgltf
 
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg)](https://twitter.com/C4gIo)
 [![Join the chat at https://gitter.im/code4game/libgltf](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join Discord]](https://discord.gg/tyEjtQB)
 
 [![pipeline status](https://gitlab.com/c4g/gltf/libgltf/badges/master/pipeline.svg)](https://gitlab.com/c4g/gltf/libgltf/commits/master)
 [![Build Status](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
@@ -12,7 +14,14 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE)
+<a href="https://www.patreon.com/bePatron?u=7553208" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+[![Patreon Invite]](https://patreon.com/invite/zpdxnv)
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
+
+## Roadmap
+
+[See trello](https://trello.com/b/mEDeWUdC)
 
 ## License
 
