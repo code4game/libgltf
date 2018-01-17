@@ -15,6 +15,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
 <a href="https://www.patreon.com/bePatron?u=7553208" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+[![Patreon Invite]](https://patreon.com/invite/zpdxnv)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
 
