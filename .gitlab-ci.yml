@@ -90,14 +90,7 @@ test_macos:
         - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
         - 'make'
-        - './../output/bin/linux/runtest --coveralls'
-        - './../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/BoxAnimated.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/Cameras.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
-        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/RiggedSimple.gltf'
+        - './../output/bin/macos/runtest ../resource/example-2.0/BarramundiFish.gltf'
         - 'cd ../'
     tags:
         - macos
