@@ -97,8 +97,7 @@ build_win32:
         expire_in: 2 days
         paths:
             - output/include/*
-            - output/bin/win32/*.dll
-            - output/bin/win32/*.exe
+            - output/lib/**/*.lib
     tags:
         - win32
         - cmake
@@ -120,8 +119,7 @@ build_win64:
         expire_in: 2 days
         paths:
             - output/include/*
-            - output/bin/win64/*.dll
-            - output/bin/win64/*.exe
+            - output/lib/**/*.lib
     tags:
         - win64
         - cmake
@@ -140,7 +138,7 @@ build_linux:
         expire_in: 2 days
         paths:
             - output/include/*
-            - output/bin/linux/*
+            - output/lib/**/*.a
     tags:
         - linux
         - cmake
@@ -160,7 +158,7 @@ build_macos:
         expire_in: 2 days
         paths:
             - output/include/*
-            - output/bin/macos/*
+            - output/lib/**/*.a
     tags:
         - macos
         - cmake
@@ -170,10 +168,7 @@ build_macos:
 package_all:
     stage: package
     script:
-        - xcopy /D /Y "%CD%\output\bin\win32\*.lib" "%CD%\bin\win32\"
-        - xcopy /D /Y "%CD%\output\bin\win64\*.lib" "%CD%\bin\win64\"
-        - xcopy /D /Y "%CD%\output\bin\linux\*.a" "%CD%\bin\linux\"
-        - xcopy /D /Y "%CD%\output\bin\macos\*.a" "%CD%\bin\macos\"
+        - 'echo package_all'
     dependencies:
         - build_win32
         - build_win64
@@ -183,7 +178,7 @@ package_all:
         name: "libgltf.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 1 week
         paths:
-            - bin/*
-            - include/*
+            - output/include/**/*
+            - output/lib/**/*
     tags:
         - win64
