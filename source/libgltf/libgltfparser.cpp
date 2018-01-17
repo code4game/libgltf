@@ -144,17 +144,8 @@ namespace libgltf
     template<typename TData>
     bool operator>>(const std::map<GLTFString, TData>& _mDatas, GLTFCharValue& _JsonValue)
     {
-        if (!g_json_doc_ptr) return false;
-        if (_mDatas.empty()) return false;
-        _JsonValue.SetObject();
-        for (const std::pair<GLTFString, TData>& data : _mDatas)
-        {
-            GLTFCharValue json_value;
-            if (!(data.second >> json_value)) return false;
-            GLTFCharValue json_key(data.first.c_str(), g_json_doc_ptr->GetAllocator());
-            _JsonValue.AddMember(json_key, json_value, g_json_doc_ptr->GetAllocator());
-        }
-        return true;
+        //TODO:
+        return false;
     }
 
     bool operator<<(std::shared_ptr<SGlTFProperty>& _pData, const GLTFCharValue& _JsonValue)
@@ -249,6 +240,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->alphaCutoff >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("alphaCutoff"), json_value, g_json_doc_ptr->GetAllocator());
@@ -338,6 +333,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->minVersion >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("minVersion"), json_value, g_json_doc_ptr->GetAllocator());
@@ -402,6 +401,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->wrapS >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("wrapS"), json_value, g_json_doc_ptr->GetAllocator());
@@ -454,6 +457,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->name >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("name"), json_value, g_json_doc_ptr->GetAllocator());
@@ -498,6 +505,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->input)
         {
             GLTFCharValue json_value;
@@ -571,6 +582,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->nodes.empty())
         {
             GLTFCharValue json_value;
@@ -621,6 +636,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->aspectRatio >> json_value)) return false;
@@ -690,6 +709,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->byteLength >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("byteLength"), json_value, g_json_doc_ptr->GetAllocator());
@@ -748,6 +771,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<STextureInfo> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->scale >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("scale"), json_value, g_json_doc_ptr->GetAllocator());
@@ -784,6 +811,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<STextureInfo> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->strength >> json_value)) return false;
@@ -825,6 +856,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->bufferView)
         {
             GLTFCharValue json_value;
@@ -872,6 +907,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->node)
         {
             GLTFCharValue json_value;
@@ -919,6 +958,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->primitives.empty())
         {
             GLTFCharValue json_value;
@@ -971,6 +1014,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->count >> json_value)) return false;
@@ -1036,6 +1083,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->indices)
         {
             GLTFCharValue json_value;
@@ -1125,6 +1176,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->target)
         {
             GLTFCharValue json_value;
@@ -1203,6 +1258,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->componentType >> json_value)) return false;
@@ -1283,6 +1342,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->scale.empty())
         {
             GLTFCharValue json_value;
@@ -1373,6 +1436,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->channels.empty())
         {
             GLTFCharValue json_value;
@@ -1425,6 +1492,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->joints.empty())
         {
             GLTFCharValue json_value;
@@ -1491,6 +1562,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->roughnessFactor >> json_value)) return false;
@@ -1560,6 +1635,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->type >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("type"), json_value, g_json_doc_ptr->GetAllocator());
@@ -1617,6 +1696,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->mimeType >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("mimeType"), json_value, g_json_doc_ptr->GetAllocator());
@@ -1668,6 +1751,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->source)
         {
             GLTFCharValue json_value;
@@ -1725,6 +1812,10 @@ namespace libgltf
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
         {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
             GLTFCharValue json_value;
             if (!(_pData->xmag >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("xmag"), json_value, g_json_doc_ptr->GetAllocator());
@@ -1780,6 +1871,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->byteLength >> json_value)) return false;
@@ -1854,6 +1949,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         {
             GLTFCharValue json_value;
             if (!(_pData->count >> json_value)) return false;
@@ -1999,6 +2098,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!_pData->textures.empty())
         {
             GLTFCharValue json_value;
@@ -2137,6 +2240,10 @@ namespace libgltf
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
         if (!!_pData->index)
         {
             GLTFCharValue json_value;

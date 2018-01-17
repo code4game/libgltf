@@ -233,6 +233,13 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'    if (!_pData || !g_json_doc_ptr) return false;')
         codeLines.append(u'    _JsonValue.SetObject();')
 
+        parentTypes = self.getParentTypeNames(recursion=False)
+        for parentType in parentTypes:
+            codeLines.append(u'    {')
+            codeLines.append(u'        const std::shared_ptr<%s> super_ptr = _pData;' % parentType)
+            codeLines.append(u'        if (!(super_ptr >> _JsonValue)) return false;')
+            codeLines.append(u'    }')
+
         if self.c11Type != None:
             codeLines.append(u'    if (!(_pData->%sValue >> _JsonValue)) return false;' % self.c11Type.codeTypeName())
         else:
