@@ -14,7 +14,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
-[![Donation]](https://patreon.com/c4gio)
+<a href="https://www.patreon.com/bePatron?u=7553208" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
 
