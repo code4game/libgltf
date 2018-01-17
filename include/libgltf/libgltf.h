@@ -14,7 +14,8 @@ namespace libgltf
 #   else
     typedef std::string                                         GLTFString;
 #   endif
-#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)    typedef std::string                                         GLTFString;
+#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)
+    typedef std::string                                         GLTFString;
 #else
 #error Sorry, not support your platform.
 #endif
