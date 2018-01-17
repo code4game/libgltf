@@ -114,6 +114,7 @@ build_win32:
             - output/include/*
             - output/lib/**/*.lib
             - output/lib/**/**/*.lib
+    when: manual
     tags:
         - win32
         - cmake
@@ -137,6 +138,7 @@ build_win64:
             - output/include/*
             - output/lib/**/*.lib
             - output/lib/**/**/*.lib
+    when: manual
     tags:
         - win64
         - cmake
@@ -156,6 +158,7 @@ build_linux:
         paths:
             - output/include/*
             - output/lib/**/*.a
+    when: manual
     tags:
         - linux
         - cmake
@@ -176,6 +179,7 @@ build_macos:
         paths:
             - output/include/*
             - output/lib/**/*.a
+    when: manual
     tags:
         - macos
         - cmake
@@ -197,5 +201,6 @@ package_all:
         paths:
             - output/include/**/*
             - output/lib/**/*
+    when: manual
     tags:
         - win64

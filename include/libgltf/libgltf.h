@@ -22,6 +22,7 @@ namespace libgltf
 
     struct SGlTF;
     bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent);
+    bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, GLTFString& _sContent);
 
     /*!
      * struct: SGlTFProperty

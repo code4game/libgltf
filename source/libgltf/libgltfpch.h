@@ -1,6 +1,8 @@
 #pragma once
 
 #include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/writer.h>
 
 #if defined(PLATFORM_WINDOWS)
 #   if defined(UNICODE)
@@ -16,16 +18,19 @@ namespace libgltf
 {
 #if defined(PLATFORM_WINDOWS)
 #   if defined(UNICODE)
-    typedef rapidjson::GenericDocument<rapidjson::UTF16<>>      GLTFCharDocument;
-    typedef rapidjson::GenericValue<rapidjson::UTF16<>>         GLTFCharValue;
+    typedef rapidjson::UTF16<>                                  GLTFCharType;
 #   else
-    typedef rapidjson::GenericDocument<rapidjson::UTF8<>>      GLTFCharDocument;
-    typedef rapidjson::GenericValue<rapidjson::UTF8<>>         GLTFCharValue;
+    typedef rapidjson::UTF8<>                                   GLTFCharType;
 #   endif
 #else
-    typedef rapidjson::GenericDocument<rapidjson::UTF8<>>      GLTFCharDocument;
-    typedef rapidjson::GenericValue<rapidjson::UTF8<>>         GLTFCharValue;
+    typedef rapidjson::UTF8<>                                   GLTFCharType;
 #endif
+
+    typedef rapidjson::GenericDocument<GLTFCharType>            GLTFCharDocument;
+    typedef rapidjson::GenericValue<GLTFCharType>               GLTFCharValue;
+    typedef rapidjson::GenericStringBuffer<GLTFCharType>        GLTFStringBuffer;
+    typedef rapidjson::Writer<GLTFStringBuffer, GLTFCharType>   GLTFWriter;
+
     typedef rapidjson::GenericArray<true, GLTFCharValue>        GLTFCharConstArray;
     typedef rapidjson::GenericArray<false, GLTFCharValue>       GLTFCharArray;
     typedef rapidjson::GenericObject<true, GLTFCharValue>       GLTFCharConstObject;

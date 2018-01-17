@@ -61,12 +61,23 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::SGlTF> gltf_data;
     if (gltf_data << input_content.str())
     {
-        printf("Success\n");
+        printf("Parse Success\n");
     }
     else
     {
         printf("Failed\n");
         return error_code;
+    }
+
+#if defined(PLATFORM_WINDOWS)
+    std::wstring output_content;
+#else
+    std::string output_content;
+#endif
+
+    if (gltf_data >> output_content)
+    {
+        printf("Success\n");
     }
 
     return 0;
