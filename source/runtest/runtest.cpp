@@ -38,9 +38,15 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
+#if defined(PLATFORM_WINDOWS)
     std::wstringstream input_content;
     {
         std::wifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
+#else
+    std::stringstream input_content;
+    {
+        std::ifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
+#endif
         if (!input_file.is_open())
         {
             printf("Can't open the file %s\n", input_file_path.c_str());
