@@ -27,14 +27,14 @@ test_win32:
     stage: test
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
-        - if exist build rmdir /s /q build
-        - if exist output rmdir /s /q output
-        - mkdir build
-        - cd build
+        - 'if exist build rmdir /s /q build'
+        - 'if exist output rmdir /s /q output'
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Visual Studio 14 2015" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
         - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
-        - cd ../
+        - 'cd ../'
     tags:
         - win32
         - cmake
@@ -44,14 +44,14 @@ test_win64:
     stage: test
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
-        - if exist build rmdir /s /q build
-        - if exist output rmdir /s /q output
-        - mkdir build
-        - cd build
+        - 'if exist build rmdir /s /q build'
+        - 'if exist output rmdir /s /q output'
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
         - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
-        - cd ../
+        - 'cd ../'
     tags:
         - win64
         - cmake
@@ -60,19 +60,21 @@ test_win64:
 test_linux:
     stage: test
     script:
-        - mkdir build
-        - cd build
-        - 'cmake -DLIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
-        - make
+        - 'mkdir build'
+        - 'cd build'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
+        - 'make'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/BoxAnimated.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/Cameras.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/RiggedSimple.gltf'
-        - gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
-        - gcovr --root=../source/ .
-        - cd ../
+        - 'gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda'
+        - 'gcovr --root=../source/ .'
+        - 'cd ../'
     tags:
         - linux
         - cmake
@@ -84,12 +86,19 @@ test_linux:
 test_macos:
     stage: test
     script:
-        - mkdir build
-        - cd build
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
-        - make
-        - './../output/bin/macos/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
-        - cd ../
+        - 'make'
+        - './../output/bin/linux/runtest --coveralls'
+        - './../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/BoxAnimated.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/Cameras.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
+        - './../output/bin/linux/runtest --coveralls ../resource/example-2.0/RiggedSimple.gltf'
+        - 'cd ../'
     tags:
         - macos
         - cmake
@@ -100,13 +109,13 @@ build_win32:
     stage: build
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
-        - if exist build rmdir /s /q build
-        - if exist output rmdir /s /q output
-        - mkdir build
-        - cd build
+        - 'if exist build rmdir /s /q build'
+        - 'if exist output rmdir /s /q output'
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Visual Studio 14 2015" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Release" /p:Platform="Win32"'
-        - cd ../
+        - 'cd ../'
     artifacts:
         name: "libgltf_win32.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 2 days
@@ -124,13 +133,13 @@ build_win64:
     stage: build
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
-        - if exist build rmdir /s /q build
-        - if exist output rmdir /s /q output
-        - mkdir build
-        - cd build
+        - 'if exist build rmdir /s /q build'
+        - 'if exist output rmdir /s /q output'
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Release" /p:Platform="x64"'
-        - cd ../
+        - 'cd ../'
     artifacts:
         name: "libgltf_win64.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 2 days
@@ -147,11 +156,11 @@ build_win64:
 build_linux:
     stage: build
     script:
-        - mkdir build
-        - cd build
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
-        - make
-        - cd ../
+        - 'make'
+        - 'cd ../'
     artifacts:
         name: "libgltf_linux.${CI_PIPELINE_ID}.${CI_JOB_ID}"
         expire_in: 2 days
@@ -168,11 +177,11 @@ build_linux:
 build_macos:
     stage: build
     script:
-        - mkdir build
-        - cd build
+        - 'mkdir build'
+        - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
-        - make
-        - cd ../
+        - 'make'
+        - 'cd ../'
     artifacts:
         name: "libgltf_macos.${CI_PIPELINE_ID}.${CI_JOB_ID}"
         expire_in: 2 days
