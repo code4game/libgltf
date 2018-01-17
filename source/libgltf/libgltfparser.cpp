@@ -4,6 +4,16 @@
 
 namespace libgltf
 {
+    class GLTFCharDocumentPtrWrapper
+    {
+    public:
+        explicit GLTFCharDocumentPtrWrapper(GLTFCharDocument*& _pDocument) : m_pDocument(_pDocument) { }
+        ~GLTFCharDocumentPtrWrapper() { m_pDocument = nullptr; }
+    private:
+        GLTFCharDocument*& m_pDocument;
+    };
+    GLTFCharDocument* g_json_doc_ptr = nullptr;
+
     bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent)
     {
         GLTFCharDocument json_doc;
@@ -16,6 +26,8 @@ namespace libgltf
     {
         if (!_pGlTF) return false;
         GLTFCharDocument json_doc;
+        g_json_doc_ptr = &json_doc;
+        GLTFCharDocumentPtrWrapper wrapper(g_json_doc_ptr);
         if (!(_pGlTF >> json_doc)) return false;
         GLTFStringBuffer json_string_buffer;
         GLTFWriter json_writer(json_string_buffer);
@@ -101,8 +113,15 @@ namespace libgltf
     template<typename TData>
     bool operator>>(const std::vector<TData>& _vDatas, GLTFCharValue& _JsonValue)
     {
-        //TODO:
-        return false;
+        if (_vDatas.empty() || !g_json_doc_ptr) return false;
+        GLTFCharValue& json_array = _JsonValue.SetArray();
+        for (const TData& data : _vDatas)
+        {
+            GLTFCharValue json_value;
+            if (!(data >> json_value)) continue;
+            json_array.PushBack(json_value, g_json_doc_ptr->GetAllocator());
+        }
+        return true;
     }
 
     template<typename TData>
@@ -145,6 +164,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SGlTFProperty>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -204,6 +224,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMaterial>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -247,6 +268,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAsset>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -290,6 +312,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SSampler>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -321,6 +344,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SGlTFChildofRootProperty>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -360,6 +384,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAnimationSampler>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -383,6 +408,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SExtras>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -414,6 +440,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SScene>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -457,6 +484,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SCameraPerspective>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -504,6 +532,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SBufferView>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -535,6 +564,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMaterialNormalTextureInfo>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -566,6 +596,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMaterialOcclusionTextureInfo>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -601,6 +632,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAccessorSparseValues>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -636,6 +668,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAnimationChannelTarget>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -671,6 +704,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMesh>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -710,6 +744,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAccessorSparse>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -757,6 +792,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMeshPrimitive>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -780,6 +816,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SExtension>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -815,6 +852,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAnimationChannel>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -839,6 +877,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SGlTFId>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -878,6 +917,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAccessorSparseIndices>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -941,6 +981,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SNode>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -976,6 +1017,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAnimation>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1015,6 +1057,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SSkin>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1062,6 +1105,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SMaterialPBRMetallicRoughness>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1101,6 +1145,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SCamera>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1140,6 +1185,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SImage>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1175,6 +1221,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<STexture>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1218,6 +1265,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SCameraOrthographic>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1253,6 +1301,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SBuffer>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1316,6 +1365,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SAccessor>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1411,6 +1461,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<SGlTF>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }
@@ -1446,6 +1497,7 @@ namespace libgltf
 
     bool operator>>(const std::shared_ptr<STextureInfo>& _pData, GLTFCharValue& _JsonValue)
     {
+        if (!_pData || !g_json_doc_ptr) return false;
         //TODO:
         return false;
     }

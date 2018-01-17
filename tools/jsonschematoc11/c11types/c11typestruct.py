@@ -230,6 +230,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'')
         codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
+        codeLines.append(u'    if (!_pData || !g_json_doc_ptr) return false;')
         codeLines.append(u'    //TODO:')
         codeLines.append(u'    return false;')
         codeLines.append(u'}')
