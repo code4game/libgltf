@@ -7,7 +7,7 @@ class C11TypeString(C11Type):
 
     def __init__(self):
         C11Type.__init__(self)
-        self.typeName = u'std::wstring'
+        self.typeName = u'GLTFString'
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
@@ -15,8 +15,8 @@ class C11TypeString(C11Type):
     @classmethod
     def codeDefaultValue(cls, schemaDefaultValue):
         if schemaDefaultValue != None:
-            return u'L"%s"' % schemaDefaultValue
-        return u'L""'
+            return u'GLTFTEXT("%s")' % schemaDefaultValue
+        return u'GLTFTEXT("")'
 
     @classmethod
     def codeDefaultValueArray(self, schemaDefaultValue):
@@ -26,7 +26,7 @@ class C11TypeString(C11Type):
             return u''
         code_default_value = u''
         for i in range(0, len(schemaDefaultValue)):
-            code_default_value = code_default_value + u'L"%s", ' % schemaDefaultValue[i]
+            code_default_value = code_default_value + u'GLTFTEXT("%s"), ' % schemaDefaultValue[i]
         code_default_value = code_default_value[0:len(code_default_value) - 2]
         return u'{ %s }' % code_default_value
 
@@ -36,4 +36,4 @@ class C11TypeString(C11Type):
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
-        return u'%s->%s = _JsonValue[L"%s"].GetString();' % (dataName, variableName, variableName)
+        return u'%s->%s = _JsonValue[GLTFTEXT("%s")].GetString();' % (dataName, variableName, variableName)

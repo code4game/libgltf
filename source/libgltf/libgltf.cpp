@@ -1,3 +1,4 @@
+#include "libgltfpch.h"
 #include "libgltf.h"
 
 namespace libgltf
@@ -17,7 +18,7 @@ namespace libgltf
 
     SGlTFChildofRootProperty::SGlTFChildofRootProperty()
         : SGlTFProperty()
-        , name(L"")
+        , name(GLTFTEXT(""))
     {
         //
     }
@@ -34,7 +35,7 @@ namespace libgltf
         , emissiveTexture(nullptr)
         , pbrMetallicRoughness(nullptr)
         , occlusionTexture(nullptr)
-        , alphaMode(L"OPAQUE")
+        , alphaMode(GLTFTEXT("OPAQUE"))
         , doubleSided(false)
         , normalTexture(nullptr)
         , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
@@ -50,10 +51,10 @@ namespace libgltf
 
     SAsset::SAsset()
         : SGlTFProperty()
-        , minVersion(L"")
-        , version(L"")
-        , generator(L"")
-        , copyright(L"")
+        , minVersion(GLTFTEXT(""))
+        , version(GLTFTEXT(""))
+        , generator(GLTFTEXT(""))
+        , copyright(GLTFTEXT(""))
     {
         //
     }
@@ -84,7 +85,7 @@ namespace libgltf
         : SGlTFProperty()
         , input(nullptr)
         , output(nullptr)
-        , interpolation(L"LINEAR")
+        , interpolation(GLTFTEXT("LINEAR"))
     {
         //
     }
@@ -209,7 +210,7 @@ namespace libgltf
     SAnimationChannelTarget::SAnimationChannelTarget()
         : SGlTFProperty()
         , node(nullptr)
-        , path(L"")
+        , path(GLTFTEXT(""))
     {
         //
     }
@@ -392,7 +393,7 @@ namespace libgltf
 
     SCamera::SCamera()
         : SGlTFChildofRootProperty()
-        , type(L"")
+        , type(GLTFTEXT(""))
         , perspective(nullptr)
         , orthographic(nullptr)
     {
@@ -407,9 +408,9 @@ namespace libgltf
 
     SImage::SImage()
         : SGlTFChildofRootProperty()
-        , mimeType(L"")
+        , mimeType(GLTFTEXT(""))
         , bufferView(nullptr)
-        , uri(L"")
+        , uri(GLTFTEXT(""))
     {
         //
     }
@@ -453,7 +454,7 @@ namespace libgltf
     SBuffer::SBuffer()
         : SGlTFChildofRootProperty()
         , byteLength(0)
-        , uri(L"")
+        , uri(GLTFTEXT(""))
     {
         //
     }
@@ -473,7 +474,7 @@ namespace libgltf
         , componentType(0)
         , byteOffset(0)
         , sparse(nullptr)
-        , type(L"")
+        , type(GLTFTEXT(""))
         , normalized(false)
     {
         //

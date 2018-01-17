@@ -51,7 +51,7 @@ class C11TypeLibrary(object):
     def codeHeaderParser(self):
         code_lines = []
         code_lines.append(u'struct SGlTF;')
-        code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);')
+        code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent);')
         return code_lines
 
     def preprocess(self):
@@ -85,6 +85,19 @@ class C11TypeLibrary(object):
                 header_file.write(u'{\n')
                 begin_space = u'    '
 
+            header_file.write(u'#if defined(PLATFORM_WINDOWS)\n')
+            header_file.write(u'#   if defined(UNICODE)\n')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::wstring                                        GLTFString;'))
+            header_file.write(u'#   else\n')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
+            header_file.write(u'#   endif\n')
+            header_file.write(u'#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
+            header_file.write(u'#else\n')
+            header_file.write(u'#error Sorry, not support your platform.\n')
+            header_file.write(u'#endif\n')
+            header_file.write(u'\n')
+
             code_header_parser_lines = self.codeHeaderParser()
             for code_header_parser_line in code_header_parser_lines:
                 code_header_parser_line = u'%s%s\n' % (begin_space, code_header_parser_line)
@@ -114,6 +127,7 @@ class C11TypeLibrary(object):
                 header_file.write(u'}\n')
 
         with open(source_file_path, u'w') as source_file:
+            source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%s.h"\n' % codeFileName)
             source_file.write(u'\n')
 
@@ -193,7 +207,7 @@ class C11TypeLibrary(object):
                 source_file.write(u'{\n')
                 begin_space = u'    '
 
-            source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    GLTFCharDocument json_doc;\n' % begin_space)
             source_file.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % begin_space)
@@ -234,7 +248,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(std::wstring& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(GLTFString& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsString()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetString();\n' % begin_space)
@@ -258,10 +272,10 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator<<(std::map<std::wstring, TData>& _pDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::map<GLTFString, TData>& _pDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsObject()) return false;\n' % begin_space)
-            source_file.write(u'%s    std::map<std::wstring, TData> datas;\n' % begin_space)
+            source_file.write(u'%s    std::map<GLTFString, TData> datas;\n' % begin_space)
             source_file.write(u'%s    const GLTFCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
             source_file.write(u'%s    for (GLTFCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)

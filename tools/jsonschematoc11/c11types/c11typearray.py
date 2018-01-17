@@ -82,4 +82,4 @@ class C11TypeArray(C11Type):
         return u'IsArray()'
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

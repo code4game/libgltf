@@ -241,4 +241,4 @@ class C11TypeStruct(C11Type):
         return self.c11Type.codeJsonCheck()
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

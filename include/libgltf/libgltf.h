@@ -8,8 +8,19 @@
 
 namespace libgltf
 {
+#if defined(PLATFORM_WINDOWS)
+#   if defined(UNICODE)
+    typedef std::wstring                                        GLTFString;
+#   else
+    typedef std::string                                         GLTFString;
+#   endif
+#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)    typedef std::string                                         GLTFString;
+#else
+#error Sorry, not support your platform.
+#endif
+
     struct SGlTF;
-    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent);
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent);
 
     /*!
      * struct: SGlTFProperty
@@ -36,7 +47,7 @@ namespace libgltf
         operator bool() const;
 
         // The user-defined name of this object.
-        std::wstring name;
+        GLTFString name;
     };
 
     /*!
@@ -59,7 +70,7 @@ namespace libgltf
         // The occlusion map texture.
         std::shared_ptr<struct SMaterialOcclusionTextureInfo> occlusionTexture;
         // The alpha rendering mode of the material.
-        std::wstring alphaMode;
+        GLTFString alphaMode;
         // Specifies whether the material is double sided.
         bool doubleSided;
         // The normal map texture.
@@ -80,13 +91,13 @@ namespace libgltf
         operator bool() const;
 
         // The minimum glTF version that this asset targets.
-        std::wstring minVersion;
+        GLTFString minVersion;
         // The glTF version that this asset targets.
-        std::wstring version;
+        GLTFString version;
         // Tool that generated this glTF model.  Useful for debugging.
-        std::wstring generator;
+        GLTFString generator;
         // A copyright message suitable for display to credit the content creator.
-        std::wstring copyright;
+        GLTFString copyright;
     };
 
     /*!
@@ -126,7 +137,7 @@ namespace libgltf
         // The index of an accessor, containing keyframe output values.
         std::shared_ptr<struct SGlTFId> output;
         // Interpolation algorithm.
-        std::wstring interpolation;
+        GLTFString interpolation;
     };
 
     /*!
@@ -277,7 +288,7 @@ namespace libgltf
         // The index of the node to target.
         std::shared_ptr<struct SGlTFId> node;
         // The name of the node's TRS property to modify, or the "weights" of the Morph Targets it instantiates.
-        std::wstring path;
+        GLTFString path;
     };
 
     /*!
@@ -330,7 +341,7 @@ namespace libgltf
         // The index of the accessor that contains the indices.
         std::shared_ptr<struct SGlTFId> indices;
         // A dictionary object, where each key corresponds to mesh attribute semantic and each value is the index of the accessor containing attribute's data.
-        std::map<std::wstring, std::shared_ptr<struct SGlTFId>> attributes;
+        std::map<GLTFString, std::shared_ptr<struct SGlTFId>> attributes;
         // The index of the material to apply to this primitive when rendering.
         std::shared_ptr<struct SGlTFId> material;
         // The type of primitives to render.
@@ -506,7 +517,7 @@ namespace libgltf
         operator bool() const;
 
         // Specifies if the camera uses a perspective or orthographic projection.
-        std::wstring type;
+        GLTFString type;
         // A perspective camera containing properties to create a perspective projection matrix.
         std::shared_ptr<struct SCameraPerspective> perspective;
         // An orthographic camera containing properties to create an orthographic projection matrix.
@@ -525,11 +536,11 @@ namespace libgltf
         operator bool() const;
 
         // The image's MIME type.
-        std::wstring mimeType;
+        GLTFString mimeType;
         // The index of the bufferView that contains the image. Use this instead of the image's uri property.
         std::shared_ptr<struct SGlTFId> bufferView;
         // The uri of the image.
-        std::wstring uri;
+        GLTFString uri;
     };
 
     /*!
@@ -584,7 +595,7 @@ namespace libgltf
         // The length of the buffer in bytes.
         int32_t byteLength;
         // The uri of the buffer.
-        std::wstring uri;
+        GLTFString uri;
     };
 
     /*!
@@ -613,7 +624,7 @@ namespace libgltf
         // Sparse storage of attributes that deviate from their initialization value.
         std::shared_ptr<struct SAccessorSparse> sparse;
         // Specifies if the attribute is a scalar, vector, or matrix.
-        std::wstring type;
+        GLTFString type;
         // Specifies whether integer data values should be normalized.
         bool normalized;
     };
@@ -636,7 +647,7 @@ namespace libgltf
         // An array of accessors.
         std::vector<std::shared_ptr<struct SAccessor>> accessors;
         // Names of glTF extensions used somewhere in this asset.
-        std::vector<std::wstring> extensionsUsed;
+        std::vector<GLTFString> extensionsUsed;
         // An array of samplers.
         std::vector<std::shared_ptr<struct SSampler>> samplers;
         // An array of scenes.
@@ -644,7 +655,7 @@ namespace libgltf
         // The index of the default scene.
         std::shared_ptr<struct SGlTFId> scene;
         // Names of glTF extensions required to properly load this asset.
-        std::vector<std::wstring> extensionsRequired;
+        std::vector<GLTFString> extensionsRequired;
         // An array of meshes.
         std::vector<std::shared_ptr<struct SMesh>> meshes;
         // An array of keyframe animations.

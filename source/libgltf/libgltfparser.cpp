@@ -4,7 +4,7 @@
 
 namespace libgltf
 {
-    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent)
     {
         GLTFCharDocument json_doc;
         json_doc.Parse(_sContent.c_str());
@@ -41,7 +41,7 @@ namespace libgltf
         return false;
     }
 
-    bool operator<<(std::wstring& _rData, const GLTFCharValue& _JsonValue)
+    bool operator<<(GLTFString& _rData, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsString()) return false;
         _rData = _JsonValue.GetString();
@@ -63,10 +63,10 @@ namespace libgltf
     }
 
     template<typename TData>
-    bool operator<<(std::map<std::wstring, TData>& _pDatas, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::map<GLTFString, TData>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsObject()) return false;
-        std::map<std::wstring, TData> datas;
+        std::map<GLTFString, TData> datas;
         const GLTFCharConstObject& json_object = _JsonValue.GetObject();
         for (GLTFCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)
         {
@@ -81,13 +81,13 @@ namespace libgltf
     bool operator<<(std::shared_ptr<SGlTFProperty>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTFProperty> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFProperty>();
-        if (_JsonValue.HasMember(L"extras") && _JsonValue[L"extras"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("extras")) && _JsonValue[GLTFTEXT("extras")].IsObject())
         {
-            if (!(data_ptr->extras << _JsonValue[L"extras"])) return false;
+            if (!(data_ptr->extras << _JsonValue[GLTFTEXT("extras")])) return false;
         }
-        if (_JsonValue.HasMember(L"extensions") && _JsonValue[L"extensions"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("extensions")) && _JsonValue[GLTFTEXT("extensions")].IsObject())
         {
-            if (!(data_ptr->extensions << _JsonValue[L"extensions"])) return false;
+            if (!(data_ptr->extensions << _JsonValue[GLTFTEXT("extensions")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -105,37 +105,37 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"alphaCutoff") && _JsonValue[L"alphaCutoff"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("alphaCutoff")) && _JsonValue[GLTFTEXT("alphaCutoff")].IsFloat())
         {
-            data_ptr->alphaCutoff = _JsonValue[L"alphaCutoff"].GetFloat();
+            data_ptr->alphaCutoff = _JsonValue[GLTFTEXT("alphaCutoff")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"emissiveTexture") && _JsonValue[L"emissiveTexture"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("emissiveTexture")) && _JsonValue[GLTFTEXT("emissiveTexture")].IsObject())
         {
-            if (!(data_ptr->emissiveTexture << _JsonValue[L"emissiveTexture"])) return false;
+            if (!(data_ptr->emissiveTexture << _JsonValue[GLTFTEXT("emissiveTexture")])) return false;
         }
-        if (_JsonValue.HasMember(L"pbrMetallicRoughness") && _JsonValue[L"pbrMetallicRoughness"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("pbrMetallicRoughness")) && _JsonValue[GLTFTEXT("pbrMetallicRoughness")].IsObject())
         {
-            if (!(data_ptr->pbrMetallicRoughness << _JsonValue[L"pbrMetallicRoughness"])) return false;
+            if (!(data_ptr->pbrMetallicRoughness << _JsonValue[GLTFTEXT("pbrMetallicRoughness")])) return false;
         }
-        if (_JsonValue.HasMember(L"occlusionTexture") && _JsonValue[L"occlusionTexture"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("occlusionTexture")) && _JsonValue[GLTFTEXT("occlusionTexture")].IsObject())
         {
-            if (!(data_ptr->occlusionTexture << _JsonValue[L"occlusionTexture"])) return false;
+            if (!(data_ptr->occlusionTexture << _JsonValue[GLTFTEXT("occlusionTexture")])) return false;
         }
-        if (_JsonValue.HasMember(L"alphaMode") && _JsonValue[L"alphaMode"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("alphaMode")) && _JsonValue[GLTFTEXT("alphaMode")].IsString())
         {
-            data_ptr->alphaMode = _JsonValue[L"alphaMode"].GetString();
+            data_ptr->alphaMode = _JsonValue[GLTFTEXT("alphaMode")].GetString();
         }
-        if (_JsonValue.HasMember(L"doubleSided") && _JsonValue[L"doubleSided"].IsBool())
+        if (_JsonValue.HasMember(GLTFTEXT("doubleSided")) && _JsonValue[GLTFTEXT("doubleSided")].IsBool())
         {
-            data_ptr->doubleSided = _JsonValue[L"doubleSided"].GetBool();
+            data_ptr->doubleSided = _JsonValue[GLTFTEXT("doubleSided")].GetBool();
         }
-        if (_JsonValue.HasMember(L"normalTexture") && _JsonValue[L"normalTexture"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("normalTexture")) && _JsonValue[GLTFTEXT("normalTexture")].IsObject())
         {
-            if (!(data_ptr->normalTexture << _JsonValue[L"normalTexture"])) return false;
+            if (!(data_ptr->normalTexture << _JsonValue[GLTFTEXT("normalTexture")])) return false;
         }
-        if (_JsonValue.HasMember(L"emissiveFactor") && _JsonValue[L"emissiveFactor"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("emissiveFactor")) && _JsonValue[GLTFTEXT("emissiveFactor")].IsArray())
         {
-            if (!(data_ptr->emissiveFactor << _JsonValue[L"emissiveFactor"])) return false;
+            if (!(data_ptr->emissiveFactor << _JsonValue[GLTFTEXT("emissiveFactor")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -153,21 +153,21 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"minVersion") && _JsonValue[L"minVersion"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("minVersion")) && _JsonValue[GLTFTEXT("minVersion")].IsString())
         {
-            data_ptr->minVersion = _JsonValue[L"minVersion"].GetString();
+            data_ptr->minVersion = _JsonValue[GLTFTEXT("minVersion")].GetString();
         }
-        if (_JsonValue.HasMember(L"version") && _JsonValue[L"version"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("version")) && _JsonValue[GLTFTEXT("version")].IsString())
         {
-            data_ptr->version = _JsonValue[L"version"].GetString();
+            data_ptr->version = _JsonValue[GLTFTEXT("version")].GetString();
         }
-        if (_JsonValue.HasMember(L"generator") && _JsonValue[L"generator"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("generator")) && _JsonValue[GLTFTEXT("generator")].IsString())
         {
-            data_ptr->generator = _JsonValue[L"generator"].GetString();
+            data_ptr->generator = _JsonValue[GLTFTEXT("generator")].GetString();
         }
-        if (_JsonValue.HasMember(L"copyright") && _JsonValue[L"copyright"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("copyright")) && _JsonValue[GLTFTEXT("copyright")].IsString())
         {
-            data_ptr->copyright = _JsonValue[L"copyright"].GetString();
+            data_ptr->copyright = _JsonValue[GLTFTEXT("copyright")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -185,21 +185,21 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"wrapS") && _JsonValue[L"wrapS"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("wrapS")) && _JsonValue[GLTFTEXT("wrapS")].IsInt())
         {
-            data_ptr->wrapS = _JsonValue[L"wrapS"].GetInt();
+            data_ptr->wrapS = _JsonValue[GLTFTEXT("wrapS")].GetInt();
         }
-        if (_JsonValue.HasMember(L"minFilter") && _JsonValue[L"minFilter"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("minFilter")) && _JsonValue[GLTFTEXT("minFilter")].IsInt())
         {
-            data_ptr->minFilter = _JsonValue[L"minFilter"].GetInt();
+            data_ptr->minFilter = _JsonValue[GLTFTEXT("minFilter")].GetInt();
         }
-        if (_JsonValue.HasMember(L"magFilter") && _JsonValue[L"magFilter"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("magFilter")) && _JsonValue[GLTFTEXT("magFilter")].IsInt())
         {
-            data_ptr->magFilter = _JsonValue[L"magFilter"].GetInt();
+            data_ptr->magFilter = _JsonValue[GLTFTEXT("magFilter")].GetInt();
         }
-        if (_JsonValue.HasMember(L"wrapT") && _JsonValue[L"wrapT"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("wrapT")) && _JsonValue[GLTFTEXT("wrapT")].IsInt())
         {
-            data_ptr->wrapT = _JsonValue[L"wrapT"].GetInt();
+            data_ptr->wrapT = _JsonValue[GLTFTEXT("wrapT")].GetInt();
         }
         _pData = data_ptr;
         return true;
@@ -217,9 +217,9 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"name") && _JsonValue[L"name"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("name")) && _JsonValue[GLTFTEXT("name")].IsString())
         {
-            data_ptr->name = _JsonValue[L"name"].GetString();
+            data_ptr->name = _JsonValue[GLTFTEXT("name")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -237,17 +237,17 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"input") && _JsonValue[L"input"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("input")) && _JsonValue[GLTFTEXT("input")].IsInt())
         {
-            if (!(data_ptr->input << _JsonValue[L"input"])) return false;
+            if (!(data_ptr->input << _JsonValue[GLTFTEXT("input")])) return false;
         }
-        if (_JsonValue.HasMember(L"output") && _JsonValue[L"output"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("output")) && _JsonValue[GLTFTEXT("output")].IsInt())
         {
-            if (!(data_ptr->output << _JsonValue[L"output"])) return false;
+            if (!(data_ptr->output << _JsonValue[GLTFTEXT("output")])) return false;
         }
-        if (_JsonValue.HasMember(L"interpolation") && _JsonValue[L"interpolation"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("interpolation")) && _JsonValue[GLTFTEXT("interpolation")].IsString())
         {
-            data_ptr->interpolation = _JsonValue[L"interpolation"].GetString();
+            data_ptr->interpolation = _JsonValue[GLTFTEXT("interpolation")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -277,9 +277,9 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"nodes") && _JsonValue[L"nodes"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("nodes")) && _JsonValue[GLTFTEXT("nodes")].IsArray())
         {
-            if (!(data_ptr->nodes << _JsonValue[L"nodes"])) return false;
+            if (!(data_ptr->nodes << _JsonValue[GLTFTEXT("nodes")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -297,21 +297,21 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"aspectRatio") && _JsonValue[L"aspectRatio"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("aspectRatio")) && _JsonValue[GLTFTEXT("aspectRatio")].IsFloat())
         {
-            data_ptr->aspectRatio = _JsonValue[L"aspectRatio"].GetFloat();
+            data_ptr->aspectRatio = _JsonValue[GLTFTEXT("aspectRatio")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"yfov") && _JsonValue[L"yfov"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("yfov")) && _JsonValue[GLTFTEXT("yfov")].IsFloat())
         {
-            data_ptr->yfov = _JsonValue[L"yfov"].GetFloat();
+            data_ptr->yfov = _JsonValue[GLTFTEXT("yfov")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"znear") && _JsonValue[L"znear"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsFloat())
         {
-            data_ptr->znear = _JsonValue[L"znear"].GetFloat();
+            data_ptr->znear = _JsonValue[GLTFTEXT("znear")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"zfar") && _JsonValue[L"zfar"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsFloat())
         {
-            data_ptr->zfar = _JsonValue[L"zfar"].GetFloat();
+            data_ptr->zfar = _JsonValue[GLTFTEXT("zfar")].GetFloat();
         }
         _pData = data_ptr;
         return true;
@@ -329,25 +329,25 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"byteLength") && _JsonValue[L"byteLength"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteLength")) && _JsonValue[GLTFTEXT("byteLength")].IsInt())
         {
-            data_ptr->byteLength = _JsonValue[L"byteLength"].GetInt();
+            data_ptr->byteLength = _JsonValue[GLTFTEXT("byteLength")].GetInt();
         }
-        if (_JsonValue.HasMember(L"buffer") && _JsonValue[L"buffer"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("buffer")) && _JsonValue[GLTFTEXT("buffer")].IsInt())
         {
-            if (!(data_ptr->buffer << _JsonValue[L"buffer"])) return false;
+            if (!(data_ptr->buffer << _JsonValue[GLTFTEXT("buffer")])) return false;
         }
-        if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteOffset")) && _JsonValue[GLTFTEXT("byteOffset")].IsInt())
         {
-            data_ptr->byteOffset = _JsonValue[L"byteOffset"].GetInt();
+            data_ptr->byteOffset = _JsonValue[GLTFTEXT("byteOffset")].GetInt();
         }
-        if (_JsonValue.HasMember(L"target") && _JsonValue[L"target"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("target")) && _JsonValue[GLTFTEXT("target")].IsInt())
         {
-            data_ptr->target = _JsonValue[L"target"].GetInt();
+            data_ptr->target = _JsonValue[GLTFTEXT("target")].GetInt();
         }
-        if (_JsonValue.HasMember(L"byteStride") && _JsonValue[L"byteStride"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteStride")) && _JsonValue[GLTFTEXT("byteStride")].IsInt())
         {
-            data_ptr->byteStride = _JsonValue[L"byteStride"].GetInt();
+            data_ptr->byteStride = _JsonValue[GLTFTEXT("byteStride")].GetInt();
         }
         _pData = data_ptr;
         return true;
@@ -365,9 +365,9 @@ namespace libgltf
             std::shared_ptr<STextureInfo> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"scale") && _JsonValue[L"scale"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("scale")) && _JsonValue[GLTFTEXT("scale")].IsFloat())
         {
-            data_ptr->scale = _JsonValue[L"scale"].GetFloat();
+            data_ptr->scale = _JsonValue[GLTFTEXT("scale")].GetFloat();
         }
         _pData = data_ptr;
         return true;
@@ -385,9 +385,9 @@ namespace libgltf
             std::shared_ptr<STextureInfo> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"strength") && _JsonValue[L"strength"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("strength")) && _JsonValue[GLTFTEXT("strength")].IsFloat())
         {
-            data_ptr->strength = _JsonValue[L"strength"].GetFloat();
+            data_ptr->strength = _JsonValue[GLTFTEXT("strength")].GetFloat();
         }
         _pData = data_ptr;
         return true;
@@ -405,13 +405,13 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("bufferView")) && _JsonValue[GLTFTEXT("bufferView")].IsInt())
         {
-            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
+            if (!(data_ptr->bufferView << _JsonValue[GLTFTEXT("bufferView")])) return false;
         }
-        if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteOffset")) && _JsonValue[GLTFTEXT("byteOffset")].IsInt())
         {
-            data_ptr->byteOffset = _JsonValue[L"byteOffset"].GetInt();
+            data_ptr->byteOffset = _JsonValue[GLTFTEXT("byteOffset")].GetInt();
         }
         _pData = data_ptr;
         return true;
@@ -429,13 +429,13 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"node") && _JsonValue[L"node"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("node")) && _JsonValue[GLTFTEXT("node")].IsInt())
         {
-            if (!(data_ptr->node << _JsonValue[L"node"])) return false;
+            if (!(data_ptr->node << _JsonValue[GLTFTEXT("node")])) return false;
         }
-        if (_JsonValue.HasMember(L"path") && _JsonValue[L"path"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("path")) && _JsonValue[GLTFTEXT("path")].IsString())
         {
-            data_ptr->path = _JsonValue[L"path"].GetString();
+            data_ptr->path = _JsonValue[GLTFTEXT("path")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -453,13 +453,13 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"primitives") && _JsonValue[L"primitives"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("primitives")) && _JsonValue[GLTFTEXT("primitives")].IsArray())
         {
-            if (!(data_ptr->primitives << _JsonValue[L"primitives"])) return false;
+            if (!(data_ptr->primitives << _JsonValue[GLTFTEXT("primitives")])) return false;
         }
-        if (_JsonValue.HasMember(L"weights") && _JsonValue[L"weights"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("weights")) && _JsonValue[GLTFTEXT("weights")].IsArray())
         {
-            if (!(data_ptr->weights << _JsonValue[L"weights"])) return false;
+            if (!(data_ptr->weights << _JsonValue[GLTFTEXT("weights")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -477,17 +477,17 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"count") && _JsonValue[L"count"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("count")) && _JsonValue[GLTFTEXT("count")].IsInt())
         {
-            data_ptr->count = _JsonValue[L"count"].GetInt();
+            data_ptr->count = _JsonValue[GLTFTEXT("count")].GetInt();
         }
-        if (_JsonValue.HasMember(L"indices") && _JsonValue[L"indices"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("indices")) && _JsonValue[GLTFTEXT("indices")].IsObject())
         {
-            if (!(data_ptr->indices << _JsonValue[L"indices"])) return false;
+            if (!(data_ptr->indices << _JsonValue[GLTFTEXT("indices")])) return false;
         }
-        if (_JsonValue.HasMember(L"values") && _JsonValue[L"values"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("values")) && _JsonValue[GLTFTEXT("values")].IsObject())
         {
-            if (!(data_ptr->values << _JsonValue[L"values"])) return false;
+            if (!(data_ptr->values << _JsonValue[GLTFTEXT("values")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -505,25 +505,25 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"indices") && _JsonValue[L"indices"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("indices")) && _JsonValue[GLTFTEXT("indices")].IsInt())
         {
-            if (!(data_ptr->indices << _JsonValue[L"indices"])) return false;
+            if (!(data_ptr->indices << _JsonValue[GLTFTEXT("indices")])) return false;
         }
-        if (_JsonValue.HasMember(L"attributes") && _JsonValue[L"attributes"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("attributes")) && _JsonValue[GLTFTEXT("attributes")].IsObject())
         {
-            if (!(data_ptr->attributes << _JsonValue[L"attributes"])) return false;
+            if (!(data_ptr->attributes << _JsonValue[GLTFTEXT("attributes")])) return false;
         }
-        if (_JsonValue.HasMember(L"material") && _JsonValue[L"material"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("material")) && _JsonValue[GLTFTEXT("material")].IsInt())
         {
-            if (!(data_ptr->material << _JsonValue[L"material"])) return false;
+            if (!(data_ptr->material << _JsonValue[GLTFTEXT("material")])) return false;
         }
-        if (_JsonValue.HasMember(L"mode") && _JsonValue[L"mode"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("mode")) && _JsonValue[GLTFTEXT("mode")].IsInt())
         {
-            data_ptr->mode = _JsonValue[L"mode"].GetInt();
+            data_ptr->mode = _JsonValue[GLTFTEXT("mode")].GetInt();
         }
-        if (_JsonValue.HasMember(L"targets") && _JsonValue[L"targets"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("targets")) && _JsonValue[GLTFTEXT("targets")].IsArray())
         {
-            if (!(data_ptr->targets << _JsonValue[L"targets"])) return false;
+            if (!(data_ptr->targets << _JsonValue[GLTFTEXT("targets")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -553,13 +553,13 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"target") && _JsonValue[L"target"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("target")) && _JsonValue[GLTFTEXT("target")].IsObject())
         {
-            if (!(data_ptr->target << _JsonValue[L"target"])) return false;
+            if (!(data_ptr->target << _JsonValue[GLTFTEXT("target")])) return false;
         }
-        if (_JsonValue.HasMember(L"sampler") && _JsonValue[L"sampler"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("sampler")) && _JsonValue[GLTFTEXT("sampler")].IsInt())
         {
-            if (!(data_ptr->sampler << _JsonValue[L"sampler"])) return false;
+            if (!(data_ptr->sampler << _JsonValue[GLTFTEXT("sampler")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -590,17 +590,17 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"componentType") && _JsonValue[L"componentType"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("componentType")) && _JsonValue[GLTFTEXT("componentType")].IsInt())
         {
-            data_ptr->componentType = _JsonValue[L"componentType"].GetInt();
+            data_ptr->componentType = _JsonValue[GLTFTEXT("componentType")].GetInt();
         }
-        if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("bufferView")) && _JsonValue[GLTFTEXT("bufferView")].IsInt())
         {
-            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
+            if (!(data_ptr->bufferView << _JsonValue[GLTFTEXT("bufferView")])) return false;
         }
-        if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteOffset")) && _JsonValue[GLTFTEXT("byteOffset")].IsInt())
         {
-            data_ptr->byteOffset = _JsonValue[L"byteOffset"].GetInt();
+            data_ptr->byteOffset = _JsonValue[GLTFTEXT("byteOffset")].GetInt();
         }
         _pData = data_ptr;
         return true;
@@ -618,41 +618,41 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"scale") && _JsonValue[L"scale"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("scale")) && _JsonValue[GLTFTEXT("scale")].IsArray())
         {
-            if (!(data_ptr->scale << _JsonValue[L"scale"])) return false;
+            if (!(data_ptr->scale << _JsonValue[GLTFTEXT("scale")])) return false;
         }
-        if (_JsonValue.HasMember(L"rotation") && _JsonValue[L"rotation"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("rotation")) && _JsonValue[GLTFTEXT("rotation")].IsArray())
         {
-            if (!(data_ptr->rotation << _JsonValue[L"rotation"])) return false;
+            if (!(data_ptr->rotation << _JsonValue[GLTFTEXT("rotation")])) return false;
         }
-        if (_JsonValue.HasMember(L"matrix") && _JsonValue[L"matrix"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("matrix")) && _JsonValue[GLTFTEXT("matrix")].IsArray())
         {
-            if (!(data_ptr->matrix << _JsonValue[L"matrix"])) return false;
+            if (!(data_ptr->matrix << _JsonValue[GLTFTEXT("matrix")])) return false;
         }
-        if (_JsonValue.HasMember(L"mesh") && _JsonValue[L"mesh"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("mesh")) && _JsonValue[GLTFTEXT("mesh")].IsInt())
         {
-            if (!(data_ptr->mesh << _JsonValue[L"mesh"])) return false;
+            if (!(data_ptr->mesh << _JsonValue[GLTFTEXT("mesh")])) return false;
         }
-        if (_JsonValue.HasMember(L"camera") && _JsonValue[L"camera"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("camera")) && _JsonValue[GLTFTEXT("camera")].IsInt())
         {
-            if (!(data_ptr->camera << _JsonValue[L"camera"])) return false;
+            if (!(data_ptr->camera << _JsonValue[GLTFTEXT("camera")])) return false;
         }
-        if (_JsonValue.HasMember(L"weights") && _JsonValue[L"weights"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("weights")) && _JsonValue[GLTFTEXT("weights")].IsArray())
         {
-            if (!(data_ptr->weights << _JsonValue[L"weights"])) return false;
+            if (!(data_ptr->weights << _JsonValue[GLTFTEXT("weights")])) return false;
         }
-        if (_JsonValue.HasMember(L"skin") && _JsonValue[L"skin"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("skin")) && _JsonValue[GLTFTEXT("skin")].IsInt())
         {
-            if (!(data_ptr->skin << _JsonValue[L"skin"])) return false;
+            if (!(data_ptr->skin << _JsonValue[GLTFTEXT("skin")])) return false;
         }
-        if (_JsonValue.HasMember(L"translation") && _JsonValue[L"translation"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("translation")) && _JsonValue[GLTFTEXT("translation")].IsArray())
         {
-            if (!(data_ptr->translation << _JsonValue[L"translation"])) return false;
+            if (!(data_ptr->translation << _JsonValue[GLTFTEXT("translation")])) return false;
         }
-        if (_JsonValue.HasMember(L"children") && _JsonValue[L"children"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("children")) && _JsonValue[GLTFTEXT("children")].IsArray())
         {
-            if (!(data_ptr->children << _JsonValue[L"children"])) return false;
+            if (!(data_ptr->children << _JsonValue[GLTFTEXT("children")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -670,13 +670,13 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"channels") && _JsonValue[L"channels"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("channels")) && _JsonValue[GLTFTEXT("channels")].IsArray())
         {
-            if (!(data_ptr->channels << _JsonValue[L"channels"])) return false;
+            if (!(data_ptr->channels << _JsonValue[GLTFTEXT("channels")])) return false;
         }
-        if (_JsonValue.HasMember(L"samplers") && _JsonValue[L"samplers"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("samplers")) && _JsonValue[GLTFTEXT("samplers")].IsArray())
         {
-            if (!(data_ptr->samplers << _JsonValue[L"samplers"])) return false;
+            if (!(data_ptr->samplers << _JsonValue[GLTFTEXT("samplers")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -694,17 +694,17 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"joints") && _JsonValue[L"joints"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("joints")) && _JsonValue[GLTFTEXT("joints")].IsArray())
         {
-            if (!(data_ptr->joints << _JsonValue[L"joints"])) return false;
+            if (!(data_ptr->joints << _JsonValue[GLTFTEXT("joints")])) return false;
         }
-        if (_JsonValue.HasMember(L"inverseBindMatrices") && _JsonValue[L"inverseBindMatrices"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("inverseBindMatrices")) && _JsonValue[GLTFTEXT("inverseBindMatrices")].IsInt())
         {
-            if (!(data_ptr->inverseBindMatrices << _JsonValue[L"inverseBindMatrices"])) return false;
+            if (!(data_ptr->inverseBindMatrices << _JsonValue[GLTFTEXT("inverseBindMatrices")])) return false;
         }
-        if (_JsonValue.HasMember(L"skeleton") && _JsonValue[L"skeleton"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("skeleton")) && _JsonValue[GLTFTEXT("skeleton")].IsInt())
         {
-            if (!(data_ptr->skeleton << _JsonValue[L"skeleton"])) return false;
+            if (!(data_ptr->skeleton << _JsonValue[GLTFTEXT("skeleton")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -722,25 +722,25 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"roughnessFactor") && _JsonValue[L"roughnessFactor"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("roughnessFactor")) && _JsonValue[GLTFTEXT("roughnessFactor")].IsFloat())
         {
-            data_ptr->roughnessFactor = _JsonValue[L"roughnessFactor"].GetFloat();
+            data_ptr->roughnessFactor = _JsonValue[GLTFTEXT("roughnessFactor")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"baseColorTexture") && _JsonValue[L"baseColorTexture"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("baseColorTexture")) && _JsonValue[GLTFTEXT("baseColorTexture")].IsObject())
         {
-            if (!(data_ptr->baseColorTexture << _JsonValue[L"baseColorTexture"])) return false;
+            if (!(data_ptr->baseColorTexture << _JsonValue[GLTFTEXT("baseColorTexture")])) return false;
         }
-        if (_JsonValue.HasMember(L"metallicFactor") && _JsonValue[L"metallicFactor"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("metallicFactor")) && _JsonValue[GLTFTEXT("metallicFactor")].IsFloat())
         {
-            data_ptr->metallicFactor = _JsonValue[L"metallicFactor"].GetFloat();
+            data_ptr->metallicFactor = _JsonValue[GLTFTEXT("metallicFactor")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"baseColorFactor") && _JsonValue[L"baseColorFactor"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("baseColorFactor")) && _JsonValue[GLTFTEXT("baseColorFactor")].IsArray())
         {
-            if (!(data_ptr->baseColorFactor << _JsonValue[L"baseColorFactor"])) return false;
+            if (!(data_ptr->baseColorFactor << _JsonValue[GLTFTEXT("baseColorFactor")])) return false;
         }
-        if (_JsonValue.HasMember(L"metallicRoughnessTexture") && _JsonValue[L"metallicRoughnessTexture"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("metallicRoughnessTexture")) && _JsonValue[GLTFTEXT("metallicRoughnessTexture")].IsObject())
         {
-            if (!(data_ptr->metallicRoughnessTexture << _JsonValue[L"metallicRoughnessTexture"])) return false;
+            if (!(data_ptr->metallicRoughnessTexture << _JsonValue[GLTFTEXT("metallicRoughnessTexture")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -758,17 +758,17 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"type") && _JsonValue[L"type"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("type")) && _JsonValue[GLTFTEXT("type")].IsString())
         {
-            data_ptr->type = _JsonValue[L"type"].GetString();
+            data_ptr->type = _JsonValue[GLTFTEXT("type")].GetString();
         }
-        if (_JsonValue.HasMember(L"perspective") && _JsonValue[L"perspective"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("perspective")) && _JsonValue[GLTFTEXT("perspective")].IsObject())
         {
-            if (!(data_ptr->perspective << _JsonValue[L"perspective"])) return false;
+            if (!(data_ptr->perspective << _JsonValue[GLTFTEXT("perspective")])) return false;
         }
-        if (_JsonValue.HasMember(L"orthographic") && _JsonValue[L"orthographic"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("orthographic")) && _JsonValue[GLTFTEXT("orthographic")].IsObject())
         {
-            if (!(data_ptr->orthographic << _JsonValue[L"orthographic"])) return false;
+            if (!(data_ptr->orthographic << _JsonValue[GLTFTEXT("orthographic")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -786,17 +786,17 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"mimeType") && _JsonValue[L"mimeType"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("mimeType")) && _JsonValue[GLTFTEXT("mimeType")].IsString())
         {
-            data_ptr->mimeType = _JsonValue[L"mimeType"].GetString();
+            data_ptr->mimeType = _JsonValue[GLTFTEXT("mimeType")].GetString();
         }
-        if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("bufferView")) && _JsonValue[GLTFTEXT("bufferView")].IsInt())
         {
-            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
+            if (!(data_ptr->bufferView << _JsonValue[GLTFTEXT("bufferView")])) return false;
         }
-        if (_JsonValue.HasMember(L"uri") && _JsonValue[L"uri"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("uri")) && _JsonValue[GLTFTEXT("uri")].IsString())
         {
-            data_ptr->uri = _JsonValue[L"uri"].GetString();
+            data_ptr->uri = _JsonValue[GLTFTEXT("uri")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -814,13 +814,13 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"source") && _JsonValue[L"source"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("source")) && _JsonValue[GLTFTEXT("source")].IsInt())
         {
-            if (!(data_ptr->source << _JsonValue[L"source"])) return false;
+            if (!(data_ptr->source << _JsonValue[GLTFTEXT("source")])) return false;
         }
-        if (_JsonValue.HasMember(L"sampler") && _JsonValue[L"sampler"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("sampler")) && _JsonValue[GLTFTEXT("sampler")].IsInt())
         {
-            if (!(data_ptr->sampler << _JsonValue[L"sampler"])) return false;
+            if (!(data_ptr->sampler << _JsonValue[GLTFTEXT("sampler")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -838,21 +838,21 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"xmag") && _JsonValue[L"xmag"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("xmag")) && _JsonValue[GLTFTEXT("xmag")].IsFloat())
         {
-            data_ptr->xmag = _JsonValue[L"xmag"].GetFloat();
+            data_ptr->xmag = _JsonValue[GLTFTEXT("xmag")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"ymag") && _JsonValue[L"ymag"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("ymag")) && _JsonValue[GLTFTEXT("ymag")].IsFloat())
         {
-            data_ptr->ymag = _JsonValue[L"ymag"].GetFloat();
+            data_ptr->ymag = _JsonValue[GLTFTEXT("ymag")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"zfar") && _JsonValue[L"zfar"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsFloat())
         {
-            data_ptr->zfar = _JsonValue[L"zfar"].GetFloat();
+            data_ptr->zfar = _JsonValue[GLTFTEXT("zfar")].GetFloat();
         }
-        if (_JsonValue.HasMember(L"znear") && _JsonValue[L"znear"].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsFloat())
         {
-            data_ptr->znear = _JsonValue[L"znear"].GetFloat();
+            data_ptr->znear = _JsonValue[GLTFTEXT("znear")].GetFloat();
         }
         _pData = data_ptr;
         return true;
@@ -870,13 +870,13 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"byteLength") && _JsonValue[L"byteLength"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteLength")) && _JsonValue[GLTFTEXT("byteLength")].IsInt())
         {
-            data_ptr->byteLength = _JsonValue[L"byteLength"].GetInt();
+            data_ptr->byteLength = _JsonValue[GLTFTEXT("byteLength")].GetInt();
         }
-        if (_JsonValue.HasMember(L"uri") && _JsonValue[L"uri"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("uri")) && _JsonValue[GLTFTEXT("uri")].IsString())
         {
-            data_ptr->uri = _JsonValue[L"uri"].GetString();
+            data_ptr->uri = _JsonValue[GLTFTEXT("uri")].GetString();
         }
         _pData = data_ptr;
         return true;
@@ -894,41 +894,41 @@ namespace libgltf
             std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"count") && _JsonValue[L"count"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("count")) && _JsonValue[GLTFTEXT("count")].IsInt())
         {
-            data_ptr->count = _JsonValue[L"count"].GetInt();
+            data_ptr->count = _JsonValue[GLTFTEXT("count")].GetInt();
         }
-        if (_JsonValue.HasMember(L"min") && _JsonValue[L"min"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("min")) && _JsonValue[GLTFTEXT("min")].IsArray())
         {
-            if (!(data_ptr->min << _JsonValue[L"min"])) return false;
+            if (!(data_ptr->min << _JsonValue[GLTFTEXT("min")])) return false;
         }
-        if (_JsonValue.HasMember(L"max") && _JsonValue[L"max"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("max")) && _JsonValue[GLTFTEXT("max")].IsArray())
         {
-            if (!(data_ptr->max << _JsonValue[L"max"])) return false;
+            if (!(data_ptr->max << _JsonValue[GLTFTEXT("max")])) return false;
         }
-        if (_JsonValue.HasMember(L"bufferView") && _JsonValue[L"bufferView"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("bufferView")) && _JsonValue[GLTFTEXT("bufferView")].IsInt())
         {
-            if (!(data_ptr->bufferView << _JsonValue[L"bufferView"])) return false;
+            if (!(data_ptr->bufferView << _JsonValue[GLTFTEXT("bufferView")])) return false;
         }
-        if (_JsonValue.HasMember(L"componentType") && _JsonValue[L"componentType"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("componentType")) && _JsonValue[GLTFTEXT("componentType")].IsInt())
         {
-            data_ptr->componentType = _JsonValue[L"componentType"].GetInt();
+            data_ptr->componentType = _JsonValue[GLTFTEXT("componentType")].GetInt();
         }
-        if (_JsonValue.HasMember(L"byteOffset") && _JsonValue[L"byteOffset"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("byteOffset")) && _JsonValue[GLTFTEXT("byteOffset")].IsInt())
         {
-            data_ptr->byteOffset = _JsonValue[L"byteOffset"].GetInt();
+            data_ptr->byteOffset = _JsonValue[GLTFTEXT("byteOffset")].GetInt();
         }
-        if (_JsonValue.HasMember(L"sparse") && _JsonValue[L"sparse"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("sparse")) && _JsonValue[GLTFTEXT("sparse")].IsObject())
         {
-            if (!(data_ptr->sparse << _JsonValue[L"sparse"])) return false;
+            if (!(data_ptr->sparse << _JsonValue[GLTFTEXT("sparse")])) return false;
         }
-        if (_JsonValue.HasMember(L"type") && _JsonValue[L"type"].IsString())
+        if (_JsonValue.HasMember(GLTFTEXT("type")) && _JsonValue[GLTFTEXT("type")].IsString())
         {
-            data_ptr->type = _JsonValue[L"type"].GetString();
+            data_ptr->type = _JsonValue[GLTFTEXT("type")].GetString();
         }
-        if (_JsonValue.HasMember(L"normalized") && _JsonValue[L"normalized"].IsBool())
+        if (_JsonValue.HasMember(GLTFTEXT("normalized")) && _JsonValue[GLTFTEXT("normalized")].IsBool())
         {
-            data_ptr->normalized = _JsonValue[L"normalized"].GetBool();
+            data_ptr->normalized = _JsonValue[GLTFTEXT("normalized")].GetBool();
         }
         _pData = data_ptr;
         return true;
@@ -946,73 +946,73 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"textures") && _JsonValue[L"textures"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("textures")) && _JsonValue[GLTFTEXT("textures")].IsArray())
         {
-            if (!(data_ptr->textures << _JsonValue[L"textures"])) return false;
+            if (!(data_ptr->textures << _JsonValue[GLTFTEXT("textures")])) return false;
         }
-        if (_JsonValue.HasMember(L"cameras") && _JsonValue[L"cameras"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("cameras")) && _JsonValue[GLTFTEXT("cameras")].IsArray())
         {
-            if (!(data_ptr->cameras << _JsonValue[L"cameras"])) return false;
+            if (!(data_ptr->cameras << _JsonValue[GLTFTEXT("cameras")])) return false;
         }
-        if (_JsonValue.HasMember(L"accessors") && _JsonValue[L"accessors"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("accessors")) && _JsonValue[GLTFTEXT("accessors")].IsArray())
         {
-            if (!(data_ptr->accessors << _JsonValue[L"accessors"])) return false;
+            if (!(data_ptr->accessors << _JsonValue[GLTFTEXT("accessors")])) return false;
         }
-        if (_JsonValue.HasMember(L"extensionsUsed") && _JsonValue[L"extensionsUsed"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("extensionsUsed")) && _JsonValue[GLTFTEXT("extensionsUsed")].IsArray())
         {
-            if (!(data_ptr->extensionsUsed << _JsonValue[L"extensionsUsed"])) return false;
+            if (!(data_ptr->extensionsUsed << _JsonValue[GLTFTEXT("extensionsUsed")])) return false;
         }
-        if (_JsonValue.HasMember(L"samplers") && _JsonValue[L"samplers"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("samplers")) && _JsonValue[GLTFTEXT("samplers")].IsArray())
         {
-            if (!(data_ptr->samplers << _JsonValue[L"samplers"])) return false;
+            if (!(data_ptr->samplers << _JsonValue[GLTFTEXT("samplers")])) return false;
         }
-        if (_JsonValue.HasMember(L"scenes") && _JsonValue[L"scenes"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("scenes")) && _JsonValue[GLTFTEXT("scenes")].IsArray())
         {
-            if (!(data_ptr->scenes << _JsonValue[L"scenes"])) return false;
+            if (!(data_ptr->scenes << _JsonValue[GLTFTEXT("scenes")])) return false;
         }
-        if (_JsonValue.HasMember(L"scene") && _JsonValue[L"scene"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("scene")) && _JsonValue[GLTFTEXT("scene")].IsInt())
         {
-            if (!(data_ptr->scene << _JsonValue[L"scene"])) return false;
+            if (!(data_ptr->scene << _JsonValue[GLTFTEXT("scene")])) return false;
         }
-        if (_JsonValue.HasMember(L"extensionsRequired") && _JsonValue[L"extensionsRequired"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("extensionsRequired")) && _JsonValue[GLTFTEXT("extensionsRequired")].IsArray())
         {
-            if (!(data_ptr->extensionsRequired << _JsonValue[L"extensionsRequired"])) return false;
+            if (!(data_ptr->extensionsRequired << _JsonValue[GLTFTEXT("extensionsRequired")])) return false;
         }
-        if (_JsonValue.HasMember(L"meshes") && _JsonValue[L"meshes"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("meshes")) && _JsonValue[GLTFTEXT("meshes")].IsArray())
         {
-            if (!(data_ptr->meshes << _JsonValue[L"meshes"])) return false;
+            if (!(data_ptr->meshes << _JsonValue[GLTFTEXT("meshes")])) return false;
         }
-        if (_JsonValue.HasMember(L"animations") && _JsonValue[L"animations"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("animations")) && _JsonValue[GLTFTEXT("animations")].IsArray())
         {
-            if (!(data_ptr->animations << _JsonValue[L"animations"])) return false;
+            if (!(data_ptr->animations << _JsonValue[GLTFTEXT("animations")])) return false;
         }
-        if (_JsonValue.HasMember(L"images") && _JsonValue[L"images"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("images")) && _JsonValue[GLTFTEXT("images")].IsArray())
         {
-            if (!(data_ptr->images << _JsonValue[L"images"])) return false;
+            if (!(data_ptr->images << _JsonValue[GLTFTEXT("images")])) return false;
         }
-        if (_JsonValue.HasMember(L"nodes") && _JsonValue[L"nodes"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("nodes")) && _JsonValue[GLTFTEXT("nodes")].IsArray())
         {
-            if (!(data_ptr->nodes << _JsonValue[L"nodes"])) return false;
+            if (!(data_ptr->nodes << _JsonValue[GLTFTEXT("nodes")])) return false;
         }
-        if (_JsonValue.HasMember(L"bufferViews") && _JsonValue[L"bufferViews"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("bufferViews")) && _JsonValue[GLTFTEXT("bufferViews")].IsArray())
         {
-            if (!(data_ptr->bufferViews << _JsonValue[L"bufferViews"])) return false;
+            if (!(data_ptr->bufferViews << _JsonValue[GLTFTEXT("bufferViews")])) return false;
         }
-        if (_JsonValue.HasMember(L"skins") && _JsonValue[L"skins"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("skins")) && _JsonValue[GLTFTEXT("skins")].IsArray())
         {
-            if (!(data_ptr->skins << _JsonValue[L"skins"])) return false;
+            if (!(data_ptr->skins << _JsonValue[GLTFTEXT("skins")])) return false;
         }
-        if (_JsonValue.HasMember(L"materials") && _JsonValue[L"materials"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("materials")) && _JsonValue[GLTFTEXT("materials")].IsArray())
         {
-            if (!(data_ptr->materials << _JsonValue[L"materials"])) return false;
+            if (!(data_ptr->materials << _JsonValue[GLTFTEXT("materials")])) return false;
         }
-        if (_JsonValue.HasMember(L"buffers") && _JsonValue[L"buffers"].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("buffers")) && _JsonValue[GLTFTEXT("buffers")].IsArray())
         {
-            if (!(data_ptr->buffers << _JsonValue[L"buffers"])) return false;
+            if (!(data_ptr->buffers << _JsonValue[GLTFTEXT("buffers")])) return false;
         }
-        if (_JsonValue.HasMember(L"asset") && _JsonValue[L"asset"].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("asset")) && _JsonValue[GLTFTEXT("asset")].IsObject())
         {
-            if (!(data_ptr->asset << _JsonValue[L"asset"])) return false;
+            if (!(data_ptr->asset << _JsonValue[GLTFTEXT("asset")])) return false;
         }
         _pData = data_ptr;
         return true;
@@ -1030,13 +1030,13 @@ namespace libgltf
             std::shared_ptr<SGlTFProperty> super_ptr = data_ptr;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(L"index") && _JsonValue[L"index"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("index")) && _JsonValue[GLTFTEXT("index")].IsInt())
         {
-            if (!(data_ptr->index << _JsonValue[L"index"])) return false;
+            if (!(data_ptr->index << _JsonValue[GLTFTEXT("index")])) return false;
         }
-        if (_JsonValue.HasMember(L"texCoord") && _JsonValue[L"texCoord"].IsInt())
+        if (_JsonValue.HasMember(GLTFTEXT("texCoord")) && _JsonValue[GLTFTEXT("texCoord")].IsInt())
         {
-            data_ptr->texCoord = _JsonValue[L"texCoord"].GetInt();
+            data_ptr->texCoord = _JsonValue[GLTFTEXT("texCoord")].GetInt();
         }
         _pData = data_ptr;
         return true;
