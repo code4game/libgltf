@@ -82,7 +82,7 @@ test_linux:
         - gcovr
 
 test_macos:
-    stage: build
+    stage: test
     script:
         - mkdir build
         - cd build
