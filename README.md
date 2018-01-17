@@ -1,6 +1,8 @@
 # libgltf
 
-[![Join the chat at https://gitter.im/code4game/libgltf](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/tyEjtQB)
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&style=flat-square)](https://twitter.com/C4gIo)
 
 [![pipeline status](https://gitlab.com/c4g/gltf/libgltf/badges/master/pipeline.svg)](https://gitlab.com/c4g/gltf/libgltf/commits/master)
 [![Build Status](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
@@ -12,7 +14,11 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
+
+## Roadmap
+
+[See trello](https://trello.com/b/mEDeWUdC)
 
 ## License
 
