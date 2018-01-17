@@ -61,11 +61,11 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::SGlTF> gltf_data;
     if (gltf_data << input_content.str())
     {
-        printf("Parse Success\n");
+        printf("operator << Success\n");
     }
     else
     {
-        printf("Failed\n");
+        printf("operator << Failed\n");
         return error_code;
     }
 
@@ -77,7 +77,12 @@ int main(int _iArgc, char* _pcArgv[])
 
     if (gltf_data >> output_content)
     {
-        printf("Success\n");
+        printf("operator >> Success\n");
+    }
+    else
+    {
+        printf("operator >> Failed\n");
+        return error_code;
     }
 
     return 0;

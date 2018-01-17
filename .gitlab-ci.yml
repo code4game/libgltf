@@ -62,7 +62,7 @@ test_linux:
     script:
         - mkdir build
         - cd build
-        - 'cmake -LIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
+        - 'cmake -DLIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
         - make
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
