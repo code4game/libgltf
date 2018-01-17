@@ -23,10 +23,17 @@ set(SOURCE_FILE_LIST
 source_group("header" FILES ${HEADER_FILE_LIST})
 source_group("source" FILES ${SOURCE_FILE_LIST})
 
-set(LIBRARY_PATH_LIST
-    debug libgltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
-    optimized libgltf${STATIC_LIBRARY_EXTENSION}
-    )
+if(${PLATFORM_WINDOWS})
+    set(LIBRARY_PATH_LIST
+        debug libgltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
+        optimized libgltf${STATIC_LIBRARY_EXTENSION}
+        )
+elseif(${PLATFORM_LINUX} OR ${PLATFORM_MACOS})
+    set(LIBRARY_PATH_LIST
+        debug gltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
+        optimized gltf${STATIC_LIBRARY_EXTENSION}
+        )
+endif()
 link_libraries(${LIBRARY_PATH_LIST})
 
 set(EXECUTABLE_OUTPUT_PATH ${INTERNAL_BIN_PATH})
