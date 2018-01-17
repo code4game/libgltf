@@ -113,6 +113,7 @@ build_win32:
         paths:
             - output/include/*
             - output/lib/**/*.lib
+            - output/lib/**/**/*.lib
     tags:
         - win32
         - cmake
@@ -135,6 +136,7 @@ build_win64:
         paths:
             - output/include/*
             - output/lib/**/*.lib
+            - output/lib/**/**/*.lib
     tags:
         - win64
         - cmake
