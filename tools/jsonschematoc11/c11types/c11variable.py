@@ -13,6 +13,7 @@ class C11Variable(object):
 
     def __init__(self, name, schemaValue):
         self.schemaValue = schemaValue
+        self.typeName = ""
         self.c11Type = C11TypeNone()
         self.name = name
         self.comment = None
@@ -43,17 +44,23 @@ class C11Variable(object):
 
         if schemaValueType == u'bool' or schemaValueType == u'boolean':
             self.c11Type = C11TypeBool()
+            self.typeName = u'bool'
         elif schemaValueType == u'integer':
             self.c11Type = C11TypeInteger()
+            self.typeName = u'integer'
         elif schemaValueType == u'number':
             self.c11Type = C11TypeNumber()
+            self.typeName = u'number'
         elif schemaValueType == u'string':
             self.c11Type = C11TypeString()
+            self.typeName = u'string'
         elif schemaValueType == u'array':
             self.c11Type = C11TypeArray()
+            self.typeName = u'array'
             self.c11Type.setItemSchema(variableSchemaValue)
         elif schemaValueType == u'map':
             self.c11Type = C11TypeMap()
+            self.typeName = u'map'
             self.c11Type.setItemSchema(variableSchemaValue)
         else:
             if schemaValueType not in c11Types:
@@ -63,6 +70,7 @@ class C11Variable(object):
                         schemaValueType = schemaValueAdditionalProperties[u'$ref']
             if schemaValueType in c11Types:
                 self.c11Type = c11Types[schemaValueType]
+                self.typeName = u'struct'
             else:
                 self.c11Type = C11TypeNone()
         self.c11Type.revise(c11Types)
@@ -83,16 +91,30 @@ class C11Variable(object):
             schemaDefaultValue = self.schemaValue[u'default']
         return u'%s(%s)' % (self.name, self.c11Type.codeDefaultValue(schemaDefaultValue))
 
-    def codeParser(self):
+    def codeParser(self, isSet=True):
         codeLines = []
         codeCheckLine = self.c11Type.codeJsonCheck()
-        if codeCheckLine == None or len(codeCheckLine) <= 0:
-            codeLines.append(u'if (_JsonValue.HasMember(L"%s"))' % self.name)
+        if isSet:
+            if codeCheckLine == None or len(codeCheckLine) <= 0:
+                codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")))' % self.name)
+            else:
+                codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")) && _JsonValue[GLTFTEXT("%s")].%s)' % (self.name, self.name, codeCheckLine))
         else:
-            codeLines.append(u'if (_JsonValue.HasMember(L"%s") && _JsonValue[L"%s"].%s)' % (self.name, self.name, codeCheckLine))
+            if self.typeName == u'array' or self.typeName == u'map':
+                codeLines.append(u'if (!_pData->%s.empty())' % self.name)
+            elif self.typeName == u'struct':
+                codeLines.append(u'if (!!_pData->%s)' % self.name)
         codeLines.append(u'{')
-        codeSetLine = self.c11Type.codeJsonSet(u'data_ptr', self.name)
-        if codeSetLine != None and len(codeSetLine) > 0:
-            codeLines.append(u'    %s' % (codeSetLine))
+        if isSet:
+            codeSetLine = self.c11Type.codeJsonSet(u'data_ptr', self.name)
+            if codeSetLine != None and len(codeSetLine) > 0:
+                codeLines.append(u'    %s' % (codeSetLine))
+        else:
+            codeLines.append(u'    GLTFCharValue json_value;')
+            codeLines.append(u'    if (!(_pData->%s >> json_value)) return false;' % self.name)
+            codeLines.append(u'    _JsonValue.AddMember(GLTFTEXT("%s"), json_value, g_json_doc_ptr->GetAllocator());' % self.name)
+            #codeGetLine = self.c11Type.codeJsonGet(u'_pData', self.name)
+            #if codeGetLine != None and len(codeGetLine) > 0:
+            #    codeLines.append(u'    %s' % (codeGetLine))
         codeLines.append(u'}')
         return codeLines

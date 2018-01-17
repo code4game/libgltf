@@ -1,3 +1,4 @@
+#include "libgltfpch.h"
 #include "libgltf.h"
 
 namespace libgltf
@@ -15,50 +16,30 @@ namespace libgltf
         return true;
     }
 
-    SGlTFChildofRootProperty::SGlTFChildofRootProperty()
-        : SGlTFProperty()
-        , name(L"")
-    {
-        //
-    }
-
-    SGlTFChildofRootProperty::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SMaterial::SMaterial()
-        : SGlTFChildofRootProperty()
-        , alphaCutoff(0.500000f)
-        , emissiveTexture(nullptr)
-        , pbrMetallicRoughness(nullptr)
-        , occlusionTexture(nullptr)
-        , alphaMode(L"OPAQUE")
-        , doubleSided(false)
-        , normalTexture(nullptr)
-        , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
-    {
-        //
-    }
-
-    SMaterial::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
     SAsset::SAsset()
         : SGlTFProperty()
-        , minVersion(L"")
-        , version(L"")
-        , generator(L"")
-        , copyright(L"")
+        , minVersion(GLTFTEXT(""))
+        , version(GLTFTEXT(""))
+        , generator(GLTFTEXT(""))
+        , copyright(GLTFTEXT(""))
     {
         //
     }
 
     SAsset::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SGlTFChildofRootProperty::SGlTFChildofRootProperty()
+        : SGlTFProperty()
+        , name(GLTFTEXT(""))
+    {
+        //
+    }
+
+    SGlTFChildofRootProperty::operator bool() const
     {
         //TODO:
         return true;
@@ -84,7 +65,7 @@ namespace libgltf
         : SGlTFProperty()
         , input(nullptr)
         , output(nullptr)
-        , interpolation(L"LINEAR")
+        , interpolation(GLTFTEXT("LINEAR"))
     {
         //
     }
@@ -95,12 +76,21 @@ namespace libgltf
         return true;
     }
 
-    SExtras::SExtras()
+    SMaterial::SMaterial()
+        : SGlTFChildofRootProperty()
+        , alphaCutoff(0.500000f)
+        , emissiveTexture(nullptr)
+        , pbrMetallicRoughness(nullptr)
+        , occlusionTexture(nullptr)
+        , alphaMode(GLTFTEXT("OPAQUE"))
+        , doubleSided(false)
+        , normalTexture(nullptr)
+        , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
     {
         //
     }
 
-    SExtras::operator bool() const
+    SMaterial::operator bool() const
     {
         //TODO:
         return true;
@@ -209,7 +199,7 @@ namespace libgltf
     SAnimationChannelTarget::SAnimationChannelTarget()
         : SGlTFProperty()
         , node(nullptr)
-        , path(L"")
+        , path(GLTFTEXT(""))
     {
         //
     }
@@ -220,15 +210,12 @@ namespace libgltf
         return true;
     }
 
-    SMesh::SMesh()
-        : SGlTFChildofRootProperty()
-        , primitives()
-        , weights()
+    SExtras::SExtras()
     {
         //
     }
 
-    SMesh::operator bool() const
+    SExtras::operator bool() const
     {
         //TODO:
         return true;
@@ -392,7 +379,7 @@ namespace libgltf
 
     SCamera::SCamera()
         : SGlTFChildofRootProperty()
-        , type(L"")
+        , type(GLTFTEXT(""))
         , perspective(nullptr)
         , orthographic(nullptr)
     {
@@ -407,14 +394,28 @@ namespace libgltf
 
     SImage::SImage()
         : SGlTFChildofRootProperty()
-        , mimeType(L"")
+        , mimeType(GLTFTEXT(""))
         , bufferView(nullptr)
-        , uri(L"")
+        , uri(GLTFTEXT(""))
     {
         //
     }
 
     SImage::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SMesh::SMesh()
+        : SGlTFChildofRootProperty()
+        , primitives()
+        , weights()
+    {
+        //
+    }
+
+    SMesh::operator bool() const
     {
         //TODO:
         return true;
@@ -453,7 +454,7 @@ namespace libgltf
     SBuffer::SBuffer()
         : SGlTFChildofRootProperty()
         , byteLength(0)
-        , uri(L"")
+        , uri(GLTFTEXT(""))
     {
         //
     }
@@ -473,7 +474,7 @@ namespace libgltf
         , componentType(0)
         , byteOffset(0)
         , sparse(nullptr)
-        , type(L"")
+        , type(GLTFTEXT(""))
         , normalized(false)
     {
         //

@@ -32,15 +32,21 @@ int main(int _iArgc, char* _pcArgv[])
         }
     }
 
-    if (input_file_path.length() <= 0)
+    if (input_file_path.length() == 0)
     {
         printf("Command line format: runtest [--coveralls] input_file_path\n");
         return error_code;
     }
 
+#if defined(PLATFORM_WINDOWS)
     std::wstringstream input_content;
     {
         std::wifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
+#else
+    std::stringstream input_content;
+    {
+        std::ifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
+#endif
         if (!input_file.is_open())
         {
             printf("Can't open the file %s\n", input_file_path.c_str());
@@ -55,11 +61,27 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::SGlTF> gltf_data;
     if (gltf_data << input_content.str())
     {
-        printf("Success\n");
+        printf("operator << Success\n");
     }
     else
     {
-        printf("Failed\n");
+        printf("operator << Failed\n");
+        return error_code;
+    }
+
+#if defined(PLATFORM_WINDOWS)
+    std::wstring output_content;
+#else
+    std::string output_content;
+#endif
+
+    if (gltf_data >> output_content)
+    {
+        printf("operator >> Success\n");
+    }
+    else
+    {
+        printf("operator >> Failed\n");
         return error_code;
     }
 

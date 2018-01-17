@@ -196,13 +196,15 @@ class C11TypeStruct(C11Type):
 
     def codeParserHeader(self):
         codeLines = []
-        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(%s& _pData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const std::vector<%s>& _vDatas, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         return codeLines
 
     def codeParserSource(self):
         codeLines = []
-        codeLines.append(u'bool operator<<(%s& _pData, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator<<(%s& _pData, const GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    std::shared_ptr<%s> data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(), self.codeTypeName()))
 
@@ -226,9 +228,38 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'    return true;')
         codeLines.append(u'}')
         codeLines.append(u'')
-        codeLines.append(u'bool operator<<(std::vector<%s>& _pDatas, const WCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
-        codeLines.append(u'    return operator<< <%s>(_pDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'    if (!_pData || !g_json_doc_ptr) return false;')
+        codeLines.append(u'    _JsonValue.SetObject();')
+
+        parentTypes = self.getParentTypeNames(recursion=False)
+        for parentType in parentTypes:
+            codeLines.append(u'    {')
+            codeLines.append(u'        const std::shared_ptr<%s> super_ptr = _pData;' % parentType)
+            codeLines.append(u'        if (!(super_ptr >> _JsonValue)) return false;')
+            codeLines.append(u'    }')
+
+        if self.c11Type != None:
+            codeLines.append(u'    if (!(_pData->%sValue >> _JsonValue)) return false;' % self.c11Type.codeTypeName())
+        else:
+            variables = self.getVariables()
+            for variable in variables:
+                codeParserLines = variable.codeParser(isSet=False)
+                for codeParserLine in codeParserLines:
+                    codeLines.append(u'    %s' % codeParserLine)
+
+        codeLines.append(u'    return true;')
+        codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    return operator<< <%s>(_vDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'}')
+        codeLines.append(u'')
+        codeLines.append(u'bool operator>>(const std::vector<%s>& _vDatas, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'{')
+        codeLines.append(u'    return operator>> <%s>(_vDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'}')
         return codeLines
 
@@ -241,4 +272,7 @@ class C11TypeStruct(C11Type):
         return self.c11Type.codeJsonCheck()
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+
+    def codeJsonGet(self, dataName, variableName):
+        return u'if (!(%s->%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

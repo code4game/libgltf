@@ -69,7 +69,7 @@ class C11TypeMap(C11Type):
         return (0, u'')
 
     def codeTypeName(self, withDeclare=False, asVariable=False):
-        return u'%s<std::wstring, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
+        return u'%s<GLTFString, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
 
     @classmethod
     def codeJsonCheck(cls):
@@ -77,4 +77,8 @@ class C11TypeMap(C11Type):
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
-        return u'if (!(%s->%s << _JsonValue[L"%s"])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+
+    @classmethod
+    def codeJsonGet(cls, dataName, variableName):
+        return u'if (!(%s->%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
