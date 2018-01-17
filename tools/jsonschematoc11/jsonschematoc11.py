@@ -91,7 +91,7 @@ class C11TypeLibrary(object):
             header_file.write(u'#   else\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#   endif\n')
-            header_file.write(u'#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)')
+            header_file.write(u'#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#else\n')
             header_file.write(u'#error Sorry, not support your platform.\n')
