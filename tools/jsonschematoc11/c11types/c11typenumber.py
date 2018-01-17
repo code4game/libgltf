@@ -18,7 +18,7 @@ class C11TypeNumber(C11Type):
     @classmethod
     def codeDefaultValueArray(cls, schemaDefaultValue):
         if schemaDefaultValue is None\
-            or isinstance(schemaDefaultValue) is not list\
+            or not isinstance(schemaDefaultValue, list)\
             or len(schemaDefaultValue) <= 0:
             return u''
         codeDefauleValue = u''

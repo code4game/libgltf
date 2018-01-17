@@ -107,7 +107,7 @@ class C11TypeLibrary(object):
 
                 parent_type_names.append(c11_type.codeTypeName())
                 if isinstance(c11_type, C11TypeStruct):
-                    for c11_type_parent_type_name in c11_type.getparent_type_names():
+                    for c11_type_parent_type_name in c11_type.getParentTypeNames():
                         parent_type_names.append(c11_type_parent_type_name)
 
             if nameSpace != None:
@@ -138,7 +138,7 @@ class C11TypeLibrary(object):
 
                 parent_type_names.append(c11_type.codeTypeName())
                 if isinstance(c11_type, C11TypeStruct):
-                    for c11_type_parent_type_name in c11_type.getparent_type_names():
+                    for c11_type_parent_type_name in c11_type.getParentTypeNames():
                         parent_type_names.append(c11_type_parent_type_name)
 
             if nameSpace != None:
@@ -195,14 +195,14 @@ class C11TypeLibrary(object):
 
             source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    WCharDocument json_doc;\n' % begin_space)
+            source_file.write(u'%s    GLTFCharDocument json_doc;\n' % begin_space)
             source_file.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % begin_space)
             source_file.write(u'%s    if (!json_doc.IsObject()) return false;\n' % begin_space)
             source_file.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(bool& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(bool& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsBool()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetBool();\n' % begin_space)
@@ -210,7 +210,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(int32_t& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(int32_t& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsInt()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetInt();\n' % begin_space)
@@ -218,7 +218,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(float& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(float& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_JsonValue.IsFloat())\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
@@ -234,7 +234,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(std::wstring& _rData, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::wstring& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsString()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetString();\n' % begin_space)
@@ -243,11 +243,11 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::vector<TData>& _pDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % begin_space)
             source_file.write(u'%s    std::vector<TData> datas;\n' % begin_space)
-            source_file.write(u'%s    const WCharConstArray& json_array = _JsonValue.GetArray();\n' % begin_space)
+            source_file.write(u'%s    const GLTFCharConstArray& json_array = _JsonValue.GetArray();\n' % begin_space)
             source_file.write(u'%s    size_t len = json_array.Size();\n' % begin_space)
             source_file.write(u'%s    if (len == 0) return true;\n' % begin_space)
             source_file.write(u'%s    datas.resize(len);\n' % begin_space)
@@ -258,12 +258,12 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::map<std::wstring, TData>& _pDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsObject()) return false;\n' % begin_space)
             source_file.write(u'%s    std::map<std::wstring, TData> datas;\n' % begin_space)
-            source_file.write(u'%s    const WCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
-            source_file.write(u'%s    for (WCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
+            source_file.write(u'%s    const GLTFCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
+            source_file.write(u'%s    for (GLTFCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
             source_file.write(u'%s        TData data;\n' % begin_space)
             source_file.write(u'%s        if (!(data << cit->value)) return false;\n' % begin_space)

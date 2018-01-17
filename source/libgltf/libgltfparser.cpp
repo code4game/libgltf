@@ -6,27 +6,27 @@ namespace libgltf
 {
     bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::wstring& _sContent)
     {
-        WCharDocument json_doc;
+        GLTFCharDocument json_doc;
         json_doc.Parse(_sContent.c_str());
         if (!json_doc.IsObject()) return false;
         return (_pGlTF << json_doc.GetObject());
     }
 
-    bool operator<<(bool& _rData, const WCharValue& _JsonValue)
+    bool operator<<(bool& _rData, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsBool()) return false;
         _rData = _JsonValue.GetBool();
         return true;
     }
 
-    bool operator<<(int32_t& _rData, const WCharValue& _JsonValue)
+    bool operator<<(int32_t& _rData, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsInt()) return false;
         _rData = _JsonValue.GetInt();
         return true;
     }
 
-    bool operator<<(float& _rData, const WCharValue& _JsonValue)
+    bool operator<<(float& _rData, const GLTFCharValue& _JsonValue)
     {
         if (_JsonValue.IsFloat())
         {
@@ -41,7 +41,7 @@ namespace libgltf
         return false;
     }
 
-    bool operator<<(std::wstring& _rData, const WCharValue& _JsonValue)
+    bool operator<<(std::wstring& _rData, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsString()) return false;
         _rData = _JsonValue.GetString();
@@ -49,11 +49,11 @@ namespace libgltf
     }
 
     template<typename TData>
-    bool operator<<(std::vector<TData>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<TData>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsArray()) return false;
         std::vector<TData> datas;
-        const WCharConstArray& json_array = _JsonValue.GetArray();
+        const GLTFCharConstArray& json_array = _JsonValue.GetArray();
         size_t len = json_array.Size();
         if (len == 0) return true;
         datas.resize(len);
@@ -63,12 +63,12 @@ namespace libgltf
     }
 
     template<typename TData>
-    bool operator<<(std::map<std::wstring, TData>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::map<std::wstring, TData>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         if (!_JsonValue.IsObject()) return false;
         std::map<std::wstring, TData> datas;
-        const WCharConstObject& json_object = _JsonValue.GetObject();
-        for (WCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)
+        const GLTFCharConstObject& json_object = _JsonValue.GetObject();
+        for (GLTFCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)
         {
             TData data;
             if (!(data << cit->value)) return false;
@@ -78,7 +78,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::shared_ptr<SGlTFProperty>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SGlTFProperty>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTFProperty> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFProperty>();
         if (_JsonValue.HasMember(L"extras") && _JsonValue[L"extras"].IsObject())
@@ -93,12 +93,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SGlTFProperty>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SGlTFProperty>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SGlTFProperty>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMaterial>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMaterial>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterial> data_ptr = !!_pData ? _pData : std::make_shared<SMaterial>();
         {
@@ -141,12 +141,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMaterial>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMaterial>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMaterial>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAsset>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAsset>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAsset> data_ptr = !!_pData ? _pData : std::make_shared<SAsset>();
         {
@@ -173,12 +173,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAsset>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAsset>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAsset>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SSampler>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SSampler>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SSampler> data_ptr = !!_pData ? _pData : std::make_shared<SSampler>();
         {
@@ -205,12 +205,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SSampler>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SSampler>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SSampler>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SGlTFChildofRootProperty>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SGlTFChildofRootProperty>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTFChildofRootProperty> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFChildofRootProperty>();
         {
@@ -225,12 +225,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SGlTFChildofRootProperty>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SGlTFChildofRootProperty>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SGlTFChildofRootProperty>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAnimationSampler>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAnimationSampler>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationSampler> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationSampler>();
         {
@@ -253,24 +253,24 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAnimationSampler>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAnimationSampler>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAnimationSampler>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SExtras>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SExtras>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SExtras> data_ptr = !!_pData ? _pData : std::make_shared<SExtras>();
         _pData = data_ptr;
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SExtras>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SExtras>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SExtras>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SScene>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SScene>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SScene> data_ptr = !!_pData ? _pData : std::make_shared<SScene>();
         {
@@ -285,12 +285,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SScene>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SScene>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SScene>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SCameraPerspective>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SCameraPerspective>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SCameraPerspective> data_ptr = !!_pData ? _pData : std::make_shared<SCameraPerspective>();
         {
@@ -317,12 +317,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SCameraPerspective>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SCameraPerspective>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SCameraPerspective>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SBufferView>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SBufferView>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SBufferView> data_ptr = !!_pData ? _pData : std::make_shared<SBufferView>();
         {
@@ -353,12 +353,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SBufferView>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SBufferView>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SBufferView>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMaterialNormalTextureInfo>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMaterialNormalTextureInfo>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialNormalTextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialNormalTextureInfo>();
         {
@@ -373,12 +373,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMaterialNormalTextureInfo>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMaterialNormalTextureInfo>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMaterialNormalTextureInfo>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMaterialOcclusionTextureInfo>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMaterialOcclusionTextureInfo>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialOcclusionTextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialOcclusionTextureInfo>();
         {
@@ -393,12 +393,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMaterialOcclusionTextureInfo>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMaterialOcclusionTextureInfo>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMaterialOcclusionTextureInfo>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAccessorSparseValues>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAccessorSparseValues>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparseValues> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparseValues>();
         {
@@ -417,12 +417,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAccessorSparseValues>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAccessorSparseValues>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAccessorSparseValues>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAnimationChannelTarget>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAnimationChannelTarget>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationChannelTarget> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationChannelTarget>();
         {
@@ -441,12 +441,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAnimationChannelTarget>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAnimationChannelTarget>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAnimationChannelTarget>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMesh>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMesh>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMesh> data_ptr = !!_pData ? _pData : std::make_shared<SMesh>();
         {
@@ -465,12 +465,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMesh>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMesh>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMesh>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAccessorSparse>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAccessorSparse>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparse> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparse>();
         {
@@ -493,12 +493,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAccessorSparse>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAccessorSparse>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAccessorSparse>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMeshPrimitive>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMeshPrimitive>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMeshPrimitive> data_ptr = !!_pData ? _pData : std::make_shared<SMeshPrimitive>();
         {
@@ -529,24 +529,24 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMeshPrimitive>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMeshPrimitive>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMeshPrimitive>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SExtension>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SExtension>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SExtension> data_ptr = !!_pData ? _pData : std::make_shared<SExtension>();
         _pData = data_ptr;
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SExtension>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SExtension>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SExtension>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAnimationChannel>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAnimationChannel>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimationChannel> data_ptr = !!_pData ? _pData : std::make_shared<SAnimationChannel>();
         {
@@ -565,12 +565,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAnimationChannel>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAnimationChannel>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAnimationChannel>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SGlTFId>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SGlTFId>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTFId> data_ptr = !!_pData ? _pData : std::make_shared<SGlTFId>();
         if (!(data_ptr->int32_tValue << _JsonValue)) return false;
@@ -578,12 +578,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SGlTFId>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SGlTFId>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SGlTFId>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAccessorSparseIndices>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAccessorSparseIndices>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessorSparseIndices> data_ptr = !!_pData ? _pData : std::make_shared<SAccessorSparseIndices>();
         {
@@ -606,12 +606,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAccessorSparseIndices>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAccessorSparseIndices>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAccessorSparseIndices>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SNode>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SNode>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SNode> data_ptr = !!_pData ? _pData : std::make_shared<SNode>();
         {
@@ -658,12 +658,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SNode>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SNode>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SNode>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAnimation>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAnimation>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAnimation> data_ptr = !!_pData ? _pData : std::make_shared<SAnimation>();
         {
@@ -682,12 +682,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAnimation>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAnimation>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAnimation>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SSkin>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SSkin>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SSkin> data_ptr = !!_pData ? _pData : std::make_shared<SSkin>();
         {
@@ -710,12 +710,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SSkin>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SSkin>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SSkin>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMaterialPBRMetallicRoughness>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMaterialPBRMetallicRoughness>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SMaterialPBRMetallicRoughness> data_ptr = !!_pData ? _pData : std::make_shared<SMaterialPBRMetallicRoughness>();
         {
@@ -746,12 +746,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMaterialPBRMetallicRoughness>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMaterialPBRMetallicRoughness>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SMaterialPBRMetallicRoughness>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SCamera>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SCamera>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SCamera> data_ptr = !!_pData ? _pData : std::make_shared<SCamera>();
         {
@@ -774,12 +774,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SCamera>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SCamera>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SCamera>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SImage>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SImage>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SImage> data_ptr = !!_pData ? _pData : std::make_shared<SImage>();
         {
@@ -802,12 +802,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SImage>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SImage>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SImage>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<STexture>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<STexture>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<STexture> data_ptr = !!_pData ? _pData : std::make_shared<STexture>();
         {
@@ -826,12 +826,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<STexture>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<STexture>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<STexture>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SCameraOrthographic>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SCameraOrthographic>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SCameraOrthographic> data_ptr = !!_pData ? _pData : std::make_shared<SCameraOrthographic>();
         {
@@ -858,12 +858,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SCameraOrthographic>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SCameraOrthographic>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SCameraOrthographic>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SBuffer>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SBuffer>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SBuffer> data_ptr = !!_pData ? _pData : std::make_shared<SBuffer>();
         {
@@ -882,12 +882,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SBuffer>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SBuffer>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SBuffer>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SAccessor>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SAccessor>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAccessor> data_ptr = !!_pData ? _pData : std::make_shared<SAccessor>();
         {
@@ -934,12 +934,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAccessor>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SAccessor>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SAccessor>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SGlTF>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SGlTF>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SGlTF> data_ptr = !!_pData ? _pData : std::make_shared<SGlTF>();
         {
@@ -1018,12 +1018,12 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SGlTF>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SGlTF>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<SGlTF>>(_pDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<STextureInfo>& _pData, const WCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<STextureInfo>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<STextureInfo> data_ptr = !!_pData ? _pData : std::make_shared<STextureInfo>();
         {
@@ -1042,7 +1042,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<STextureInfo>>& _pDatas, const WCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<STextureInfo>>& _pDatas, const GLTFCharValue& _JsonValue)
     {
         return operator<< <std::shared_ptr<STextureInfo>>(_pDatas, _JsonValue);
     }
