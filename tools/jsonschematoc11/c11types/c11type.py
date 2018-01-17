@@ -54,3 +54,7 @@ class C11Type(object):
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
         return None
+
+    @classmethod
+    def codeJsonGet(cls, dataName, variableName):
+        return None

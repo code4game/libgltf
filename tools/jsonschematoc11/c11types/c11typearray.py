@@ -83,3 +83,6 @@ class C11TypeArray(C11Type):
 
     def codeJsonSet(self, dataName, variableName):
         return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+
+    def codeJsonGet(self, dataName, variableName):
+        return u'if (!(%s->%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

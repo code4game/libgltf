@@ -37,3 +37,7 @@ class C11TypeString(C11Type):
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[GLTFTEXT("%s")].GetString();' % (dataName, variableName, variableName)
+
+    @classmethod
+    def codeJsonGet(cls, dataName, variableName):
+        return u'_JsonValue[GLTFTEXT("%s")].SetString(%s->%s.c_str(), g_json_doc_ptr->GetAllocator());' % (variableName, dataName, variableName)

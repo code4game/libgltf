@@ -231,8 +231,18 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    if (!_pData || !g_json_doc_ptr) return false;')
-        codeLines.append(u'    //TODO:')
-        codeLines.append(u'    return false;')
+        codeLines.append(u'    _JsonValue.SetObject();')
+
+        if self.c11Type != None:
+            codeLines.append(u'    if (!(_pData->%sValue >> _JsonValue)) return false;' % self.c11Type.codeTypeName())
+        else:
+            variables = self.getVariables()
+            for variable in variables:
+                codeParserLines = variable.codeParser(isSet=False)
+                for codeParserLine in codeParserLines:
+                    codeLines.append(u'    %s' % codeParserLine)
+
+        codeLines.append(u'    return true;')
         codeLines.append(u'}')
         codeLines.append(u'')
         codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
@@ -256,3 +266,6 @@ class C11TypeStruct(C11Type):
 
     def codeJsonSet(self, dataName, variableName):
         return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+
+    def codeJsonGet(self, dataName, variableName):
+        return u'if (!(%s->%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

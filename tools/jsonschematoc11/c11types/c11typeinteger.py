@@ -32,3 +32,7 @@ class C11TypeInteger(C11Type):
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
         return u'%s->%s = _JsonValue[GLTFTEXT("%s")].GetInt();' % (dataName, variableName, variableName)
+
+    @classmethod
+    def codeJsonGet(cls, dataName, variableName):
+        return u'_JsonValue[GLTFTEXT("%s")].SetInt(%s->%s);' % (variableName, dataName, variableName)

@@ -251,10 +251,10 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(bool _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(bool _bData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    //TODO:\n' % begin_space)
-            source_file.write(u'%s    return false;\n' % begin_space)
+            source_file.write(u'%s    _JsonValue.SetBool(_bData);\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
@@ -266,10 +266,10 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(int32_t _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(int32_t _iData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    //TODO:\n' % begin_space)
-            source_file.write(u'%s    return false;\n' % begin_space)
+            source_file.write(u'%s    _JsonValue.SetInt(_iData);\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
@@ -289,10 +289,10 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(float _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(float _fData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    //TODO:\n' % begin_space)
-            source_file.write(u'%s    return false;\n' % begin_space)
+            source_file.write(u'%s    _JsonValue.SetFloat(_fData);\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
@@ -304,10 +304,11 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(GLTFString _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const GLTFString& _rsData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    //TODO:\n' % begin_space)
-            source_file.write(u'%s    return false;\n' % begin_space)
+            source_file.write(u'%s    if (!g_json_doc_ptr) return false;\n' % begin_space)
+            source_file.write(u'%s    _JsonValue.SetString(_rsData.c_str(), g_json_doc_ptr->GetAllocator());\n' % begin_space)
+            source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
@@ -334,7 +335,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s    for (const TData& data : _vDatas)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
             source_file.write(u'%s        GLTFCharValue json_value;\n' % begin_space)
-            source_file.write(u'%s        if (!(data >> json_value)) continue;\n' % begin_space)
+            source_file.write(u'%s        if (!(data >> json_value)) return false;\n' % begin_space)
             source_file.write(u'%s        json_array.PushBack(json_value, g_json_doc_ptr->GetAllocator());\n' % begin_space)
             source_file.write(u'%s    }\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
