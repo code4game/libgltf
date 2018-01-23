@@ -16,8 +16,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ade2ac32103a69ba7b85/maintainability)](https://codeclimate.com/github/code4game/libgltf/maintainability)
 [![CII best practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
-[![Become a patreon](https://img.shields.io/badge/become-patreon-ff69b4.svg?style=flat)](https://www.patreon.com/bePatron?u=7553208)
-[![Patreon invite](https://img.shields.io/badge/invite-patreon-ff69b4.svg?style=flat)](https://patreon.com/invite/zpdxnv)
+[![Become a patreon](https://img.shields.io/badge/donation-become%20a%20patreon-ff69b4.svg?style=flat)](https://www.patreon.com/bePatron?u=7553208)
+[![Patreon invite](https://img.shields.io/badge/donation-patreon%20invite-ff69b4.svg?style=flat)](https://patreon.com/invite/zpdxnv)
 
 ## Roadmap
 
