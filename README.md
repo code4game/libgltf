@@ -1,5 +1,7 @@
 # libgltf
 
+Support: ![status](https://img.shields.io/badge/glTF-2%2E0-green.svg)
+
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg)](https://twitter.com/C4gIo)
 [![Join the chat at https://gitter.im/code4game/libgltf](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Join Discord]](https://discord.gg/tyEjtQB)
