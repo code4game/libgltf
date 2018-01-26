@@ -1,6 +1,7 @@
 # libgltf
 
 [![glTF status](https://img.shields.io/badge/glTF-2%2E0-green.svg?style=flat)](https://github.com/KhronosGroup/glTF)
+[![libgltf document](https://readthedocs.org/projects/libgltf/badge/?version=master)](http://libgltf.doc.c4g.io)
 
 [![Follow in twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat)](https://twitter.com/C4gIo)
 [![Join gitter at https://gitter.im/code4game/libgltf](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
