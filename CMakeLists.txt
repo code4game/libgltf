@@ -97,7 +97,7 @@ if(LIBGLTF_BUILD_GCOV AND PLATFORM_LINUX)
   endif()
 endif()
 
-add_subdirectory(doc)
+add_subdirectory(docs)
 add_subdirectory(source)
 add_subdirectory(tools)
 
