@@ -4,24 +4,16 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
-#   if defined(UNICODE)
-#       define      GLTFTEXT(t)         L##t
-#   else
-#       define      GLTFTEXT(t)         t
-#   endif
+#if defined(LIBGLTF_USE_WCHAR)
+#   define      GLTFTEXT(t)         L##t
 #else
-#       define      GLTFTEXT(t)         t
+#   define      GLTFTEXT(t)         t
 #endif
 
 namespace libgltf
 {
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
-#   if defined(UNICODE)
+#if defined(LIBGLTF_USE_WCHAR)
     typedef rapidjson::UTF16<>                                  GLTFCharType;
-#   else
-    typedef rapidjson::UTF8<>                                   GLTFCharType;
-#   endif
 #else
     typedef rapidjson::UTF8<>                                   GLTFCharType;
 #endif
@@ -36,3 +28,4 @@ namespace libgltf
     typedef rapidjson::GenericObject<true, GLTFCharValue>       GLTFCharConstObject;
     typedef rapidjson::GenericObject<false, GLTFCharValue>      GLTFCharObject;
 }
+

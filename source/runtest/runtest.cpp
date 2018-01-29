@@ -38,7 +38,7 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
+#if defined(LIBGLTF_USE_WCHAR)
     std::wstringstream input_content;
     {
         std::wifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
@@ -69,7 +69,7 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
+#if defined(LIBGLTF_USE_WCHAR)
     std::wstring output_content;
 #else
     std::string output_content;
@@ -87,3 +87,4 @@ int main(int _iArgc, char* _pcArgv[])
 
     return 0;
 }
+

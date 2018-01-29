@@ -14,14 +14,18 @@ set(LIBGLTF_PLATFORM_LINUX FALSE)
 set(LIBGLTF_PLATFORM_MACOS FALSE)
 
 option(LIBGLTF_COVERAGE_GCOV "Coverage gcov (debug, Linux builds only)" OFF)
-option(LIBGLTF_BUILD_DEBUG_FOR_UE4 "Build for UE4" OFF)
+option(LIBGLTF_BUILD_FOR_UE4 "Build for UE4" OFF)
+
+if(LIBGLTF_BUILD_FOR_UE4)
+    add_definitions(-DLIBGLTF_USE_WCHAR)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(LIBGLTF_PLATFORM_WINDOWS TRUE)
     add_definitions(-DLIBGLTF_PLATFORM_WINDOWS)
     set(DYNAMIC_LIBRARY_EXTENSION ".dll")
     set(STATIC_LIBRARY_EXTENSION ".lib")
-    if(LIBGLTF_BUILD_DEBUG_FOR_UE4)
+    if(LIBGLTF_BUILD_FOR_UE4)
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD")
     endif()
     if((CMAKE_EXE_LINKER_FLAGS STREQUAL "/machine:X86") OR (CMAKE_EXE_LINKER_FLAGS STREQUAL " /machine:X86"))
@@ -101,3 +105,4 @@ add_subdirectory(source)
 add_subdirectory(tools)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT libgltf)
+

@@ -86,16 +86,10 @@ class C11TypeLibrary(object):
                 header_file.write(u'{\n')
                 begin_space = u'    '
 
-            header_file.write(u'#if defined(LIBGLTF_PLATFORM_WINDOWS)\n')
-            header_file.write(u'#   if defined(UNICODE)\n')
+            header_file.write(u'#if defined(LIBGLTF_USE_WCHAR)\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::wstring                                        GLTFString;'))
-            header_file.write(u'#   else\n')
-            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
-            header_file.write(u'#   endif\n')
-            header_file.write(u'#elif defined(LIBGLTF_PLATFORM_LINUX) || defined(LIBGLTF_PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)\n')
-            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#else\n')
-            header_file.write(u'#error Sorry, not support your platform.\n')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#endif\n')
             header_file.write(u'\n')
 
@@ -430,3 +424,4 @@ if __name__ == u'__main__':
     else:
         logger.info(u'Success')
     exit(error_code)
+
