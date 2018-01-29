@@ -5,13 +5,13 @@
 #include <iosfwd>
 #include <string>
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
 #include <crtdbg.h>
 #endif
 
 int main(int _iArgc, char* _pcArgv[])
 {
-#if defined(PLATFORM_WINDOWS) && defined(_DEBUG)
+#if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
@@ -38,7 +38,7 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
     std::wstringstream input_content;
     {
         std::wifstream input_file(input_file_path.c_str(), std::ios::in | std::ios::binary);
@@ -69,7 +69,7 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
     std::wstring output_content;
 #else
     std::string output_content;

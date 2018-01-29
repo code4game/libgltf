@@ -8,13 +8,13 @@
 
 namespace libgltf
 {
-#if defined(PLATFORM_WINDOWS)
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
 #   if defined(UNICODE)
     typedef std::wstring                                        GLTFString;
 #   else
     typedef std::string                                         GLTFString;
 #   endif
-#elif defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)
+#elif defined(LIBGLTF_PLATFORM_LINUX) || defined(LIBGLTF_PLATFORM_MACOS) || defined(PLATFORM_ANDROID) || defined(PLATFORM_IOS)
     typedef std::string                                         GLTFString;
 #else
 #error Sorry, not support your platform.
