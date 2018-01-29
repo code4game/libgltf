@@ -98,7 +98,7 @@ test_macos:
         - make
         - gcc
 
-build_win32:
+build_win32_ue4:
     stage: build
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
@@ -106,8 +106,8 @@ build_win32:
         - 'if exist output rmdir /s /q output'
         - 'mkdir build'
         - 'cd build'
-        - 'cmake -G "Visual Studio 14 2015" ../'
-        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Release" /p:Platform="Win32"'
+        - 'cmake -DLIBGLTF_BUILD_FOR_UE4=True -G "Visual Studio 14 2015" ../'
+        - 'msbuild ./source/libgltf/libgltf.vcxproj /t:Rebuild /p:Configuration="Release" /p:Platform="Win32"'
         - 'cd ../'
     artifacts:
         name: "libgltf_win32.%CI_PIPELINE_ID%.%CI_JOB_ID%"
@@ -122,7 +122,7 @@ build_win32:
         - cmake
         - vs2015
 
-build_win64:
+build_win64_ue4:
     stage: build
     script:
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
@@ -130,8 +130,8 @@ build_win64:
         - 'if exist output rmdir /s /q output'
         - 'mkdir build'
         - 'cd build'
-        - 'cmake -G "Visual Studio 14 2015 Win64" ../'
-        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Release" /p:Platform="x64"'
+        - 'cmake -DLIBGLTF_BUILD_FOR_UE4=True -G "Visual Studio 14 2015 Win64" ../'
+        - 'msbuild ./source/libgltf/libgltf.vcxproj /t:Rebuild /p:Configuration="Release" /p:Platform="x64"'
         - 'cd ../'
     artifacts:
         name: "libgltf_win64.%CI_PIPELINE_ID%.%CI_JOB_ID%"
@@ -146,13 +146,13 @@ build_win64:
         - cmake
         - vs2015
 
-build_linux:
+build_linux_ue4:
     stage: build
     script:
         - 'mkdir build'
         - 'cd build'
-        - 'cmake -G "Unix Makefiles" ../'
-        - 'make'
+        - 'cmake -DLIBGLTF_BUILD_FOR_UE4=True -G "Unix Makefiles" ../'
+        - 'make libgltf'
         - 'cd ../'
     artifacts:
         name: "libgltf_linux.${CI_PIPELINE_ID}.${CI_JOB_ID}"
@@ -167,13 +167,13 @@ build_linux:
         - make
         - gcc
 
-build_macos:
+build_macos_ue4:
     stage: build
     script:
         - 'mkdir build'
         - 'cd build'
-        - 'cmake -G "Unix Makefiles" ../'
-        - 'make'
+        - 'cmake -DLIBGLTF_BUILD_FOR_UE4=True -G "Unix Makefiles" ../'
+        - 'make libgltf'
         - 'cd ../'
     artifacts:
         name: "libgltf_macos.${CI_PIPELINE_ID}.${CI_JOB_ID}"
@@ -188,15 +188,15 @@ build_macos:
         - make
         - gcc
 
-package_all:
+package_all_ue4:
     stage: package
     script:
         - 'echo package_all'
     dependencies:
-        - build_win32
-        - build_win64
-        - build_macos
-        - build_linux
+        - build_win32_ue4
+        - build_win64_ue4
+        - build_macos_ue4
+        - build_linux_ue4
     artifacts:
         name: "libgltf.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 1 week
@@ -206,3 +206,4 @@ package_all:
     when: manual
     tags:
         - win64
+
