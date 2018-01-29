@@ -200,6 +200,115 @@ namespace libgltf
         return operator>> <std::shared_ptr<SGlTFProperty>>(_vDatas, _JsonValue);
     }
 
+    bool operator<<(std::shared_ptr<SMaterial>& _pData, const GLTFCharValue& _JsonValue)
+    {
+        std::shared_ptr<SMaterial> data_ptr = !!_pData ? _pData : std::make_shared<SMaterial>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("alphaCutoff")) && _JsonValue[GLTFTEXT("alphaCutoff")].IsFloat())
+        {
+            data_ptr->alphaCutoff = _JsonValue[GLTFTEXT("alphaCutoff")].GetFloat();
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("emissiveTexture")) && _JsonValue[GLTFTEXT("emissiveTexture")].IsObject())
+        {
+            if (!(data_ptr->emissiveTexture << _JsonValue[GLTFTEXT("emissiveTexture")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("pbrMetallicRoughness")) && _JsonValue[GLTFTEXT("pbrMetallicRoughness")].IsObject())
+        {
+            if (!(data_ptr->pbrMetallicRoughness << _JsonValue[GLTFTEXT("pbrMetallicRoughness")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("occlusionTexture")) && _JsonValue[GLTFTEXT("occlusionTexture")].IsObject())
+        {
+            if (!(data_ptr->occlusionTexture << _JsonValue[GLTFTEXT("occlusionTexture")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("alphaMode")) && _JsonValue[GLTFTEXT("alphaMode")].IsString())
+        {
+            data_ptr->alphaMode = _JsonValue[GLTFTEXT("alphaMode")].GetString();
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("doubleSided")) && _JsonValue[GLTFTEXT("doubleSided")].IsBool())
+        {
+            data_ptr->doubleSided = _JsonValue[GLTFTEXT("doubleSided")].GetBool();
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("normalTexture")) && _JsonValue[GLTFTEXT("normalTexture")].IsObject())
+        {
+            if (!(data_ptr->normalTexture << _JsonValue[GLTFTEXT("normalTexture")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("emissiveFactor")) && _JsonValue[GLTFTEXT("emissiveFactor")].IsArray())
+        {
+            if (!(data_ptr->emissiveFactor << _JsonValue[GLTFTEXT("emissiveFactor")])) return false;
+        }
+        _pData = data_ptr;
+        return true;
+    }
+
+    bool operator>>(const std::shared_ptr<SMaterial>& _pData, GLTFCharValue& _JsonValue)
+    {
+        if (!_pData || !g_json_doc_ptr) return false;
+        _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->alphaCutoff >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("alphaCutoff"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!!_pData->emissiveTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->emissiveTexture >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("emissiveTexture"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!!_pData->pbrMetallicRoughness)
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->pbrMetallicRoughness >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("pbrMetallicRoughness"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!!_pData->occlusionTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->occlusionTexture >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("occlusionTexture"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->alphaMode >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("alphaMode"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->doubleSided >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("doubleSided"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!!_pData->normalTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->normalTexture >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("normalTexture"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!_pData->emissiveFactor.empty())
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->emissiveFactor >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("emissiveFactor"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        return true;
+    }
+
+    bool operator<<(std::vector<std::shared_ptr<SMaterial>>& _vDatas, const GLTFCharValue& _JsonValue)
+    {
+        return operator<< <std::shared_ptr<SMaterial>>(_vDatas, _JsonValue);
+    }
+
+    bool operator>>(const std::vector<std::shared_ptr<SMaterial>>& _vDatas, GLTFCharValue& _JsonValue)
+    {
+        return operator>> <std::shared_ptr<SMaterial>>(_vDatas, _JsonValue);
+    }
+
     bool operator<<(std::shared_ptr<SAsset>& _pData, const GLTFCharValue& _JsonValue)
     {
         std::shared_ptr<SAsset> data_ptr = !!_pData ? _pData : std::make_shared<SAsset>();
@@ -438,113 +547,28 @@ namespace libgltf
         return operator>> <std::shared_ptr<SAnimationSampler>>(_vDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SMaterial>& _pData, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SExtras>& _pData, const GLTFCharValue& _JsonValue)
     {
-        std::shared_ptr<SMaterial> data_ptr = !!_pData ? _pData : std::make_shared<SMaterial>();
-        {
-            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
-            if (!(super_ptr << _JsonValue)) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("alphaCutoff")) && _JsonValue[GLTFTEXT("alphaCutoff")].IsFloat())
-        {
-            data_ptr->alphaCutoff = _JsonValue[GLTFTEXT("alphaCutoff")].GetFloat();
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("emissiveTexture")) && _JsonValue[GLTFTEXT("emissiveTexture")].IsObject())
-        {
-            if (!(data_ptr->emissiveTexture << _JsonValue[GLTFTEXT("emissiveTexture")])) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("pbrMetallicRoughness")) && _JsonValue[GLTFTEXT("pbrMetallicRoughness")].IsObject())
-        {
-            if (!(data_ptr->pbrMetallicRoughness << _JsonValue[GLTFTEXT("pbrMetallicRoughness")])) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("occlusionTexture")) && _JsonValue[GLTFTEXT("occlusionTexture")].IsObject())
-        {
-            if (!(data_ptr->occlusionTexture << _JsonValue[GLTFTEXT("occlusionTexture")])) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("alphaMode")) && _JsonValue[GLTFTEXT("alphaMode")].IsString())
-        {
-            data_ptr->alphaMode = _JsonValue[GLTFTEXT("alphaMode")].GetString();
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("doubleSided")) && _JsonValue[GLTFTEXT("doubleSided")].IsBool())
-        {
-            data_ptr->doubleSided = _JsonValue[GLTFTEXT("doubleSided")].GetBool();
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("normalTexture")) && _JsonValue[GLTFTEXT("normalTexture")].IsObject())
-        {
-            if (!(data_ptr->normalTexture << _JsonValue[GLTFTEXT("normalTexture")])) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("emissiveFactor")) && _JsonValue[GLTFTEXT("emissiveFactor")].IsArray())
-        {
-            if (!(data_ptr->emissiveFactor << _JsonValue[GLTFTEXT("emissiveFactor")])) return false;
-        }
+        std::shared_ptr<SExtras> data_ptr = !!_pData ? _pData : std::make_shared<SExtras>();
         _pData = data_ptr;
         return true;
     }
 
-    bool operator>>(const std::shared_ptr<SMaterial>& _pData, GLTFCharValue& _JsonValue)
+    bool operator>>(const std::shared_ptr<SExtras>& _pData, GLTFCharValue& _JsonValue)
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
-        {
-            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
-            if (!(super_ptr >> _JsonValue)) return false;
-        }
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->alphaCutoff >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("alphaCutoff"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!!_pData->emissiveTexture)
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->emissiveTexture >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("emissiveTexture"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!!_pData->pbrMetallicRoughness)
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->pbrMetallicRoughness >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("pbrMetallicRoughness"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!!_pData->occlusionTexture)
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->occlusionTexture >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("occlusionTexture"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->alphaMode >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("alphaMode"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->doubleSided >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("doubleSided"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!!_pData->normalTexture)
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->normalTexture >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("normalTexture"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!_pData->emissiveFactor.empty())
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->emissiveFactor >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("emissiveFactor"), json_value, g_json_doc_ptr->GetAllocator());
-        }
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SMaterial>>& _vDatas, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SExtras>>& _vDatas, const GLTFCharValue& _JsonValue)
     {
-        return operator<< <std::shared_ptr<SMaterial>>(_vDatas, _JsonValue);
+        return operator<< <std::shared_ptr<SExtras>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const std::vector<std::shared_ptr<SMaterial>>& _vDatas, GLTFCharValue& _JsonValue)
+    bool operator>>(const std::vector<std::shared_ptr<SExtras>>& _vDatas, GLTFCharValue& _JsonValue)
     {
-        return operator>> <std::shared_ptr<SMaterial>>(_vDatas, _JsonValue);
+        return operator>> <std::shared_ptr<SExtras>>(_vDatas, _JsonValue);
     }
 
     bool operator<<(std::shared_ptr<SScene>& _pData, const GLTFCharValue& _JsonValue)
@@ -919,28 +943,56 @@ namespace libgltf
         return operator>> <std::shared_ptr<SAnimationChannelTarget>>(_vDatas, _JsonValue);
     }
 
-    bool operator<<(std::shared_ptr<SExtras>& _pData, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SMesh>& _pData, const GLTFCharValue& _JsonValue)
     {
-        std::shared_ptr<SExtras> data_ptr = !!_pData ? _pData : std::make_shared<SExtras>();
+        std::shared_ptr<SMesh> data_ptr = !!_pData ? _pData : std::make_shared<SMesh>();
+        {
+            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("primitives")) && _JsonValue[GLTFTEXT("primitives")].IsArray())
+        {
+            if (!(data_ptr->primitives << _JsonValue[GLTFTEXT("primitives")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("weights")) && _JsonValue[GLTFTEXT("weights")].IsArray())
+        {
+            if (!(data_ptr->weights << _JsonValue[GLTFTEXT("weights")])) return false;
+        }
         _pData = data_ptr;
         return true;
     }
 
-    bool operator>>(const std::shared_ptr<SExtras>& _pData, GLTFCharValue& _JsonValue)
+    bool operator>>(const std::shared_ptr<SMesh>& _pData, GLTFCharValue& _JsonValue)
     {
         if (!_pData || !g_json_doc_ptr) return false;
         _JsonValue.SetObject();
+        {
+            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
+            if (!(super_ptr >> _JsonValue)) return false;
+        }
+        if (!_pData->primitives.empty())
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->primitives >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("primitives"), json_value, g_json_doc_ptr->GetAllocator());
+        }
+        if (!_pData->weights.empty())
+        {
+            GLTFCharValue json_value;
+            if (!(_pData->weights >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("weights"), json_value, g_json_doc_ptr->GetAllocator());
+        }
         return true;
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SExtras>>& _vDatas, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SMesh>>& _vDatas, const GLTFCharValue& _JsonValue)
     {
-        return operator<< <std::shared_ptr<SExtras>>(_vDatas, _JsonValue);
+        return operator<< <std::shared_ptr<SMesh>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const std::vector<std::shared_ptr<SExtras>>& _vDatas, GLTFCharValue& _JsonValue)
+    bool operator>>(const std::vector<std::shared_ptr<SMesh>>& _vDatas, GLTFCharValue& _JsonValue)
     {
-        return operator>> <std::shared_ptr<SExtras>>(_vDatas, _JsonValue);
+        return operator>> <std::shared_ptr<SMesh>>(_vDatas, _JsonValue);
     }
 
     bool operator<<(std::shared_ptr<SAccessorSparse>& _pData, const GLTFCharValue& _JsonValue)
@@ -1682,58 +1734,6 @@ namespace libgltf
     bool operator>>(const std::vector<std::shared_ptr<SImage>>& _vDatas, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SImage>>(_vDatas, _JsonValue);
-    }
-
-    bool operator<<(std::shared_ptr<SMesh>& _pData, const GLTFCharValue& _JsonValue)
-    {
-        std::shared_ptr<SMesh> data_ptr = !!_pData ? _pData : std::make_shared<SMesh>();
-        {
-            std::shared_ptr<SGlTFChildofRootProperty> super_ptr = data_ptr;
-            if (!(super_ptr << _JsonValue)) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("primitives")) && _JsonValue[GLTFTEXT("primitives")].IsArray())
-        {
-            if (!(data_ptr->primitives << _JsonValue[GLTFTEXT("primitives")])) return false;
-        }
-        if (_JsonValue.HasMember(GLTFTEXT("weights")) && _JsonValue[GLTFTEXT("weights")].IsArray())
-        {
-            if (!(data_ptr->weights << _JsonValue[GLTFTEXT("weights")])) return false;
-        }
-        _pData = data_ptr;
-        return true;
-    }
-
-    bool operator>>(const std::shared_ptr<SMesh>& _pData, GLTFCharValue& _JsonValue)
-    {
-        if (!_pData || !g_json_doc_ptr) return false;
-        _JsonValue.SetObject();
-        {
-            const std::shared_ptr<SGlTFChildofRootProperty> super_ptr = _pData;
-            if (!(super_ptr >> _JsonValue)) return false;
-        }
-        if (!_pData->primitives.empty())
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->primitives >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("primitives"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        if (!_pData->weights.empty())
-        {
-            GLTFCharValue json_value;
-            if (!(_pData->weights >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("weights"), json_value, g_json_doc_ptr->GetAllocator());
-        }
-        return true;
-    }
-
-    bool operator<<(std::vector<std::shared_ptr<SMesh>>& _vDatas, const GLTFCharValue& _JsonValue)
-    {
-        return operator<< <std::shared_ptr<SMesh>>(_vDatas, _JsonValue);
-    }
-
-    bool operator>>(const std::vector<std::shared_ptr<SMesh>>& _vDatas, GLTFCharValue& _JsonValue)
-    {
-        return operator>> <std::shared_ptr<SMesh>>(_vDatas, _JsonValue);
     }
 
     bool operator<<(std::shared_ptr<STexture>& _pData, const GLTFCharValue& _JsonValue)

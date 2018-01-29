@@ -39,7 +39,7 @@ add_library(libgltf STATIC
     ${SOURCE_FILE_LIST}
     )
 
-if(${PLATFORM_WINDOWS})
+if(${LIBGLTF_PLATFORM_WINDOWS})
     add_custom_command(TARGET libgltf
         POST_BUILD
         COMMAND xcopy ARGS "/D /S /Y \"${ROOT_PATH}/include\" \"${OUT_PATH}/include\\\""
