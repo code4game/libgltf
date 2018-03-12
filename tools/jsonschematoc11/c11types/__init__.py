@@ -7,7 +7,7 @@ from c11typearray import C11TypeArray
 from c11typemap import C11TypeMap
 from c11typestruct import C11TypeStruct
 
-def BuildC11Type(schemaName, schemaValue, isSchema=False):
+def BuildC11Type(schemaName, schemaValue, isSchema=False, manualCodeHeaders=None, manualCodeSourcesVariable=None, manualCodeSourcesFunction=None, manualCodeParsersFrom=None, manualCodeParsersTo=None):
     if u'title' not in schemaValue:
         return (None, 1, u'can\'t get the attribute `title` in %s' % schemaName)
     c11Type = None
@@ -28,4 +28,5 @@ def BuildC11Type(schemaName, schemaValue, isSchema=False):
     if c11Type == None:
         c11Type = C11TypeStruct()
     c11Type.setSchema(schemaName, schemaValue)
+    c11Type.setCodes(manualCodeHeaders, manualCodeSourcesVariable, manualCodeSourcesFunction, manualCodeParsersFrom, manualCodeParsersTo)
     return (c11Type, 0, None)

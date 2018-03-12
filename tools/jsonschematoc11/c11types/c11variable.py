@@ -101,20 +101,17 @@ class C11Variable(object):
                 codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")) && _JsonValue[GLTFTEXT("%s")].%s)' % (self.name, self.name, codeCheckLine))
         else:
             if self.typeName == u'array' or self.typeName == u'map':
-                codeLines.append(u'if (!_pData->%s.empty())' % self.name)
+                codeLines.append(u'if (!_rData.%s.empty())' % self.name)
             elif self.typeName == u'struct':
-                codeLines.append(u'if (!!_pData->%s)' % self.name)
+                codeLines.append(u'if (!!_rData.%s)' % self.name)
         codeLines.append(u'{')
         if isSet:
-            codeSetLine = self.c11Type.codeJsonSet(u'data_ptr', self.name)
+            codeSetLine = self.c11Type.codeJsonSet(u'_rData', self.name)
             if codeSetLine != None and len(codeSetLine) > 0:
                 codeLines.append(u'    %s' % (codeSetLine))
         else:
             codeLines.append(u'    GLTFCharValue json_value;')
-            codeLines.append(u'    if (!(_pData->%s >> json_value)) return false;' % self.name)
+            codeLines.append(u'    if (!(_rData.%s >> json_value)) return false;' % self.name)
             codeLines.append(u'    _JsonValue.AddMember(GLTFTEXT("%s"), json_value, g_json_doc_ptr->GetAllocator());' % self.name)
-            #codeGetLine = self.c11Type.codeJsonGet(u'_pData', self.name)
-            #if codeGetLine != None and len(codeGetLine) > 0:
-            #    codeLines.append(u'    %s' % (codeGetLine))
         codeLines.append(u'}')
         return codeLines

@@ -8,6 +8,13 @@ class C11Type(object):
         self.schemaValue = None
         self.typeName = None
 
+    def setCodes(self, manualCodeHeaders, manualCodeSourcesVariable, manualCodeSourcesFunction, manualCodeParsersFrom, manualCodeParsersTo):
+        self.manualCodeHeaders = manualCodeHeaders
+        self.manualCodeSourcesVariable = manualCodeSourcesVariable
+        self.manualCodeSourcesFunction = manualCodeSourcesFunction
+        self.manualCodeParsersFrom = manualCodeParsersFrom
+        self.manualCodeParsersTo = manualCodeParsersTo
+
     def setSchema(self, schemaName, schemaValue):
         self.schemaName = schemaName
         self.schemaValue = schemaValue

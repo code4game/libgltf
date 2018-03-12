@@ -3,8 +3,15 @@
 
 namespace libgltf
 {
+    SObject::SObject()
+        : schemaType(GLTFTEXT(""))
+    {
+        //
+    }
+
     SGlTFProperty::SGlTFProperty()
-        : extras(nullptr)
+        : SObject()
+        , extras(nullptr)
         , extensions(nullptr)
     {
         //
@@ -97,6 +104,7 @@ namespace libgltf
     }
 
     SExtras::SExtras()
+        : SObject()
     {
         //
     }
@@ -267,7 +275,27 @@ namespace libgltf
         return true;
     }
 
+    SKHR_materials_pbrSpecularGlossinessglTFextension::SKHR_materials_pbrSpecularGlossinessglTFextension()
+        : SGlTFProperty()
+        , specularFactor({ 1.000000f, 1.000000f, 1.000000f })
+        , glossinessFactor(1.000000f)
+        , diffuseTexture(nullptr)
+        , specularGlossinessTexture(nullptr)
+        , diffuseFactor({ 1.000000f, 1.000000f, 1.000000f, 1.000000f })
+    {
+        //
+    }
+
+    SKHR_materials_pbrSpecularGlossinessglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SExtension::SExtension()
+        : SObject()
+        // Manual code lines
+        , properties()
     {
         //
     }
@@ -293,7 +321,8 @@ namespace libgltf
     }
 
     SGlTFId::SGlTFId()
-        : int32_tValue(0)
+        : SObject()
+        , int32_tValue(0)
     {
         //
     }
@@ -386,6 +415,20 @@ namespace libgltf
     }
 
     SMaterialPBRMetallicRoughness::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_draco_mesh_compressionextension::SKHR_draco_mesh_compressionextension()
+        : SObject()
+        , attributes()
+        , bufferView(nullptr)
+    {
+        //
+    }
+
+    SKHR_draco_mesh_compressionextension::operator bool() const
     {
         //TODO:
         return true;

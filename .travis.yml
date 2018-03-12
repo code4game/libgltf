@@ -31,8 +31,10 @@ script:
 after_success:
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./nothing.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-BarramundiFish.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-Draco-BarramundiFish.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-pbrSpecularGlossinessBarramundiFish.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/AnimatedMorphCube.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BarramundiFish.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BoxAnimated.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/Cameras.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi

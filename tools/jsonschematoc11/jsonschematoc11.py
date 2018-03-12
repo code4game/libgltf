@@ -1,6 +1,7 @@
 import sys
 import os
 import argparse
+from ConfigParser import SafeConfigParser
 import logging
 import json
 
@@ -14,19 +15,54 @@ class C11TypeLibrary(object):
     def __init__(self):
         self.c11Types = dict()
 
+    def setVersion(self, major=0, minor=0, patch=0):
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+
     def addC11Type(self, schemaName, c11Type):
         if schemaName in self.c11Types:
             return (1, u'already have %s in c11 type library' % schemaName)
         self.c11Types[schemaName] = c11Type
         return (0, u'')
 
-    def addSchema(self, rootPath, schemaFileName):
+    def addSchema(self, rootPath, schemaFileName, config=None):
         schema_file_path = os.path.join(rootPath, schemaFileName)
         with open(schema_file_path, u'r') as schema_file:
             schema = json.load(schema_file)
             if schema is None:
                 return (1, u'Can\'t parse the schema file %s' % schema_file_path)
-            (c11_type, error_code, error_message) = BuildC11Type(schemaFileName, schema, isSchema=True)
+            code_headers = None
+            if config is not None and config.has_option(u'code.headers', schemaFileName):
+                code_file_path = config.get(u'code.headers', schemaFileName)
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_headers = code_file.readlines()
+            code_sources_variable = None
+            if config is not None and config.has_option(u'code.sources.variable', schemaFileName):
+                code_file_path = config.get(u'code.sources.variable', schemaFileName)
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_sources_variable = code_file.readlines()
+            code_sources_function = None
+            if config is not None and config.has_option(u'code.sources.function', schemaFileName):
+                code_file_path = config.get(u'code.sources.function', schemaFileName)
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_sources_function = code_file.readlines()
+            code_parsers_from = None
+            if config is not None and config.has_option(u'code.parsers.from', schemaFileName):
+                code_file_path = config.get(u'code.parsers.from', schemaFileName)
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_parsers_from = code_file.readlines()
+            code_parsers_to = None
+            if config is not None and config.has_option(u'code.parsers.to', schemaFileName):
+                code_file_path = config.get(u'code.parsers.to', schemaFileName)
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_parsers_to = code_file.readlines()
+            (c11_type, error_code, error_message) = BuildC11Type(schemaFileName, schema, isSchema=True, manualCodeHeaders=code_headers, manualCodeSourcesVariable=code_sources_variable, manualCodeSourcesFunction=code_sources_function , manualCodeParsersFrom=code_parsers_from, manualCodeParsersTo=code_parsers_to)
             if error_code != 0:
                 return (error_code, u'Has error when build - %s' % error_message)
             (error_code, error_message) = self.addC11Type(schemaFileName, c11_type)
@@ -34,18 +70,26 @@ class C11TypeLibrary(object):
                 return (error_code, u'Has error when add - %s' % error_message)
         return (0, u'')
 
-    def addSchemaDirectory(self, schemaDirectory):
-        if not os.path.isdir(schemaDirectory):
-            return (1, u'The schema directory (%s) is not a valid directory' % schemaDirectory)
+    def addSchemaDirectory(self, schemaDirectory, config=None):
+        schema_directory = os.path.normpath(schemaDirectory)
+        if not os.path.isdir(schema_directory):
+            return (1, u'The schema directory (%s) is not a valid directory' % schema_directory)
 
-        for root_path, _, file_names in os.walk(schemaDirectory, topdown=False):
+        for root_path, _, file_names in os.walk(schema_directory, topdown=False):
             for file_name in file_names:
                 if not file_name.endswith(u'schema.json'):
                     continue
-                (error_code, error_message) = self.addSchema(root_path, file_name)
+                (error_code, error_message) = self.addSchema(root_path, file_name, config)
                 if error_code != 0:
                     return (error_code, error_message)
         return (0, u'')
+
+    def codeVersion(self):
+        code_lines = []
+        code_lines.append(u'#define LIBGLTF_MAJOR_VERSION    %s' % self.major)
+        code_lines.append(u'#define LIBGLTF_MINOR_VERSION    %s' % self.minor)
+        code_lines.append(u'#define LIBGLTF_PATCH_VERSION    %s' % self.patch)
+        return code_lines
 
     @classmethod
     def codeHeaderParser(self):
@@ -53,6 +97,21 @@ class C11TypeLibrary(object):
         code_lines.append(u'struct SGlTF;')
         code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent);')
         code_lines.append(u'bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, GLTFString& _sContent);')
+        code_lines.append(u'struct SObject')
+        code_lines.append(u'{')
+        code_lines.append(u'    SObject();')
+        code_lines.append(u'    GLTFString schemaType;')
+        code_lines.append(u'};')
+        return code_lines
+
+    @classmethod
+    def codeSourceParser(self):
+        code_lines = []
+        code_lines.append(u'SObject::SObject()')
+        code_lines.append(u'    : schemaType(GLTFTEXT(""))')
+        code_lines.append(u'{')
+        code_lines.append(u'    //')
+        code_lines.append(u'}')
         return code_lines
 
     def preprocess(self):
@@ -81,10 +140,13 @@ class C11TypeLibrary(object):
             header_file.write(u'\n')
 
             begin_space = u''
-            if nameSpace is not None:
-                header_file.write(u'namespace %s\n' % nameSpace)
-                header_file.write(u'{\n')
-                begin_space = u'    '
+
+            code_version_parser_lines = self.codeVersion()
+            for code_version_parser_line in code_version_parser_lines:
+                code_version_parser_line = u'%s%s\n' % (begin_space, code_version_parser_line)
+                header_file.write(code_version_parser_line)
+            if code_version_parser_line:
+                header_file.write(u'\n')
 
             header_file.write(u'#if defined(LIBGLTF_USE_WCHAR)\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::wstring                                        GLTFString;'))
@@ -92,6 +154,11 @@ class C11TypeLibrary(object):
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#endif\n')
             header_file.write(u'\n')
+
+            if nameSpace is not None:
+                header_file.write(u'namespace %s\n' % nameSpace)
+                header_file.write(u'{\n')
+                begin_space = u'    '
 
             code_header_parser_lines = self.codeHeaderParser()
             for code_header_parser_line in code_header_parser_lines:
@@ -131,6 +198,13 @@ class C11TypeLibrary(object):
                 source_file.write(u'namespace %s\n' % nameSpace)
                 source_file.write(u'{\n')
                 begin_space = u'    '
+
+            code_source_parser_lines = self.codeSourceParser()
+            for code_source_parser_line in code_source_parser_lines:
+                code_source_parser_line = u'%s%s\n' % (begin_space, code_source_parser_line)
+                source_file.write(code_source_parser_line)
+            if code_source_parser_lines:
+                source_file.write(u'\n')
 
             parent_type_names = []
             for key in self.c11Types:
@@ -315,7 +389,11 @@ class C11TypeLibrary(object):
             source_file.write(u'%s    size_t len = json_array.Size();\n' % begin_space)
             source_file.write(u'%s    if (len == 0) return true;\n' % begin_space)
             source_file.write(u'%s    datas.resize(len);\n' % begin_space)
-            source_file.write(u'%s    for (size_t i = 0; i < len; ++i) if (!(datas[i] << json_array[static_cast<rapidjson::SizeType>(i)])) return false;\n' % begin_space)
+            source_file.write(u'%s    for (size_t i = 0; i < len; ++i)\n' % begin_space)
+            source_file.write(u'%s    {\n' % begin_space)
+            source_file.write(u'%s        if (datas[i] << json_array[static_cast<rapidjson::SizeType>(i)]) continue;\n' % begin_space)
+            source_file.write(u'%s        return false;\n' % begin_space)
+            source_file.write(u'%s    }\n' % begin_space)
             source_file.write(u'%s    _vDatas = datas;\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
@@ -389,30 +467,54 @@ class C11TypeLibrary(object):
 
 def JSONSchemaToC11(argv):
     parser = argparse.ArgumentParser(description=u'Generate c11 code by json schema.')
-    parser.add_argument(u'schemaDirectory', metavar=u'schema_directory', type=type(u''), help=u'The directory contains all schema files')
-    parser.add_argument(u'codeFileName', metavar=u'code_file_name', type=type(u''), help=u'The output filename of c11 code')
-    parser.add_argument(u'--output_header_path', type=type(u''), help=u'Set the output header path')
-    parser.add_argument(u'--output_source_path', type=type(u''), help=u'Set the output source path')
-    parser.add_argument(u'--namespace', type=type(u''), help=u'Set the namespace')
+    parser.add_argument(u'configFile', metavar=u'config_file', type=file, help=u'The configuration file')
     args = parser.parse_args(argv)
 
-    if args.output_header_path != None and not os.path.exists(args.output_header_path):
+    if not args.configFile:
+        return (1, u'Can\'t find the configuration file')
+
+    os.environ['CD'] = os.path.dirname(os.path.abspath(args.configFile.name))
+
+    config = SafeConfigParser(os.environ)
+    config.readfp(args.configFile)
+
+    schema_directory = config.get(u'glTF', u'schema_directory')
+    code_file_name = config.get(u'glTF', u'code_file_name')
+    extensions_schema_directories = []
+    for extensions_schema_directory in config.get(u'glTF', u'extensions_schema_directories').split(u','):
+        extensions_schema_directories.append(extensions_schema_directory.replace(u'\n', u''))
+
+    major_version = config.get(u'glTF', u'major_version')
+    minor_version = config.get(u'glTF', u'minor_version')
+    patch_version = config.get(u'glTF', u'patch_version')
+
+    output_header_path = config.get(u'output', u'output_header_path')
+    output_source_path = config.get(u'output', u'output_source_path')
+    namespace = config.get(u'output', u'namespace')
+
+    if output_header_path != None and not os.path.exists(output_header_path):
         return (1, u'Invalid output header path')
-    if args.output_source_path != None and not os.path.exists(args.output_source_path):
+    if output_source_path != None and not os.path.exists(output_source_path):
         return (1, u'Invalid output source path')
-    if args.output_header_path == None:
-        args.output_header_path = u'./'
-    if args.output_source_path == None:
-        args.output_source_path = u'./'
+    if output_header_path == None:
+        output_header_path = u'./'
+    if output_source_path == None:
+        output_source_path = u'./'
 
     c11_type_library = C11TypeLibrary()
-    (error_code, error_message) = c11_type_library.addSchemaDirectory(args.schemaDirectory)
+    c11_type_library.setVersion(major_version, minor_version, patch_version)
+    (error_code, error_message) = c11_type_library.addSchemaDirectory(schema_directory, config)
     if error_code != 0:
         return (error_code, error_message)
+    for extensions_schema_directory in extensions_schema_directories:
+        (error_code, error_message) = c11_type_library.addSchemaDirectory(extensions_schema_directory, config)
+        if error_code != 0:
+            print error_code, error_message
+            return (error_code, error_message)
     (error_code, error_message) = c11_type_library.preprocess()
     if error_code != 0:
         return (error_code, error_message)
-    (error_code, error_message) = c11_type_library.generate(args.codeFileName, outputHeaderPath=args.output_header_path, outputSourcePath=args.output_source_path, nameSpace=args.namespace)
+    (error_code, error_message) = c11_type_library.generate(code_file_name, outputHeaderPath=output_header_path, outputSourcePath=output_source_path, nameSpace=namespace)
     if error_code != 0:
         return (error_code, error_message)
     return (0, u'')
@@ -421,7 +523,7 @@ if __name__ == u'__main__':
     (error_code, error_message) = JSONSchemaToC11(sys.argv[1:])
     if error_code != 0:
         logger.error(error_message)
+        sys.exit(error_code)
     else:
         logger.info(u'Success')
     exit(error_code)
-
