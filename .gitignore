@@ -1,4 +1,6 @@
-/.vscode
+/**/.vs
+/**/.vscode
+
 /output
 /build
 

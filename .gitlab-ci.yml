@@ -33,7 +33,9 @@ test_win32:
         - 'cd build'
         - 'cmake -G "Visual Studio 14 2015" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
-        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
+        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
         - 'cd ../'
     tags:
         - win32
@@ -50,7 +52,9 @@ test_win64:
         - 'cd build'
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
-        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\BarramundiFish.gltf'
+        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
         - 'cd ../'
     tags:
         - win64
@@ -66,8 +70,10 @@ test_linux:
         - 'make'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/glTF-BarramundiFish.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/glTF-Draco-BarramundiFish.gltf'
+        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/glTF-pbrSpecularGlossinessBarramundiFish.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/AnimatedMorphCube.gltf'
-        - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/BarramundiFish.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/BoxAnimated.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/Cameras.gltf'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/example-2.0/DamagedHelmet.Embedded.gltf'
@@ -90,7 +96,9 @@ test_macos:
         - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
         - 'make'
-        - './../output/bin/macos/runtest ../resource/example-2.0/BarramundiFish.gltf'
+        - './../output/bin/macos/runtest ../resource/example-2.0/glTF-BarramundiFish.gltf'
+        - './../output/bin/macos/runtest ../resource/example-2.0/glTF-Draco-BarramundiFish.gltf'
+        - './../output/bin/macos/runtest ../resource/example-2.0/glTF-pbrSpecularGlossinessBarramundiFish.gltf'
         - 'cd ../'
     tags:
         - macos

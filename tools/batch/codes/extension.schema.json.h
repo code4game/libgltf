@@ -1,0 +1,1 @@
+std::map<GLTFString, std::shared_ptr<struct SObject>> properties;

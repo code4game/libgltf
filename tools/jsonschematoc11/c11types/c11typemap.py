@@ -77,8 +77,8 @@ class C11TypeMap(C11Type):
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
-        return u'if (!(%s->%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
 
     @classmethod
     def codeJsonGet(cls, dataName, variableName):
-        return u'if (!(%s->%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

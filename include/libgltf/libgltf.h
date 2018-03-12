@@ -6,27 +6,36 @@
 #include <string>
 #include <memory>
 
-namespace libgltf
-{
+#define LIBGLTF_MAJOR_VERSION    0
+#define LIBGLTF_MINOR_VERSION    1
+#define LIBGLTF_PATCH_VERSION    0
+
 #if defined(LIBGLTF_USE_WCHAR)
-    typedef std::wstring                                        GLTFString;
+typedef std::wstring                                        GLTFString;
 #else
-    typedef std::string                                         GLTFString;
+typedef std::string                                         GLTFString;
 #endif
 
+namespace libgltf
+{
     struct SGlTF;
     bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const GLTFString& _sContent);
     bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, GLTFString& _sContent);
+    struct SObject
+    {
+        SObject();
+        GLTFString schemaType;
+    };
 
     /*!
      * struct: SGlTFProperty
      */
-    struct SGlTFProperty
+    struct SGlTFProperty : SObject
     {
         SGlTFProperty();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         std::shared_ptr<struct SExtras> extras;
         std::shared_ptr<struct SExtension> extensions;
@@ -40,7 +49,7 @@ namespace libgltf
         SGlTFChildofRootProperty();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The user-defined name of this object.
         GLTFString name;
@@ -55,7 +64,7 @@ namespace libgltf
         SMaterial();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The alpha cutoff value of the material.
         float alphaCutoff;
@@ -84,7 +93,7 @@ namespace libgltf
         SAsset();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The minimum glTF version that this asset targets.
         GLTFString minVersion;
@@ -105,7 +114,7 @@ namespace libgltf
         SSampler();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // s wrapping mode.
         int32_t wrapS;
@@ -126,7 +135,7 @@ namespace libgltf
         SAnimationSampler();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of an accessor containing keyframe input values, e.g., time.
         std::shared_ptr<struct SGlTFId> input;
@@ -140,13 +149,12 @@ namespace libgltf
      * struct: SExtras
      * Application-specific data.
      */
-    struct SExtras
+    struct SExtras : SObject
     {
         SExtras();
 
         // Check valid
-        operator bool() const;
-
+        virtual operator bool() const;
     };
 
     /*!
@@ -158,7 +166,7 @@ namespace libgltf
         SScene();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The indices of each root node.
         std::vector<std::shared_ptr<struct SGlTFId>> nodes;
@@ -173,7 +181,7 @@ namespace libgltf
         SCameraPerspective();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The floating-point aspect ratio of the field of view.
         float aspectRatio;
@@ -194,7 +202,7 @@ namespace libgltf
         SBufferView();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The length of the bufferView in bytes.
         int32_t byteLength;
@@ -217,7 +225,7 @@ namespace libgltf
         STextureInfo();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the texture.
         std::shared_ptr<struct SGlTFId> index;
@@ -233,7 +241,7 @@ namespace libgltf
         SMaterialNormalTextureInfo();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The scalar multiplier applied to each normal vector of the normal texture.
         float scale;
@@ -247,7 +255,7 @@ namespace libgltf
         SMaterialOcclusionTextureInfo();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // A scalar multiplier controlling the amount of occlusion applied.
         float strength;
@@ -262,7 +270,7 @@ namespace libgltf
         SAccessorSparseValues();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the bufferView with sparse values. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target.
         std::shared_ptr<struct SGlTFId> bufferView;
@@ -279,11 +287,11 @@ namespace libgltf
         SAnimationChannelTarget();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the node to target.
         std::shared_ptr<struct SGlTFId> node;
-        // The name of the node's TRS property to modify, or the "weights" of the Morph Targets it instantiates.
+        // The name of the node's TRS property to modify, or the "weights" of the Morph Targets it instantiates. For the "translation" property, the values that are provided by the sampler are the translation along the x, y, and z axes. For the "rotation" property, the values are a quaternion in the order (x, y, z, w), where w is the scalar. For the "scale" property, the values are the scaling factors along the x, y, and z axes.
         GLTFString path;
     };
 
@@ -296,7 +304,7 @@ namespace libgltf
         SMesh();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // An array of primitives, each defining geometry to be rendered with a material.
         std::vector<std::shared_ptr<struct SMeshPrimitive>> primitives;
@@ -313,7 +321,7 @@ namespace libgltf
         SAccessorSparse();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // Number of entries stored in the sparse array.
         int32_t count;
@@ -332,7 +340,7 @@ namespace libgltf
         SMeshPrimitive();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the accessor that contains the indices.
         std::shared_ptr<struct SGlTFId> indices;
@@ -347,16 +355,41 @@ namespace libgltf
     };
 
     /*!
+     * struct: SKHR_materials_pbrSpecularGlossinessglTFextension
+     * glTF extension that defines the specular-glossiness material model from Physically-Based Rendering (PBR) methodology.
+     */
+    struct SKHR_materials_pbrSpecularGlossinessglTFextension : SGlTFProperty
+    {
+        SKHR_materials_pbrSpecularGlossinessglTFextension();
+
+        // Check valid
+        virtual operator bool() const;
+
+        // The specular RGB color of the material.
+        std::vector<float> specularFactor;
+        // The glossiness or smoothness of the material.
+        float glossinessFactor;
+        // The diffuse texture.
+        std::shared_ptr<struct STextureInfo> diffuseTexture;
+        // The specular-glossiness texture.
+        std::shared_ptr<struct STextureInfo> specularGlossinessTexture;
+        // The reflected diffuse factor of the material.
+        std::vector<float> diffuseFactor;
+    };
+
+    /*!
      * struct: SExtension
      * Dictionary object with extension-specific objects.
      */
-    struct SExtension
+    struct SExtension : SObject
     {
         SExtension();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
+        // Manual code lines
+        std::map<GLTFString, std::shared_ptr<struct SObject>> properties;
     };
 
     /*!
@@ -368,7 +401,7 @@ namespace libgltf
         SAnimationChannel();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the node and TRS property to target.
         std::shared_ptr<struct SAnimationChannelTarget> target;
@@ -379,17 +412,16 @@ namespace libgltf
     /*!
      * struct: SGlTFId
      */
-    struct SGlTFId
+    struct SGlTFId : SObject
     {
         SGlTFId();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         operator int32_t() const;
 
         int32_t int32_tValue;
-
     };
 
     /*!
@@ -401,7 +433,7 @@ namespace libgltf
         SAccessorSparseIndices();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The indices data type.
         int32_t componentType;
@@ -420,9 +452,9 @@ namespace libgltf
         SNode();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
-        // The node's non-uniform scale.
+        // The node's non-uniform scale, given as the scaling factors along the x, y, and z axes.
         std::vector<float> scale;
         // The node's unit quaternion rotation in the order (x, y, z, w), where w is the scalar.
         std::vector<float> rotation;
@@ -436,7 +468,7 @@ namespace libgltf
         std::vector<float> weights;
         // The index of the skin referenced by this node.
         std::shared_ptr<struct SGlTFId> skin;
-        // The node's translation.
+        // The node's translation along the x, y, and z axes.
         std::vector<float> translation;
         // The indices of this node's children.
         std::vector<std::shared_ptr<struct SGlTFId>> children;
@@ -451,7 +483,7 @@ namespace libgltf
         SAnimation();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // An array of channels, each of which targets an animation's sampler at a node's property. Different channels of the same animation can't have equal targets.
         std::vector<std::shared_ptr<struct SAnimationChannel>> channels;
@@ -468,7 +500,7 @@ namespace libgltf
         SSkin();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // Indices of skeleton nodes, used as joints in this skin.
         std::vector<std::shared_ptr<struct SGlTFId>> joints;
@@ -487,7 +519,7 @@ namespace libgltf
         SMaterialPBRMetallicRoughness();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The roughness of the material.
         float roughnessFactor;
@@ -502,6 +534,22 @@ namespace libgltf
     };
 
     /*!
+     * struct: SKHR_draco_mesh_compressionextension
+     */
+    struct SKHR_draco_mesh_compressionextension : SObject
+    {
+        SKHR_draco_mesh_compressionextension();
+
+        // Check valid
+        virtual operator bool() const;
+
+        // A dictionary object, where each key corresponds to an attribute and its unique attribute id stored in the compressed geometry.
+        std::map<GLTFString, std::shared_ptr<struct SGlTFId>> attributes;
+        // The index of the bufferView.
+        std::shared_ptr<struct SGlTFId> bufferView;
+    };
+
+    /*!
      * struct: SCamera
      * A camera's projection.  A node can reference a camera to apply a transform to place the camera in the scene.
      */
@@ -510,7 +558,7 @@ namespace libgltf
         SCamera();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // Specifies if the camera uses a perspective or orthographic projection.
         GLTFString type;
@@ -529,7 +577,7 @@ namespace libgltf
         SImage();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The image's MIME type.
         GLTFString mimeType;
@@ -548,7 +596,7 @@ namespace libgltf
         STexture();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The index of the image used by this texture.
         std::shared_ptr<struct SGlTFId> source;
@@ -565,7 +613,7 @@ namespace libgltf
         SCameraOrthographic();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The floating-point horizontal magnification of the view. Must not be zero.
         float xmag;
@@ -586,7 +634,7 @@ namespace libgltf
         SBuffer();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The length of the buffer in bytes.
         int32_t byteLength;
@@ -603,7 +651,7 @@ namespace libgltf
         SAccessor();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // The number of attributes referenced by this accessor.
         int32_t count;
@@ -634,7 +682,7 @@ namespace libgltf
         SGlTF();
 
         // Check valid
-        operator bool() const;
+        virtual operator bool() const;
 
         // An array of textures.
         std::vector<std::shared_ptr<struct STexture>> textures;

@@ -21,7 +21,7 @@ class C11TypeString(C11Type):
     @classmethod
     def codeDefaultValueArray(self, schemaDefaultValue):
         if schemaDefaultValue is None\
-            or isinstance(schemaDefaultValue) is not list\
+            or not isinstance(schemaDefaultValue, list)\
             or len(schemaDefaultValue) <= 0:
             return u''
         code_default_value = u''
@@ -36,8 +36,8 @@ class C11TypeString(C11Type):
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):
-        return u'%s->%s = _JsonValue[GLTFTEXT("%s")].GetString();' % (dataName, variableName, variableName)
+        return u'%s.%s = _JsonValue[GLTFTEXT("%s")].GetString();' % (dataName, variableName, variableName)
 
     @classmethod
     def codeJsonGet(cls, dataName, variableName):
-        return u'_JsonValue[GLTFTEXT("%s")].SetString(%s->%s.c_str(), g_json_doc_ptr->GetAllocator());' % (variableName, dataName, variableName)
+        return u'_JsonValue[GLTFTEXT("%s")].SetString(%s.%s.c_str(), g_json_doc_ptr->GetAllocator());' % (variableName, dataName, variableName)
