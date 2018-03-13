@@ -19,14 +19,16 @@ class C11TypeString(C11Type):
         return u'GLTFTEXT("")'
 
     @classmethod
-    def codeDefaultValueArray(self, schemaDefaultValue):
-        if schemaDefaultValue is None\
-            or not isinstance(schemaDefaultValue, list)\
-            or len(schemaDefaultValue) <= 0:
+    def codeDefaultValueArray(self, schemaDefaultValues):
+        if schemaDefaultValues is None\
+            or not isinstance(schemaDefaultValues, list)\
+            or len(schemaDefaultValues) <= 0:
             return u''
         code_default_value = u''
-        for i in range(0, len(schemaDefaultValue)):
-            code_default_value = code_default_value + u'GLTFTEXT("%s"), ' % schemaDefaultValue[i]
+        for schema_value in schemaDefaultValues:
+            if len(code_default_value) > 0:
+                code_default_value = code_default_value + u', '
+            code_default_value = code_default_value + u'GLTFTEXT("%s")' % schema_value
         code_default_value = code_default_value[0:len(code_default_value) - 2]
         return u'{ %s }' % code_default_value
 

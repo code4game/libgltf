@@ -215,7 +215,7 @@ class C11TypeStruct(C11Type):
             codeLines.append(u'{')
             codeLines.append(u'    return %sValue;' % (self.c11Type.codeTypeName()))
             codeLines.append(u'}')
-            
+
         if self.manualCodeSourcesFunction is not None and len(self.manualCodeSourcesFunction) > 0:
             codeLines.append(u'')
             codeLines.append(u'// Manual code lines')

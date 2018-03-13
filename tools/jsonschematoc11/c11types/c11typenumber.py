@@ -16,16 +16,17 @@ class C11TypeNumber(C11Type):
         return u'0.0f'
 
     @classmethod
-    def codeDefaultValueArray(cls, schemaDefaultValue):
-        if schemaDefaultValue is None\
-            or not isinstance(schemaDefaultValue, list)\
-            or len(schemaDefaultValue) <= 0:
+    def codeDefaultValueArray(cls, schemaDefaultValues):
+        if schemaDefaultValues is None\
+            or not isinstance(schemaDefaultValues, list)\
+            or len(schemaDefaultValues) <= 0:
             return u''
-        codeDefauleValue = u''
-        for i in range(0, len(schemaDefaultValue)):
-            codeDefauleValue = codeDefauleValue + u'%ff, ' % schemaDefaultValue[i]
-        codeDefauleValue = codeDefauleValue[0:len(codeDefauleValue) - 2]
-        return u'{ %s }' % codeDefauleValue
+        code_default_value = u''
+        for schema_value in schemaDefaultValues:
+            if len(code_default_value) > 0:
+                code_default_value = code_default_value + u', '
+            code_default_value = code_default_value + u'%ff' % schema_value
+        return u'{ %s }' % code_default_value
 
     @classmethod
     def codeJsonCheck(cls):
