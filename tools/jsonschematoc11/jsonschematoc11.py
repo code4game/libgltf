@@ -148,7 +148,7 @@ class C11TypeLibrary(object):
             if code_version_parser_line:
                 header_file.write(u'\n')
 
-            header_file.write(u'#if defined(LIBGLTF_USE_WCHAR)\n')
+            header_file.write(u'#if defined(UNICODE)\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::wstring                                        GLTFString;'))
             header_file.write(u'#else\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
