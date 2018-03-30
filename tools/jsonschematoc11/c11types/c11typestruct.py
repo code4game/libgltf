@@ -132,7 +132,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'    %s();' % self.codeTypeName())
         codeLines.append(u'')
         codeLines.append(u'    // Check valid')
-        codeLines.append(u'    virtual operator bool() const;')
+        codeLines.append(u'    operator bool() const;')
 
         if self.c11Type != None:
             codeLines.append(u'')
