@@ -149,7 +149,13 @@ class C11TypeLibrary(object):
                 header_file.write(u'\n')
 
             header_file.write(u'#if defined(UNICODE)\n')
+            header_file.write(u'#if defined(USING_CHAR16)\n')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::u16string                                      GLTFString;'))
+            header_file.write(u'#elif defined(USING_CHAR32)\n')
+            header_file.write(u'%s%s\n' % (begin_space, u'typedef std::u32string                                      GLTFString;'))
+            header_file.write(u'#else\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::wstring                                        GLTFString;'))
+            header_file.write(u'#endif\n')
             header_file.write(u'#else\n')
             header_file.write(u'%s%s\n' % (begin_space, u'typedef std::string                                         GLTFString;'))
             header_file.write(u'#endif\n')

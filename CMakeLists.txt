@@ -15,6 +15,8 @@ set(LIBGLTF_PLATFORM_MACOS FALSE)
 
 option(LIBGLTF_COVERAGE_GCOV "Coverage gcov (debug, Linux builds only)" OFF)
 option(LIBGLTF_WITH_UNICODE "Build with UNICODE" OFF)
+option(LIBGLTF_USING_CHAR16 "Build using char16_t when with UNICODE" OFF)
+option(LIBGLTF_USING_CHAR32 "Build using char32_t when with UNICODE" OFF)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(LIBGLTF_PLATFORM_WINDOWS TRUE)
@@ -79,8 +81,14 @@ if((CMAKE_COMPILER_IS_GNUCC STREQUAL "1") OR (CMAKE_COMPILER_IS_GNUCXX STREQUAL 
     add_definitions(-DCOMPILER_IS_GCC)
 endif()
 
-if(${LIBGLTF_WITH_UNICODE} OR ${LIBGLTF_PLATFORM_WINDOWS})
+if(${LIBGLTF_WITH_UNICODE})
     add_definitions(-DUNICODE -D_UNICODE)
+    if(${LIBGLTF_USING_CHAR16})
+        add_definitions(-DUSING_CHAR16)
+    endif()
+    if(${LIBGLTF_USING_CHAR32})
+        add_definitions(-DUSING_CHAR32)
+    endif()
 endif()
 
 if(LIBGLTF_BUILD_GCOV AND LIBGLTF_PLATFORM_LINUX)
