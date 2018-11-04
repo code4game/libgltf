@@ -23,6 +23,7 @@ install:
 
 script:
 - set -e
+- cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../
 - mkdir ./build && cd ./build
 - if [ $RUN_COVERALLS == true ]; then cmake -D LIBGLTF_COVERAGE_GCOV=TRUE ./../; else cmake ./../; fi
 - make

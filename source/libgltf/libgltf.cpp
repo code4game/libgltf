@@ -23,39 +23,6 @@ namespace libgltf
         return true;
     }
 
-    SGlTFChildofRootProperty::SGlTFChildofRootProperty()
-        : SGlTFProperty()
-        , name(GLTFTEXT(""))
-    {
-        //
-    }
-
-    SGlTFChildofRootProperty::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SMaterial::SMaterial()
-        : SGlTFChildofRootProperty()
-        , alphaCutoff(0.500000f)
-        , emissiveTexture(nullptr)
-        , pbrMetallicRoughness(nullptr)
-        , occlusionTexture(nullptr)
-        , alphaMode(GLTFTEXT("OPAQUE"))
-        , doubleSided(false)
-        , normalTexture(nullptr)
-        , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
-    {
-        //
-    }
-
-    SMaterial::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
     SAsset::SAsset()
         : SGlTFProperty()
         , minVersion(GLTFTEXT(""))
@@ -67,6 +34,19 @@ namespace libgltf
     }
 
     SAsset::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SGlTFChildofRootProperty::SGlTFChildofRootProperty()
+        : SGlTFProperty()
+        , name(GLTFTEXT(""))
+    {
+        //
+    }
+
+    SGlTFChildofRootProperty::operator bool() const
     {
         //TODO:
         return true;
@@ -103,13 +83,21 @@ namespace libgltf
         return true;
     }
 
-    SExtras::SExtras()
-        : SObject()
+    SMaterial::SMaterial()
+        : SGlTFChildofRootProperty()
+        , alphaCutoff(0.500000f)
+        , emissiveTexture(nullptr)
+        , pbrMetallicRoughness(nullptr)
+        , occlusionTexture(nullptr)
+        , alphaMode(GLTFTEXT("OPAQUE"))
+        , doubleSided(false)
+        , normalTexture(nullptr)
+        , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
     {
         //
     }
 
-    SExtras::operator bool() const
+    SMaterial::operator bool() const
     {
         //TODO:
         return true;
@@ -229,15 +217,13 @@ namespace libgltf
         return true;
     }
 
-    SMesh::SMesh()
-        : SGlTFChildofRootProperty()
-        , primitives()
-        , weights()
+    SExtras::SExtras()
+        : SObject()
     {
         //
     }
 
-    SMesh::operator bool() const
+    SExtras::operator bool() const
     {
         //TODO:
         return true;
@@ -459,6 +445,20 @@ namespace libgltf
     }
 
     SImage::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SMesh::SMesh()
+        : SGlTFChildofRootProperty()
+        , primitives()
+        , weights()
+    {
+        //
+    }
+
+    SMesh::operator bool() const
     {
         //TODO:
         return true;
