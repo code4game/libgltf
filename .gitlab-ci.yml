@@ -1,5 +1,6 @@
 variables:
     GIT_SUBMODULE_STRATEGY: "recursive"
+    ANDROID_NDK: "~/develop/android-ndk-r18b"
 
 before_script:
     - git lfs fetch
@@ -10,60 +11,54 @@ after_script:
 
 stages:
     - check
-    - test
+    - build
 
 checked_by_cppcheck:
     stage: check
     script:
-        - echo check
+        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'cppcheck . --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
     tags:
+        - linux
+        - python
         - cppcheck
 
-test_win32:
-    stage: test
+compile_windows:
+    stage: build
     script:
+        - 'cd tools/batch/ && python .\..\..\tools\jsonschematoc11 glTF_2.0_schema.ini && cd ../../'
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
         - 'if exist build rmdir /s /q build'
         - 'if exist output rmdir /s /q output'
-        - 'mkdir build'
-        - 'cd build'
-        - 'cmake -G "Visual Studio 14 2015" ../'
+        - 'mkdir build && cd build'
+        - 'mkdir win32 && cd win32'
+        - 'cmake -G "Visual Studio 14 2015" -DLIBGLTF_WITH_UNICODE=TRUE ../../'
         - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
-        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-BarramundiFish.gltf'
-        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
-        - '..\output\bin\win32\Debug\runtest.exe ..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cd ../'
+        - 'mkdir win64 && cd win64'
+        - 'cmake -G "Visual Studio 14 2015 Win64" -DLIBGLTF_WITH_UNICODE=TRUE ../../'
+        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
+        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cd ../'
         - 'cd ../'
     tags:
         - win32
-        - cmake
-        - vs2015
-
-test_win64:
-    stage: test
-    script:
-        - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
-        - 'if exist build rmdir /s /q build'
-        - 'if exist output rmdir /s /q output'
-        - 'mkdir build'
-        - 'cd build'
-        - 'cmake -G "Visual Studio 14 2015 Win64" ../'
-        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
-        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-BarramundiFish.gltf'
-        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
-        - '..\output\bin\win64\Debug\runtest.exe ..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
-        - 'cd ../'
-    tags:
         - win64
+        - python
         - cmake
         - vs2015
 
-test_linux:
-    stage: test
+compile_linux:
+    stage: build
     script:
-        - 'mkdir build'
-        - 'cd build'
-        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_GCOV=TRUE -G "Unix Makefiles" ../'
+        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
+        - 'mkdir build && cd build'
+        - 'cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_GCOV=TRUE ../'
         - 'make'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
@@ -80,17 +75,17 @@ test_linux:
         - 'cd ../'
     tags:
         - linux
+        - python
         - cmake
         - make
         - valgrind
-        - gcc
         - gcovr
 
-test_macos:
-    stage: test
+compile_macos:
+    stage: build
     script:
-        - 'mkdir build'
-        - 'cd build'
+        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
+        - 'mkdir build && cd build'
         - 'cmake -G "Unix Makefiles" ../'
         - 'make'
         - './../output/bin/macos/runtest ../resource/example-2.0/glTF-BarramundiFish.gltf'
@@ -99,6 +94,65 @@ test_macos:
         - 'cd ../'
     tags:
         - macos
+        - python
         - cmake
         - make
         - gcc
+
+compile_android:
+    stage: build
+    script:
+        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
+        - 'mkdir build && cd build'
+        - 'mkdir armeabi-v7a && cd armeabi-v7a'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'ninja'
+        - 'cd ../'
+        - 'mkdir armeabi-v7a-with-neon && cd armeabi-v7a-with-neon'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=ON -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'ninja'
+        - 'cd ../'
+        - 'mkdir arm64-v8a && cd arm64-v8a'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'ninja'
+        - 'cd ../'
+        - 'mkdir x86 && cd x86'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'ninja'
+        - 'cd ../'
+        - 'mkdir x86_64 && cd x86_64'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'ninja'
+        - 'cd ../'
+        - 'cd ../'
+    tags:
+        - linux
+        - android
+        - python
+        - cmake
+        - ninja
+
+compile_ios:
+    stage: build
+    script:
+        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
+        - 'mkdir build && cd build'
+        - 'mkdir os && cd os'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_WITH_UNICODE=TRUE -DLIBGLTF_USING_CHAR16=TRUE ../../'
+        - 'make libgltf'
+        - 'cd ../'
+        - 'mkdir simulator && cd simulator'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_WITH_UNICODE=TRUE -DLIBGLTF_USING_CHAR16=TRUE ../../'
+        - 'make libgltf'
+        - 'cd ../'
+        - 'mkdir watchos && cd watchos'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_WITH_UNICODE=TRUE -DLIBGLTF_USING_CHAR16=TRUE ../../'
+        - 'make libgltf'
+        - 'cd ../'
+        - 'cd ../'
+    tags:
+        - macos
+        - ios
+        - python
+        - cmake
+        - make

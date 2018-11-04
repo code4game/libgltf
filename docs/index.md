@@ -1,8 +1,21 @@
 # About
 
-This project can automatically generate C++11 code by glTF JSON schema. Then you can compile the generated C++11 code to parser the glTF to a struct `SGlTF` or convert the struct `SGlTF` to JSON string.
+This project can automatically generate C++11 code by glTF JSON schema. Then you can compile the generated C++11 code to parser the glTF string to a struct `SGlTF` or convert the struct `SGlTF` to JSON string.
 
 It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
+
+## Platforms
+
+### Desktop
+
+* Windows
+* Linux
+* MacOS
+
+### Mobile
+
+* Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
+* iOS (iOS, simulator and watchOS)
 
 ## Donation
 

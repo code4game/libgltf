@@ -14,13 +14,6 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SGlTFProperty>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const std::vector<std::shared_ptr<struct SGlTFProperty>>& _vDatas, GLTFCharValue& _JsonValue);
 
-    bool operator<<(struct SMaterial& _rData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const struct SMaterial& _rData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::shared_ptr<struct SMaterial>& _pData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::shared_ptr<struct SMaterial>& _pData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::vector<std::shared_ptr<struct SMaterial>>& _vDatas, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::vector<std::shared_ptr<struct SMaterial>>& _vDatas, GLTFCharValue& _JsonValue);
-
     bool operator<<(struct SAsset& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const struct SAsset& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<struct SAsset>& _pData, const GLTFCharValue& _JsonValue);
@@ -49,12 +42,12 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SAnimationSampler>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const std::vector<std::shared_ptr<struct SAnimationSampler>>& _vDatas, GLTFCharValue& _JsonValue);
 
-    bool operator<<(struct SExtras& _rData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const struct SExtras& _rData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::shared_ptr<struct SExtras>& _pData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::shared_ptr<struct SExtras>& _pData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::vector<std::shared_ptr<struct SExtras>>& _vDatas, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::vector<std::shared_ptr<struct SExtras>>& _vDatas, GLTFCharValue& _JsonValue);
+    bool operator<<(struct SMaterial& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const struct SMaterial& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SMaterial>& _pData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::shared_ptr<struct SMaterial>& _pData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SMaterial>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::vector<std::shared_ptr<struct SMaterial>>& _vDatas, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct SScene& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const struct SScene& _rData, GLTFCharValue& _JsonValue);
@@ -105,12 +98,12 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SAnimationChannelTarget>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const std::vector<std::shared_ptr<struct SAnimationChannelTarget>>& _vDatas, GLTFCharValue& _JsonValue);
 
-    bool operator<<(struct SMesh& _rData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const struct SMesh& _rData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::shared_ptr<struct SMesh>& _pData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::shared_ptr<struct SMesh>& _pData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::vector<std::shared_ptr<struct SMesh>>& _vDatas, const GLTFCharValue& _JsonValue);
-    bool operator>>(const std::vector<std::shared_ptr<struct SMesh>>& _vDatas, GLTFCharValue& _JsonValue);
+    bool operator<<(struct SExtras& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const struct SExtras& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SExtras>& _pData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::shared_ptr<struct SExtras>& _pData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SExtras>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::vector<std::shared_ptr<struct SExtras>>& _vDatas, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct SAccessorSparse& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const struct SAccessorSparse& _rData, GLTFCharValue& _JsonValue);
@@ -209,6 +202,13 @@ namespace libgltf
     bool operator>>(const std::shared_ptr<struct SImage>& _pData, GLTFCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SImage>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const std::vector<std::shared_ptr<struct SImage>>& _vDatas, GLTFCharValue& _JsonValue);
+
+    bool operator<<(struct SMesh& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const struct SMesh& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SMesh>& _pData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::shared_ptr<struct SMesh>& _pData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SMesh>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const std::vector<std::shared_ptr<struct SMesh>>& _vDatas, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct STexture& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const struct STexture& _rData, GLTFCharValue& _JsonValue);

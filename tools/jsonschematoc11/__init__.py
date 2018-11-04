@@ -8,4 +8,4 @@ if __name__ == u'__main__':
         sys.exit(error_code)
     else:
         print u'Success'
-    exit(error_code)
+    sys.exit(error_code)
