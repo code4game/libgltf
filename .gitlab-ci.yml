@@ -23,27 +23,45 @@ checked_by_cppcheck:
         - python
         - cppcheck
 
-compile_windows:
+compile.windows:
     stage: build
     script:
         - 'cd tools/batch/ && python .\..\..\tools\jsonschematoc11 glTF_2.0_schema.ini && cd ../../'
-        - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
         - 'if exist build rmdir /s /q build'
-        - 'if exist output rmdir /s /q output'
         - 'mkdir build && cd build'
+        - 'mkdir vs2017 && cd vs2017'
+        - 'call "%VS2017COMNTOOLS%VsDevCmd.bat"'
         - 'mkdir win32 && cd win32'
-        - 'cmake -G "Visual Studio 14 2015" -DLIBGLTF_WITH_UNICODE=TRUE ../../'
-        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="Win32"'
-        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
-        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
-        - '..\..\output\bin\win32\Debug\runtest.exe ..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cmake -G "Visual Studio 15 2017" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
         - 'cd ../'
         - 'mkdir win64 && cd win64'
-        - 'cmake -G "Visual Studio 14 2015 Win64" -DLIBGLTF_WITH_UNICODE=TRUE ../../'
-        - 'msbuild libgltf.sln /t:Rebuild /p:Configuration="Debug" /p:Platform="x64"'
-        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
-        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
-        - '..\..\output\bin\win64\Debug\runtest.exe ..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cmake -G "Visual Studio 15 2017 Win64" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cd ../'
+        - 'cd ../'
+        - 'mkdir vs2015 && cd vs2015'
+        - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
+        - 'mkdir win32 && cd win32'
+        - 'cmake -G "Visual Studio 14 2015" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - 'output\bin\win32\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cd ../'
+        - 'mkdir win64 && cd win64'
+        - 'cmake -G "Visual Studio 14 2015 Win64" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-BarramundiFish.gltf'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-Draco-BarramundiFish.gltf'
+        - 'output\bin\win64\Debug\runtest.exe ..\..\..\resource\example-2.0\glTF-pbrSpecularGlossinessBarramundiFish.gltf'
+        - 'cd ../'
         - 'cd ../'
         - 'cd ../'
     tags:
@@ -52,8 +70,9 @@ compile_windows:
         - python
         - cmake
         - vs2015
+        - vs2017
 
-compile_linux:
+compile.linux:
     stage: build
     script:
         - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
@@ -81,7 +100,7 @@ compile_linux:
         - valgrind
         - gcovr
 
-compile_macos:
+compile.macos:
     stage: build
     script:
         - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
@@ -99,7 +118,7 @@ compile_macos:
         - make
         - gcc
 
-compile_android:
+compile.android:
     stage: build
     script:
         - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
@@ -132,7 +151,7 @@ compile_android:
         - cmake
         - ninja
 
-compile_ios:
+compile.ios:
     stage: build
     script:
         - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
