@@ -1,14 +1,7 @@
-# C/C++ with GCC
-# Build your C/C++ project with GCC using make.
-# Add steps that publish test results, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
-
 jobs:
 - job: Linux
-
   pool:
-    vmImage: 'Ubuntu 16.04'
-
+    vmImage: 'ubuntu-16.04'
   steps:
   - script: |
       mkdir build
@@ -18,10 +11,8 @@ jobs:
       cd ../
 
 - job: macOS
-
   pool:
-    vmImage: 'macOS 11'
-
+    vmImage: 'macOS-10.13'
   steps:
   - script: |
       mkdir build
