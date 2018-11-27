@@ -11,7 +11,6 @@ jobs:
 
   steps:
   - script: |
-      git submodule update --init
       mkdir build
       cd build
       cmake -G "Unix Makefiles" ../
