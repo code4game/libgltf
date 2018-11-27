@@ -14,4 +14,19 @@ jobs:
       mkdir build
       cd build
       cmake -G "Unix Makefiles" ../
-      make
+      make libgltf
+      cd ../
+
+jobs:
+- job: macOS
+
+  pool:
+    vmImage: 'macOS 11'
+
+  steps:
+  - script: |
+      mkdir build
+      cd build
+      cmake -G "Unix Makefiles" ../
+      make libgltf
+      cd ../
