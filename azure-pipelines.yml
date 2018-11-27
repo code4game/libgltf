@@ -3,10 +3,12 @@
 # Add steps that publish test results, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
 
-- jobs:
+jobs:
+- job: Linux
+
   pool:
     vmImage: 'Ubuntu 16.04'
-
+  
   steps:
   - script: |
       mkdir build
