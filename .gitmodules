@@ -7,3 +7,6 @@
 [submodule "external/ios-cmake"]
 	path = external/ios-cmake
 	url = https://github.com/Yangqing/ios-cmake.git
+[submodule "external/draco"]
+	path = external/draco
+	url = https://github.com/google/draco.git

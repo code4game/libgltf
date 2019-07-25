@@ -7,7 +7,7 @@ class C11TypeString(C11Type):
 
     def __init__(self):
         C11Type.__init__(self)
-        self.typeName = u'GLTFString'
+        self.typeName = u'string_t'
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
@@ -42,4 +42,4 @@ class C11TypeString(C11Type):
 
     @classmethod
     def codeJsonGet(cls, dataName, variableName):
-        return u'_JsonValue[GLTFTEXT("%s")].SetString(%s.%s.c_str(), g_json_doc_ptr->GetAllocator());' % (variableName, dataName, variableName)
+        return u'_JsonValue[GLTFTEXT("%s")].SetString(%s.%s.c_str(), _rData.doc->GetAllocator());' % (variableName, dataName, variableName)

@@ -1,1 +1,1 @@
-std::map<GLTFString, std::shared_ptr<struct SObject>> properties;
+std::map<string_t, std::shared_ptr<struct SObject>> properties;

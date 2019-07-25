@@ -5,7 +5,9 @@
 /build
 
 /**/*.pyc
+/**/*.pyo
 
 /**/.DS_Store
 
 /**/*.*~
+/**/*.swp

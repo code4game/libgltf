@@ -29,7 +29,7 @@ class C11Type(object):
     def revise(cls, c11Types):
         return (0, u'')
 
-    def codeTypeName(self, withDeclare=False, asVariable=False):
+    def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         return self.typeName
 
     def codeDefineVariable(self, variableName, withDeclare=False, withDefault=False):

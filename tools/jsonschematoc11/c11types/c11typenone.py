@@ -9,10 +9,19 @@ class C11TypeNone(C11Type):
         C11Type.setSchema(self, schemaName, schemaValue)
         self.typeName = u'none'
 
-    def codeTypeName(self, withDeclare=False, asVariable=False):
+    def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         codeLine = self.typeName
         if withDeclare:
-            codeLine = u'struct ' + codeLine
+            if withDocument:
+                codeLine = u'TDataDoc<struct %s>' % codeLine
+            else:
+                codeLine = u'struct %s' % codeLine
+        else:
+            if withDocument:
+                codeLine = u'TDataDoc<%s>' % codeLine
         if asVariable:
-            codeLine = u'std::shared_ptr<%s>' % codeLine
+            if withDocument:
+                codeLine = u'TDataDoc<std::shared_ptr<%s>>' % codeLine
+            else:
+                codeLine = u'std::shared_ptr<%s>' % codeLine
         return codeLine
