@@ -112,10 +112,33 @@ namespace libgltf
         return (m_sPath < string_t(_Another));
     }
 
-    CFileLoader::CFileLoader(const CPath& _FilePath)
-        : m_RootPath(_FilePath.Parent())
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
+    string_t GetCWD()
+    {
+        string_t current_path;
+#if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
+        wchar_t current_path_temp[FILENAME_MAX];
+        _wgetcwd(current_path_temp, sizeof(current_path_temp));
+        current_path = current_path_temp;
+#else
+        char current_path_temp[FILENAME_MAX];
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
+        _getcwd(current_path_temp, sizeof(current_path_temp));
+#else
+        getcwd(current_path_temp, sizeof(current_path_temp));
+#endif
+        current_path = current_path_temp;
+#endif
+        return current_path;
+    }
+
+    CFileLoader::CFileLoader()
+        : m_RootPath(GetCWD())
         , m_FileDatas()
-        , m_sFilePathDefault(_FilePath)
     {
         //
     }
@@ -151,7 +174,7 @@ namespace libgltf
 
     const std::vector<uint8_t>& CFileLoader::operator[](const string_t& file) const
     {
-        return Find(CPath(file.empty() ? m_sFilePathDefault : file.c_str()));
+        return Find(CPath(file.empty() ? GLTFTEXT("") : file.c_str()));
     }
 
     bool CFileLoader::ReadByte(const string_t& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const

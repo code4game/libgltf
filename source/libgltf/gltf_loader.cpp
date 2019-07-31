@@ -145,7 +145,7 @@ namespace libgltf
 
     CGlTFLoader::CGlTFLoader(const string_t& _sFilePath)
         : m_glTF(nullptr)
-        , m_pFileLoader(std::make_shared<CFileLoader>(CPath(_sFilePath)))
+        , m_pFileLoader(std::make_shared<CFileLoader>())
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
         , m_pGoogleDraco(std::make_shared<CGoogleDraco>())
 #endif
