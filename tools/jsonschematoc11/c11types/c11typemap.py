@@ -68,8 +68,10 @@ class C11TypeMap(C11Type):
             self.c11Type = C11TypeNone()
         return (0, u'')
 
-    def codeTypeName(self, withDeclare=False, asVariable=False):
-        return u'%s<GLTFString, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable))
+    def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
+        #if withDocument:
+        #    return u'TDataDoc<%s<string_t, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
+        return u'%s<string_t, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
 
     @classmethod
     def codeJsonCheck(cls):

@@ -31,18 +31,21 @@ script:
 
 after_success:
 - if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./nothing.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-BarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-Draco-BarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/glTF-pbrSpecularGlossinessBarramundiFish.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/AnimatedMorphCube.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/BoxAnimated.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/Cameras.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/DamagedHelmet.Embedded.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/RiggedSimple.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/TextureCoordinateTest.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/TriangleWithoutIndices.gltf; fi
-- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/example-2.0/VC.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/nothing.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Monster/glTF/Monster.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Monster/glTF-Binary/Monster.glb; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Monster/glTF-Draco/Monster.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Monster/glTF-Embedded/Monster.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Cameras/glTF/Cameras.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/Triangle/glTF/Triangle.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/UnlitTest/glTF/UnlitTest.gltf; fi
+- if [ $RUN_COVERALLS == true ]; then ./output/bin/linux/runtest --coveralls ./resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf; fi
 - if [ $RUN_COVERALLS == true ]; then coveralls --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'; fi
 
 before_deploy:

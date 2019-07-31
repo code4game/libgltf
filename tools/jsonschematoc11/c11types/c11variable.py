@@ -101,9 +101,9 @@ class C11Variable(object):
                 codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")) && _JsonValue[GLTFTEXT("%s")].%s)' % (self.name, self.name, codeCheckLine))
         else:
             if self.typeName == u'array' or self.typeName == u'map':
-                codeLines.append(u'if (!_rData.%s.empty())' % self.name)
+                codeLines.append(u'if (!_rData.data.%s.empty())' % self.name)
             elif self.typeName == u'struct':
-                codeLines.append(u'if (!!_rData.%s)' % self.name)
+                codeLines.append(u'if (!!_rData.data.%s)' % self.name)
         codeLines.append(u'{')
         if isSet:
             codeSetLine = self.c11Type.codeJsonSet(u'_rData', self.name)
@@ -111,7 +111,10 @@ class C11Variable(object):
                 codeLines.append(u'    %s' % (codeSetLine))
         else:
             codeLines.append(u'    GLTFCharValue json_value;')
-            codeLines.append(u'    if (!(_rData.%s >> json_value)) return false;' % self.name)
-            codeLines.append(u'    _JsonValue.AddMember(GLTFTEXT("%s"), json_value, g_json_doc_ptr->GetAllocator());' % self.name)
+            if self.typeName == u'struct':
+                codeLines.append(u'    if (!(%s(*_rData.data.%s, _rData.doc) >> json_value)) return false;' % (self.c11Type.codeTypeName(withDocument=True), self.name))
+            else:
+                codeLines.append(u'    if (!(TDataDoc<%s>(_rData.data.%s, _rData.doc) >> json_value)) return false;' % (self.c11Type.codeTypeName(asVariable=True), self.name))
+            codeLines.append(u'    _JsonValue.AddMember(GLTFTEXT("%s"), json_value, _rData.doc->GetAllocator());' % self.name)
         codeLines.append(u'}')
         return codeLines

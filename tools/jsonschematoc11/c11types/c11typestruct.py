@@ -90,15 +90,24 @@ class C11TypeStruct(C11Type):
                 return (errorCode, errorMessage)
         return (0, u'')
 
-    def codeTypeName(self, withDeclare=False, asVariable=False):
+    def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         codeLine = self.typeName
         if self.typeName == None:
             #TODO:
-            print u'dd'
+            print(u':todo:')
         if withDeclare:
-            codeLine = u'struct ' + codeLine
+            if withDocument:
+                codeLine = u'TDataDoc<struct %s>' % codeLine
+            else:
+                codeLine = u'struct %s' % codeLine
+        else:
+            if withDocument:
+                codeLine = u'TDataDoc<%s>' % codeLine
         if asVariable:
-            codeLine = u'std::shared_ptr<%s>' % codeLine
+            if withDocument:
+                codeLine = u'TDataDoc<std::shared_ptr<%s>>' % codeLine
+            else:
+                codeLine = u'std::shared_ptr<%s>' % codeLine
         return codeLine
 
     def codeInheritTypes(self):
@@ -227,11 +236,11 @@ class C11TypeStruct(C11Type):
     def codeParserHeader(self):
         codeLines = []
         codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
-        codeLines.append(u'bool operator>>(const %s& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
-        codeLines.append(u'bool operator<<(%s& _pData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
+        codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const std::vector<%s>& _vDatas, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         return codeLines
 
     def codeParserSource(self):
@@ -264,25 +273,25 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const %s& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName()))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName()))
         codeLines.append(u'{')
         if self.manualCodeParsersTo is not None and len(self.manualCodeParsersTo) > 0:
             codeLines.append(u'    // Manual code lines')
             for code_parser in self.manualCodeParsersTo:
                 codeLines.append(u'    %s' % code_parser.replace(u'\n', u''))
         else:
-            codeLines.append(u'    if (!g_json_doc_ptr) return false;')
+            codeLines.append(u'    if (!_rData.doc) return false;')
             codeLines.append(u'    _JsonValue.SetObject();')
 
             parentTypes = self.getParentTypeNames(recursion=False)
             for parentType in parentTypes:
                 codeLines.append(u'    {')
-                codeLines.append(u'        const %s& super_ptr = _rData;' % parentType)
-                codeLines.append(u'        if (!(super_ptr >> _JsonValue)) return false;')
+                codeLines.append(u'        const %s& super_ptr = _rData.data;' % parentType)
+                codeLines.append(u'        if (!(TDataDoc<%s>(super_ptr, _rData.doc) >> _JsonValue)) return false;' % parentType)
                 codeLines.append(u'    }')
 
             if self.c11Type != None:
-                codeLines.append(u'    if (!(_rData.%sValue >> _JsonValue)) return false;' % self.c11Type.codeTypeName())
+                codeLines.append(u'    if (!(TDataDoc<%s>(_rData.data.%sValue, _rData.doc) >> _JsonValue)) return false;' % (self.c11Type.codeTypeName(), self.c11Type.codeTypeName()))
             else:
                 variables = self.getVariables()
                 for variable in variables:
@@ -303,10 +312,10 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const %s& _pData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
-        codeLines.append(u'    if (!_pData) return false;')
-        codeLines.append(u'    return (*_pData >> _JsonValue);')
+        codeLines.append(u'    if (!_rData.data) return false;')
+        codeLines.append(u'    return (TDataDoc<%s>(*_rData.data, _rData.doc) >> _JsonValue);' % self.codeTypeName())
         codeLines.append(u'}')
         codeLines.append(u'')
 
@@ -316,9 +325,9 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const std::vector<%s>& _vDatas, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
-        codeLines.append(u'    return operator>> <%s>(_vDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'    return operator>> <%s>(_rData, _JsonValue);' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'}')
         return codeLines
 

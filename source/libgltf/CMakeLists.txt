@@ -11,25 +11,54 @@ set(INCLUDE_PATH_LIST
     )
 include_directories(${INCLUDE_PATH_LIST})
 
-set(LINK_PATH_LIST
-    ${OUT_BIN_PATH}
-    ${OUT_LIB_PATH}
-    )
-link_directories(${LINK_PATH_LIST})
+if(${GOOGLEDRACO_FOUND} AND ${LIBGLTF_USE_GOOGLE_DRACO})
+    include_directories(${GOOGLE_DRACO_PATH_INCLUDE} ${GOOGLE_DRACO_PATH_BUILD})
+    add_definitions(-DLIBGLTF_USE_GOOGLE_DRACO)
+endif()
+
+set(CODE_FILE_LIST)
 
 set(HEADER_FILE_LIST
     ${HEADER_PATH}/libgltf/libgltf.h
     )
+set(CODE_FILE_LIST
+    ${CODE_FILE_LIST}
+    ${HEADER_FILE_LIST}
+    )
+source_group("header" FILES ${HEADER_FILE_LIST})
 
 set(SOURCE_FILE_LIST
     ${SOURCE_FILE_PATH}/libgltfpch.h
     ${SOURCE_FILE_PATH}/libgltf.cpp
     ${SOURCE_FILE_PATH}/libgltfparser.h
     ${SOURCE_FILE_PATH}/libgltfparser.cpp
+    ${SOURCE_FILE_PATH}/libgltfloader.cpp
+    ${SOURCE_FILE_PATH}/common.h
+    ${SOURCE_FILE_PATH}/common.cpp
+    ${SOURCE_FILE_PATH}/utility.h
+    ${SOURCE_FILE_PATH}/utility.cpp
+    ${SOURCE_FILE_PATH}/gltf_loader.h
+    ${SOURCE_FILE_PATH}/gltf_loader.cpp
+    ${SOURCE_FILE_PATH}/file_loader.h
+    ${SOURCE_FILE_PATH}/file_loader.cpp
     )
-
-source_group("header" FILES ${HEADER_FILE_LIST})
+set(CODE_FILE_LIST
+    ${CODE_FILE_LIST}
+    ${SOURCE_FILE_LIST}
+    )
 source_group("source" FILES ${SOURCE_FILE_LIST})
+
+if(${GOOGLEDRACO_FOUND} AND ${LIBGLTF_USE_GOOGLE_DRACO})
+set(SOURCE_FILE_LIST_DRACO
+    ${SOURCE_FILE_PATH}/extensions/google_draco.h
+    ${SOURCE_FILE_PATH}/extensions/google_draco.cpp
+    )
+set(CODE_FILE_LIST
+    ${CODE_FILE_LIST}
+    ${SOURCE_FILE_LIST_DRACO}
+    )
+source_group("source\\extensions" FILES ${SOURCE_FILE_LIST_DRACO})
+endif()
 
 if(${LIBGLTF_PLATFORM_ANDROID})
     set(ANDROID_ABI_PATH ${ANDROID_ABI})
@@ -49,10 +78,7 @@ endif()
 set(RUNTIME_OUTPUT_PATH ${OUT_BIN_PATH})
 set(LIBRARY_OUTPUT_PATH ${OUT_LIB_PATH})
 
-add_library(libgltf STATIC
-    ${HEADER_FILE_LIST}
-    ${SOURCE_FILE_LIST}
-    )
+add_library(libgltf STATIC ${CODE_FILE_LIST})
 
 if(${LIBGLTF_PLATFORM_WINDOWS})
     add_custom_command(TARGET libgltf
