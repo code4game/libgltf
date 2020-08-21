@@ -25,10 +25,7 @@
 #pragma once
 
 #include <cstdint>
-#include <cstring>
-#if defined(LIBGLTF_PLATFORM_ANDROID) || defined(LIBGLTF_PLATFORM_MACOS) || defined(LIBGLTF_PLATFORM_IOS)
 #include <string>
-#endif
 #include <vector>
 #include <map>
 #include <memory>
@@ -235,18 +232,22 @@ namespace libgltf
     };
 
     /*!
-     * struct: SAGI_stk_metadataglTFextension
-     * glTF Extension that defines metadata for use with STK (Systems Tool Kit).
+     * struct: SADOBE_materials_thin_transparencyglTFextension
+     * glTF extension that defines properties to model physically plausible optical transparency.
      */
-    struct SAGI_stk_metadataglTFextension : SGlTFProperty
+    struct SADOBE_materials_thin_transparencyglTFextension : SGlTFProperty
     {
-        SAGI_stk_metadataglTFextension();
+        SADOBE_materials_thin_transparencyglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // An array of solar panel groups.
-        std::vector<std::shared_ptr<struct SSolarPanelGroup>> solarPanelGroups;
+        // The index of refraction of the material.
+        float ior;
+        // A greyscale texture that defines the transmission percentage of the surface. This will be multiplied by transmissionFactor.
+        std::shared_ptr<struct STextureInfo> transmissionTexture;
+        // The base percentage of light transmitted through the surface.
+        float transmissionFactor;
     };
 
     /*!
@@ -376,22 +377,26 @@ namespace libgltf
     };
 
     /*!
-     * struct: SADOBE_materials_thin_transparencyglTFextension
-     * glTF extension that defines properties to model physically plausible optical transparency.
+     * struct: SKHR_materials_clearcoatglTFextension
+     * glTF extension that defines the clearcoat material layer.
      */
-    struct SADOBE_materials_thin_transparencyglTFextension : SGlTFProperty
+    struct SKHR_materials_clearcoatglTFextension : SGlTFProperty
     {
-        SADOBE_materials_thin_transparencyglTFextension();
+        SKHR_materials_clearcoatglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // The index of refraction of the material.
-        float ior;
-        // A greyscale texture that defines the transmission percentage of the surface. This will be multiplied by transmissionFactor.
-        std::shared_ptr<struct STextureInfo> transmissionTexture;
-        // The base percentage of light transmitted through the surface.
-        float transmissionFactor;
+        // The clearcoat layer roughness texture.
+        std::shared_ptr<struct STextureInfo> clearcoatRoughnessTexture;
+        // The clearcoat layer intensity.
+        float clearcoatFactor;
+        // The clearcoat layer intensity texture.
+        std::shared_ptr<struct STextureInfo> clearcoatTexture;
+        // The clearcoat normal map texture.
+        std::shared_ptr<struct SMaterialNormalTextureInfo> clearcoatNormalTexture;
+        // The clearcoat layer roughness.
+        float clearcoatRoughnessFactor;
     };
 
     /*!
@@ -969,6 +974,21 @@ namespace libgltf
 
         // Check valid
         operator bool() const;
+    };
+
+    /*!
+     * struct: SAGI_stk_metadataglTFextension
+     * glTF Extension that defines metadata for use with STK (Systems Tool Kit).
+     */
+    struct SAGI_stk_metadataglTFextension : SGlTFProperty
+    {
+        SAGI_stk_metadataglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // An array of solar panel groups.
+        std::vector<std::shared_ptr<struct SSolarPanelGroup>> solarPanelGroups;
     };
 
     /*!

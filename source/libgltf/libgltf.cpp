@@ -169,14 +169,16 @@ namespace libgltf
         return true;
     }
 
-    SAGI_stk_metadataglTFextension::SAGI_stk_metadataglTFextension()
+    SADOBE_materials_thin_transparencyglTFextension::SADOBE_materials_thin_transparencyglTFextension()
         : SGlTFProperty()
-        , solarPanelGroups()
+        , ior(1.330000f)
+        , transmissionTexture(nullptr)
+        , transmissionFactor(1.000000f)
     {
         //
     }
 
-    SAGI_stk_metadataglTFextension::operator bool() const
+    SADOBE_materials_thin_transparencyglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -284,16 +286,18 @@ namespace libgltf
         return true;
     }
 
-    SADOBE_materials_thin_transparencyglTFextension::SADOBE_materials_thin_transparencyglTFextension()
+    SKHR_materials_clearcoatglTFextension::SKHR_materials_clearcoatglTFextension()
         : SGlTFProperty()
-        , ior(1.330000f)
-        , transmissionTexture(nullptr)
-        , transmissionFactor(1.000000f)
+        , clearcoatRoughnessTexture(nullptr)
+        , clearcoatFactor(0.000000f)
+        , clearcoatTexture(nullptr)
+        , clearcoatNormalTexture(nullptr)
+        , clearcoatRoughnessFactor(0.000000f)
     {
         //
     }
 
-    SADOBE_materials_thin_transparencyglTFextension::operator bool() const
+    SKHR_materials_clearcoatglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -767,6 +771,19 @@ namespace libgltf
     }
 
     SUniformValue::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SAGI_stk_metadataglTFextension::SAGI_stk_metadataglTFextension()
+        : SGlTFProperty()
+        , solarPanelGroups()
+    {
+        //
+    }
+
+    SAGI_stk_metadataglTFextension::operator bool() const
     {
         //TODO:
         return true;

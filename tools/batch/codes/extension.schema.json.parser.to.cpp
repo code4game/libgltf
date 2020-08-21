@@ -11,6 +11,13 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_draco_mesh_compressionextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_draco_mesh_compression"), json_value, _rData.doc->GetAllocator());
     }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_clearcoat.schema.json"))
+    {
+        const SKHR_materials_clearcoatglTFextension& extension = *((const SKHR_materials_clearcoatglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_clearcoatglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_clearcoat"), json_value, _rData.doc->GetAllocator());
+    }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_pbrSpecularGlossiness.schema.json"))
     {
         const SKHR_materials_pbrSpecularGlossinessglTFextension& extension = *((const SKHR_materials_pbrSpecularGlossinessglTFextension*)extensionValue.get());

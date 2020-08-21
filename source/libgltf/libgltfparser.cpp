@@ -826,21 +826,29 @@ namespace libgltf
         return operator>> <std::shared_ptr<SExtras>>(_rData, _JsonValue);
     }
 
-    bool operator<<(SAGI_stk_metadataglTFextension& _rData, const GLTFCharValue& _JsonValue)
+    bool operator<<(SADOBE_materials_thin_transparencyglTFextension& _rData, const GLTFCharValue& _JsonValue)
     {
         {
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("solarPanelGroups")) && _JsonValue[GLTFTEXT("solarPanelGroups")].IsArray())
+        if (_JsonValue.HasMember(GLTFTEXT("ior")) && _JsonValue[GLTFTEXT("ior")].IsFloat())
         {
-            if (!(_rData.solarPanelGroups << _JsonValue[GLTFTEXT("solarPanelGroups")])) return false;
+            _rData.ior = _JsonValue[GLTFTEXT("ior")].GetFloat();
         }
-        _rData.schemaType = GLTFTEXT("gltf.AGI_stk_metadata.schema.json");
+        if (_JsonValue.HasMember(GLTFTEXT("transmissionTexture")) && _JsonValue[GLTFTEXT("transmissionTexture")].IsObject())
+        {
+            if (!(_rData.transmissionTexture << _JsonValue[GLTFTEXT("transmissionTexture")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("transmissionFactor")) && _JsonValue[GLTFTEXT("transmissionFactor")].IsFloat())
+        {
+            _rData.transmissionFactor = _JsonValue[GLTFTEXT("transmissionFactor")].GetFloat();
+        }
+        _rData.schemaType = GLTFTEXT("glTF.ADOBE_materials_thin_transparency.schema.json");
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<SADOBE_materials_thin_transparencyglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -848,37 +856,47 @@ namespace libgltf
             const SGlTFProperty& super_ptr = _rData.data;
             if (!(TDataDoc<SGlTFProperty>(super_ptr, _rData.doc) >> _JsonValue)) return false;
         }
-        if (!_rData.data.solarPanelGroups.empty())
         {
             GLTFCharValue json_value;
-            if (!(TDataDoc<std::vector<std::shared_ptr<SSolarPanelGroup>>>(_rData.data.solarPanelGroups, _rData.doc) >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("solarPanelGroups"), json_value, _rData.doc->GetAllocator());
+            if (!(TDataDoc<float>(_rData.data.ior, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("ior"), json_value, _rData.doc->GetAllocator());
+        }
+        if (!!_rData.data.transmissionTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<STextureInfo>(*_rData.data.transmissionTexture, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("transmissionTexture"), json_value, _rData.doc->GetAllocator());
+        }
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<float>(_rData.data.transmissionFactor, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("transmissionFactor"), json_value, _rData.doc->GetAllocator());
         }
         return true;
     }
 
-    bool operator<<(std::shared_ptr<SAGI_stk_metadataglTFextension>& _pData, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>& _pData, const GLTFCharValue& _JsonValue)
     {
-        std::shared_ptr<SAGI_stk_metadataglTFextension> data_ptr = !!_pData ? _pData : std::make_shared<SAGI_stk_metadataglTFextension>();
+        std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension> data_ptr = !!_pData ? _pData : std::make_shared<SADOBE_materials_thin_transparencyglTFextension>();
         if (!(*data_ptr << _JsonValue)) return false;
         _pData = data_ptr;
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
-        return (TDataDoc<SAGI_stk_metadataglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
+        return (TDataDoc<SADOBE_materials_thin_transparencyglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue)
     {
-        return operator<< <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_vDatas, _JsonValue);
+        return operator<< <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
-        return operator>> <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_rData, _JsonValue);
+        return operator>> <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_rData, _JsonValue);
     }
 
     bool operator<<(SScene& _rData, const GLTFCharValue& _JsonValue)
@@ -1300,29 +1318,37 @@ namespace libgltf
         return operator>> <std::shared_ptr<SSolarPanelGroup>>(_rData, _JsonValue);
     }
 
-    bool operator<<(SADOBE_materials_thin_transparencyglTFextension& _rData, const GLTFCharValue& _JsonValue)
+    bool operator<<(SKHR_materials_clearcoatglTFextension& _rData, const GLTFCharValue& _JsonValue)
     {
         {
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("ior")) && _JsonValue[GLTFTEXT("ior")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatRoughnessTexture")) && _JsonValue[GLTFTEXT("clearcoatRoughnessTexture")].IsObject())
         {
-            _rData.ior = _JsonValue[GLTFTEXT("ior")].GetFloat();
+            if (!(_rData.clearcoatRoughnessTexture << _JsonValue[GLTFTEXT("clearcoatRoughnessTexture")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("transmissionTexture")) && _JsonValue[GLTFTEXT("transmissionTexture")].IsObject())
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatFactor")) && _JsonValue[GLTFTEXT("clearcoatFactor")].IsFloat())
         {
-            if (!(_rData.transmissionTexture << _JsonValue[GLTFTEXT("transmissionTexture")])) return false;
+            _rData.clearcoatFactor = _JsonValue[GLTFTEXT("clearcoatFactor")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("transmissionFactor")) && _JsonValue[GLTFTEXT("transmissionFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatTexture")) && _JsonValue[GLTFTEXT("clearcoatTexture")].IsObject())
         {
-            _rData.transmissionFactor = _JsonValue[GLTFTEXT("transmissionFactor")].GetFloat();
+            if (!(_rData.clearcoatTexture << _JsonValue[GLTFTEXT("clearcoatTexture")])) return false;
         }
-        _rData.schemaType = GLTFTEXT("glTF.ADOBE_materials_thin_transparency.schema.json");
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatNormalTexture")) && _JsonValue[GLTFTEXT("clearcoatNormalTexture")].IsObject())
+        {
+            if (!(_rData.clearcoatNormalTexture << _JsonValue[GLTFTEXT("clearcoatNormalTexture")])) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatRoughnessFactor")) && _JsonValue[GLTFTEXT("clearcoatRoughnessFactor")].IsFloat())
+        {
+            _rData.clearcoatRoughnessFactor = _JsonValue[GLTFTEXT("clearcoatRoughnessFactor")].GetFloat();
+        }
+        _rData.schemaType = GLTFTEXT("glTF.KHR_materials_clearcoat.schema.json");
         return true;
     }
 
-    bool operator>>(const TDataDoc<SADOBE_materials_thin_transparencyglTFextension>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_materials_clearcoatglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1330,47 +1356,59 @@ namespace libgltf
             const SGlTFProperty& super_ptr = _rData.data;
             if (!(TDataDoc<SGlTFProperty>(super_ptr, _rData.doc) >> _JsonValue)) return false;
         }
+        if (!!_rData.data.clearcoatRoughnessTexture)
         {
             GLTFCharValue json_value;
-            if (!(TDataDoc<float>(_rData.data.ior, _rData.doc) >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("ior"), json_value, _rData.doc->GetAllocator());
-        }
-        if (!!_rData.data.transmissionTexture)
-        {
-            GLTFCharValue json_value;
-            if (!(TDataDoc<STextureInfo>(*_rData.data.transmissionTexture, _rData.doc) >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("transmissionTexture"), json_value, _rData.doc->GetAllocator());
+            if (!(TDataDoc<STextureInfo>(*_rData.data.clearcoatRoughnessTexture, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("clearcoatRoughnessTexture"), json_value, _rData.doc->GetAllocator());
         }
         {
             GLTFCharValue json_value;
-            if (!(TDataDoc<float>(_rData.data.transmissionFactor, _rData.doc) >> json_value)) return false;
-            _JsonValue.AddMember(GLTFTEXT("transmissionFactor"), json_value, _rData.doc->GetAllocator());
+            if (!(TDataDoc<float>(_rData.data.clearcoatFactor, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("clearcoatFactor"), json_value, _rData.doc->GetAllocator());
+        }
+        if (!!_rData.data.clearcoatTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<STextureInfo>(*_rData.data.clearcoatTexture, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("clearcoatTexture"), json_value, _rData.doc->GetAllocator());
+        }
+        if (!!_rData.data.clearcoatNormalTexture)
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<SMaterialNormalTextureInfo>(*_rData.data.clearcoatNormalTexture, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("clearcoatNormalTexture"), json_value, _rData.doc->GetAllocator());
+        }
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<float>(_rData.data.clearcoatRoughnessFactor, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("clearcoatRoughnessFactor"), json_value, _rData.doc->GetAllocator());
         }
         return true;
     }
 
-    bool operator<<(std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>& _pData, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::shared_ptr<SKHR_materials_clearcoatglTFextension>& _pData, const GLTFCharValue& _JsonValue)
     {
-        std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension> data_ptr = !!_pData ? _pData : std::make_shared<SADOBE_materials_thin_transparencyglTFextension>();
+        std::shared_ptr<SKHR_materials_clearcoatglTFextension> data_ptr = !!_pData ? _pData : std::make_shared<SKHR_materials_clearcoatglTFextension>();
         if (!(*data_ptr << _JsonValue)) return false;
         _pData = data_ptr;
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
-        return (TDataDoc<SADOBE_materials_thin_transparencyglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
+        return (TDataDoc<SKHR_materials_clearcoatglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
     }
 
-    bool operator<<(std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue)
+    bool operator<<(std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue)
     {
-        return operator<< <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_vDatas, _JsonValue);
+        return operator<< <std::shared_ptr<SKHR_materials_clearcoatglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
-        return operator>> <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_rData, _JsonValue);
+        return operator>> <std::shared_ptr<SKHR_materials_clearcoatglTFextension>>(_rData, _JsonValue);
     }
 
     bool operator<<(SUniform& _rData, const GLTFCharValue& _JsonValue)
@@ -2201,6 +2239,12 @@ namespace libgltf
             if (!(extension << _JsonValue[GLTFTEXT("KHR_draco_mesh_compression")])) return false;
             _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_draco_mesh_compression"), extension));
         }
+        if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_clearcoat")) && _JsonValue[GLTFTEXT("KHR_materials_clearcoat")].IsObject())
+        {
+            std::shared_ptr<SKHR_materials_clearcoatglTFextension> extension;
+            if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_clearcoat")])) return false;
+            _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_clearcoat"), extension));
+        }
         if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_pbrSpecularGlossiness")) && _JsonValue[GLTFTEXT("KHR_materials_pbrSpecularGlossiness")].IsObject())
         {
             std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension> extension;
@@ -2280,6 +2324,13 @@ namespace libgltf
                 GLTFCharValue json_value;
                 if (!(TDataDoc<SKHR_draco_mesh_compressionextension>(extension, _rData.doc) >> json_value)) return false;
                 _JsonValue.AddMember(GLTFTEXT("KHR_draco_mesh_compression"), json_value, _rData.doc->GetAllocator());
+            }
+            else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_clearcoat.schema.json"))
+            {
+                const SKHR_materials_clearcoatglTFextension& extension = *((const SKHR_materials_clearcoatglTFextension*)extensionValue.get());
+                GLTFCharValue json_value;
+                if (!(TDataDoc<SKHR_materials_clearcoatglTFextension>(extension, _rData.doc) >> json_value)) return false;
+                _JsonValue.AddMember(GLTFTEXT("KHR_materials_clearcoat"), json_value, _rData.doc->GetAllocator());
             }
             else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_pbrSpecularGlossiness.schema.json"))
             {
@@ -3715,6 +3766,61 @@ namespace libgltf
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SUniformValue>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SUniformValue>>(_rData, _JsonValue);
+    }
+
+    bool operator<<(SAGI_stk_metadataglTFextension& _rData, const GLTFCharValue& _JsonValue)
+    {
+        {
+            SGlTFProperty& super_ptr = _rData;
+            if (!(super_ptr << _JsonValue)) return false;
+        }
+        if (_JsonValue.HasMember(GLTFTEXT("solarPanelGroups")) && _JsonValue[GLTFTEXT("solarPanelGroups")].IsArray())
+        {
+            if (!(_rData.solarPanelGroups << _JsonValue[GLTFTEXT("solarPanelGroups")])) return false;
+        }
+        _rData.schemaType = GLTFTEXT("gltf.AGI_stk_metadata.schema.json");
+        return true;
+    }
+
+    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& _JsonValue)
+    {
+        if (!_rData.doc) return false;
+        _JsonValue.SetObject();
+        {
+            const SGlTFProperty& super_ptr = _rData.data;
+            if (!(TDataDoc<SGlTFProperty>(super_ptr, _rData.doc) >> _JsonValue)) return false;
+        }
+        if (!_rData.data.solarPanelGroups.empty())
+        {
+            GLTFCharValue json_value;
+            if (!(TDataDoc<std::vector<std::shared_ptr<SSolarPanelGroup>>>(_rData.data.solarPanelGroups, _rData.doc) >> json_value)) return false;
+            _JsonValue.AddMember(GLTFTEXT("solarPanelGroups"), json_value, _rData.doc->GetAllocator());
+        }
+        return true;
+    }
+
+    bool operator<<(std::shared_ptr<SAGI_stk_metadataglTFextension>& _pData, const GLTFCharValue& _JsonValue)
+    {
+        std::shared_ptr<SAGI_stk_metadataglTFextension> data_ptr = !!_pData ? _pData : std::make_shared<SAGI_stk_metadataglTFextension>();
+        if (!(*data_ptr << _JsonValue)) return false;
+        _pData = data_ptr;
+        return true;
+    }
+
+    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& _JsonValue)
+    {
+        if (!_rData.data) return false;
+        return (TDataDoc<SAGI_stk_metadataglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
+    }
+
+    bool operator<<(std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue)
+    {
+        return operator<< <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_vDatas, _JsonValue);
+    }
+
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
+    {
+        return operator>> <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_rData, _JsonValue);
     }
 
     bool operator<<(SProgram& _rData, const GLTFCharValue& _JsonValue)
