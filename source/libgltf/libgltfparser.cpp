@@ -2367,12 +2367,6 @@ namespace libgltf
             if (!(extension << _JsonValue[GLTFTEXT("KHR_texture_transform")])) return false;
             _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_texture_transform"), extension));
         }
-        if (_JsonValue.HasMember(GLTFTEXT("KHR_texture_transform")) && _JsonValue[GLTFTEXT("KHR_texture_transform")].IsObject())
-        {
-            std::shared_ptr<SKHR_texture_transformtextureInfoextension> extension;
-            if (!(extension << _JsonValue[GLTFTEXT("KHR_texture_transform")])) return false;
-            _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_texture_transform"), extension));
-        }
         if (_JsonValue.HasMember(GLTFTEXT("ADOBE_materials_thin_transparency")) && _JsonValue[GLTFTEXT("ADOBE_materials_thin_transparency")].IsObject())
         {
             std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension> extension;
@@ -2475,13 +2469,6 @@ namespace libgltf
                 GLTFCharValue json_value;
                 if (!(TDataDoc<SKHR_techniques_webglmaterialextension>(extension, _rData.doc) >> json_value)) return false;
                 _JsonValue.AddMember(GLTFTEXT("KHR_techniques_webgl"), json_value, _rData.doc->GetAllocator());
-            }
-            else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_texture_transform.schema.json"))
-            {
-                const SKHR_texture_transformtextureInfoextension& extension = *((const SKHR_texture_transformtextureInfoextension*)extensionValue.get());
-                GLTFCharValue json_value;
-                if (!(TDataDoc<SKHR_texture_transformtextureInfoextension>(extension, _rData.doc) >> json_value)) return false;
-                _JsonValue.AddMember(GLTFTEXT("KHR_texture_transform"), json_value, _rData.doc->GetAllocator());
             }
             else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_texture_transform.schema.json"))
             {

@@ -40,12 +40,6 @@ if (_JsonValue.HasMember(GLTFTEXT("KHR_texture_transform")) && _JsonValue[GLTFTE
     if (!(extension << _JsonValue[GLTFTEXT("KHR_texture_transform")])) return false;
     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_texture_transform"), extension));
 }
-if (_JsonValue.HasMember(GLTFTEXT("KHR_texture_transform")) && _JsonValue[GLTFTEXT("KHR_texture_transform")].IsObject())
-{
-    std::shared_ptr<SKHR_texture_transformtextureInfoextension> extension;
-    if (!(extension << _JsonValue[GLTFTEXT("KHR_texture_transform")])) return false;
-    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_texture_transform"), extension));
-}
 if (_JsonValue.HasMember(GLTFTEXT("ADOBE_materials_thin_transparency")) && _JsonValue[GLTFTEXT("ADOBE_materials_thin_transparency")].IsObject())
 {
     std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension> extension;

@@ -53,13 +53,6 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_texture_transformtextureInfoextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_texture_transform"), json_value, _rData.doc->GetAllocator());
     }
-    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_texture_transform.schema.json"))
-    {
-        const SKHR_texture_transformtextureInfoextension& extension = *((const SKHR_texture_transformtextureInfoextension*)extensionValue.get());
-        GLTFCharValue json_value;
-        if (!(TDataDoc<SKHR_texture_transformtextureInfoextension>(extension, _rData.doc) >> json_value)) return false;
-        _JsonValue.AddMember(GLTFTEXT("KHR_texture_transform"), json_value, _rData.doc->GetAllocator());
-    }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.ADOBE_materials_thin_transparency.schema.json"))
     {
         const SADOBE_materials_thin_transparencyglTFextension& extension = *((const SADOBE_materials_thin_transparencyglTFextension*)extensionValue.get());
