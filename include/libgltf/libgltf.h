@@ -306,6 +306,28 @@ namespace libgltf
     };
 
     /*!
+     * struct: SLight
+     * A directional, point, or spot light.
+     */
+    struct SLight : SGlTFChildofRootProperty
+    {
+        SLight();
+
+        // Check valid
+        operator bool() const;
+
+        // Color of the light source.
+        std::vector<float> color;
+        // Specifies the light type.
+        string_t type;
+        // Intensity of the light source. `point` and `spot` lights use luminous intensity in candela (lm/sr) while `directional` lights use illuminance in lux (lm/m^2)
+        float intensity;
+        std::shared_ptr<struct SLightspot> spot;
+        // A distance cutoff at which the light's intensity may be considered to have reached zero.
+        float range;
+    };
+
+    /*!
      * struct: SBufferView
      * A view into a buffer generally representing a subset of the buffer.
      */
@@ -676,6 +698,20 @@ namespace libgltf
     };
 
     /*!
+     * struct: SKHR_lights_punctualnodeextension
+     */
+    struct SKHR_lights_punctualnodeextension : SGlTFProperty
+    {
+        SKHR_lights_punctualnodeextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The id of the light referenced by this node.
+        std::shared_ptr<struct SGlTFId> light;
+    };
+
+    /*!
      * struct: SNode
      * A node in the node hierarchy.  When the node contains `skin`, all `mesh.primitives` must contain `JOINTS_0` and `WEIGHTS_0` attributes.  A node can have either a `matrix` or any combination of `translation`/`rotation`/`scale` (TRS) properties. TRS properties are converted to matrices and postmultiplied in the `T * R * S` order to compose the transformation matrix; first the scale is applied to the vertices, then the rotation, and then the translation. If none are provided, the transform is the identity. When a node is targeted for animation (referenced by an animation.channel.target), only TRS properties may be present; `matrix` will not be present.
      */
@@ -949,6 +985,21 @@ namespace libgltf
     };
 
     /*!
+     * struct: SAGI_stk_metadataglTFextension
+     * glTF Extension that defines metadata for use with STK (Systems Tool Kit).
+     */
+    struct SAGI_stk_metadataglTFextension : SGlTFProperty
+    {
+        SAGI_stk_metadataglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // An array of solar panel groups.
+        std::vector<std::shared_ptr<struct SSolarPanelGroup>> solarPanelGroups;
+    };
+
+    /*!
      * struct: SBuffer
      * A buffer points to binary geometry, animation, or skins.
      */
@@ -966,6 +1017,21 @@ namespace libgltf
     };
 
     /*!
+     * struct: SEXT_mesh_gpu_instancingglTFextension
+     * glTF extension defines instance attributes for a node with a mesh.
+     */
+    struct SEXT_mesh_gpu_instancingglTFextension : SGlTFProperty
+    {
+        SEXT_mesh_gpu_instancingglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // A dictionary object, where each key corresponds to instance attribute and each value is the index of the accessor containing attribute's data. Attributes TRANSLATION, ROTATION, SCALE define instance transformation. For "TRANSLATION" the values are FLOAT_VEC3's specifying translation along the x, y, and z axes. For "ROTATION" the values are VEC4's specifying rotation as a quaternion in the order (x, y, z, w), where w is the scalar, with component type `FLOAT` or normalized integer. For "SCALE" the values are FLOAT_VEC3's specifying scaling factors along the x, y, and z axes.
+        std::map<string_t, std::shared_ptr<struct SGlTFId>> attributes;
+    };
+
+    /*!
      * struct: SUniformValue
      */
     struct SUniformValue : SObject
@@ -977,18 +1043,16 @@ namespace libgltf
     };
 
     /*!
-     * struct: SAGI_stk_metadataglTFextension
-     * glTF Extension that defines metadata for use with STK (Systems Tool Kit).
+     * struct: SKHR_lights_punctualglTFextension
      */
-    struct SAGI_stk_metadataglTFextension : SGlTFProperty
+    struct SKHR_lights_punctualglTFextension : SGlTFProperty
     {
-        SAGI_stk_metadataglTFextension();
+        SKHR_lights_punctualglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // An array of solar panel groups.
-        std::vector<std::shared_ptr<struct SSolarPanelGroup>> solarPanelGroups;
+        std::vector<std::shared_ptr<struct SLight>> lights;
     };
 
     /*!
@@ -1027,6 +1091,21 @@ namespace libgltf
         string_t name;
         // The local forward vector for the associated node, for the purpose of pointing at a target or other object.
         std::vector<float> pointingVector;
+    };
+
+    /*!
+     * struct: SCESIUM_primitive_outlineglTFprimitiveextension
+     * glTF extension for indicating that some edges of a primitive's triangles should be outlined.
+     */
+    struct SCESIUM_primitive_outlineglTFprimitiveextension : SGlTFProperty
+    {
+        SCESIUM_primitive_outlineglTFprimitiveextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The index of the accessor providing the list of highlighted lines at the edge of this primitive's triangles.
+        int32_t indices;
     };
 
     /*!
@@ -1139,6 +1218,22 @@ namespace libgltf
         std::vector<std::shared_ptr<struct SBuffer>> buffers;
         // Metadata about the glTF asset.
         std::shared_ptr<struct SAsset> asset;
+    };
+
+    /*!
+     * struct: SLightspot
+     */
+    struct SLightspot : SGlTFProperty
+    {
+        SLightspot();
+
+        // Check valid
+        operator bool() const;
+
+        // Angle in radians from centre of spotlight where falloff begins.
+        float innerConeAngle;
+        // Angle in radians from centre of spotlight where falloff ends.
+        float outerConeAngle;
     };
 
     enum class EAccessorComponentType : uint32_t

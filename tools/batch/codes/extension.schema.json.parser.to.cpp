@@ -11,6 +11,13 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_draco_mesh_compressionextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_draco_mesh_compression"), json_value, _rData.doc->GetAllocator());
     }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_lights_punctual.schema.json"))
+    {
+        const SKHR_lights_punctualnodeextension& extension = *((const SKHR_lights_punctualnodeextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_lights_punctualnodeextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_lights_punctual"), json_value, _rData.doc->GetAllocator());
+    }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_clearcoat.schema.json"))
     {
         const SKHR_materials_clearcoatglTFextension& extension = *((const SKHR_materials_clearcoatglTFextension*)extensionValue.get());
@@ -46,6 +53,13 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_texture_transformtextureInfoextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_texture_transform"), json_value, _rData.doc->GetAllocator());
     }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_texture_transform.schema.json"))
+    {
+        const SKHR_texture_transformtextureInfoextension& extension = *((const SKHR_texture_transformtextureInfoextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_texture_transformtextureInfoextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_texture_transform"), json_value, _rData.doc->GetAllocator());
+    }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.ADOBE_materials_thin_transparency.schema.json"))
     {
         const SADOBE_materials_thin_transparencyglTFextension& extension = *((const SADOBE_materials_thin_transparencyglTFextension*)extensionValue.get());
@@ -66,6 +80,20 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         GLTFCharValue json_value;
         if (!(TDataDoc<SAGI_stk_metadataglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("AGI_stk_metadata"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.CESIUM_primitive_outline.schema.json"))
+    {
+        const SCESIUM_primitive_outlineglTFprimitiveextension& extension = *((const SCESIUM_primitive_outlineglTFprimitiveextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SCESIUM_primitive_outlineglTFprimitiveextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("CESIUM_primitive_outline"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.EXT_mesh_gpu_instancing.schema.json"))
+    {
+        const SEXT_mesh_gpu_instancingglTFextension& extension = *((const SEXT_mesh_gpu_instancingglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SEXT_mesh_gpu_instancingglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("EXT_mesh_gpu_instancing"), json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.EXT_texture_webp.schema.json"))
     {

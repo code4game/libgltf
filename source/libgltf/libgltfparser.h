@@ -136,6 +136,13 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SCameraPerspective>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SCameraPerspective>>>& _rData, GLTFCharValue& _JsonValue);
 
+    bool operator<<(struct SLight& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SLight>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SLight>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SLight>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SLight>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SLight>>>& _rData, GLTFCharValue& _JsonValue);
+
     bool operator<<(struct SBufferView& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SBufferView>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<struct SBufferView>& _rData, const GLTFCharValue& _JsonValue);
@@ -269,6 +276,13 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SAccessorSparseIndices>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SAccessorSparseIndices>>>& _rData, GLTFCharValue& _JsonValue);
 
+    bool operator<<(struct SKHR_lights_punctualnodeextension& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SKHR_lights_punctualnodeextension>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SKHR_lights_punctualnodeextension>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SKHR_lights_punctualnodeextension>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SKHR_lights_punctualnodeextension>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SKHR_lights_punctualnodeextension>>>& _rData, GLTFCharValue& _JsonValue);
+
     bool operator<<(struct SNode& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SNode>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<struct SNode>& _rData, const GLTFCharValue& _JsonValue);
@@ -374,12 +388,26 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SCameraOrthographic>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SCameraOrthographic>>>& _rData, GLTFCharValue& _JsonValue);
 
+    bool operator<<(struct SAGI_stk_metadataglTFextension& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SAGI_stk_metadataglTFextension>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& _JsonValue);
+
     bool operator<<(struct SBuffer& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SBuffer>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<struct SBuffer>& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::shared_ptr<struct SBuffer>>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SBuffer>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SBuffer>>>& _rData, GLTFCharValue& _JsonValue);
+
+    bool operator<<(struct SEXT_mesh_gpu_instancingglTFextension& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SEXT_mesh_gpu_instancingglTFextension>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SEXT_mesh_gpu_instancingglTFextension>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SEXT_mesh_gpu_instancingglTFextension>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SEXT_mesh_gpu_instancingglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SEXT_mesh_gpu_instancingglTFextension>>>& _rData, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct SUniformValue& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SUniformValue>& _rData, GLTFCharValue& _JsonValue);
@@ -388,12 +416,12 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<struct SUniformValue>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SUniformValue>>>& _rData, GLTFCharValue& _JsonValue);
 
-    bool operator<<(struct SAGI_stk_metadataglTFextension& _rData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const TDataDoc<struct SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::shared_ptr<struct SAGI_stk_metadataglTFextension>& _rData, const GLTFCharValue& _JsonValue);
-    bool operator>>(const TDataDoc<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& _JsonValue);
-    bool operator<<(std::vector<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue);
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(struct SKHR_lights_punctualglTFextension& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SKHR_lights_punctualglTFextension>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SKHR_lights_punctualglTFextension>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SKHR_lights_punctualglTFextension>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SKHR_lights_punctualglTFextension>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SKHR_lights_punctualglTFextension>>>& _rData, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct SProgram& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SProgram>& _rData, GLTFCharValue& _JsonValue);
@@ -408,6 +436,13 @@ namespace libgltf
     bool operator>>(const TDataDoc<std::shared_ptr<struct SArticulation>>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SArticulation>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SArticulation>>>& _rData, GLTFCharValue& _JsonValue);
+
+    bool operator<<(struct SCESIUM_primitive_outlineglTFprimitiveextension& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SCESIUM_primitive_outlineglTFprimitiveextension>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SCESIUM_primitive_outlineglTFprimitiveextension>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SCESIUM_primitive_outlineglTFprimitiveextension>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SCESIUM_primitive_outlineglTFprimitiveextension>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SCESIUM_primitive_outlineglTFprimitiveextension>>>& _rData, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct SAccessor& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct SAccessor>& _rData, GLTFCharValue& _JsonValue);
@@ -436,6 +471,13 @@ namespace libgltf
     bool operator>>(const TDataDoc<std::shared_ptr<struct SGlTF>>& _rData, GLTFCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<struct SGlTF>>& _vDatas, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SGlTF>>>& _rData, GLTFCharValue& _JsonValue);
+
+    bool operator<<(struct SLightspot& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<struct SLightspot>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<struct SLightspot>& _rData, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<struct SLightspot>>& _rData, GLTFCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<struct SLightspot>>& _vDatas, const GLTFCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<struct SLightspot>>>& _rData, GLTFCharValue& _JsonValue);
 
     bool operator<<(struct STextureInfo& _rData, const GLTFCharValue& _JsonValue);
     bool operator>>(const TDataDoc<struct STextureInfo>& _rData, GLTFCharValue& _JsonValue);

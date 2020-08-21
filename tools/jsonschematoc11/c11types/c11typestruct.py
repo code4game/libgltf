@@ -40,6 +40,8 @@ class C11TypeStruct(C11Type):
             if u'properties' in schemaValue:
                 schemaValueProperties = schemaValue[u'properties']
                 for key in schemaValueProperties:
+                    #if key == u'spot':
+                    #    print(key, schemaValueProperties[key])
                     self.variables[key] = C11Variable(key, schemaValueProperties[key])
 
     def haveParents(self):

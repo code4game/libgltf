@@ -21,6 +21,7 @@ class C11Type(object):
         self.typeName = schemaValue[u'title']
         self.typeName = self.typeName.replace(u' ', u'')
         self.typeName = self.typeName.replace(u'.', u'')
+        self.typeName = self.typeName.replace(u'/', u'')
         self.typeName = u'S' + self.typeName[:1].upper() + self.typeName[1:]
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']

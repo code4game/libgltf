@@ -22,13 +22,13 @@ class C11Variable(object):
 
     def revise(self, c11Types):
         variableSchemaValue = self.schemaValue
-        if u'type' in self.schemaValue:
+        if u'$ref' in self.schemaValue:
+            schemaValueType = self.schemaValue[u'$ref']
+        elif u'type' in self.schemaValue:
             schemaValueType = self.schemaValue[u'type']
             if schemaValueType == u'object' and u'additionalProperties' in self.schemaValue:
                 schemaValueType = u'map'
                 variableSchemaValue = self.schemaValue[u'additionalProperties']
-        elif u'$ref' in self.schemaValue:
-            schemaValueType = self.schemaValue[u'$ref']
         elif u'allOf' in self.schemaValue and len(self.schemaValue[u'allOf']) > 0 and u'$ref' in self.schemaValue[u'allOf'][0]:
             schemaValueType = self.schemaValue[u'allOf'][0][u'$ref']
             #schemaValueType = u'array'
