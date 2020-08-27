@@ -1,6 +1,6 @@
 variables:
     GIT_SUBMODULE_STRATEGY: "recursive"
-    ANDROID_NDK: "~/develop/android-ndk-r18b"
+    ANDROID_NDK: "~/develop/android-ndk"
 
 before_script:
     - git lfs fetch
@@ -51,8 +51,6 @@ compile.windows.vs2019:
         - python
         - cmake
         - vs2019
-        - VS160COMNTOOLS
-        - CMAKE_BIN_PATH
 
 compile.linux:
     stage: build
