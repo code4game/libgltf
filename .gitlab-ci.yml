@@ -16,7 +16,6 @@ stages:
 checked_by_cppcheck:
     stage: check
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'cppcheck . --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
     tags:
         - linux
@@ -26,7 +25,6 @@ checked_by_cppcheck:
 compile.windows.vs2019:
     stage: build
     script:
-        - 'cd tools\batch\ && update_parser_by_scheme.bat && cd ..\..\'
         - 'if exist build rmdir /s /q build'
         - 'mkdir build && cd build'
         - 'mkdir vs2019 && cd vs2019'
@@ -59,7 +57,6 @@ compile.windows.vs2019:
 compile.linux:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_GCOV=TRUE ../'
         - 'make'
@@ -93,7 +90,6 @@ compile.linux:
 compile.macos:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'cmake -G "Unix Makefiles" ../'
         - 'make'
@@ -112,7 +108,6 @@ compile.macos:
 compile.android:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'mkdir armeabi-v7a && cd armeabi-v7a'
         - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
@@ -145,7 +140,6 @@ compile.android:
 compile.ios:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'mkdir os && cd os'
         - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE ../../'
