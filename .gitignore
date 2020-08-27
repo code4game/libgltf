@@ -1,8 +1,8 @@
 /**/.vs
 /**/.vscode
 
-/output
-/build
+/**/output/
+/**/build*/
 
 /**/*.pyc
 /**/*.pyo

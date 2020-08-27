@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2019 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -169,14 +169,16 @@ namespace libgltf
         return true;
     }
 
-    SAGI_stk_metadataglTFextension::SAGI_stk_metadataglTFextension()
+    SADOBE_materials_thin_transparencyglTFextension::SADOBE_materials_thin_transparencyglTFextension()
         : SGlTFProperty()
-        , solarPanelGroups()
+        , ior(1.330000f)
+        , transmissionTexture(nullptr)
+        , transmissionFactor(1.000000f)
     {
         //
     }
 
-    SAGI_stk_metadataglTFextension::operator bool() const
+    SADOBE_materials_thin_transparencyglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -221,6 +223,23 @@ namespace libgltf
     }
 
     SCameraPerspective::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SLight::SLight()
+        : SGlTFChildofRootProperty()
+        , color({ 1.000000f, 1.000000f, 1.000000f })
+        , type(GLTFTEXT(""))
+        , intensity(1.000000f)
+        , spot(nullptr)
+        , range(0.0f)
+    {
+        //
+    }
+
+    SLight::operator bool() const
     {
         //TODO:
         return true;
@@ -284,16 +303,18 @@ namespace libgltf
         return true;
     }
 
-    SADOBE_materials_thin_transparencyglTFextension::SADOBE_materials_thin_transparencyglTFextension()
+    SKHR_materials_clearcoatglTFextension::SKHR_materials_clearcoatglTFextension()
         : SGlTFProperty()
-        , ior(1.330000f)
-        , transmissionTexture(nullptr)
-        , transmissionFactor(1.000000f)
+        , clearcoatRoughnessTexture(nullptr)
+        , clearcoatFactor(0.000000f)
+        , clearcoatTexture(nullptr)
+        , clearcoatNormalTexture(nullptr)
+        , clearcoatRoughnessFactor(0.000000f)
     {
         //
     }
 
-    SADOBE_materials_thin_transparencyglTFextension::operator bool() const
+    SKHR_materials_clearcoatglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -526,6 +547,19 @@ namespace libgltf
         return true;
     }
 
+    SKHR_lights_punctualnodeextension::SKHR_lights_punctualnodeextension()
+        : SGlTFProperty()
+        , light(nullptr)
+    {
+        //
+    }
+
+    SKHR_lights_punctualnodeextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SNode::SNode()
         : SGlTFChildofRootProperty()
         , scale({ 1.000000f, 1.000000f, 1.000000f })
@@ -746,6 +780,19 @@ namespace libgltf
         return true;
     }
 
+    SAGI_stk_metadataglTFextension::SAGI_stk_metadataglTFextension()
+        : SGlTFProperty()
+        , solarPanelGroups()
+    {
+        //
+    }
+
+    SAGI_stk_metadataglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SBuffer::SBuffer()
         : SGlTFChildofRootProperty()
         , byteLength(0)
@@ -760,6 +807,19 @@ namespace libgltf
         return true;
     }
 
+    SEXT_mesh_gpu_instancingglTFextension::SEXT_mesh_gpu_instancingglTFextension()
+        : SGlTFProperty()
+        , attributes()
+    {
+        //
+    }
+
+    SEXT_mesh_gpu_instancingglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SUniformValue::SUniformValue()
         : SObject()
     {
@@ -767,6 +827,19 @@ namespace libgltf
     }
 
     SUniformValue::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_lights_punctualglTFextension::SKHR_lights_punctualglTFextension()
+        : SGlTFProperty()
+        , lights()
+    {
+        //
+    }
+
+    SKHR_lights_punctualglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -797,6 +870,19 @@ namespace libgltf
     }
 
     SArticulation::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SCESIUM_primitive_outlineglTFprimitiveextension::SCESIUM_primitive_outlineglTFprimitiveextension()
+        : SGlTFProperty()
+        , indices(0)
+    {
+        //
+    }
+
+    SCESIUM_primitive_outlineglTFprimitiveextension::operator bool() const
     {
         //TODO:
         return true;
@@ -875,6 +961,20 @@ namespace libgltf
     }
 
     SGlTF::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SLightspot::SLightspot()
+        : SGlTFProperty()
+        , innerConeAngle(0.000000f)
+        , outerConeAngle(0.785398f)
+    {
+        //
+    }
+
+    SLightspot::operator bool() const
     {
         //TODO:
         return true;

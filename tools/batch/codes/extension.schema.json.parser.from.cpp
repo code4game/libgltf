@@ -4,6 +4,18 @@ if (_JsonValue.HasMember(GLTFTEXT("KHR_draco_mesh_compression")) && _JsonValue[G
     if (!(extension << _JsonValue[GLTFTEXT("KHR_draco_mesh_compression")])) return false;
     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_draco_mesh_compression"), extension));
 }
+if (_JsonValue.HasMember(GLTFTEXT("KHR_lights_punctual")) && _JsonValue[GLTFTEXT("KHR_lights_punctual")].IsObject())
+{
+    std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_clearcoat")) && _JsonValue[GLTFTEXT("KHR_materials_clearcoat")].IsObject())
+{
+    std::shared_ptr<SKHR_materials_clearcoatglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_clearcoat")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_clearcoat"), extension));
+}
 if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_pbrSpecularGlossiness")) && _JsonValue[GLTFTEXT("KHR_materials_pbrSpecularGlossiness")].IsObject())
 {
     std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension> extension;
@@ -42,9 +54,21 @@ if (_JsonValue.HasMember(GLTFTEXT("AGI_articulations")) && _JsonValue[GLTFTEXT("
 }
 if (_JsonValue.HasMember(GLTFTEXT("AGI_stk_metadata")) && _JsonValue[GLTFTEXT("AGI_stk_metadata")].IsObject())
 {
-    std::shared_ptr<SAGI_stk_metadataglTFextension> extension;
+    std::shared_ptr<SAGI_stk_metadataglTFNodeextension> extension;
     if (!(extension << _JsonValue[GLTFTEXT("AGI_stk_metadata")])) return false;
     _rData.properties.insert(std::make_pair(GLTFTEXT("AGI_stk_metadata"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("CESIUM_primitive_outline")) && _JsonValue[GLTFTEXT("CESIUM_primitive_outline")].IsObject())
+{
+    std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("CESIUM_primitive_outline")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("CESIUM_primitive_outline"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("EXT_mesh_gpu_instancing")) && _JsonValue[GLTFTEXT("EXT_mesh_gpu_instancing")].IsObject())
+{
+    std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("EXT_mesh_gpu_instancing")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("EXT_mesh_gpu_instancing"), extension));
 }
 if (_JsonValue.HasMember(GLTFTEXT("EXT_texture_webp")) && _JsonValue[GLTFTEXT("EXT_texture_webp")].IsObject())
 {

@@ -1,6 +1,6 @@
 variables:
     GIT_SUBMODULE_STRATEGY: "recursive"
-    ANDROID_NDK: "~/develop/android-ndk-r18b"
+    ANDROID_NDK: "~/develop/android-ndk"
 
 before_script:
     - git lfs fetch
@@ -16,85 +16,47 @@ stages:
 checked_by_cppcheck:
     stage: check
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
-        - 'cppcheck . --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
+        - 'cppcheck ./ --enable=warning,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
     tags:
         - linux
         - python
         - cppcheck
 
-compile.windows.vs2015:
+compile.windows.vs2019:
     stage: build
     script:
-        - 'cd tools/batch/ && update_parser_by_scheme.bat && cd ../../'
         - 'if exist build rmdir /s /q build'
         - 'mkdir build && cd build'
-        - 'mkdir vs2015 && cd vs2015'
-        - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
+        - 'mkdir vs2019 && cd vs2019'
+        - 'call "%VS160COMNTOOLS%VsDevCmd.bat"'
         - 'mkdir win32 && cd win32'
-        - 'cmake -G "Visual Studio 14 2015" -DLIBGLTF_STRING_TYPE=UNICODE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - '"%CMAKE_BIN_PATH%\cmake.exe" -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ..\..\..\'
         - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
         - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF\Monster.gltf'
         - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Binary\Monster.glb'
         - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Draco\Monster.gltf'
         - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Embedded\Monster.gltf'
-        - 'cd ../'
+        - 'cd ..\'
         - 'mkdir win64 && cd win64'
-        - 'cmake -G "Visual Studio 14 2015 Win64" -DLIBGLTF_STRING_TYPE=UNICODE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - '"%CMAKE_BIN_PATH%\cmake.exe" -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ..\..\..\'
         - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"'
         - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF\Monster.gltf'
         - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Binary\Monster.glb'
         - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Draco\Monster.gltf'
         - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Embedded\Monster.gltf'
-        - 'cd ../'
-        - 'cd ../'
-        - 'cd ../'
+        - 'cd ..\..\..\'
     tags:
         - win32
         - win64
         - python
         - cmake
-        - vs2015
-
-compile.windows.vs2017:
-    stage: build
-    script:
-        - 'cd tools/batch/ && update_parser_by_scheme.bat && cd ../../'
-        - 'if exist build rmdir /s /q build'
-        - 'mkdir build && cd build'
-        - 'mkdir vs2017 && cd vs2017'
-        - 'call "%VS2017COMNTOOLS%VsDevCmd.bat"'
-        - 'mkdir win32 && cd win32'
-        - 'cmake -G "Visual Studio 15 2017" -DLIBGLTF_STRING_TYPE=UNICODE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
-        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
-        - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF\Monster.gltf'
-        - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Binary\Monster.glb'
-        - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Draco\Monster.gltf'
-        - '..\..\..\output\bin\win32\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Embedded\Monster.gltf'
-        - 'cd ../'
-        - 'mkdir win64 && cd win64'
-        - 'cmake -G "Visual Studio 15 2017 Win64" -DLIBGLTF_STRING_TYPE=UNICODE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
-        - 'msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"'
-        - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF\Monster.gltf'
-        - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Binary\Monster.glb'
-        - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Draco\Monster.gltf'
-        - '..\..\..\output\bin\win64\Debug\runtest.exe ..\..\..\resource\2.0\Monster\glTF-Embedded\Monster.gltf'
-        - 'cd ../'
-        - 'cd ../'
-        - 'cd ../'
-    tags:
-        - win32
-        - win64
-        - python
-        - cmake
-        - vs2017
+        - vs2019
 
 compile.linux:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
-        - 'cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_GCOV=TRUE ../'
+        - 'cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE ../'
         - 'make'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls'
         - 'valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf'
@@ -126,9 +88,8 @@ compile.linux:
 compile.macos:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
-        - 'cmake -G "Unix Makefiles" ../'
+        - 'cmake -G "Unix Makefiles" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../'
         - 'make'
         - './../output/bin/macos/runtest ../resource/2.0/Monster/glTF/Monster.gltf'
         - './../output/bin/macos/runtest ../resource/2.0/Monster/glTF-Binary/Monster.glb'
@@ -145,26 +106,25 @@ compile.macos:
 compile.android:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'mkdir armeabi-v7a && cd armeabi-v7a'
-        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'ninja'
         - 'cd ../'
         - 'mkdir armeabi-v7a-with-neon && cd armeabi-v7a-with-neon'
-        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=ON -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=ON -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'ninja'
         - 'cd ../'
         - 'mkdir arm64-v8a && cd arm64-v8a'
-        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'ninja'
         - 'cd ../'
         - 'mkdir x86 && cd x86'
-        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'ninja'
         - 'cd ../'
         - 'mkdir x86_64 && cd x86_64'
-        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'ninja'
         - 'cd ../'
         - 'cd ../'
@@ -178,18 +138,17 @@ compile.android:
 compile.ios:
     stage: build
     script:
-        - 'cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../'
         - 'mkdir build && cd build'
         - 'mkdir os && cd os'
-        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_STRING_TYPE=UTF16 ../../'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'make libgltf'
         - 'cd ../'
         - 'mkdir simulator && cd simulator'
-        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_STRING_TYPE=UTF16 ../../'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'make libgltf'
         - 'cd ../'
         - 'mkdir watchos && cd watchos'
-        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_STRING_TYPE=UTF16 ../../'
+        - 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../'
         - 'make libgltf'
         - 'cd ../'
         - 'cd ../'
