@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2019 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -41,18 +41,18 @@ namespace libgltf
         }
 
     public:
-        virtual bool UseAttributeID() const
+        virtual bool UseAttributeID() const override
         {
             return m_bUseAttributeID;
         }
 
-        virtual size_t GetAttributeID() const
+        virtual size_t GetAttributeID() const override
         {
             return m_AttributeID;
         }
 
     public:
-        virtual bool operator<<(const SAccessorData& _AccessorData)
+        virtual bool operator<<(const SAccessorData& _AccessorData) override
         {
             if (!m_pAccessorStream) return false;
             return (*m_pAccessorStream << _AccessorData);

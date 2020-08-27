@@ -238,11 +238,11 @@ class C11TypeStruct(C11Type):
     def codeParserHeader(self):
         codeLines = []
         codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& const _JsonValue);' % (self.codeTypeName(withDeclare=True)))
         codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& const _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& const _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         return codeLines
 
     def codeParserSource(self):
@@ -275,7 +275,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName()))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& const _JsonValue)' % (self.codeTypeName()))
         codeLines.append(u'{')
         if self.manualCodeParsersTo is not None and len(self.manualCodeParsersTo) > 0:
             codeLines.append(u'    // Manual code lines')
@@ -314,7 +314,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& const _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    if (!_rData.data) return false;')
         codeLines.append(u'    return (TDataDoc<%s>(*_rData.data, _rData.doc) >> _JsonValue);' % self.codeTypeName())
@@ -327,7 +327,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& const _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    return operator>> <%s>(_rData, _JsonValue);' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'}')

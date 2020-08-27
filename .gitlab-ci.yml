@@ -16,7 +16,7 @@ stages:
 checked_by_cppcheck:
     stage: check
     script:
-        - 'cppcheck . --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
+        - 'cppcheck ./ --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/'
     tags:
         - linux
         - python

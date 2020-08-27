@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2019 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in

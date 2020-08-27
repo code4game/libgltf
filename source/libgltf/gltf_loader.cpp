@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2019 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -37,7 +37,7 @@ namespace libgltf
     class CBufferViewBufferStream : public IBufferStream
     {
     public:
-        explicit CBufferViewBufferStream(const std::shared_ptr<SBufferView>& buffer_view, std::shared_ptr<IBufferViewStream>& buffer_view_stream)
+        explicit CBufferViewBufferStream(const std::shared_ptr<SBufferView>& buffer_view, const std::shared_ptr<IBufferViewStream>& buffer_view_stream)
             : m_pBufferView(buffer_view)
             , m_pBufferViewStream(buffer_view_stream)
         {
@@ -66,7 +66,7 @@ namespace libgltf
     class CAccessorBufferViewStream : public IBufferViewStream
     {
     public:
-        explicit CAccessorBufferViewStream(const std::shared_ptr<SAccessor>& accessor, std::shared_ptr<IAccessorStream>& accessor_stream)
+        explicit CAccessorBufferViewStream(const std::shared_ptr<SAccessor>& accessor, const std::shared_ptr<IAccessorStream>& accessor_stream)
             : m_pAccessor(accessor)
             , m_pAccessorStream(accessor_stream)
         {
