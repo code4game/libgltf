@@ -372,7 +372,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<bool>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<bool>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetBool(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
@@ -387,7 +387,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<int32_t>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<int32_t>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetInt(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
@@ -410,7 +410,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<float>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<float>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetFloat(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
@@ -425,7 +425,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<string_t>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<string_t>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_rData.doc) return false;\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetString(_rData.data.c_str(), _rData.doc->GetAllocator());\n' % begin_space)
@@ -453,7 +453,7 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator>>(const TDataDoc<std::vector<TData>>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<std::vector<TData>>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_rData.data.empty() || !_rData.doc) return false;\n' % begin_space)
             source_file.write(u'%s    GLTFCharValue& json_array = _JsonValue.SetArray();\n' % begin_space)
@@ -485,7 +485,7 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator>>(const TDataDoc<std::map<string_t, TData>>& _rData, GLTFCharValue& const _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<std::map<string_t, TData>>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_rData.data.empty() || !_rData.doc) return false;\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetObject();\n' % begin_space)

@@ -55,7 +55,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<bool>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<bool>& _rData, GLTFCharValue& _JsonValue)
     {
         _JsonValue.SetBool(_rData.data);
         return true;
@@ -68,7 +68,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<int32_t>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<int32_t>& _rData, GLTFCharValue& _JsonValue)
     {
         _JsonValue.SetInt(_rData.data);
         return true;
@@ -89,7 +89,7 @@ namespace libgltf
         return false;
     }
 
-    bool operator>>(const TDataDoc<float>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<float>& _rData, GLTFCharValue& _JsonValue)
     {
         _JsonValue.SetFloat(_rData.data);
         return true;
@@ -102,7 +102,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<string_t>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<string_t>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetString(_rData.data.c_str(), _rData.doc->GetAllocator());
@@ -128,7 +128,7 @@ namespace libgltf
     }
 
     template<typename TData>
-    bool operator>>(const TDataDoc<std::vector<TData>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<TData>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (_rData.data.empty() || !_rData.doc) return false;
         GLTFCharValue& json_array = _JsonValue.SetArray();
@@ -158,7 +158,7 @@ namespace libgltf
     }
 
     template<typename TData>
-    bool operator>>(const TDataDoc<std::map<string_t, TData>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::map<string_t, TData>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (_rData.data.empty() || !_rData.doc) return false;
         _JsonValue.SetObject();
@@ -190,7 +190,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_techniques_webglmaterialextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_techniques_webglmaterialextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -221,7 +221,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_techniques_webglmaterialextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_techniques_webglmaterialextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_techniques_webglmaterialextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -232,7 +232,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_techniques_webglmaterialextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_techniques_webglmaterialextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_techniques_webglmaterialextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_techniques_webglmaterialextension>>(_rData, _JsonValue);
     }
@@ -251,7 +251,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SGlTFProperty>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SGlTFProperty>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -278,7 +278,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFProperty>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFProperty>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SGlTFProperty>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -289,7 +289,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SGlTFProperty>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFProperty>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFProperty>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SGlTFProperty>>(_rData, _JsonValue);
     }
@@ -336,7 +336,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMaterial>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMaterial>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -400,7 +400,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMaterial>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMaterial>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMaterial>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -411,7 +411,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMaterial>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterial>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterial>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMaterial>>(_rData, _JsonValue);
     }
@@ -442,7 +442,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_texture_transformtextureInfoextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_texture_transformtextureInfoextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -483,7 +483,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_texture_transformtextureInfoextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_texture_transformtextureInfoextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_texture_transformtextureInfoextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -494,7 +494,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_texture_transformtextureInfoextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_texture_transformtextureInfoextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_texture_transformtextureInfoextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_texture_transformtextureInfoextension>>(_rData, _JsonValue);
     }
@@ -525,7 +525,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAsset>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAsset>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -564,7 +564,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAsset>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAsset>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAsset>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -575,7 +575,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAsset>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAsset>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAsset>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAsset>>(_rData, _JsonValue);
     }
@@ -606,7 +606,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SSampler>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SSampler>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -645,7 +645,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SSampler>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SSampler>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SSampler>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -656,7 +656,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SSampler>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSampler>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSampler>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SSampler>>(_rData, _JsonValue);
     }
@@ -675,7 +675,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SGlTFChildofRootProperty>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SGlTFChildofRootProperty>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -699,7 +699,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFChildofRootProperty>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFChildofRootProperty>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SGlTFChildofRootProperty>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -710,7 +710,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SGlTFChildofRootProperty>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFChildofRootProperty>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFChildofRootProperty>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SGlTFChildofRootProperty>>(_rData, _JsonValue);
     }
@@ -737,7 +737,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAnimationSampler>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAnimationSampler>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -773,7 +773,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationSampler>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationSampler>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAnimationSampler>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -784,7 +784,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAnimationSampler>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationSampler>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationSampler>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAnimationSampler>>(_rData, _JsonValue);
     }
@@ -795,7 +795,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SExtras>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SExtras>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -810,7 +810,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SExtras>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SExtras>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SExtras>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -821,7 +821,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SExtras>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SExtras>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SExtras>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SExtras>>(_rData, _JsonValue);
     }
@@ -848,7 +848,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SADOBE_materials_thin_transparencyglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SADOBE_materials_thin_transparencyglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -883,7 +883,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SADOBE_materials_thin_transparencyglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -894,7 +894,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SADOBE_materials_thin_transparencyglTFextension>>(_rData, _JsonValue);
     }
@@ -913,7 +913,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SScene>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SScene>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -938,7 +938,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SScene>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SScene>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SScene>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -949,7 +949,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SScene>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SScene>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SScene>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SScene>>(_rData, _JsonValue);
     }
@@ -976,7 +976,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<STechnique>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<STechnique>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1013,7 +1013,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<STechnique>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<STechnique>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<STechnique>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1024,7 +1024,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<STechnique>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STechnique>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STechnique>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<STechnique>>(_rData, _JsonValue);
     }
@@ -1055,7 +1055,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SCameraPerspective>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SCameraPerspective>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1094,7 +1094,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SCameraPerspective>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SCameraPerspective>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SCameraPerspective>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1105,7 +1105,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SCameraPerspective>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCameraPerspective>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCameraPerspective>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SCameraPerspective>>(_rData, _JsonValue);
     }
@@ -1140,7 +1140,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SLight>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SLight>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1186,7 +1186,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SLight>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SLight>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SLight>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1197,7 +1197,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SLight>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SLight>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SLight>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SLight>>(_rData, _JsonValue);
     }
@@ -1232,7 +1232,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SBufferView>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SBufferView>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1277,7 +1277,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SBufferView>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SBufferView>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SBufferView>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1288,7 +1288,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SBufferView>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SBufferView>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SBufferView>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SBufferView>>(_rData, _JsonValue);
     }
@@ -1307,7 +1307,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMaterialNormalTextureInfo>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMaterialNormalTextureInfo>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1331,7 +1331,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialNormalTextureInfo>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialNormalTextureInfo>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMaterialNormalTextureInfo>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1342,7 +1342,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMaterialNormalTextureInfo>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialNormalTextureInfo>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialNormalTextureInfo>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMaterialNormalTextureInfo>>(_rData, _JsonValue);
     }
@@ -1365,7 +1365,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SSolarPanelGroup>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SSolarPanelGroup>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1394,7 +1394,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SSolarPanelGroup>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SSolarPanelGroup>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SSolarPanelGroup>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1405,7 +1405,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SSolarPanelGroup>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSolarPanelGroup>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSolarPanelGroup>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SSolarPanelGroup>>(_rData, _JsonValue);
     }
@@ -1440,7 +1440,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_materials_clearcoatglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_materials_clearcoatglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1487,7 +1487,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_materials_clearcoatglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1498,7 +1498,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_materials_clearcoatglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_materials_clearcoatglTFextension>>(_rData, _JsonValue);
     }
@@ -1533,7 +1533,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SUniform>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SUniform>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1579,7 +1579,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SUniform>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SUniform>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SUniform>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1590,7 +1590,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SUniform>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SUniform>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SUniform>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SUniform>>(_rData, _JsonValue);
     }
@@ -1609,7 +1609,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMaterialOcclusionTextureInfo>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMaterialOcclusionTextureInfo>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1633,7 +1633,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialOcclusionTextureInfo>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialOcclusionTextureInfo>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMaterialOcclusionTextureInfo>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1644,7 +1644,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMaterialOcclusionTextureInfo>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialOcclusionTextureInfo>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialOcclusionTextureInfo>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMaterialOcclusionTextureInfo>>(_rData, _JsonValue);
     }
@@ -1667,7 +1667,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAccessorSparseValues>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAccessorSparseValues>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1697,7 +1697,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparseValues>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparseValues>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAccessorSparseValues>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1708,7 +1708,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAccessorSparseValues>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparseValues>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparseValues>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAccessorSparseValues>>(_rData, _JsonValue);
     }
@@ -1727,7 +1727,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMSFT_lodglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMSFT_lodglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1752,7 +1752,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMSFT_lodglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMSFT_lodglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMSFT_lodglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1763,7 +1763,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMSFT_lodglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMSFT_lodglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMSFT_lodglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMSFT_lodglTFextension>>(_rData, _JsonValue);
     }
@@ -1786,7 +1786,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAnimationChannelTarget>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAnimationChannelTarget>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1816,7 +1816,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationChannelTarget>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationChannelTarget>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAnimationChannelTarget>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1827,7 +1827,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAnimationChannelTarget>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationChannelTarget>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationChannelTarget>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAnimationChannelTarget>>(_rData, _JsonValue);
     }
@@ -1850,7 +1850,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMesh>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMesh>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1881,7 +1881,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMesh>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMesh>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMesh>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1892,7 +1892,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMesh>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMesh>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMesh>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMesh>>(_rData, _JsonValue);
     }
@@ -1919,7 +1919,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAccessorSparse>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAccessorSparse>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -1955,7 +1955,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparse>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparse>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAccessorSparse>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -1966,7 +1966,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAccessorSparse>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparse>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparse>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAccessorSparse>>(_rData, _JsonValue);
     }
@@ -1993,7 +1993,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SShader>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SShader>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2028,7 +2028,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SShader>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SShader>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SShader>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2039,7 +2039,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SShader>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SShader>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SShader>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SShader>>(_rData, _JsonValue);
     }
@@ -2074,7 +2074,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMeshPrimitive>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMeshPrimitive>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2122,7 +2122,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMeshPrimitive>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMeshPrimitive>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMeshPrimitive>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2133,7 +2133,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMeshPrimitive>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMeshPrimitive>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMeshPrimitive>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMeshPrimitive>>(_rData, _JsonValue);
     }
@@ -2168,7 +2168,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SArticulationStage>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SArticulationStage>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2212,7 +2212,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SArticulationStage>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SArticulationStage>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SArticulationStage>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2223,7 +2223,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SArticulationStage>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SArticulationStage>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SArticulationStage>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SArticulationStage>>(_rData, _JsonValue);
     }
@@ -2258,7 +2258,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_materials_pbrSpecularGlossinessglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_materials_pbrSpecularGlossinessglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2306,7 +2306,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_materials_pbrSpecularGlossinessglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2317,7 +2317,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension>>(_rData, _JsonValue);
     }
@@ -2419,7 +2419,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SExtension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SExtension>& _rData, GLTFCharValue& _JsonValue)
     {
         // Manual code lines
         if (!_rData.doc) return false;
@@ -2545,7 +2545,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SExtension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SExtension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SExtension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2556,7 +2556,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SExtension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SExtension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SExtension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SExtension>>(_rData, _JsonValue);
     }
@@ -2579,7 +2579,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAnimationChannel>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAnimationChannel>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2610,7 +2610,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationChannel>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAnimationChannel>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAnimationChannel>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2621,7 +2621,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAnimationChannel>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationChannel>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimationChannel>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAnimationChannel>>(_rData, _JsonValue);
     }
@@ -2633,7 +2633,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SGlTFId>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SGlTFId>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2649,7 +2649,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFId>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SGlTFId>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SGlTFId>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2660,7 +2660,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SGlTFId>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFId>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTFId>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SGlTFId>>(_rData, _JsonValue);
     }
@@ -2687,7 +2687,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAccessorSparseIndices>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAccessorSparseIndices>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2722,7 +2722,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparseIndices>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAccessorSparseIndices>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAccessorSparseIndices>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2733,7 +2733,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAccessorSparseIndices>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparseIndices>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessorSparseIndices>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAccessorSparseIndices>>(_rData, _JsonValue);
     }
@@ -2752,7 +2752,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_lights_punctualnodeextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_lights_punctualnodeextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2777,7 +2777,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_lights_punctualnodeextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_lights_punctualnodeextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_lights_punctualnodeextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2788,7 +2788,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_lights_punctualnodeextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_lights_punctualnodeextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_lights_punctualnodeextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_lights_punctualnodeextension>>(_rData, _JsonValue);
     }
@@ -2839,7 +2839,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SNode>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SNode>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2912,7 +2912,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SNode>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SNode>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SNode>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2923,7 +2923,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SNode>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SNode>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SNode>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SNode>>(_rData, _JsonValue);
     }
@@ -2946,7 +2946,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAnimation>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAnimation>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -2977,7 +2977,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAnimation>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAnimation>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAnimation>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -2988,7 +2988,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAnimation>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimation>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAnimation>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAnimation>>(_rData, _JsonValue);
     }
@@ -3015,7 +3015,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SSkin>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SSkin>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3052,7 +3052,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SSkin>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SSkin>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SSkin>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3063,7 +3063,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SSkin>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSkin>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SSkin>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SSkin>>(_rData, _JsonValue);
     }
@@ -3082,7 +3082,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMSFT_texture_ddsextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMSFT_texture_ddsextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3107,7 +3107,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMSFT_texture_ddsextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMSFT_texture_ddsextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMSFT_texture_ddsextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3118,7 +3118,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMSFT_texture_ddsextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMSFT_texture_ddsextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMSFT_texture_ddsextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMSFT_texture_ddsextension>>(_rData, _JsonValue);
     }
@@ -3137,7 +3137,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAGI_articulationsglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAGI_articulationsglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3162,7 +3162,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_articulationsglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_articulationsglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAGI_articulationsglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3173,7 +3173,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAGI_articulationsglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_articulationsglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_articulationsglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAGI_articulationsglTFextension>>(_rData, _JsonValue);
     }
@@ -3192,7 +3192,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAttribute>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAttribute>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3216,7 +3216,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAttribute>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAttribute>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAttribute>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3227,7 +3227,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAttribute>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAttribute>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAttribute>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAttribute>>(_rData, _JsonValue);
     }
@@ -3262,7 +3262,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SMaterialPBRMetallicRoughness>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SMaterialPBRMetallicRoughness>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3309,7 +3309,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialPBRMetallicRoughness>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SMaterialPBRMetallicRoughness>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SMaterialPBRMetallicRoughness>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3320,7 +3320,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SMaterialPBRMetallicRoughness>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialPBRMetallicRoughness>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMaterialPBRMetallicRoughness>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SMaterialPBRMetallicRoughness>>(_rData, _JsonValue);
     }
@@ -3343,7 +3343,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_draco_mesh_compressionextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_draco_mesh_compressionextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3374,7 +3374,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_draco_mesh_compressionextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_draco_mesh_compressionextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_draco_mesh_compressionextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3385,7 +3385,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_draco_mesh_compressionextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_draco_mesh_compressionextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_draco_mesh_compressionextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_draco_mesh_compressionextension>>(_rData, _JsonValue);
     }
@@ -3412,7 +3412,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SCamera>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SCamera>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3448,7 +3448,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SCamera>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SCamera>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SCamera>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3459,7 +3459,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SCamera>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCamera>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCamera>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SCamera>>(_rData, _JsonValue);
     }
@@ -3486,7 +3486,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SImage>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SImage>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3521,7 +3521,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SImage>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SImage>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SImage>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3532,7 +3532,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SImage>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SImage>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SImage>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SImage>>(_rData, _JsonValue);
     }
@@ -3555,7 +3555,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFNodeextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFNodeextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3584,7 +3584,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAGI_stk_metadataglTFNodeextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3595,7 +3595,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAGI_stk_metadataglTFNodeextension>>(_rData, _JsonValue);
     }
@@ -3618,7 +3618,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<STexture>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<STexture>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3649,7 +3649,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<STexture>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<STexture>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<STexture>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3660,7 +3660,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<STexture>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STexture>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STexture>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<STexture>>(_rData, _JsonValue);
     }
@@ -3683,7 +3683,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAGI_articulationsglTFNodeextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAGI_articulationsglTFNodeextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3712,7 +3712,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_articulationsglTFNodeextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_articulationsglTFNodeextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAGI_articulationsglTFNodeextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3723,7 +3723,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAGI_articulationsglTFNodeextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_articulationsglTFNodeextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_articulationsglTFNodeextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAGI_articulationsglTFNodeextension>>(_rData, _JsonValue);
     }
@@ -3738,7 +3738,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_materials_unlitglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_materials_unlitglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3757,7 +3757,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_unlitglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_unlitglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_materials_unlitglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3768,7 +3768,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_materials_unlitglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_unlitglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_unlitglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_materials_unlitglTFextension>>(_rData, _JsonValue);
     }
@@ -3799,7 +3799,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SCameraOrthographic>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SCameraOrthographic>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3838,7 +3838,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SCameraOrthographic>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SCameraOrthographic>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SCameraOrthographic>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3849,7 +3849,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SCameraOrthographic>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCameraOrthographic>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCameraOrthographic>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SCameraOrthographic>>(_rData, _JsonValue);
     }
@@ -3868,7 +3868,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAGI_stk_metadataglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3893,7 +3893,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAGI_stk_metadataglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAGI_stk_metadataglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3904,7 +3904,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAGI_stk_metadataglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAGI_stk_metadataglTFextension>>(_rData, _JsonValue);
     }
@@ -3927,7 +3927,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SBuffer>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SBuffer>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -3956,7 +3956,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SBuffer>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SBuffer>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SBuffer>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -3967,7 +3967,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SBuffer>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SBuffer>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SBuffer>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SBuffer>>(_rData, _JsonValue);
     }
@@ -3986,7 +3986,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SEXT_mesh_gpu_instancingglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SEXT_mesh_gpu_instancingglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4011,7 +4011,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SEXT_mesh_gpu_instancingglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4022,7 +4022,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>>(_rData, _JsonValue);
     }
@@ -4033,7 +4033,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SUniformValue>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SUniformValue>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4048,7 +4048,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SUniformValue>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SUniformValue>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SUniformValue>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4059,7 +4059,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SUniformValue>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SUniformValue>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SUniformValue>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SUniformValue>>(_rData, _JsonValue);
     }
@@ -4078,7 +4078,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_lights_punctualglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_lights_punctualglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4103,7 +4103,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_lights_punctualglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_lights_punctualglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_lights_punctualglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4114,7 +4114,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_lights_punctualglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_lights_punctualglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_lights_punctualglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_lights_punctualglTFextension>>(_rData, _JsonValue);
     }
@@ -4141,7 +4141,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SProgram>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SProgram>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4178,7 +4178,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SProgram>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SProgram>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SProgram>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4189,7 +4189,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SProgram>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SProgram>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SProgram>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SProgram>>(_rData, _JsonValue);
     }
@@ -4216,7 +4216,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SArticulation>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SArticulation>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4252,7 +4252,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SArticulation>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SArticulation>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SArticulation>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4263,7 +4263,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SArticulation>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SArticulation>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SArticulation>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SArticulation>>(_rData, _JsonValue);
     }
@@ -4282,7 +4282,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SCESIUM_primitive_outlineglTFprimitiveextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SCESIUM_primitive_outlineglTFprimitiveextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4306,7 +4306,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SCESIUM_primitive_outlineglTFprimitiveextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4317,7 +4317,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>(_rData, _JsonValue);
     }
@@ -4368,7 +4368,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SAccessor>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SAccessor>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4436,7 +4436,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SAccessor>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SAccessor>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SAccessor>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4447,7 +4447,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SAccessor>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessor>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SAccessor>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SAccessor>>(_rData, _JsonValue);
     }
@@ -4466,7 +4466,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SEXT_texture_webpglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SEXT_texture_webpglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4491,7 +4491,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_texture_webpglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_texture_webpglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SEXT_texture_webpglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4502,7 +4502,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SEXT_texture_webpglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_texture_webpglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_texture_webpglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SEXT_texture_webpglTFextension>>(_rData, _JsonValue);
     }
@@ -4529,7 +4529,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SKHR_techniques_webglglTFextension>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SKHR_techniques_webglglTFextension>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4566,7 +4566,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_techniques_webglglTFextension>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_techniques_webglglTFextension>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SKHR_techniques_webglglTFextension>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4577,7 +4577,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SKHR_techniques_webglglTFextension>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_techniques_webglglTFextension>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_techniques_webglglTFextension>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SKHR_techniques_webglglTFextension>>(_rData, _JsonValue);
     }
@@ -4660,7 +4660,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SGlTF>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SGlTF>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4781,7 +4781,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SGlTF>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SGlTF>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SGlTF>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4792,7 +4792,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SGlTF>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTF>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SGlTF>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SGlTF>>(_rData, _JsonValue);
     }
@@ -4815,7 +4815,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<SLightspot>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<SLightspot>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4844,7 +4844,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<SLightspot>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<SLightspot>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<SLightspot>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4855,7 +4855,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<SLightspot>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SLightspot>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SLightspot>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<SLightspot>>(_rData, _JsonValue);
     }
@@ -4878,7 +4878,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<STextureInfo>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<STextureInfo>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.doc) return false;
         _JsonValue.SetObject();
@@ -4908,7 +4908,7 @@ namespace libgltf
         return true;
     }
 
-    bool operator>>(const TDataDoc<std::shared_ptr<STextureInfo>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::shared_ptr<STextureInfo>>& _rData, GLTFCharValue& _JsonValue)
     {
         if (!_rData.data) return false;
         return (TDataDoc<STextureInfo>(*_rData.data, _rData.doc) >> _JsonValue);
@@ -4919,7 +4919,7 @@ namespace libgltf
         return operator<< <std::shared_ptr<STextureInfo>>(_vDatas, _JsonValue);
     }
 
-    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STextureInfo>>>& _rData, GLTFCharValue& const _JsonValue)
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<STextureInfo>>>& _rData, GLTFCharValue& _JsonValue)
     {
         return operator>> <std::shared_ptr<STextureInfo>>(_rData, _JsonValue);
     }
