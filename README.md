@@ -4,9 +4,6 @@
 [![libgltf document](https://readthedocs.org/projects/libgltf/badge/?version=latest)](http://libgltf.rtfd.io/)
 
 [![Build status in azure](https://dev.azure.com/code4game/libgltf/_apis/build/status/code4game.libgltf)](https://dev.azure.com/code4game/libgltf/_build/latest?definitionId=1)
-[![Build status in linux and macos](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
-[![Build status in windows](https://ci.appveyor.com/api/projects/status/jkx8aoyafsn9ce4t?svg=true)](https://ci.appveyor.com/project/code4game/libgltf)
-
 [![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
 [![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 [![CII best practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
