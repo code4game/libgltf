@@ -2333,9 +2333,20 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(GLTFTEXT("KHR_lights_punctual")) && _JsonValue[GLTFTEXT("KHR_lights_punctual")].IsObject())
         {
-            std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
-            if (!(extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])) return false;
-            _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+            {
+                std::shared_ptr<SKHR_lights_punctualglTFextension> extension;
+                if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+                {
+                    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+                }
+            }
+            {
+                std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
+                if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+                {
+                    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+                }
+            }
         }
         if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_clearcoat")) && _JsonValue[GLTFTEXT("KHR_materials_clearcoat")].IsObject())
         {
@@ -2744,10 +2755,8 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("light")) && _JsonValue[GLTFTEXT("light")].IsInt())
-        {
-            if (!(_rData.light << _JsonValue[GLTFTEXT("light")])) return false;
-        }
+        if (!_JsonValue.HasMember(GLTFTEXT("light")) || !_JsonValue[GLTFTEXT("light")].IsInt()) return false;
+        if (!(_rData.light << _JsonValue[GLTFTEXT("light")])) return false;
         _rData.schemaType = GLTFTEXT("node.KHR_lights_punctual.schema.json");
         return true;
     }
@@ -4070,10 +4079,8 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("lights")) && _JsonValue[GLTFTEXT("lights")].IsArray())
-        {
-            if (!(_rData.lights << _JsonValue[GLTFTEXT("lights")])) return false;
-        }
+        if (!_JsonValue.HasMember(GLTFTEXT("lights")) || !_JsonValue[GLTFTEXT("lights")].IsArray()) return false;
+        if (!(_rData.lights << _JsonValue[GLTFTEXT("lights")])) return false;
         _rData.schemaType = GLTFTEXT("glTF.KHR_lights_punctual.schema.json");
         return true;
     }

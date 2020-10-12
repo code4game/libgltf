@@ -162,43 +162,21 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
     libgltf::TDimensionVector<1, size_t> triangle_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > >(triangle_data);
     gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
     libgltf::TDimensionVector<3, float> position_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("position"), position_stream);
 
     libgltf::TDimensionVector<3, float> normal_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > normal_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(normal_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"normal", normal_stream);
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("normal"), normal_stream);
 
     libgltf::TDimensionVector<2, float> texcoord_0_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"texcoord_0", texcoord_0_stream);
-#else
-    libgltf::TDimensionVector<1, size_t> triangle_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > >(triangle_data);
-    gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
-
-    libgltf::TDimensionVector<3, float> position_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
-
-    libgltf::TDimensionVector<3, float> normal_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > normal_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(normal_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
-
-    libgltf::TDimensionVector<2, float> texcoord_0_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
-
-    std::vector<uint8_t> image0_data;
-    libgltf::string_t image0_data_type;
-    gltf_loader->GetOrLoadImageData(0, image0_data, image0_data_type);
-#endif
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("texcoord_0"), texcoord_0_stream);
 
     //TODO: just convert to json, save the mesh or image data to file in future
     libgltf::string_t output_content;
