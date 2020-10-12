@@ -9,7 +9,6 @@ jobs:
       sudo -E apt-get install valgrind gcovr
       sudo -E pip install wheel
       sudo -E pip install cpp-coveralls
-      coveralls -h
     displayName: "Install dependencies"
   - checkout: self
     lfs: true
