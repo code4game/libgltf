@@ -7,6 +7,7 @@ jobs:
   - script: |
       sudo -E apt-get update
       sudo -E apt-get install valgrind gcovr
+      pip install --user cpp-coveralls
     displayName: "Install dependencies"
   - checkout: self
     lfs: true
@@ -36,6 +37,7 @@ jobs:
       gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
       gcovr --root=../source/ .
       cd ../
+      coveralls --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
     displayName: "Compile and Coverage"
 
 - job: linux
