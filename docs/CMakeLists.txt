@@ -7,7 +7,8 @@ set(DOC_ROOT_FILE_LIST
     )
 
 set(DOC_HELP_FILE_LIST
-    ${ROOT_PATH}/docs/usage.md
+    ${ROOT_PATH}/docs/conf.py
+    ${ROOT_PATH}/docs/index.rst
     )
 
 source_group("root" FILES ${DOC_ROOT_FILE_LIST})
