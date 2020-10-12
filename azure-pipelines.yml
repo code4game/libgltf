@@ -1,5 +1,5 @@
 jobs:
-- job: Linux
+- job: linux
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -15,7 +15,7 @@ jobs:
       cd ../
     displayName: "Compile for Linux"
 
-- job: macOS
+- job: macos
   pool:
     vmImage: 'macOS-latest'
   steps:
@@ -30,3 +30,37 @@ jobs:
       make libgltf
       cd ../
     displayName: "Compile for macOS"
+
+- job: vs2019.x32
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all repos"
+  - script: |
+      mkdir build
+      cd build
+      cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../
+      msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
+      msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
+      cd ../
+    displayName: "Compile for VS2019 Win32"
+
+- job: vs2019.x64
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all repos"
+  - script: |
+      mkdir build
+      cd build
+      cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../
+      msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
+      msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
+      cd ../
+    displayName: "Compile for VS2019 x64"
