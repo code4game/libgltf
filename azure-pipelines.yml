@@ -3,6 +3,10 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all repos"
   - script: |
       mkdir build
       cd build
@@ -10,14 +14,15 @@ jobs:
       make libgltf
       cd ../
     displayName: "Compile for Linux"
-  - checkout: self
-    lfs: true
-    submodules: true
 
 - job: macOS
   pool:
     vmImage: 'macOS-latest'
   steps:
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all repos"
   - script: |
       mkdir build
       cd build
@@ -25,6 +30,3 @@ jobs:
       make libgltf
       cd ../
     displayName: "Compile for macOS"
-  - checkout: self
-    lfs: true
-    submodules: true
