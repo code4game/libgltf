@@ -8,7 +8,6 @@ jobs:
       sudo -E apt-get update
       sudo -E apt-get install valgrind gcovr
       pip install --user wheel
-      pip install --user coveralls
       pip install --user cpp-coveralls
     displayName: "Install dependencies"
   - checkout: self
