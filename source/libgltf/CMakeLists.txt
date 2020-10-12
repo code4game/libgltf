@@ -4,18 +4,6 @@ project(libgltf)
 
 set(SOURCE_FILE_PATH ${SOURCE_PATH}/libgltf)
 
-set(INCLUDE_PATH_LIST
-    ${HEADER_PATH}/libgltf
-    ${SOURCE_FILE_PATH}
-    ${EXTERNAL_PATH}/rapidjson/include
-    )
-include_directories(${INCLUDE_PATH_LIST})
-
-if(${GOOGLEDRACO_FOUND} AND ${LIBGLTF_USE_GOOGLE_DRACO})
-    include_directories(${GOOGLE_DRACO_PATH_INCLUDE} ${GOOGLE_DRACO_PATH_BUILD})
-    add_definitions(-DLIBGLTF_USE_GOOGLE_DRACO)
-endif()
-
 set(CODE_FILE_LIST)
 
 set(HEADER_FILE_LIST
@@ -48,16 +36,16 @@ set(CODE_FILE_LIST
     )
 source_group("source" FILES ${SOURCE_FILE_LIST})
 
-if(${GOOGLEDRACO_FOUND} AND ${LIBGLTF_USE_GOOGLE_DRACO})
-set(SOURCE_FILE_LIST_DRACO
-    ${SOURCE_FILE_PATH}/extensions/google_draco.h
-    ${SOURCE_FILE_PATH}/extensions/google_draco.cpp
-    )
-set(CODE_FILE_LIST
-    ${CODE_FILE_LIST}
-    ${SOURCE_FILE_LIST_DRACO}
-    )
-source_group("source\\extensions" FILES ${SOURCE_FILE_LIST_DRACO})
+if(LIBGLTF_USE_GOOGLE_DRACO)
+    set(SOURCE_FILE_LIST_DRACO
+        ${SOURCE_FILE_PATH}/extensions/google_draco.h
+        ${SOURCE_FILE_PATH}/extensions/google_draco.cpp
+        )
+    set(CODE_FILE_LIST
+        ${CODE_FILE_LIST}
+        ${SOURCE_FILE_LIST_DRACO}
+        )
+    source_group("source\\extensions" FILES ${SOURCE_FILE_LIST_DRACO})
 endif()
 
 if(${LIBGLTF_PLATFORM_ANDROID})
@@ -79,6 +67,21 @@ set(RUNTIME_OUTPUT_PATH ${OUT_BIN_PATH})
 set(LIBRARY_OUTPUT_PATH ${OUT_LIB_PATH})
 
 add_library(libgltf STATIC ${CODE_FILE_LIST})
+
+set(INCLUDE_PATH_LIST
+    ${HEADER_PATH}/libgltf
+    ${SOURCE_FILE_PATH}
+    ${EXTERNAL_PATH}/rapidjson/include
+    )
+    target_include_directories(libgltf
+        PRIVATE ${INCLUDE_PATH_LIST})
+
+if(LIBGLTF_USE_GOOGLE_DRACO)
+    target_include_directories(libgltf
+        PRIVATE ${GOOGLE_DRACO_PATH_INCLUDE}
+        PRIVATE ${GOOGLE_DRACO_PATH_BUILD})
+    add_definitions(-DLIBGLTF_USE_GOOGLE_DRACO)
+endif()
 
 if(${LIBGLTF_PLATFORM_WINDOWS})
     add_custom_command(TARGET libgltf
