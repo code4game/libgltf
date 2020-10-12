@@ -8,7 +8,7 @@ Welcome to libgltf's documentation!
 
 |glTF 2.0| |docs| |visit-milstones|
 
-|travis-ci| |appveyor-ci|
+|azure-ci| |travis-ci| |appveyor-ci|
 
 |coveralls| |codacy| |bestpractices|
 
@@ -189,6 +189,9 @@ The MIT license.
 
 .. |visit-milstones| image:: https://img.shields.io/badge/visit-milestones-blue.svg?style=flat
    :target: https://github.com/code4game/libgltf/milestones
+
+.. |azure-ci| image:: https://dev.azure.com/code4game/libgltf/_apis/build/status/code4game.libgltf
+   :target: https://dev.azure.com/code4game/libgltf/_build/latest?definitionId=1
 
 .. |travis-ci| image:: https://travis-ci.org/code4game/libgltf.svg?branch=master
    :target: https://travis-ci.org/code4game/libgltf

@@ -3,6 +3,7 @@
 [![glTF status](https://img.shields.io/badge/glTF-2%2E0-green.svg?style=flat)](https://github.com/KhronosGroup/glTF)
 [![libgltf document](https://readthedocs.org/projects/libgltf/badge/?version=latest)](http://libgltf.rtfd.io/)
 
+[![Build status in azure](https://dev.azure.com/code4game/libgltf/_apis/build/status/code4game.libgltf)](https://dev.azure.com/code4game/libgltf/_build/latest?definitionId=1)
 [![Build status in linux and macos](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
 [![Build status in windows](https://ci.appveyor.com/api/projects/status/jkx8aoyafsn9ce4t?svg=true)](https://ci.appveyor.com/project/code4game/libgltf)
 
