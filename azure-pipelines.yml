@@ -13,28 +13,30 @@ jobs:
       cd build
       cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE ../
       make
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF/Monster.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Binary/Monster.glb
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Draco/Monster.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Cameras/glTF/Cameras.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Triangle/glTF/Triangle.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
-      valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
+      ./../output/bin/linux/runtest --coveralls
+      ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF/Monster.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Binary/Monster.glb
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Draco/Monster.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Cameras/glTF/Cameras.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Triangle/glTF/Triangle.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
+      ./../output/bin/linux/runtest --coveralls ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
       gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
       gcovr --root=../source/ .
       cd ../
     displayName: "Compile and Coverage"
 
 - job: linux
+  dependsOn: coverage
+  condition: succeeded()
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -67,6 +69,8 @@ jobs:
     displayName: "Compile for macOS"
 
 - job: ios
+  dependsOn: macos
+  condition: succeeded()
   pool:
     vmImage: 'macOS-latest'
   steps:
@@ -83,6 +87,8 @@ jobs:
     displayName: "Compile for iOS"
 
 - job: vs2019_x32
+  dependsOn: coverage
+  condition: succeeded()
   pool:
     vmImage: 'windows-latest'
   steps:
@@ -106,6 +112,8 @@ jobs:
       displayName: "Compile for VS2019 Win32"
 
 - job: vs2019_x64
+  dependsOn: coverage
+  condition: succeeded()
   pool:
     vmImage: 'windows-latest'
   steps:
