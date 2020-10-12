@@ -32,10 +32,10 @@ init:
 - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_WIN64))
 - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ARM))
 - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2017" (set TARGET_VSENV=VS15_ANYCPU))
-- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS15_WIN32))
-- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS15_WIN64))
-- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS15_ARM))
-- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS15_ANYCPU))
+- if "%PLATFORM%" equ "x86" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_WIN32))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_WIN64))
+- if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_ARM))
+- if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_ANYCPU))
 
 install:
 - git submodule update --init
@@ -52,10 +52,10 @@ before_build:
 - if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
 - if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 15 2017 ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
 - if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 15 2017" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_15 ../
-- if "%TARGET_VSENV%" equ "VS15_WIN32" cmake -G "Visual Studio 16 2019" -A "Win32" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
-- if "%TARGET_VSENV%" equ "VS15_WIN64" cmake -G "Visual Studio 16 2019" -A "x64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
-- if "%TARGET_VSENV%" equ "VS15_ARM" cmake -G "Visual Studio 16 2019" -A "ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
-- if "%TARGET_VSENV%" equ "VS15_ANYCPU" cmake -G "Visual Studio 16 2019" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
+- if "%TARGET_VSENV%" equ "VS16_WIN32" cmake -G "Visual Studio 16 2019" -A "Win32" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
+- if "%TARGET_VSENV%" equ "VS16_WIN64" cmake -G "Visual Studio 16 2019" -A "x64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
+- if "%TARGET_VSENV%" equ "VS16_ARM" cmake -G "Visual Studio 16 2019" -A "ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
+- if "%TARGET_VSENV%" equ "VS16_ANYCPU" cmake -G "Visual Studio 16 2019" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
 - cd ..
 
 build_script:
@@ -79,17 +79,3 @@ after_build:
 artifacts:
 - name: libgltf
   path: libgltf.*.zip
-
-deploy:
-  release: $(appveyor_repo_tag_name)
-  description: 'Release'
-  provider: GitHub
-  auth_token:
-    secure: pgUOkq6lXpXqW/BcFTYJR690JA4gAzsBYUtAjLv/E3CEOOgDKW68xGO3utC2Bjxx
-  artifact: libgltf.$(appveyor_repo_tag_name).windows.$(platform).zip
-  draft: false
-  prerelease: false
-  on:
-    branch: master
-    appveyor_repo_tag: true
-
