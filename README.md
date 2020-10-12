@@ -2,6 +2,7 @@
 
 [![glTF status](https://img.shields.io/badge/glTF-2%2E0-green.svg?style=flat)](https://github.com/KhronosGroup/glTF)
 [![libgltf document](https://readthedocs.org/projects/libgltf/badge/?version=latest)](http://libgltf.rtfd.io/)
+[![visit milestones](https://img.shields.io/badge/visit-milestones-blue.svg?style=flat)](https://github.com/code4game/libgltf/milestones)
 
 [![Build status in azure](https://dev.azure.com/code4game/libgltf/_apis/build/status/code4game.libgltf)](https://dev.azure.com/code4game/libgltf/_build/latest?definitionId=1)
 [![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
