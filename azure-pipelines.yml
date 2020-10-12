@@ -45,11 +45,14 @@ jobs:
       cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../
       cd ../
     displayName: "CMake for VS2019 Win32"
-  - task: VSBuild@1
-    solution: build/libgltf.sln
-    platform: Win32
-    configuration: Release
-    displayName: "Compile for VS2019 Win32"
+  - task: MSBuild@1
+    inputs:
+      solution: build/libgltf.sln
+      msbuildVersion: latest
+      msbuildArchitecture: x32
+      platform: Win32
+      configuration: Release
+      displayName: "Compile for VS2019 Win32"
 
 - job: vs2019_x64
   pool:
@@ -65,8 +68,11 @@ jobs:
       cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../
       cd ../
     displayName: "CMake for VS2019 x64"
-  - task: VSBuild@1
-    solution: build/libgltf.sln
-    platform: x64
-    configuration: Release
-    displayName: "Compile for VS2019 x64"
+  - task: MSBuild@1
+    inputs:
+      solution: build/libgltf.sln
+      msbuildVersion: latest
+      msbuildArchitecture: x64
+      platform: x64
+      configuration: Release
+      displayName: "Compile for VS2019 x64"
