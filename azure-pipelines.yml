@@ -4,14 +4,14 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - checkout: self
-    lfs: true
-    submodules: true
-    displayName: "Pull all submodules"
   - script: |
       sudo -E apt-get update
       sudo -E apt-get install valgrind gcovr
     displayName: "Install dependencies"
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all submodules"
   - script: |
       mkdir build
       cd build
