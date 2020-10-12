@@ -3,10 +3,15 @@ jobs:
 - job: coverage
   pool:
     vmImage: 'ubuntu-latest'
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
   steps:
   - script: |
       sudo -E apt-get update
       sudo -E apt-get install valgrind gcovr
+      pip install --user wheel
       pip install --user cpp-coveralls
     displayName: "Install dependencies"
   - checkout: self
