@@ -6,6 +6,7 @@
 [![The MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/code4game/libgltf/blob/master/LICENSE.md)
 
 [![Pipeline status](https://gitlab.com/c4g/gltf/libgltf/badges/master/pipeline.svg)](https://gitlab.com/c4g/gltf/libgltf/commits/master)
+[![Build Status in azure](https://dev.azure.com/c4gio/c4gbuilder/_apis/build/status/code4game.libgltf)](https://dev.azure.com/c4gio/c4gbuilder/_build/latest?definitionId=3)
 [![Build status in linux and macos](https://travis-ci.org/code4game/libgltf.svg?branch=master)](https://travis-ci.org/code4game/libgltf)
 [![Build status in windows](https://ci.appveyor.com/api/projects/status/jkx8aoyafsn9ce4t?svg=true)](https://ci.appveyor.com/project/code4game/libgltf)
 

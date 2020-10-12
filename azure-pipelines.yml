@@ -1,0 +1,22 @@
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      mkdir build
+      cd build
+      cmake -G "Unix Makefiles" ../
+      make libgltf
+      cd ../
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.13'
+  steps:
+  - script: |
+      mkdir build
+      cd build
+      cmake -G "Unix Makefiles" ../
+      make libgltf
+      cd ../
