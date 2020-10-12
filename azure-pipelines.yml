@@ -31,6 +31,22 @@ jobs:
       cd ../
     displayName: "Compile for macOS"
 
+- job: ios
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - checkout: self
+    lfs: true
+    submodules: true
+    displayName: "Pull all repos"
+  - script: |
+      mkdir build
+      cd build
+      cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../
+      make libgltf
+      cd ../
+    displayName: "Compile for iOS"
+
 - job: vs2019_x32
   pool:
     vmImage: 'windows-latest'
