@@ -38,7 +38,7 @@ jobs:
       gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
       gcovr --root=../source/ .
       cd ../
-      coveralls --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
+      coveralls --repo-token $COVERALLS_REPO_TOKEN --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
     displayName: "Compile and Coverage"
 
 - job: linux
