@@ -9,6 +9,10 @@ jobs:
       cmake -G "Unix Makefiles" ../
       make libgltf
       cd ../
+    displayName: "Compile for Linux"
+  - checkout: self
+    lfs: true
+    submodules: true
 
 - job: macOS
   pool:
@@ -20,3 +24,7 @@ jobs:
       cmake -G "Unix Makefiles" ../
       make libgltf
       cd ../
+    displayName: "Compile for macOS"
+  - checkout: self
+    lfs: true
+    submodules: true
