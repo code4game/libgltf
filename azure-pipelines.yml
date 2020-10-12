@@ -7,8 +7,8 @@ jobs:
   - script: |
       sudo -E apt-get update
       sudo -E apt-get install valgrind gcovr
-      pip install wheel
-      pip install cpp-coveralls
+      sudo -E pip install wheel
+      sudo -E pip install cpp-coveralls
       coveralls -h
     displayName: "Install dependencies"
   - checkout: self
