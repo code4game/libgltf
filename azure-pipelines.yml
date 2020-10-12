@@ -13,22 +13,22 @@ jobs:
       cd build
       cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE ../
       make
-      ./../output/bin/linux/runtest --coveralls
-      ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF/Monster.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Binary/Monster.glb
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Draco/Monster.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Cameras/glTF/Cameras.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/Triangle/glTF/Triangle.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
-      ./../output/bin/linux/runtest --coveralls ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
+      ./../output/bin/runtest --coveralls
+      ./../output/bin/runtest --coveralls ../resource/nothing.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Monster/glTF/Monster.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Monster/glTF-Binary/Monster.glb
+      ./../output/bin/runtest --coveralls ../resource/2.0/Monster/glTF-Draco/Monster.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Cameras/glTF/Cameras.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/Triangle/glTF/Triangle.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
+      ./../output/bin/runtest --coveralls ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
       gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
       gcovr --root=../source/ .
       cd ../
@@ -53,6 +53,8 @@ jobs:
     displayName: "Compile for Linux"
 
 - job: macos
+  dependsOn: coverage
+  condition: succeeded()
   pool:
     vmImage: 'macOS-latest'
   steps:
