@@ -38,24 +38,24 @@ Getting Started
 
 1. Update the submodule
 
-..
+   ..
 
-   Run :code:`git submodule update --init`
+      Run :code:`git submodule update --init`
 
 2. Generate the project by [CMake]
 
-..
+   ..
 
-   Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
+      Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
 
 3. Build the project and generate the the static library `libgltf.lib` or `libgltf.a`
 4. Include `libgltf/libgltf.h` in your project.
 5. Link the static library `libgltf.lib` or `libgltf.a` in your project.
 
-..
-
-   You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
-   And you can find the draco in the external folder.
+   ..
+   
+      You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
+      And you can find the draco in the external folder.
 
 Code example:
 
