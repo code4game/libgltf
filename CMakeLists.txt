@@ -1,26 +1,13 @@
 cmake_minimum_required(VERSION 2.8.11)
 
+project(libgltf)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 enable_testing()
 set(CMAKE_INSTALL_PREFIX "install" CACHE STRING "prefix")
 
-project(libgltf)
-
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_DEBUG_POSTFIX "d")
-
-set(ROOT_PATH "${PROJECT_SOURCE_DIR}")
-set(HEADER_PATH "${ROOT_PATH}/include")
-set(SOURCE_PATH "${ROOT_PATH}/source")
-set(TOOLS_PATH "${ROOT_PATH}/tools")
-set(EXTERNAL_PATH "${ROOT_PATH}/external")
-if(NOT CUSTOM_OUT_PATH)
-    set(OUT_PATH "${ROOT_PATH}/output")
-else()
-    set(OUT_PATH ${CUSTOM_OUT_PATH})
-endif()
-set(OUT_BIN_PATH "${OUT_PATH}/bin/${PLATFORM_NAME}")
-set(OUT_LIB_PATH "${OUT_PATH}/lib/${PLATFORM_NAME}")
 
 # define the platform
 set(LIBGLTF_PLATFORM_WINDOWS    FALSE)
@@ -92,6 +79,19 @@ endif()
 if((NOT ${LIBGLTF_PLATFORM_WINDOWS}) AND (NOT ${LIBGLTF_PLATFORM_LINUX}) AND (NOT ${LIBGLTF_PLATFORM_ANDROID}) AND (NOT ${LIBGLTF_PLATFORM_MACOS}) AND (NOT ${LIBGLTF_PLATFORM_IOS}))
     message(FATAL_ERROR "Sorry, don't support your system ${CMAKE_SYSTEM_NAME}!")
 endif()
+
+set(ROOT_PATH "${PROJECT_SOURCE_DIR}")
+set(HEADER_PATH "${ROOT_PATH}/include")
+set(SOURCE_PATH "${ROOT_PATH}/source")
+set(TOOLS_PATH "${ROOT_PATH}/tools")
+set(EXTERNAL_PATH "${ROOT_PATH}/external")
+if(NOT CUSTOM_OUT_PATH)
+    set(OUT_PATH "${ROOT_PATH}/output")
+else()
+    set(OUT_PATH ${CUSTOM_OUT_PATH})
+endif()
+set(OUT_BIN_PATH "${OUT_PATH}/bin/${PLATFORM_NAME}")
+set(OUT_LIB_PATH "${OUT_PATH}/lib/${PLATFORM_NAME}")
 
 # supports more charactor encodings
 set(LIBGLTF_CHARACTOR_ENCODING UTF8 CACHE STRING "String code")
