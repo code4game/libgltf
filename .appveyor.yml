@@ -7,6 +7,8 @@ image:
 - Visual Studio 2015
 - Visual Studio 2017
 - Visual Studio 2019
+- Ubuntu2004
+- macOS-Mojave
 
 configuration:
 #- Debug
@@ -36,6 +38,8 @@ init:
 - if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_WIN64))
 - if "%PLATFORM%" equ "ARM" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_ARM))
 - if "%PLATFORM%" equ "Any CPU" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Visual Studio 2019" (set TARGET_VSENV=VS16_ANYCPU))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "Ubuntu2004" (set TARGET_VSENV=LINUX_UBUNTU))
+- if "%PLATFORM%" equ "x64" (if "%APPVEYOR_BUILD_WORKER_IMAGE%" equ "macOS-Mojave" (set TARGET_VSENV=MACOS_MOJAVE))
 
 install:
 - git submodule update --init
@@ -56,6 +60,8 @@ before_build:
 - if "%TARGET_VSENV%" equ "VS16_WIN64" cmake -G "Visual Studio 16 2019" -A "x64" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
 - if "%TARGET_VSENV%" equ "VS16_ARM" cmake -G "Visual Studio 16 2019" -A "ARM" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
 - if "%TARGET_VSENV%" equ "VS16_ANYCPU" cmake -G "Visual Studio 16 2019" -D CMAKE_CONFIGURATION_TYPES=%CONFIGURATION% -D CMAKE_CXX_COMPILER_ID=MSVC_16 ../
+- if "%TARGET_VSENV%" equ "LINUX_UBUNTU" cmake ../
+- if "%TARGET_VSENV%" equ "MACOS_MOJAVE" cmake ../
 - cd ..
 
 build_script:
@@ -71,10 +77,12 @@ build_script:
 - if "%TARGET_VSENV%" equ "VS16_WIN64" msbuild build/libgltf.sln /p:Platform="x64"
 - if "%TARGET_VSENV%" equ "VS16_ARM" msbuild build/libgltf.sln /p:Platform="ARM"
 - if "%TARGET_VSENV%" equ "VS16_ANYCPU" msbuild build/libgltf.sln /p:Platform="Any CPU"
+- if "%TARGET_VSENV%" equ "LINUX_UBUNTU" make
+- if "%TARGET_VSENV%" equ "MACOS_MOJAVE" make
 
 after_build:
-- if "%APPVEYOR_REPO_TAG%" equ "true" 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.windows.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
-- if "%APPVEYOR_REPO_TAG%" neq "true" 7z a libgltf.windows.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+- if "%APPVEYOR_REPO_TAG%" equ "true" 7z a libgltf.%APPVEYOR_REPO_TAG_NAME%.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
+- if "%APPVEYOR_REPO_TAG%" neq "true" 7z a libgltf.%PLATFORM%.zip %APPVEYOR_BUILD_FOLDER%\output\
 
 artifacts:
 - name: libgltf
