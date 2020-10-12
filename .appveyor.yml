@@ -16,7 +16,7 @@ platform:
 - x86
 - x64
 - ARM
-- Any CPU
+#- Any CPU
 
 branches:
   only:
