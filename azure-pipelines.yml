@@ -31,7 +31,7 @@ jobs:
       cd ../
     displayName: "Compile for macOS"
 
-- job: vs2019.x32
+- job: vs2019_x32
   pool:
     vmImage: 'windows-latest'
   steps:
@@ -48,7 +48,7 @@ jobs:
       cd ../
     displayName: "Compile for VS2019 Win32"
 
-- job: vs2019.x64
+- job: vs2019_x64
   pool:
     vmImage: 'windows-latest'
   steps:
