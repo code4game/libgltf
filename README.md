@@ -27,9 +27,10 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 * Load the gltf/embedded/glb file
 * This is a static library
 * Cross platform
-* Support the Unicode and UTF8
-* Support the [Google's Draco]
-* Support C++11
+* C++11
+* Supports the Unicode and UTF8
+* Supports the `KHR_draco_mesh_compression` - [Google's Draco]
+* Supports the `KHR_lights_punctual`
 
 ## Platforms
 
