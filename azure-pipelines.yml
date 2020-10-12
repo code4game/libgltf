@@ -1,7 +1,7 @@
 jobs:
 - job: Linux
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - script: |
       mkdir build
@@ -12,7 +12,7 @@ jobs:
 
 - job: macOS
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-latest'
   steps:
   - script: |
       mkdir build
