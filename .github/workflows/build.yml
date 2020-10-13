@@ -1,0 +1,104 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  linux:
+    name: 'for linux'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install dependencies'
+      run: |
+        sudo apt-get update
+        sudo apt-get install valgrind gcovr
+        sudo pip install wheel
+        sudo pip install cpp-coveralls
+    - uses: actions/checkout@v2
+    - name: 'build and make'
+      run: |
+        mkdir build
+        cd build
+        cmake ../
+        make libgltf
+        cd ..
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.linux
+        path: output/
+  macos:
+    name: 'for macos'
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'build and make'
+      run: |
+        mkdir build
+        cd build
+        cmake ../
+        make libgltf
+        cd ..
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.macos
+        path: output/
+  ios:
+    name: 'for ios'
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init --recursive
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        mkdir iphoneos && cd iphoneos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../externals/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        make libgltf
+        cd ..
+        mkdir watchos && cd watchos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../externals/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        make libgltf
+        cd ..
+        mkdir simulator && cd simulator
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../externals/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        make libgltf
+        cd ..
+        cd ..
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.ios
+        path: output/
+  windows:
+    name: 'for windows'
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'add msbuild'
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build/
+        mkdir win32 && cd win32/
+        cmake -G "Visual Studio 16 2019" -A "Win32" ../
+        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
+        cd ../
+        mkdir win64 && cd win64/
+        cmake -G "Visual Studio 16 2019" -A "x64" ../
+        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.windows
+        path: output/
