@@ -1,5 +1,5 @@
 add_subdirectory(libgltf)
 
-if (${LIBGLTF_PLATFORM_WINDOWS} OR ${LIBGLTF_PLATFORM_LINUX} OR ${LIBGLTF_PLATFORM_MACOS})
+if (${LIBGLTF_BUILD_RUNTEST})
     add_subdirectory(runtest)
 endif()

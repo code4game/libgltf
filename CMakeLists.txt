@@ -180,6 +180,8 @@ if(${LIBGLTF_BUILD_GCOV})
     endif()
 endif()
 
+set(LIBGLTF_BUILD_RUNTEST TRUE CACHE BOOL "Build runtest?")
+
 add_subdirectory(docs)
 add_subdirectory(source)
 add_subdirectory(tools)
