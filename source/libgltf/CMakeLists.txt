@@ -81,6 +81,9 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
         PRIVATE ${GOOGLE_DRACO_PATH_INCLUDE}
         PRIVATE ${GOOGLE_DRACO_PATH_BUILD})
     add_definitions(-DLIBGLTF_USE_GOOGLE_DRACO)
+    if(LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE)
+        add_dependencies(libgltf dracodec)
+    endif()
 endif()
 
 if(${LIBGLTF_PLATFORM_WINDOWS})
