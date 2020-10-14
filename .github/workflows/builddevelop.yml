@@ -29,14 +29,15 @@ jobs:
         cd ../
     - name: 'ready artifact'
       run: |
+        xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
+        dir .\
         dir build\
         dir build\win64\
         dir build\win64\draco\
+        dir build\win64\external\draco\Release\
         dir output\include\
-        xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
-        dir .\
+        dir output\include\draco\
         xcopy build\win64\draco\ output\include\draco\ /E/H/C/I/D/S/Y
-        xcopy build\win64\external\draco\Release\ output\lib\win64\Release\ /E/H/C/I/D/S/Y
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
