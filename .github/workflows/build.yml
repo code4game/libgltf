@@ -52,7 +52,33 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.armeabi-v7a.android
+        name: libgltf.android.api19.armeabi-v7a
+        path: output/
+  android_armeabi_v7a_with_neon:
+    name: 'for android armeabi-v7a-with-neon'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir armeabi-v7a-with-neon && cd armeabi-v7a-with-neon
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=ON -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.android.api19.armeabi-v7a-with-neon
         path: output/
   android_arm64_v8a:
     name: 'for android arm64-v8a'
@@ -78,7 +104,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.arm64-v8a.android
+        name: libgltf.android.api19.arm64-v8a
         path: output/
   android_x86:
     name: 'for android x86'
@@ -104,7 +130,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.x86.android
+        name: libgltf.android.api19.x86
         path: output/
   android_x86_64:
     name: 'for android x86_64'
@@ -130,7 +156,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.x86_64.android
+        name: libgltf.android.api19.x86_64
         path: output/
   macos:
     name: 'for macos'
@@ -174,7 +200,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.iphoneos.ios
+        name: libgltf.ios.iphoneos
         path: output/
   ios_watchos:
     name: 'for ios watchos'
@@ -197,7 +223,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.watchos.ios
+        name: libgltf.ios.watchos
         path: output/
   ios_simulator:
     name: 'for ios simulator'
@@ -220,7 +246,7 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.simulator.ios
+        name: libgltf.ios.simulator
         path: output/
   windows_win64:
     name: 'for windows win64'
@@ -270,5 +296,5 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.win32.windows
+        name: libgltf.windows.win32
         path: output/
