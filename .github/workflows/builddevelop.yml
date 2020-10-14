@@ -32,7 +32,7 @@ jobs:
         xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
         dir build\win64\draco\
         dir output\include\draco\
-        xcopy /D /S /Y build\win64\draco\ output\include\draco\
+        xcopy /D /S /Y "%CD%\build\win64\draco\*.h" "%CD%\output\include\draco\"
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
