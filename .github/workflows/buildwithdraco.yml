@@ -51,7 +51,7 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir armeabi-v7a && cd armeabi-v7a
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         ninja libgltf
         cd ../
         cd ../
@@ -83,7 +83,7 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir armeabi-v7a-with-neon && cd armeabi-v7a-with-neon
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=ON -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=TRUE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         ninja libgltf
         cd ../
         cd ../
@@ -115,7 +115,7 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir arm64-v8a && cd arm64-v8a
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         ninja libgltf
         cd ../
         cd ../
@@ -147,7 +147,7 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir x86 && cd x86
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         ninja libgltf
         cd ../
         cd ../
@@ -179,7 +179,7 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir x86_64 && cd x86_64
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         ninja libgltf
         cd ../
         cd ../
@@ -187,7 +187,7 @@ jobs:
       run: |
         rsync -a --include='*.h' -f 'hide,! */' build/x86_64/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp -a build/x86_64/external/draco/dracodec.a output/lib/android/x86/dracodec.a
+        cp -a build/x86_64/external/draco/dracodec.a output/lib/android/x86_64/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
