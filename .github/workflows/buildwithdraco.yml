@@ -80,7 +80,7 @@ jobs:
         cd ../
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         cp build/iphoneos/external/draco/dracodec.a output/lib/ios/os/dracodec.a
     - name: 'upload artifact'
