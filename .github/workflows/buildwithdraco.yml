@@ -25,8 +25,7 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        mkdir build
-        cd build
+        mkdir build && cd build
         cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
         make libgltf
         cd ..
@@ -51,22 +50,21 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        mkdir build
-        cd build
+        mkdir build && cd build
         cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
         make libgltf
         cd ..
     - name: 'ready artifact'
       run: |
-        cp -ar build/draco/ output/include/draco/
-        cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
+        cp -R build/draco/ output/include/draco/
+        cp build/external/draco/dracodec.a output/lib/macos/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.macos
         path: output/
-  ios:
-    name: 'for ios'
+  ios_iphoneos:
+    name: 'for ios iphoneos'
     runs-on: macos-latest
     steps:
     - name: 'checkout the project'
@@ -83,27 +81,17 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         make libgltf
         cd ..
-        mkdir watchos && cd watchos
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        make libgltf
-        cd ..
-        mkdir simulator && cd simulator
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        make libgltf
-        cd ..
         cd ..
     - name: 'ready artifact'
       run: |
-        cp -ar build/draco/ output/include/draco/
+        cp -ar build/iphoneos/draco/ output/include/draco/
         cp -a build/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
-        cp -a build/external/draco/dracodec.a output/lib/ios_WATCHOS/dracodec.a
-        cp -a build/external/draco/dracodec.a output/lib/ios_SIMULATOR/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.ios
+        name: libgltf.iphoneos.ios
         path: output/
-  win64:
+  windows_win64:
     name: 'for windows win64'
     runs-on: windows-latest
     steps:
@@ -120,48 +108,17 @@ jobs:
         mkdir build && cd build/
         mkdir win64 && cd win64/
         cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
+        msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="x64"
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         cd ../
         cd ../
     - name: 'ready artifact'
       run: |
-        xcopy build\draco\ output\include\draco\ /E/H/C/I
-        xcopy build\external\draco\Debug\ lib\win64\Debug\ /E/H/C/I
-        xcopy build\external\draco\Release\ lib\win64\Release\ /E/H/C/I
+        xcopy build\win64\draco\ output\include\draco\ /E/H/C/I
+        xcopy build\win64\external\draco\RelWithDebInfo\ lib\win64\RelWithDebInfo\ /E/H/C/I
+        xcopy build\win64\external\draco\Release\ lib\win64\Release\ /E/H/C/I
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.windows
-        path: output/
-  win32:
-    name: 'for windows win32'
-    runs-on: windows-latest
-    steps:
-    - name: 'checkout the project'
-      uses: actions/checkout@v2
-    - name: 'update submodules'
-      run: |
-        git submodule update --init external/rapidjson
-        git submodule update --init external/draco
-    - name: 'add msbuild'
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: 'build and make'
-      run: |
-        mkdir build && cd build/
-        mkdir win32 && cd win32/
-        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
-        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
-        cd ../
-        cd ../
-    - name: 'ready artifact'
-      run: |
-        xcopy build\draco\ output\include\draco\ /E/H/C/I
-        xcopy build\external\draco\Debug\ output\lib\win32\Debug\ /E/H/C/I
-        xcopy build\external\draco\Release\ output\lib\win32\Release\ /E/H/C/I
-    - name: 'upload artifact'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: libgltf.windows
+        name: libgltf.win64.windows
         path: output/

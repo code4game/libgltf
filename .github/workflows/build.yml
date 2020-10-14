@@ -55,8 +55,8 @@ jobs:
       with:
         name: libgltf.macos
         path: output/
-  ios:
-    name: 'for ios'
+  ios_iphoneos:
+    name: 'for ios iphoneos'
     runs-on: macos-latest
     steps:
     - name: 'checkout the project'
@@ -72,22 +72,14 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
         make libgltf
         cd ..
-        mkdir watchos && cd watchos
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
-        make libgltf
-        cd ..
-        mkdir simulator && cd simulator
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
-        make libgltf
-        cd ..
         cd ..
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.ios
+        name: libgltf.ios.iphoneos
         path: output/
-  windows:
-    name: 'for windows'
+  windows_win64:
+    name: 'for windows win64'
     runs-on: windows-latest
     steps:
     - name: 'checkout the project'
@@ -100,11 +92,6 @@ jobs:
     - name: 'build and make'
       run: |
         mkdir build && cd build/
-        mkdir win32 && cd win32/
-        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
-        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
-        cd ../
         mkdir win64 && cd win64/
         cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
         msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
@@ -114,5 +101,5 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.windows
+        name: libgltf.windows.win64
         path: output/
