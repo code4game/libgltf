@@ -94,7 +94,7 @@ endif()
 if(${LIBGLTF_PLATFORM_WINDOWS})
     add_custom_command(TARGET libgltf
         POST_BUILD
-        COMMAND xcopy ARGS "/D /S /Y \"${ROOT_PATH}/include\" \"${OUT_PATH}/include\\\""
+        COMMAND xcopy ARGS "/D /S /Y \"${ROOT_PATH}\\include\\*\" \"${OUT_PATH}\\include\\\""
         COMMENT "sync the head file"
         )
 else()
