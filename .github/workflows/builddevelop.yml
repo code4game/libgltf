@@ -2,63 +2,11 @@ name: 'build with draco'
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
-  linux:
-    name: 'for linux'
-    runs-on: ubuntu-latest
-    steps:
-    - name: 'checkout the project'
-      uses: actions/checkout@v2
-    - name: 'update submodules'
-      run: |
-        git submodule update --init external/rapidjson
-        git submodule update --init external/draco
-    - name: 'build and make'
-      run: |
-        mkdir build && cd build
-        cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
-        make libgltf
-        cd ..
-    - name: 'ready artifact'
-      run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
-    - name: 'upload artifact'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: libgltf.linux
-        path: output/
-  macos:
-    name: 'for macos'
-    runs-on: macos-latest
-    steps:
-    - name: 'checkout the project'
-      uses: actions/checkout@v2
-    - name: 'update submodules'
-      run: |
-        git submodule update --init external/rapidjson
-        git submodule update --init external/draco
-    - name: 'build and make'
-      run: |
-        mkdir build && cd build
-        cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
-        make libgltf
-        cd ..
-    - name: 'ready artifact'
-      run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/external/draco/dracodec.a output/lib/macos/dracodec.a
-    - name: 'upload artifact'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: libgltf.macos
-        path: output/
   ios_iphoneos:
     name: 'for ios iphoneos'
     runs-on: macos-latest
