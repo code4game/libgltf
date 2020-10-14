@@ -1,4 +1,4 @@
-name: 'build with draco'
+name: 'build develop'
 
 on:
   push:
