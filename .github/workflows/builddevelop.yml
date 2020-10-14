@@ -21,6 +21,7 @@ jobs:
     - name: 'test'
       run: |
         echo $ANDROID_NDK_HOME
+        ls -l $ANDROID_NDK_HOME
   windows:
     name: 'for windows'
     runs-on: windows-latest
