@@ -27,12 +27,9 @@ jobs:
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         cd ../
         cd ../
-    - name: 'ready artifact'
-      run: |
         xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
-        dir build\win64\draco\
-        dir output\include\draco\
-        xcopy /D /S /Y "%CD%\build\win64\draco\*.h" "%CD%\output\include\draco\"
+        xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
+        xcopy /D /S /Y build\win64\external\draco\Release\*.lib output\lib\win64\Release\
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
