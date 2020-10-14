@@ -20,8 +20,8 @@ jobs:
     - name: 'build and make'
       run: |
         mkdir build && cd build
-        cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
-        make libgltf
+        cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
+        make
         cd ..
     - name: 'ready artifact'
       run: |
@@ -51,8 +51,8 @@ jobs:
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         mkdir build && cd build
         mkdir armeabi-v7a && cd armeabi-v7a
-        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
-        ninja libgltf
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja
         cd ../
         cd ../
     - name: 'ready artifact'
@@ -78,8 +78,8 @@ jobs:
     - name: 'build and make'
       run: |
         mkdir build && cd build
-        cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
-        make libgltf
+        cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
+        make
         cd ..
     - name: 'ready artifact'
       run: |
@@ -106,8 +106,8 @@ jobs:
       run: |
         mkdir build && cd build
         mkdir iphoneos && cd iphoneos
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        make libgltf
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make
         cd ../
         cd ../
     - name: 'ready artifact'
@@ -134,16 +134,16 @@ jobs:
     - name: 'build and make'
       run: |
         mkdir build && cd build
-        mkdir iphoneos && cd iphoneos
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        make libgltf
+        mkdir watchos && cd watchos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make
         cd ../
         cd ../
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' build/watchos/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/watchos/dracodec.a
+        cp build/watchos/external/draco/dracodec.a output/lib/ios/watchos/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -164,15 +164,15 @@ jobs:
       run: |
         mkdir build && cd build
         mkdir simulator && cd simulator
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         make libgltf
         cd ../
         cd ../
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' build/simulator/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/simulator/dracodec.a
+        cp build/simulator/external/draco/dracodec.a output/lib/ios/simulator/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -234,9 +234,9 @@ jobs:
     - name: 'ready artifact'
       run: |
         xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
-        xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
-        xcopy /D /S /Y build\win64\external\draco\Release\dracodec.lib output\lib\win32\Release\
-        xcopy /D /S /Y build\win64\external\draco\RelWithDebInfo\dracodec.lib output\lib\win32\RelWithDebInfo\
+        xcopy /D /S /Y build\win32\draco\*.h output\include\draco\
+        xcopy /D /S /Y build\win32\external\draco\Release\dracodec.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win32\external\draco\RelWithDebInfo\dracodec.lib output\lib\win32\RelWithDebInfo\
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
