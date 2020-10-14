@@ -34,9 +34,7 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.linux
-        path: |
-          output/include/
-          output/lib/
+        path: output/
   macos:
     name: 'for macos'
     runs-on: macos-latest
@@ -58,9 +56,7 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.macos
-        path: |
-          output/include/
-          output/lib/
+        path: output/
   ios:
     name: 'for ios'
     runs-on: macos-latest
@@ -92,9 +88,7 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.ios
-        path: |
-          output/include/
-          output/lib/
+        path: output/
   windows:
     name: 'for windows'
     runs-on: windows-latest
@@ -125,5 +119,4 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.windows
-        path: |
-          output/
+        path: output/
