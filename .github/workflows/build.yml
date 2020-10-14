@@ -28,6 +28,110 @@ jobs:
       with:
         name: libgltf.linux
         path: output/
+  android_armeabi_v7a:
+    name: 'for android armeabi-v7a'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir armeabi-v7a && cd armeabi-v7a
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.armeabi-v7a.android
+        path: output/
+  android_arm64_v8a:
+    name: 'for android arm64-v8a'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir arm64-v8a && cd arm64-v8a
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.arm64-v8a.android
+        path: output/
+  android_x86:
+    name: 'for android x86'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir x86 && cd x86
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.x86.android
+        path: output/
+  android_x86_64:
+    name: 'for android x86_64'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir x86_64 && cd x86_64
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.x86_64.android
+        path: output/
   macos:
     name: 'for macos'
     runs-on: macos-latest
@@ -70,7 +174,53 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.ios.iphoneos
+        name: libgltf.iphoneos.ios
+        path: output/
+  ios_watchos:
+    name: 'for ios watchos'
+    runs-on: macos-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/ios-cmake
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        mkdir watchos && cd watchos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        make libgltf
+        cd ..
+        cd ..
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.watchos.ios
+        path: output/
+  ios_simulator:
+    name: 'for ios simulator'
+    runs-on: macos-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/ios-cmake
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        mkdir watchos && cd watchos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        make libgltf
+        cd ..
+        cd ..
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.simulator.ios
         path: output/
   windows_win64:
     name: 'for windows win64'
@@ -88,12 +238,37 @@ jobs:
         mkdir build && cd build/
         mkdir win64 && cd win64/
         cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
+        msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="x64"
         cd ../
         cd ../
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.windows.win64
+        path: output/
+  windows_win32:
+    name: 'for windows win32'
+    runs-on: windows-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+    - name: 'add msbuild'
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build/
+        mkdir win32 && cd win32/
+        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
+        msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="Win32"
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.win32.windows
         path: output/
