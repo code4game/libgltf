@@ -11,12 +11,6 @@ jobs:
     name: 'for linux'
     runs-on: ubuntu-latest
     steps:
-    - name: 'install dependencies'
-      run: |
-        sudo apt-get update
-        sudo apt-get install valgrind gcovr
-        sudo pip install wheel
-        sudo pip install cpp-coveralls
     - name: 'checkout the project'
       uses: actions/checkout@v2
     - name: 'update submodules'
@@ -80,12 +74,12 @@ jobs:
         mkdir iphoneos && cd iphoneos
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         make libgltf
-        cd ..
-        cd ..
+        cd ../
+        cd ../
     - name: 'ready artifact'
       run: |
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
+        cp build/iphoneos/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -115,6 +109,9 @@ jobs:
     - name: 'ready artifact'
       run: |
         xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
+        dir build\
+        dir build\win64\
+        dir build\win64\external\draco
         xcopy build\win64\draco\ output\include\draco\ /E/H/C/I/D/S/Y
         xcopy build\win64\external\draco\RelWithDebInfo\ output\lib\win64\RelWithDebInfo\ /E/H/C/I/D/S/Y
         xcopy build\win64\external\draco\Release\ output\lib\win64\Release\ /E/H/C/I/D/S/Y
