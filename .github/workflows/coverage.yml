@@ -26,7 +26,7 @@ jobs:
     - name: 'build and make'
       run: |
         mkdir build && cd build
-        cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE ../
+        cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
         make
         cd ../
     - name: 'run valgrind and gcovr'
@@ -51,4 +51,4 @@ jobs:
         gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
         gcovr --root=../source/ .
         cd ../
-        coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} --exclude ./external/ --exclude ./tools/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
+        coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} --exclude ./source/runtest/ --exclude ./tools/ --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
