@@ -31,7 +31,7 @@ jobs:
         cd ..
     - name: 'ready artifact'
       run: |
-        cp -ar build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
@@ -56,7 +56,7 @@ jobs:
         cd ..
     - name: 'ready artifact'
       run: |
-        cp -R build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         cp build/external/draco/dracodec.a output/lib/macos/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
@@ -84,8 +84,8 @@ jobs:
         cd ..
     - name: 'ready artifact'
       run: |
-        cp -ar build/iphoneos/draco/ output/include/draco/
-        cp -a build/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp build/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -114,6 +114,7 @@ jobs:
         cd ../
     - name: 'ready artifact'
       run: |
+        xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I
         xcopy build\win64\draco\ output\include\draco\ /E/H/C/I
         xcopy build\win64\external\draco\RelWithDebInfo\ lib\win64\RelWithDebInfo\ /E/H/C/I
         xcopy build\win64\external\draco\Release\ lib\win64\Release\ /E/H/C/I

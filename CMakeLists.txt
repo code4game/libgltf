@@ -138,10 +138,6 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
         set_target_properties(dracoenc PROPERTIES FOLDER externals/draco)
         set(GOOGLE_DRACO_PATH_INCLUDE ${EXTERNAL_PATH}/draco/src)
         set(GOOGLE_DRACO_PATH_BUILD ${CMAKE_BINARY_DIR})
-        set_target_properties(dracodec PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
-            LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-            )
     else()
         find_package(GoogleDraco)
         if(GOOGLEDRACO_FOUND)
