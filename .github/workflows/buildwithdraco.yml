@@ -89,7 +89,37 @@ jobs:
       with:
         name: libgltf.ios
         path: output/
-  windows:
+  win64:
+    name: 'for windows win64'
+    runs-on: windows-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+    - name: 'add msbuild'
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build/
+        mkdir win64 && cd win64/
+        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
+        cd ../
+        cd ../
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.windows
+        path: |
+          output/
+          build/draco/ => include/draco/
+          build/external/draco/Debug/ => lib/win64/Debug/
+          build/external/draco/Release/ => lib/win64/Release/
+  win32:
     name: 'for windows'
     runs-on: windows-latest
     steps:
@@ -109,14 +139,13 @@ jobs:
         msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
         cd ../
-        mkdir win64 && cd win64/
-        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
-        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
-        cd ../
         cd ../
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.windows
-        path: output/
+        path: |
+          output/
+          build/draco/ => include/draco/
+          build/external/draco/Debug/ => lib/win32/Debug/
+          build/external/draco/Release/ => lib/win32/Release/
