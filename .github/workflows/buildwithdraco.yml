@@ -30,6 +30,10 @@ jobs:
         cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
         make libgltf
         cd ..
+    - name: 'ready artifact'
+      run: |
+        cp -ar build/draco/ output/include/draco/
+        cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -52,6 +56,10 @@ jobs:
         cmake -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../
         make libgltf
         cd ..
+    - name: 'ready artifact'
+      run: |
+        cp -ar build/draco/ output/include/draco/
+        cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -84,6 +92,12 @@ jobs:
         make libgltf
         cd ..
         cd ..
+    - name: 'ready artifact'
+      run: |
+        cp -ar build/draco/ output/include/draco/
+        cp -a build/external/draco/dracodec.a output/lib/ios_OS/dracodec.a
+        cp -a build/external/draco/dracodec.a output/lib/ios_WATCHOS/dracodec.a
+        cp -a build/external/draco/dracodec.a output/lib/ios_SIMULATOR/dracodec.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -110,17 +124,18 @@ jobs:
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         cd ../
         cd ../
+    - name: 'ready artifact'
+      run: |
+        xcopy build\draco\ output\include\draco\ /E/H/C/I
+        xcopy build\external\draco\Debug\ lib\win64\Debug\ /E/H/C/I
+        xcopy build\external\draco\Release\ lib\win64\Release\ /E/H/C/I
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.windows
-        path: |
-          output/
-          build/draco/ => include/draco/
-          build/external/draco/Debug/ => lib/win64/Debug/
-          build/external/draco/Release/ => lib/win64/Release/
+        path: output/
   win32:
-    name: 'for windows'
+    name: 'for windows win32'
     runs-on: windows-latest
     steps:
     - name: 'checkout the project'
@@ -140,12 +155,13 @@ jobs:
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
         cd ../
         cd ../
+    - name: 'ready artifact'
+      run: |
+        xcopy build\draco\ output\include\draco\ /E/H/C/I
+        xcopy build\external\draco\Debug\ output\lib\win32\Debug\ /E/H/C/I
+        xcopy build\external\draco\Release\ output\lib\win32\Release\ /E/H/C/I
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: libgltf.windows
-        path: |
-          output/
-          build/draco/ => include/draco/
-          build/external/draco/Debug/ => lib/win32/Debug/
-          build/external/draco/Release/ => lib/win32/Release/
+        path: output/
