@@ -68,17 +68,18 @@ set(LIBRARY_OUTPUT_PATH ${OUT_LIB_PATH})
 
 add_library(libgltf STATIC ${CODE_FILE_LIST})
 
-set_target_properties(libgltf PROPERTIES FOLDER main)
-set_target_properties(libgltf PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUT_BIN_PATH})
-set_target_properties(libgltf PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUT_LIB_PATH})
+set_target_properties(libgltf PROPERTIES
+    FOLDER main
+    RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
+    LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
+    )
 
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}/libgltf
     ${SOURCE_FILE_PATH}
     ${EXTERNAL_PATH}/rapidjson/include
     )
-    target_include_directories(libgltf
-        PRIVATE ${INCLUDE_PATH_LIST})
+target_include_directories(libgltf PRIVATE ${INCLUDE_PATH_LIST})
 
 if(LIBGLTF_USE_GOOGLE_DRACO)
     target_include_directories(libgltf

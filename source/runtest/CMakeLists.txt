@@ -28,10 +28,12 @@ add_executable(runtest
     ${SOURCE_FILE_LIST}
     )
 
-set_target_properties(runtest PROPERTIES FOLDER main)
-set_target_properties(runtest PROPERTIES EXECUTABLE_OUTPUT_PATH ${OUT_BIN_PATH})
-set_target_properties(runtest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUT_BIN_PATH})
-set_target_properties(runtest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUT_LIB_PATH})
+set_target_properties(runtest PROPERTIES
+    FOLDER main
+    EXECUTABLE_OUTPUT_PATH ${OUT_BIN_PATH}
+    RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
+    LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
+    )
 
 if(${LIBGLTF_PLATFORM_WINDOWS})
     set(LIBRARY_PATH_LIST
