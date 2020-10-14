@@ -262,7 +262,7 @@ jobs:
       run: |
         mkdir build && cd build/
         mkdir win32 && cd win32/
-        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
+        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
         msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="Win32"
         cd ../
