@@ -28,6 +28,11 @@ add_executable(runtest
     ${SOURCE_FILE_LIST}
     )
 
+set_target_properties(runtest PROPERTIES FOLDER main)
+set_target_properties(runtest PROPERTIES EXECUTABLE_OUTPUT_PATH ${OUT_BIN_PATH})
+set_target_properties(runtest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUT_BIN_PATH})
+set_target_properties(runtest PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUT_LIB_PATH})
+
 if(${LIBGLTF_PLATFORM_WINDOWS})
     set(LIBRARY_PATH_LIST
         debug libgltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
@@ -57,11 +62,7 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
     target_link_libraries(runtest ${LIBRARY_PATH_LIST_GOOGLE_DRACO})
 endif()
 
-set(EXECUTABLE_OUTPUT_PATH ${OUT_BIN_PATH})
-
 set(DEPENDANCY_LIST
     libgltf
     )
 add_dependencies(runtest ${DEPENDANCY_LIST})
-
-set_target_properties(runtest PROPERTIES FOLDER main)

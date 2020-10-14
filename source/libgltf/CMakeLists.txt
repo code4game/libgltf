@@ -68,6 +68,10 @@ set(LIBRARY_OUTPUT_PATH ${OUT_LIB_PATH})
 
 add_library(libgltf STATIC ${CODE_FILE_LIST})
 
+set_target_properties(libgltf PROPERTIES FOLDER main)
+set_target_properties(libgltf PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUT_BIN_PATH})
+set_target_properties(libgltf PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUT_LIB_PATH})
+
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}/libgltf
     ${SOURCE_FILE_PATH}
@@ -99,7 +103,3 @@ else()
         COMMENT "sync the head file"
         )
 endif()
-
-set_target_properties(libgltf PROPERTIES FOLDER main)
-set_target_properties(libgltf PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUT_BIN_PATH})
-set_target_properties(libgltf PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUT_LIB_PATH})
