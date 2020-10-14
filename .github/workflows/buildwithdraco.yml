@@ -2,9 +2,9 @@ name: 'build with draco'
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   linux:
@@ -108,10 +108,10 @@ jobs:
         cd ../
     - name: 'ready artifact'
       run: |
+        cd
+        dir build\win64\draco\
+        dir output\include\
         xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
-        dir build\
-        dir build\win64\
-        dir build\win64\external\draco
         xcopy build\win64\draco\ output\include\draco\ /E/H/C/I/D/S/Y
         xcopy build\win64\external\draco\RelWithDebInfo\ output\lib\win64\RelWithDebInfo\ /E/H/C/I/D/S/Y
         xcopy build\win64\external\draco\Release\ output\lib\win64\Release\ /E/H/C/I/D/S/Y
