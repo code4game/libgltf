@@ -51,4 +51,4 @@ jobs:
         gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
         gcovr --root=../source/ .
         cd ../
-        coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} --exclude ./source/runtest/ --exclude ./tools/ --exclude ./external/ --exclude ./build/CMakeFiles/ --exclude ./build/draco/ --exclude ./build/*.cc --exclude ./output/ --gcov-options '\-lp'
+        coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} -e ./source/runtest/ -e ./tools/ --exclude ./external/ -e ./build/CMakeFiles/ -e ./build/draco/ -e ./build/draco_compression_attributes_pred_schemes_dec.cc -e ./build/draco_compression_mesh_traverser.cc -e ./build/draco_dec_config.cc -e ./build/draco_enc_config.cc -e ./output/ --gcov-options '\-lp'
