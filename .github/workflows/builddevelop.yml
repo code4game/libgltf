@@ -8,21 +8,21 @@ on:
 
 jobs:
   linux:
-    name: 'for android'
+    name: 'for linux'
     runs-on: ubuntu-latest
     steps:
     - name: 'test'
       run: |
-        echo %ANDROID_NDK_HOME%
+        echo $ANDROID_NDK_HOME
   macos:
-    name: 'for android'
+    name: 'for macos'
     runs-on: macos-latest
     steps:
     - name: 'test'
       run: |
-        echo %ANDROID_NDK_HOME%
+        echo $ANDROID_NDK_HOME
   windows:
-    name: 'for android'
+    name: 'for windows'
     runs-on: windows-latest
     steps:
     - name: 'test'
