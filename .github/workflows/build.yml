@@ -7,9 +7,51 @@ on:
     branches: [ master ]
 
 jobs:
+  coveralls:
+    name: 'for coveralls'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install dependencies'
+      run: |
+        sudo apt-get update
+        sudo apt-get install valgrind gcovr
+        sudo pip install wheel
+        sudo pip install cpp-coveralls
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_BUILD_GCOV=TRUE ../
+        make
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/nothing.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Binary/Monster.glb
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Draco/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Cameras/glTF/Cameras.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/Triangle/glTF/Triangle.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest --coveralls ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
+        gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
+        gcovr --root=../source/ .
+        cd ../
+        coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} --exclude ./external/ --exclude ./tools/ --exclude ./build/CMakeFiles/ --exclude ./output/include/ --gcov-options '\-lp'
   linux:
     name: 'for linux'
     runs-on: ubuntu-latest
+    needs: coveralls
     steps:
     - name: 'install dependencies'
       run: |
@@ -58,6 +100,7 @@ jobs:
   ios_iphoneos:
     name: 'for ios iphoneos'
     runs-on: macos-latest
+    needs: coveralls
     steps:
     - name: 'checkout the project'
       uses: actions/checkout@v2
@@ -81,6 +124,7 @@ jobs:
   windows_win64:
     name: 'for windows win64'
     runs-on: windows-latest
+    needs: coveralls
     steps:
     - name: 'checkout the project'
       uses: actions/checkout@v2

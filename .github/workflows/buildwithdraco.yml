@@ -114,10 +114,10 @@ jobs:
         cd ../
     - name: 'ready artifact'
       run: |
-        xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I
-        xcopy build\win64\draco\ output\include\draco\ /E/H/C/I
-        xcopy build\win64\external\draco\RelWithDebInfo\ lib\win64\RelWithDebInfo\ /E/H/C/I
-        xcopy build\win64\external\draco\Release\ lib\win64\Release\ /E/H/C/I
+        xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
+        xcopy build\win64\draco\ output\include\draco\ /E/H/C/I/D/S/Y
+        xcopy build\win64\external\draco\RelWithDebInfo\ output\lib\win64\RelWithDebInfo\ /E/H/C/I/D/S/Y
+        xcopy build\win64\external\draco\Release\ output\lib\win64\Release\ /E/H/C/I/D/S/Y
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
