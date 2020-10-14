@@ -7,35 +7,6 @@ on:
     branches: [ develop ]
 
 jobs:
-  ios_iphoneos:
-    name: 'for ios iphoneos'
-    runs-on: macos-latest
-    steps:
-    - name: 'checkout the project'
-      uses: actions/checkout@v2
-    - name: 'update submodules'
-      run: |
-        git submodule update --init external/rapidjson
-        git submodule update --init external/draco
-        git submodule update --init external/ios-cmake
-    - name: 'build and make'
-      run: |
-        mkdir build && cd build
-        mkdir iphoneos && cd iphoneos
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        make libgltf
-        cd ../
-        cd ../
-    - name: 'ready artifact'
-      run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/os/dracodec.a
-    - name: 'upload artifact'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: libgltf.iphoneos.ios
-        path: output/
   windows_win64:
     name: 'for windows win64'
     runs-on: windows-latest
@@ -53,7 +24,6 @@ jobs:
         mkdir build && cd build/
         mkdir win64 && cd win64/
         cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="x64"
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         cd ../
         cd ../
@@ -64,8 +34,8 @@ jobs:
         dir build\win64\draco\
         dir output\include\
         xcopy external\draco\src\draco\*.h output\include\draco\ /E/H/C/I/D/S/Y
+        dir .\
         xcopy build\win64\draco\ output\include\draco\ /E/H/C/I/D/S/Y
-        xcopy build\win64\external\draco\RelWithDebInfo\ output\lib\win64\RelWithDebInfo\ /E/H/C/I/D/S/Y
         xcopy build\win64\external\draco\Release\ output\lib\win64\Release\ /E/H/C/I/D/S/Y
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
