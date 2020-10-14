@@ -33,6 +33,38 @@ jobs:
       with:
         name: libgltf.linux
         path: output/
+  android_armeabi_v7a:
+    name: 'for android armeabi-v7a'
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'install'
+      run: |
+        sudo apt-get install ninja-build
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+    - name: 'build and make'
+      run: |
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
+        mkdir build && cd build
+        mkdir armeabi-v7a && cd armeabi-v7a
+        cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_CHARACTOR_ENCODING=UTF8 ../../
+        ninja libgltf
+        cd ../
+        cd ../
+    - name: 'ready artifact'
+      run: |
+        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp -a build/external/draco/dracodec.a output/lib/android/armeabi-v7a/dracodec.a
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.android.api19.armeabi-v7a
+        path: output/
   macos:
     name: 'for macos'
     runs-on: macos-latest
@@ -86,7 +118,65 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.iphoneos.ios
+        name: libgltf.ios.iphoneos
+        path: output/
+  ios_watchos:
+    name: 'for ios watchos'
+    runs-on: macos-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+        git submodule update --init external/ios-cmake
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        mkdir iphoneos && cd iphoneos
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make libgltf
+        cd ../
+        cd ../
+    - name: 'ready artifact'
+      run: |
+        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/watchos/dracodec.a
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.ios.watchos
+        path: output/
+  ios_simulator:
+    name: 'for ios simulator'
+    runs-on: macos-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+        git submodule update --init external/ios-cmake
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build
+        mkdir simulator && cd simulator
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make libgltf
+        cd ../
+        cd ../
+    - name: 'ready artifact'
+      run: |
+        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/simulator/dracodec.a
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.ios.watchos
         path: output/
   windows_win64:
     name: 'for windows win64'
@@ -118,5 +208,37 @@ jobs:
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: libgltf.win64.windows
+        name: libgltf.windows.win64
+        path: output/
+  windows_win32:
+    name: 'for windows win32'
+    runs-on: windows-latest
+    steps:
+    - name: 'checkout the project'
+      uses: actions/checkout@v2
+    - name: 'update submodules'
+      run: |
+        git submodule update --init external/rapidjson
+        git submodule update --init external/draco
+    - name: 'add msbuild'
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: 'build and make'
+      run: |
+        mkdir build && cd build/
+        mkdir win32 && cd win32/
+        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
+        msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="Win32"
+        cd ../
+        cd ../
+    - name: 'ready artifact'
+      run: |
+        xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
+        xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
+        xcopy /D /S /Y build\win64\external\draco\Release\dracodec.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win64\external\draco\RelWithDebInfo\dracodec.lib output\lib\win32\RelWithDebInfo\
+    - name: 'upload artifact'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: libgltf.windows.win32
         path: output/
