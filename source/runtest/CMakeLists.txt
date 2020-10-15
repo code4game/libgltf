@@ -52,6 +52,7 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
     if(LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE)
         set(LIBRARY_PATH_LIST_GOOGLE_DRACO
             dracodec
+            dracoenc
             )
     else()
         set(LIBRARY_PATH_LIST_GOOGLE_DRACO

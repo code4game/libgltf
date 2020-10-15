@@ -39,12 +39,12 @@ jobs:
       run: |
         mkdir build && cd build/
         mkdir win64 && cd win64/
-        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Visual Studio 16 2019" -A "x64" -LIBGLTF_BUILD_MSVC_WITH_MT=TRUE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="x64"
         cd ../
         mkdir win32 && cd win32/
-        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        cmake -G "Visual Studio 16 2019" -A "Win32" -LIBGLTF_BUILD_MSVC_WITH_MT=TRUE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
         msbuild libgltf.sln /t:Build /p:Configuration="RelWithDebInfo" /p:Platform="Win32"
         cd ../
@@ -54,9 +54,13 @@ jobs:
         xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
         xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
         xcopy /D /S /Y build\win64\external\draco\Release\dracodec.lib output\lib\win64\Release\
+        xcopy /D /S /Y build\win64\external\draco\Release\dracoenc.lib output\lib\win64\Release\
         xcopy /D /S /Y build\win64\external\draco\RelWithDebInfo\dracodec.lib output\lib\win64\RelWithDebInfo\
+        xcopy /D /S /Y build\win64\external\draco\RelWithDebInfo\dracoenc.lib output\lib\win64\RelWithDebInfo\
         xcopy /D /S /Y build\win32\external\draco\Release\dracodec.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win32\external\draco\Release\dracoenc.lib output\lib\win32\Release\
         xcopy /D /S /Y build\win32\external\draco\RelWithDebInfo\dracodec.lib output\lib\win32\RelWithDebInfo\
+        xcopy /D /S /Y build\win32\external\draco\RelWithDebInfo\dracoenc.lib output\lib\win32\RelWithDebInfo\
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -85,6 +89,7 @@ jobs:
         rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
+        cp -a build/external/draco/dracoenc.a output/lib/linux/dracoenc.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -113,6 +118,7 @@ jobs:
         rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         cp build/external/draco/dracodec.a output/lib/macos/dracodec.a
+        cp build/external/draco/dracoenc.a output/lib/macos/dracoenc.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -163,10 +169,15 @@ jobs:
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a/draco/ output/include/draco/
         cp -a build/armeabi-v7a/external/draco/dracodec.a output/lib/android/armeabi-v7a/dracodec.a
+        cp -a build/armeabi-v7a/external/draco/dracoenc.a output/lib/android/armeabi-v7a/dracoenc.a
         cp -a build/armeabi-v7a-with-neon/external/draco/dracodec.a output/lib/android/armeabi-v7a-with-neon/dracodec.a
+        cp -a build/armeabi-v7a-with-neon/external/draco/dracoenc.a output/lib/android/armeabi-v7a-with-neon/dracoenc.a
         cp -a build/arm64-v8a/external/draco/dracodec.a output/lib/android/arm64-v8a/dracodec.a
+        cp -a build/arm64-v8a/external/draco/dracoenc.a output/lib/android/arm64-v8a/dracoenc.a
         cp -a build/x86/external/draco/dracodec.a output/lib/android/x86/dracodec.a
+        cp -a build/x86/external/draco/dracoenc.a output/lib/android/x86/dracoenc.a
         cp -a build/x86_64/external/draco/dracodec.a output/lib/android/x86_64/dracodec.a
+        cp -a build/x86_64/external/draco/dracoenc.a output/lib/android/x86_64/dracoenc.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -206,8 +217,11 @@ jobs:
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
         cp build/iphoneos/external/draco/dracodec.a output/lib/ios/os/dracodec.a
+        cp build/iphoneos/external/draco/dracoenc.a output/lib/ios/os/dracoenc.a
         cp build/watchos/external/draco/dracodec.a output/lib/ios/watchos/dracodec.a
+        cp build/watchos/external/draco/dracoenc.a output/lib/ios/watchos/dracoenc.a
         cp build/simulator/external/draco/dracodec.a output/lib/ios/simulator/dracodec.a
+        cp build/simulator/external/draco/dracoenc.a output/lib/ios/simulator/dracoenc.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -226,7 +240,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: '${{ github.ref }}'
         release_name: 'Release v${{ github.ref }}'

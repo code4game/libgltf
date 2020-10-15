@@ -16,7 +16,47 @@ set(LIBGLTF_PLATFORM_MACOS      FALSE)
 set(LIBGLTF_PLATFORM_ANDROID    FALSE)
 set(LIBGLTF_PLATFORM_IOS        FALSE CACHE BOOL "Build for iOS?")
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)
+    option(LIBGLTF_BUILD_MSVC_WITH_MT "Build MSVC with 'MultiThreading'." OFF)
+    if(${LIBGLTF_BUILD_MSVC_WITH_MT})
+        foreach(flags
+                CMAKE_CXX_FLAGS
+                CMAKE_CXX_FLAGS_DEBUG
+                CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_CXX_FLAGS_MINSIZEREL
+                CMAKE_CXX_FLAGS_RELWITHDEBINFO
+                CMAKE_C_FLAGS
+                CMAKE_C_FLAGS_DEBUG
+                CMAKE_C_FLAGS_RELEASE
+                CMAKE_C_FLAGS_MINSIZEREL
+                CMAKE_C_FLAGS_RELWITHDEBINFO)
+		    if(${flags} MATCHES "/MD")
+			    string(REGEX REPLACE "/MD" "/MT" ${flags} "${${flags}}")
+		    endif()
+		    if(${flags} MATCHES "/MDd")
+			    string(REGEX REPLACE "/MDd" "/MTd" ${flags} "${${flags}}")
+		    endif()
+        endforeach()
+    else()
+        foreach(flags
+                CMAKE_CXX_FLAGS
+                CMAKE_CXX_FLAGS_DEBUG
+                CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_CXX_FLAGS_MINSIZEREL
+                CMAKE_CXX_FLAGS_RELWITHDEBINFO
+                CMAKE_C_FLAGS
+                CMAKE_C_FLAGS_DEBUG
+                CMAKE_C_FLAGS_RELEASE
+                CMAKE_C_FLAGS_MINSIZEREL
+                CMAKE_C_FLAGS_RELWITHDEBINFO)
+		    if(${flags} MATCHES "/MT")
+			    string(REGEX REPLACE "/MT" "/MD" ${flags} "${${flags}}")
+		    endif()
+		    if(${flags} MATCHES "/MTd")
+			    string(REGEX REPLACE "/MTd" "/MDd" ${flags} "${${flags}}")
+		    endif()
+        endforeach()
+    endif()
     set(LIBGLTF_PLATFORM_WINDOWS TRUE)
     add_definitions(-DLIBGLTF_PLATFORM_WINDOWS)
     set(DYNAMIC_LIBRARY_EXTENSION ".dll")
