@@ -24,7 +24,7 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 * Cross platform
 * C++11
 * Supports the Unicode and UTF8
-* Supports some extension:
+* Supports some extensions
   * `KHR_draco_mesh_compression` - [Google's Draco]
   * `KHR_lights_punctual`
   * `KHR_materials_pbrSpecularGlossiness`
