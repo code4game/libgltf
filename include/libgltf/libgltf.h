@@ -33,7 +33,7 @@
 
 #define LIBGLTF_MAJOR_VERSION    0
 #define LIBGLTF_MINOR_VERSION    1
-#define LIBGLTF_PATCH_VERSION    6
+#define LIBGLTF_PATCH_VERSION    7
 
 namespace libgltf
 {

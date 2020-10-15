@@ -1,9 +1,13 @@
 # Change Log
 
-## 0.1.6 (2020/10/15)
+## 0.1.7 (2020/10/15)
 
 * Supports the `KHR_lights_punctual`
 * Compile by github action
+
+## 0.1.6
+
+* Fix some bugs
 
 ## 0.1.5
 
