@@ -28,6 +28,7 @@ Features
    * `KHR_lights_punctual`
    * `KHR_materials_pbrSpecularGlossiness`
    * `KHR_materials_clearcoat`
+   * ...
 * Platforms
    * Windows (Win32 and x64)
    * Linux
