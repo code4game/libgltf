@@ -4,7 +4,7 @@ on:
   push:
     tags: [ '*' ]
     paths-ignore:
-    - '.github/**'
+    - '!.github/release.yml'
     - 'docs/**'
     - '*.md'
     - 'LICENSE'

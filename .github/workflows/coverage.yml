@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-    - '.github/**'
+    - '!.github/coverage.yml'
     - 'docs/**'
     - '*.md'
     - 'LICENSE'
