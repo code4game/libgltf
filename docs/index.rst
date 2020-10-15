@@ -23,8 +23,12 @@ Features
 * Cross platform
 * C++11
 * Supports the Unicode and UTF8
-* Supports the `KHR_draco_mesh_compression` - `Google's Draco`_
-* Supports the `KHR_lights_punctual`
+* Supports some extension:
+   * `KHR_draco_mesh_compression` - `Google's Draco`_
+   * `KHR_lights_punctual`
+   * `KHR_materials_pbrSpecularGlossiness`
+   * `KHR_materials_clearcoat`
+   * ...
 * Platforms
   * Windows (Win32 and x64)
   * Linux

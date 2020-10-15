@@ -24,14 +24,18 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 * Cross platform
 * C++11
 * Supports the Unicode and UTF8
-* Supports the `KHR_draco_mesh_compression` - [Google's Draco]
-* Supports the `KHR_lights_punctual`
+* Supports some extension:
+  * `KHR_draco_mesh_compression` - [Google's Draco]
+  * `KHR_lights_punctual`
+  * `KHR_materials_pbrSpecularGlossiness`
+  * `KHR_materials_clearcoat`
+  * ...
 * Platforms
   * Windows (Win32 and x64)
   * Linux
   * macOS
   * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
-  * iOS (simulator, iOS, tvOS and watchOS)
+  * iOS (iOS, watchOS and simulator)
 
 ## Getting Started
 
