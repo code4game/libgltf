@@ -29,7 +29,7 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
   * `KHR_lights_punctual`
   * `KHR_materials_pbrSpecularGlossiness`
   * `KHR_materials_clearcoat`
-  * ...
+  * more...
 * Platforms
   * Windows (Win32 and x64)
   * Linux

@@ -28,13 +28,13 @@ Features
    * `KHR_lights_punctual`
    * `KHR_materials_pbrSpecularGlossiness`
    * `KHR_materials_clearcoat`
-   * ...
+   * more...
 * Platforms
    * Windows (Win32 and x64)
    * Linux
    * macOS
    * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
-   * iOS (simulator, iOS, tvOS and watchOS)
+   * iOS (iOS, watchOS and simulator)
 
 Getting Started
 ===============
