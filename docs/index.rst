@@ -23,18 +23,17 @@ Features
 * Cross platform
 * C++11
 * Supports the Unicode and UTF8
-* Supports some extension:
+* Supports some extensions
    * `KHR_draco_mesh_compression` - `Google's Draco`_
    * `KHR_lights_punctual`
    * `KHR_materials_pbrSpecularGlossiness`
    * `KHR_materials_clearcoat`
-   * ...
 * Platforms
-  * Windows (Win32 and x64)
-  * Linux
-  * macOS
-  * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
-  * iOS (simulator, iOS, tvOS and watchOS)
+   * Windows (Win32 and x64)
+   * Linux
+   * macOS
+   * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
+   * iOS (simulator, iOS, tvOS and watchOS)
 
 Getting Started
 ===============
