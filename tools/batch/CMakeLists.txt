@@ -18,9 +18,10 @@ set(TOOLS_BATCH_FILE_LIST_CODES
     )
 
 set(TOOLS_BUILD_FILE_LIST_CONFIG
-    ${ROOT_PATH}/.gitlab-ci.yml
     ${ROOT_PATH}/.github/FUNDING.yml
+    ${ROOT_PATH}/.github/workflows/coverage.yml
     ${ROOT_PATH}/.github/workflows/build.yml
+    ${ROOT_PATH}/.github/workflows/builddevelop.yml
     )
 
 source_group("scripts" FILES ${TOOLS_BATCH_FILE_LIST_SCRIPTS})
