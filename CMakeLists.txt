@@ -17,7 +17,7 @@ set(LIBGLTF_PLATFORM_ANDROID    FALSE)
 set(LIBGLTF_PLATFORM_IOS        FALSE CACHE BOOL "Build for iOS?")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)
-    option(LIBGLTF_BUILD_MSVC_WITH_MT "Build MSVC with 'MultiThreading'." OFF)
+    set(LIBGLTF_BUILD_MSVC_WITH_MT OFF CACHE BOOL "Build MSVC with 'MultiThreading?")
     if(${LIBGLTF_BUILD_MSVC_WITH_MT})
         foreach(flags
                 CMAKE_CXX_FLAGS
