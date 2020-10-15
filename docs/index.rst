@@ -21,15 +21,16 @@ Features
 * Load the gltf/embedded/glb file
 * This is a static library
 * Cross platform
-* Support the Unicode and UTF8
-* Support the `Google's Draco`_
-* Support C++11
+* C++11
+* Supports the Unicode and UTF8
+* Supports the `KHR_draco_mesh_compression` - `Google's Draco`_
+* Supports the `KHR_lights_punctual`
 * Platforms
-   * Windows (Win32 and x64)
-   * Linux
-   * macOS
-   * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
-   * iOS (simulator, iOS, tvOS and watchOS)
+  * Windows (Win32 and x64)
+  * Linux
+  * macOS
+  * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
+  * iOS (simulator, iOS, tvOS and watchOS)
 
 Getting Started
 ===============
