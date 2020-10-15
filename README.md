@@ -29,13 +29,23 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
   * `KHR_lights_punctual`
   * `KHR_materials_pbrSpecularGlossiness`
   * `KHR_materials_clearcoat`
-  * more...
+  * and more
 * Platforms
-  * Windows (Win32 and x64)
-  * Linux
-  * macOS
-  * Android (armeabi-v7a, armeabi-v7a-with-neon, arm64-v8a, x86 and x86_64)
-  * iOS (iOS, watchOS and simulator)
+  * Windows
+    * Win32 (win32)
+    * x64 (win64)
+  * Linux (linux)
+  * macOS (macos)
+  * Android
+    * armeabi-v7a
+    * armeabi-v7a-with-neon
+    * arm64-v8a
+    * x86
+    * x86_64
+  * iOS
+    * iOS (iphoneos)
+    * watchOS (watchos)
+    * simulator
 
 ## Getting Started
 
@@ -52,7 +62,7 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 Code example:
 
 ```cpp
-std::shared_ptr<libgltf::IGlTFLoader> gltf_loader = libgltf::IGlTFLoader::Create(/*your gltf file*/);
+std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(/*your gltf file*/);
 std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
 if (!loaded_gltf)
 {
