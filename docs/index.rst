@@ -172,6 +172,9 @@ Download the compiled library
 
 This project is compiled by github action, and you can download the compiled library with `Google's Draco`_ from `the action page`_ or `the release page`_.
 
+Note:
+   In `the action page`_ or `the release page`_, libraries was compiled with `MultiThreading` (/MT or /MTd) for **windows**.
+
 Donation
 ==============================================================
 
