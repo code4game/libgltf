@@ -215,10 +215,14 @@ jobs:
         mkdir build && cd build
         mkdir iphoneos && cd iphoneos
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make dracodec
+        make dracoenc
         make libgltf
         cd ../
         mkdir watchos && cd watchos
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        make dracodec
+        make dracoenc
         make libgltf
         cd ../
         mkdir simulator && cd simulator
