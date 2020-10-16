@@ -125,44 +125,46 @@ namespace libgltf
             std::map<size_t, SDracoPointAttribute>::iterator found_point_iterator = found_draco_mesh->pointAttributes.find(_pGoogleDracoStream->GetAttributeID());
             if (found_point_iterator == found_draco_mesh->pointAttributes.end())
             {
-                const draco::PointAttribute* point_attribute = draco_mesh->GetAttributeByUniqueId(static_cast<uint32_t>(_pGoogleDracoStream->GetAttributeID()));
-                const int8_t components_num = point_attribute->num_components();
-                const size_t map_size = point_attribute->indices_map_size();
-                if (point_attribute || components_num > 0)
+                if (const draco::PointAttribute* point_attribute = draco_mesh->GetAttributeByUniqueId(static_cast<uint32_t>(_pGoogleDracoStream->GetAttributeID())))
                 {
-                    SDracoPointAttribute draco_point_attribute;
-                    SAccessorData& accessor_data = draco_point_attribute.accessorData;
-                    accessor_data.componentType = EAccessorComponentType::FLOAT;
-                    accessor_data.count = map_size;
-                    switch (components_num)
+                    const int8_t components_num = point_attribute ? point_attribute->num_components() : 0;
+                    if (components_num > 0)
                     {
-                    case 1:
-                        accessor_data.type = EAccessorType::SCALAR;
-                        break;
+                        const size_t map_size = point_attribute->indices_map_size();
+                        SDracoPointAttribute draco_point_attribute;
+                        SAccessorData& accessor_data = draco_point_attribute.accessorData;
+                        accessor_data.componentType = EAccessorComponentType::FLOAT;
+                        accessor_data.count = map_size;
+                        switch (components_num)
+                        {
+                        case 1:
+                            accessor_data.type = EAccessorType::SCALAR;
+                            break;
 
-                    case 2:
-                        accessor_data.type = EAccessorType::VEC2;
-                        break;
+                        case 2:
+                            accessor_data.type = EAccessorType::VEC2;
+                            break;
 
-                    case 3:
-                        accessor_data.type = EAccessorType::VEC3;
-                        break;
+                        case 3:
+                            accessor_data.type = EAccessorType::VEC3;
+                            break;
 
-                    case 4:
-                        accessor_data.type = EAccessorType::VEC4;
-                        break;
+                        case 4:
+                            accessor_data.type = EAccessorType::VEC4;
+                            break;
 
-                    default:
-                        return false;
+                        default:
+                            return false;
+                        }
+                        const size_t sizeof_data = SizeOfAccessor(accessor_data.componentType, 1, accessor_data.type);
+                        draco_point_attribute.buffer.resize(sizeof_data * accessor_data.count);
+                        //TODO: size_t to uint32_t
+                        for (draco::PointIndex i(0); i < static_cast<uint32_t>(accessor_data.count); ++i)
+                        {
+                            point_attribute->GetMappedValue(i, draco_point_attribute.buffer.data() + sizeof_data * i.value());
+                        }
+                        found_point_iterator = found_draco_mesh->pointAttributes.insert(std::make_pair(_pGoogleDracoStream->GetAttributeID(), draco_point_attribute)).first;
                     }
-                    const size_t sizeof_data = SizeOfAccessor(accessor_data.componentType, 1, accessor_data.type);
-                    draco_point_attribute.buffer.resize(sizeof_data * accessor_data.count);
-                    //TODO: size_t to uint32_t
-                    for (draco::PointIndex i(0); i < static_cast<uint32_t>(accessor_data.count); ++i)
-                    {
-                        point_attribute->GetMappedValue(i, draco_point_attribute.buffer.data() + sizeof_data * i.value());
-                    }
-                    found_point_iterator = found_draco_mesh->pointAttributes.insert(std::make_pair(_pGoogleDracoStream->GetAttributeID(), draco_point_attribute)).first;
                 }
             }
             if (found_point_iterator == found_draco_mesh->pointAttributes.end())
