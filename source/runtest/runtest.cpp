@@ -178,7 +178,7 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
     gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("texcoord_0"), texcoord_0_stream);
 
-#if defined(LIBGLTF_BUILD_COVERAGE_GCOV)
+#if defined(LIBGLTF_BUILD_COVERAGE)
     const std::string obj_file_path =
 #if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
         libgltf::UNICODEToUTF8(input_file_path + GLTFTEXT(".obj"));
