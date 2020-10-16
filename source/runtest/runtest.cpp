@@ -178,6 +178,16 @@ int main(int _iArgc, char* _pcArgv[])
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
     gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("texcoord_0"), texcoord_0_stream);
 
+#if defined(LIBGLTF_BUILD_COVERAGE_GCOV)
+    const std::string obj_file_path =
+#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
+        libgltf::UNICODEToUTF8(input_file_path + GLTFTEXT(".obj"));
+#else
+        input_file_path + GLTFTEXT(".obj");
+#endif
+    SaveAsOBJ(obj_file_path, triangle_data, position_data, texcoord_0_data, normal_data);
+#endif
+
     //TODO: just convert to json, save the mesh or image data to file in future
     libgltf::string_t output_content;
     if (loaded_gltf >> output_content)

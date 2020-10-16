@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.15)
 
 project(libgltf)
 
@@ -14,48 +14,14 @@ set(LIBGLTF_PLATFORM_WINDOWS    FALSE)
 set(LIBGLTF_PLATFORM_LINUX      FALSE)
 set(LIBGLTF_PLATFORM_MACOS      FALSE)
 set(LIBGLTF_PLATFORM_ANDROID    FALSE)
-set(LIBGLTF_PLATFORM_IOS        FALSE CACHE BOOL "Build for iOS?")
+set(LIBGLTF_PLATFORM_IOS        FALSE CACHE BOOL "Build for iOS? Just for macOS")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)
-    set(LIBGLTF_BUILD_MSVC_WITH_MT OFF CACHE BOOL "Build MSVC with 'MultiThreading?")
+    set(LIBGLTF_BUILD_MSVC_WITH_MT OFF CACHE BOOL "Build MSVC with 'MultiThreading(MT)' or 'MultiThreadingDLL(MD)'?")
     if(${LIBGLTF_BUILD_MSVC_WITH_MT})
-        foreach(flags
-                CMAKE_CXX_FLAGS
-                CMAKE_CXX_FLAGS_DEBUG
-                CMAKE_CXX_FLAGS_RELEASE
-                CMAKE_CXX_FLAGS_MINSIZEREL
-                CMAKE_CXX_FLAGS_RELWITHDEBINFO
-                CMAKE_C_FLAGS
-                CMAKE_C_FLAGS_DEBUG
-                CMAKE_C_FLAGS_RELEASE
-                CMAKE_C_FLAGS_MINSIZEREL
-                CMAKE_C_FLAGS_RELWITHDEBINFO)
-		    if(${flags} MATCHES "/MD")
-			    string(REGEX REPLACE "/MD" "/MT" ${flags} "${${flags}}")
-		    endif()
-		    if(${flags} MATCHES "/MDd")
-			    string(REGEX REPLACE "/MDd" "/MTd" ${flags} "${${flags}}")
-		    endif()
-        endforeach()
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     else()
-        foreach(flags
-                CMAKE_CXX_FLAGS
-                CMAKE_CXX_FLAGS_DEBUG
-                CMAKE_CXX_FLAGS_RELEASE
-                CMAKE_CXX_FLAGS_MINSIZEREL
-                CMAKE_CXX_FLAGS_RELWITHDEBINFO
-                CMAKE_C_FLAGS
-                CMAKE_C_FLAGS_DEBUG
-                CMAKE_C_FLAGS_RELEASE
-                CMAKE_C_FLAGS_MINSIZEREL
-                CMAKE_C_FLAGS_RELWITHDEBINFO)
-		    if(${flags} MATCHES "/MT")
-			    string(REGEX REPLACE "/MT" "/MD" ${flags} "${${flags}}")
-		    endif()
-		    if(${flags} MATCHES "/MTd")
-			    string(REGEX REPLACE "/MTd" "/MDd" ${flags} "${${flags}}")
-		    endif()
-        endforeach()
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
     endif()
     set(LIBGLTF_PLATFORM_WINDOWS TRUE)
     add_definitions(-DLIBGLTF_PLATFORM_WINDOWS)
@@ -78,11 +44,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -Wno-long-long -pedantic")
     set(CMAKE_STATIC_LIBRARY_PREFIX "")
     set(CMAKE_SHARED_LIBRARY_PREFIX "")
+    set(LIBGLTF_COVERAGE_GCOV OFF CACHE BOOL "Coverage gcov (debug, Linux builds only)")
     if(LIBGLTF_COVERAGE_GCOV)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage -fPIC")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -fPIC")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -lgcov")
-        add_definitions(-DBUILD_COVERALLS)
+        add_definitions(-DLIBGLTF_BUILD_COVERAGE_GCOV)
     endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
     set(LIBGLTF_PLATFORM_ANDROID TRUE)
@@ -186,10 +153,6 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
             message(FATAL_ERROR "Not found Google's Draco: Not support the extension `KHR_draco_mesh_compression` to compress the mesh data by draco")
         endif()
     endif()
-endif()
-
-if(LIBGLTF_PLATFORM_LINUX)
-    set(LIBGLTF_COVERAGE_GCOV OFF CACHE BOOL "Coverage gcov (debug, Linux builds only)")
 endif()
 
 if((CMAKE_COMPILER_IS_GNUCC STREQUAL "1") OR (CMAKE_COMPILER_IS_GNUCXX STREQUAL "1"))

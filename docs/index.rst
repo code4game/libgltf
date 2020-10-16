@@ -49,26 +49,20 @@ Features
 Getting Started
 ===============
 
-1. Update the submodule
+#. Update the submodule
 
-   ..
+   Run :code:`git submodule update --init`
 
-      Run :code:`git submodule update --init`
+#. Generate the project by [CMake]
 
-2. Generate the project by [CMake]
+   Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
 
-   ..
+#. Build the project and generate the the static library `libgltf.lib` or `libgltf.a`
+#. Include `libgltf/libgltf.h` in your project.
+#. Link the static library `libgltf.lib` or `libgltf.a` in your project.
 
-      Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
-
-3. Build the project and generate the the static library `libgltf.lib` or `libgltf.a`
-4. Include `libgltf/libgltf.h` in your project.
-5. Link the static library `libgltf.lib` or `libgltf.a` in your project.
-
-   ..
-   
-      You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
-      And you can find the draco in the external folder.
+   You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
+   And you can find the draco in the external folder.
 
 Code example:
 
@@ -82,11 +76,10 @@ Code example:
        printf("failed to load your gltf file");
    }
 
-
 Usage
 ==========
 
-Generate the `makefile` or `ninja` or `visual c++ project` or `xcode project` by [CMake].
+Generate the *makefile* or *ninja* or *visual c++ project* or *xcode project* by CMake_.
 
 For now, just build to a static library - `libgltf.(lib/a)`.
 
@@ -96,7 +89,7 @@ How to use
 Load the glTF file
 ------------------
 
-You can load the glTF file by the function - `libgltf::IglTFLoader::Create`, like this:
+You can load the glTF file by the function - :code:`libgltf::IglTFLoader::Create`, like this:
 
 .. code-block:: cpp
 
@@ -142,56 +135,58 @@ Advance
 Regenerate new code by the glTF schema
 --------------------------------------
 
-..
-
-   You can update the c++11 source code by `jsonschematoc11`.
-
 Generate the c++11 code:
 
-1. Run `tools/batch/update_parser_by_scheme.bat` (Windows) or `tools/batch/update_parser_by_scheme.sh` (Unix/Linux/MacOS)
-2. Build your version by CMake_, Ninja_ or VisualStudio_.
+   * You can update the c++11 source code by :code:`jsonschematoc11`.
+   * You need update the submodule :code:`external/glTF`
+   * It runs in **Python2**
+
+#. Run :code:`update_parser_by_scheme.bat`
+
+   * For Windows: :code:`cd tools\batch\ && update_parser_by_scheme.bat && cd ..\..\ `
+   * For Linux/MacOS :code:`cd tools/batch/ && ./update_parser_by_scheme.sh && cd ../../`
+
+#. Build your version by CMake_.
 
 Character encoding
 ------------------
 
-* default using UTF8, char and std::string
-* set LIBGLTF_CHARACTOR_ENCODING in cmake command - UTF8, UTF16, UTF32 or UNICODE
+* You can set :code:`LIBGLTF_CHARACTOR_ENCODING` in CMake_ to set the encoding.
+* Supports :code:`UTF8`, :code:`UTF16`, :code:`UTF32` or :code:`UNICODE`.
+* The default encoding is :code:`UTF8`.
 
 Supports Google's draco
 -----------------------
 
 You can update the Google's draco submodule in external/draco or pull the draco repo by yourself.
 
-Check the `LIBGLTF_USE_GOOGLE_DRACO` or set `LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
+Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
 
-* Set the `GOOGLE_DRACO_PATH_INCLUDE`, `GOOGLE_DRACO_PATH_BUILD`, `GOOGLE_DRACO_LIBRARY_DRACODEC_DEBUG`, `GOOGLE_DRACO_LIBRARY_DRACODEC_RELEASE`, `GOOGLE_DRACO_LIBRARY_DRACOENC_DEBUG` and `GOOGLE_DRACO_LIBRARY_DRACOENC_RELEASE`.
-* Or enable the `LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE` to compile with the submodule - `external/draco`.
+* Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_DEBUG`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_RELEASE`, :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_DEBUG` and :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_RELEASE`.
+* Or enable the :code:`LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE` to compile with the submodule - *external/draco*.
 
-Download the compiled library
------------------------------
+Download libraries
+------------------
 
 This project is compiled by github action, and you can download the compiled library with `Google's Draco`_ from `the action page`_ or `the release page`_.
 
-Note:
    In `the action page`_ or `the release page`_, libraries was compiled with `MultiThreading` (/MT or /MTd) for **windows**.
 
 Donation
 ==============================================================
 
-..
-
-   *Please consider donating to sustain my activities*
+   **Please consider donating to sustain my activities**
 
 |support-buy-a-cup-of-coffee| |donation-beome-a-patreon|
 
 License
 ==========
 
-The MIT license.
-
-.. _glTFForUE4: https://github.com/code4game/glTFForUE4
+`The MIT license`_.
 
 .. _`glTF 2.0`: https://www.khronos.org/gltf/
+
+.. _glTFForUE4: https://github.com/code4game/glTFForUE4
 
 .. _`Google's Draco`: https://github.com/google/draco
 
@@ -204,6 +199,8 @@ The MIT license.
 .. _`the action page`: https://github.com/code4game/libgltf/actions
 
 .. _`the release page`: https://github.com/code4game/libgltf/releases
+
+.. _`The MIT license`: https://github.com/code4game/libgltf/LICENSE
 
 .. |glTF 2.0| image:: https://img.shields.io/badge/glTF-2%2E0-green.svg?style=flat
    :target: https://github.com/KhronosGroup/glTF
