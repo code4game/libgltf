@@ -24,7 +24,7 @@
 
 #include "libgltfpch.h"
 #include "libgltfparser.h"
-#include "libgltf.h"
+#include "libgltf/libgltf.h"
 
 namespace libgltf
 {

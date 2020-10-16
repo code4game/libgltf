@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "libgltf.h"
+#include "libgltf/libgltf.h"
 
 namespace libgltf
 {

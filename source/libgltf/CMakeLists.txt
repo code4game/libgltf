@@ -75,7 +75,7 @@ set_target_properties(libgltf PROPERTIES
     )
 
 set(INCLUDE_PATH_LIST
-    ${HEADER_PATH}/libgltf
+    ${HEADER_PATH}
     ${SOURCE_FILE_PATH}
     ${EXTERNAL_PATH}/rapidjson/include
     )

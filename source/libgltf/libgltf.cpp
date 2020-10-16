@@ -23,7 +23,7 @@
  */
 
 #include "libgltfpch.h"
-#include "libgltf.h"
+#include "libgltf/libgltf.h"
 
 namespace libgltf
 {
