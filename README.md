@@ -6,9 +6,9 @@
 [![CII best practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
 
 [![build](https://github.com/code4game/libgltf/workflows/build/badge.svg)](https://github.com/code4game/libgltf/actions?query=workflow%3Abuild)
-[![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
-[![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/code4game/libgltf/badge.svg)](https://coveralls.io/github/code4game/libgltf)
 
+[![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/context:python)
 
