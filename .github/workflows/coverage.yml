@@ -18,7 +18,6 @@ jobs:
     steps:
     - name: 'install dependencies'
       run: |
-        sudo apt-get update
         sudo apt-get install valgrind gcovr
         sudo pip install wheel
         sudo pip install cpp-coveralls
