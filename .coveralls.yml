@@ -1,0 +1,12 @@
+service_name: github-action
+exclude:
+  - ./source/runtest/
+  - ./tools/
+  - ./external/
+  - ./build/CMakeFiles/
+  - ./build/draco/
+  - ./build/draco_compression_attributes_pred_schemes_dec.cc
+  - ./build/draco_compression_mesh_traverser.cc
+  - ./build/draco_dec_config.cc
+  - ./build/draco_enc_config.cc
+  - ./output/

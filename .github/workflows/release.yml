@@ -6,10 +6,11 @@ on:
     paths-ignore:
     - '!.github/release.yml'
     - 'docs/**'
-    - '*.md'
-    - 'LICENSE'
+    - '.coveralls.yml'
     - '.readthedocs.yml'
     - '.git*'
+    - '*.md'
+    - 'LICENSE'
 
 jobs:
   check:
