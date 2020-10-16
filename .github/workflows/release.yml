@@ -40,7 +40,7 @@ jobs:
       run: |
         mkdir build && cd build/
         mkdir win64 && cd win64/
-        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=TRUE -DLIBGLTF_BUILD_RUNTEST=FALSE ../../
+        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=TRUE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
         msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
         msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
         cd ../
