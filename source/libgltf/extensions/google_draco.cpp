@@ -127,7 +127,7 @@ namespace libgltf
             {
                 if (const draco::PointAttribute* point_attribute = draco_mesh->GetAttributeByUniqueId(static_cast<uint32_t>(_pGoogleDracoStream->GetAttributeID())))
                 {
-                    const int8_t components_num = point_attribute ? point_attribute->num_components() : 0;
+                    const int8_t components_num = point_attribute->num_components();
                     if (components_num > 0)
                     {
                         const size_t map_size = point_attribute->indices_map_size();
