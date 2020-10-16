@@ -57,9 +57,9 @@ Getting Started
 
    Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
 
-#. Build the project and generate the the static library `libgltf.lib` or `libgltf.a`
-#. Include `libgltf/libgltf.h` in your project.
-#. Link the static library `libgltf.lib` or `libgltf.a` in your project.
+#. Build the project and generate the the static library :code:`libgltf.(lib/a)`
+#. Include :code:`libgltf/libgltf.h` in your project.
+#. Link the static library :code:`libgltf.(lib/a)` in your project.
 
    You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
    And you can find the draco in the external folder.
@@ -81,7 +81,7 @@ Usage
 
 Generate the *makefile* or *ninja* or *visual c++ project* or *xcode project* by CMake_.
 
-For now, just build to a static library - `libgltf.(lib/a)`.
+It is a static library - :code:`libgltf.(lib/a)`.
 
 How to use
 ^^^^^^^^^^
