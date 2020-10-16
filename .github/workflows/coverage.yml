@@ -55,5 +55,5 @@ jobs:
         gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
         gcovr --root=../source/ .
         cd ../
-        export TRAVIS_JOB_ID=${{ github.run_id }}
+        export TRAVIS_JOB_ID=${{ github.run_number }}
         coveralls --repo-token ${{ secrets.COVERALLS_REPO_TOKEN }} -y .coveralls.yml --gcov-options '\-lp'
