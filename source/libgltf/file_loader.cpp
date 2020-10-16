@@ -141,7 +141,10 @@ namespace libgltf
         , m_FilePath()
         , m_FileDatas()
     {
-        //
+        if (m_RootPath.IsRelative())
+        {
+            m_RootPath = GetCWD();
+        }
     }
 
     bool CFileLoader::Load(const string_t& _sFilePath)
