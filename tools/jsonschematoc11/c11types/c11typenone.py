@@ -1,4 +1,4 @@
-from c11type import C11Type
+from .c11type import C11Type
 
 class C11TypeNone(C11Type):
     def __init__(self):

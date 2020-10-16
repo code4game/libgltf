@@ -6,9 +6,20 @@ if (_JsonValue.HasMember(GLTFTEXT("KHR_draco_mesh_compression")) && _JsonValue[G
 }
 if (_JsonValue.HasMember(GLTFTEXT("KHR_lights_punctual")) && _JsonValue[GLTFTEXT("KHR_lights_punctual")].IsObject())
 {
-    std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
-    if (!(extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])) return false;
-    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+    {
+        std::shared_ptr<SKHR_lights_punctualglTFextension> extension;
+        if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+        {
+            _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+        }
+    }
+    {
+        std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
+        if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+        {
+            _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
+        }
+    }
 }
 if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_clearcoat")) && _JsonValue[GLTFTEXT("KHR_materials_clearcoat")].IsObject())
 {

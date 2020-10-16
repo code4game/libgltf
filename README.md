@@ -9,6 +9,9 @@
 [![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
 [![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/context:python)
+
 [![Support](https://img.shields.io/badge/support-buy%20a%20cup%20of%20coffee-orange.svg?style=flat)](https://c4gio.itch.io/libgltf-ue4)
 [![Become a patreon](https://img.shields.io/badge/donation-become%20a%20patreon-orange.svg?style=flat)](https://www.patreon.com/bePatron?u=7553208)
 

@@ -1,4 +1,4 @@
-from c11type import C11Type
+from .c11type import C11Type
 
 class C11TypeArray(C11Type):
     def __init__(self):
@@ -15,21 +15,21 @@ class C11TypeArray(C11Type):
         elif u'$ref' in schemaValue:
             schemaValueType = schemaValue[u'$ref']
         if schemaValueType == u'bool' or schemaValueType == u'boolean':
-            from c11typebool import C11TypeBool
+            from .c11typebool import C11TypeBool
             c11Type = C11TypeBool()
         elif schemaValueType == u'integer':
-            from c11typeinteger import C11TypeInteger
+            from .c11typeinteger import C11TypeInteger
             c11Type = C11TypeInteger()
         elif schemaValueType == u'number':
-            from c11typenumber import C11TypeNumber
+            from .c11typenumber import C11TypeNumber
             c11Type = C11TypeNumber()
         elif schemaValueType == u'string':
-            from c11typestring import C11TypeString
+            from .c11typestring import C11TypeString
             c11Type = C11TypeString()
         elif schemaValueType == u'array':
             c11Type = C11TypeArray()
-        if c11Type == None:
-            from c11typestruct import C11TypeStruct
+        if c11Type is None:
+            from .c11typestruct import C11TypeStruct
             c11Type = C11TypeStruct()
         return (c11Type, 0, None)
 
@@ -41,11 +41,11 @@ class C11TypeArray(C11Type):
         elif u'$ref' in schemaValue:
             (c11_type, error_code, error_message) = self.buildC11Type(schemaValue[u'$ref'])
         if error_code != 0:
-            print error_message
+            print(error_message)
         self.c11Type = c11_type
 
     def revise(self, c11Types):
-        from c11typestruct import C11TypeStruct
+        from .c11typestruct import C11TypeStruct
         if not isinstance(self.c11Type, C11TypeStruct):
             return (0, None)
         schemaValueType = None
@@ -54,7 +54,7 @@ class C11TypeArray(C11Type):
             schemaValueItem = self.schemaValue[u'items']
         if u'$ref' in self.schemaValue:
             schemaValueItem = self.schemaValue
-        if schemaValueItem == None:
+        if schemaValueItem is None:
             return (1, u'Can\'t find the items in schema of array')
         if u'$ref' in schemaValueItem:
             schemaValueType = schemaValueItem[u'$ref']
@@ -66,7 +66,7 @@ class C11TypeArray(C11Type):
         if schemaValueType in c11Types:
             self.c11Type = c11Types[schemaValueType]
         else:
-            from c11typenone import C11TypeNone
+            from .c11typenone import C11TypeNone
             self.c11Type = C11TypeNone()
         return (0, u'')
 
@@ -76,7 +76,7 @@ class C11TypeArray(C11Type):
         return u'%s<%s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
 
     def codeDefaultValue(self, schemaDefaultValue):
-        if schemaDefaultValue == None:
+        if schemaDefaultValue is None:
             return u''
         return self.c11Type.codeDefaultValueArray(schemaDefaultValue)
 

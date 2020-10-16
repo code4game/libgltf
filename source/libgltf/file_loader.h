@@ -58,7 +58,7 @@ namespace libgltf
         typedef std::map<CPath, std::vector<uint8_t>> TFileDatas;
 
     public:
-        explicit CFileLoader();
+        explicit CFileLoader(const string_t& _sRootPath = GLTFTEXT(""));
 
     public:
         bool Load(const string_t& _sFilePath);
@@ -75,6 +75,7 @@ namespace libgltf
 
     private:
         CPath m_RootPath;
+        CPath m_FilePath;
         TFileDatas m_FileDatas;
     };
 }

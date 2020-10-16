@@ -1,6 +1,6 @@
 '''string'''
 
-from c11type import C11Type
+from .c11type import C11Type
 
 class C11TypeString(C11Type):
     '''strig type'''

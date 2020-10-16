@@ -1,11 +1,11 @@
-from c11typenone import C11TypeNone
-from c11typebool import C11TypeBool
-from c11typeinteger import C11TypeInteger
-from c11typenumber import C11TypeNumber
-from c11typestring import C11TypeString
-from c11typearray import C11TypeArray
-from c11typemap import C11TypeMap
-from c11typestruct import C11TypeStruct
+from .c11typenone import C11TypeNone
+from .c11typebool import C11TypeBool
+from .c11typeinteger import C11TypeInteger
+from .c11typenumber import C11TypeNumber
+from .c11typestring import C11TypeString
+from .c11typearray import C11TypeArray
+from .c11typemap import C11TypeMap
+from .c11typestruct import C11TypeStruct
 
 def BuildC11Type(schemaName, schemaValue, isSchema=False, manualCodeHeaders=None, manualCodeSourcesVariable=None, manualCodeSourcesFunction=None, manualCodeParsersFrom=None, manualCodeParsersTo=None):
     if u'title' not in schemaValue:
@@ -25,7 +25,7 @@ def BuildC11Type(schemaName, schemaValue, isSchema=False, manualCodeHeaders=None
             c11Type = C11TypeArray()
         #elif schemaValueType == u'object':
         #    c11Type = C11TypeMap()
-    if c11Type == None:
+    if c11Type is None:
         c11Type = C11TypeStruct()
     c11Type.setSchema(schemaName, schemaValue)
     c11Type.setCodes(manualCodeHeaders, manualCodeSourcesVariable, manualCodeSourcesFunction, manualCodeParsersFrom, manualCodeParsersTo)
