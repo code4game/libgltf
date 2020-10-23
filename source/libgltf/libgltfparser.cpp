@@ -1263,16 +1263,19 @@ namespace libgltf
         }
         if (_JsonValue.HasMember(GLTFTEXT("KHR_lights_punctual")) && _JsonValue[GLTFTEXT("KHR_lights_punctual")].IsObject())
         {
+            const GLTFCharValue& json_extension = _JsonValue[GLTFTEXT("KHR_lights_punctual")];
+            if (json_extension.HasMember(GLTFTEXT("lights")))
             {
                 std::shared_ptr<SKHR_lights_punctualglTFextension> extension;
-                if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+                if (extension << json_extension)
                 {
                     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
                 }
             }
+            if (json_extension.HasMember(GLTFTEXT("light")))
             {
                 std::shared_ptr<SKHR_lights_punctualnodeextension> extension;
-                if (extension << _JsonValue[GLTFTEXT("KHR_lights_punctual")])
+                if (extension << json_extension)
                 {
                     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_lights_punctual"), extension));
                 }
