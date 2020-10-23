@@ -396,7 +396,7 @@ class C11TypeLibrary(object):
 
             source_file.write(u'%sbool operator<<(float& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    if (_JsonValue.IsFloat())\n' % begin_space)
+            source_file.write(u'%s    if (_JsonValue.IsNumber())\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
             source_file.write(u'%s        _rData = _JsonValue.GetFloat();\n' % begin_space)
             source_file.write(u'%s        return true;\n' % begin_space)

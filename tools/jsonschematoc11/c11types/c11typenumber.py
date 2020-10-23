@@ -30,7 +30,7 @@ class C11TypeNumber(C11Type):
 
     @classmethod
     def codeJsonCheck(cls):
-        return u'IsFloat()'
+        return u'IsNumber()'
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):

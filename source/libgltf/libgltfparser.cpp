@@ -76,7 +76,7 @@ namespace libgltf
 
     bool operator<<(float& _rData, const GLTFCharValue& _JsonValue)
     {
-        if (_JsonValue.IsFloat())
+        if (_JsonValue.IsNumber())
         {
             _rData = _JsonValue.GetFloat();
             return true;
@@ -1022,19 +1022,19 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("xmag")) && _JsonValue[GLTFTEXT("xmag")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("xmag")) && _JsonValue[GLTFTEXT("xmag")].IsNumber())
         {
             _rData.xmag = _JsonValue[GLTFTEXT("xmag")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("ymag")) && _JsonValue[GLTFTEXT("ymag")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("ymag")) && _JsonValue[GLTFTEXT("ymag")].IsNumber())
         {
             _rData.ymag = _JsonValue[GLTFTEXT("ymag")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsNumber())
         {
             _rData.zfar = _JsonValue[GLTFTEXT("zfar")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsNumber())
         {
             _rData.znear = _JsonValue[GLTFTEXT("znear")].GetFloat();
         }
@@ -1103,19 +1103,19 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("aspectRatio")) && _JsonValue[GLTFTEXT("aspectRatio")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("aspectRatio")) && _JsonValue[GLTFTEXT("aspectRatio")].IsNumber())
         {
             _rData.aspectRatio = _JsonValue[GLTFTEXT("aspectRatio")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("yfov")) && _JsonValue[GLTFTEXT("yfov")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("yfov")) && _JsonValue[GLTFTEXT("yfov")].IsNumber())
         {
             _rData.yfov = _JsonValue[GLTFTEXT("yfov")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("zfar")) && _JsonValue[GLTFTEXT("zfar")].IsNumber())
         {
             _rData.zfar = _JsonValue[GLTFTEXT("zfar")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("znear")) && _JsonValue[GLTFTEXT("znear")].IsNumber())
         {
             _rData.znear = _JsonValue[GLTFTEXT("znear")].GetFloat();
         }
@@ -1993,7 +1993,7 @@ namespace libgltf
             STextureInfo& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("scale")) && _JsonValue[GLTFTEXT("scale")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("scale")) && _JsonValue[GLTFTEXT("scale")].IsNumber())
         {
             _rData.scale = _JsonValue[GLTFTEXT("scale")].GetFloat();
         }
@@ -2047,7 +2047,7 @@ namespace libgltf
             STextureInfo& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("strength")) && _JsonValue[GLTFTEXT("strength")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("strength")) && _JsonValue[GLTFTEXT("strength")].IsNumber())
         {
             _rData.strength = _JsonValue[GLTFTEXT("strength")].GetFloat();
         }
@@ -2109,11 +2109,11 @@ namespace libgltf
         {
             if (!(_rData.baseColorTexture << _JsonValue[GLTFTEXT("baseColorTexture")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("metallicFactor")) && _JsonValue[GLTFTEXT("metallicFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("metallicFactor")) && _JsonValue[GLTFTEXT("metallicFactor")].IsNumber())
         {
             _rData.metallicFactor = _JsonValue[GLTFTEXT("metallicFactor")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("roughnessFactor")) && _JsonValue[GLTFTEXT("roughnessFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("roughnessFactor")) && _JsonValue[GLTFTEXT("roughnessFactor")].IsNumber())
         {
             _rData.roughnessFactor = _JsonValue[GLTFTEXT("roughnessFactor")].GetFloat();
         }
@@ -2218,7 +2218,7 @@ namespace libgltf
         {
             _rData.alphaMode = _JsonValue[GLTFTEXT("alphaMode")].GetString();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("alphaCutoff")) && _JsonValue[GLTFTEXT("alphaCutoff")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("alphaCutoff")) && _JsonValue[GLTFTEXT("alphaCutoff")].IsNumber())
         {
             _rData.alphaCutoff = _JsonValue[GLTFTEXT("alphaCutoff")].GetFloat();
         }
@@ -3074,7 +3074,7 @@ namespace libgltf
         {
             if (!(_rData.color << _JsonValue[GLTFTEXT("color")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("intensity")) && _JsonValue[GLTFTEXT("intensity")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("intensity")) && _JsonValue[GLTFTEXT("intensity")].IsNumber())
         {
             _rData.intensity = _JsonValue[GLTFTEXT("intensity")].GetFloat();
         }
@@ -3086,7 +3086,7 @@ namespace libgltf
         {
             _rData.type = _JsonValue[GLTFTEXT("type")].GetString();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("range")) && _JsonValue[GLTFTEXT("range")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("range")) && _JsonValue[GLTFTEXT("range")].IsNumber())
         {
             _rData.range = _JsonValue[GLTFTEXT("range")].GetFloat();
         }
@@ -3162,11 +3162,11 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("innerConeAngle")) && _JsonValue[GLTFTEXT("innerConeAngle")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("innerConeAngle")) && _JsonValue[GLTFTEXT("innerConeAngle")].IsNumber())
         {
             _rData.innerConeAngle = _JsonValue[GLTFTEXT("innerConeAngle")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("outerConeAngle")) && _JsonValue[GLTFTEXT("outerConeAngle")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("outerConeAngle")) && _JsonValue[GLTFTEXT("outerConeAngle")].IsNumber())
         {
             _rData.outerConeAngle = _JsonValue[GLTFTEXT("outerConeAngle")].GetFloat();
         }
@@ -3280,7 +3280,7 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("clearcoatFactor")) && _JsonValue[GLTFTEXT("clearcoatFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatFactor")) && _JsonValue[GLTFTEXT("clearcoatFactor")].IsNumber())
         {
             _rData.clearcoatFactor = _JsonValue[GLTFTEXT("clearcoatFactor")].GetFloat();
         }
@@ -3288,7 +3288,7 @@ namespace libgltf
         {
             if (!(_rData.clearcoatTexture << _JsonValue[GLTFTEXT("clearcoatTexture")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("clearcoatRoughnessFactor")) && _JsonValue[GLTFTEXT("clearcoatRoughnessFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("clearcoatRoughnessFactor")) && _JsonValue[GLTFTEXT("clearcoatRoughnessFactor")].IsNumber())
         {
             _rData.clearcoatRoughnessFactor = _JsonValue[GLTFTEXT("clearcoatRoughnessFactor")].GetFloat();
         }
@@ -3385,7 +3385,7 @@ namespace libgltf
         {
             if (!(_rData.specularFactor << _JsonValue[GLTFTEXT("specularFactor")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("glossinessFactor")) && _JsonValue[GLTFTEXT("glossinessFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("glossinessFactor")) && _JsonValue[GLTFTEXT("glossinessFactor")].IsNumber())
         {
             _rData.glossinessFactor = _JsonValue[GLTFTEXT("glossinessFactor")].GetFloat();
         }
@@ -4062,7 +4062,7 @@ namespace libgltf
         {
             if (!(_rData.offset << _JsonValue[GLTFTEXT("offset")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("rotation")) && _JsonValue[GLTFTEXT("rotation")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("rotation")) && _JsonValue[GLTFTEXT("rotation")].IsNumber())
         {
             _rData.rotation = _JsonValue[GLTFTEXT("rotation")].GetFloat();
         }
@@ -4141,7 +4141,7 @@ namespace libgltf
             SGlTFProperty& super_ptr = _rData;
             if (!(super_ptr << _JsonValue)) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("transmissionFactor")) && _JsonValue[GLTFTEXT("transmissionFactor")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("transmissionFactor")) && _JsonValue[GLTFTEXT("transmissionFactor")].IsNumber())
         {
             _rData.transmissionFactor = _JsonValue[GLTFTEXT("transmissionFactor")].GetFloat();
         }
@@ -4149,7 +4149,7 @@ namespace libgltf
         {
             if (!(_rData.transmissionTexture << _JsonValue[GLTFTEXT("transmissionTexture")])) return false;
         }
-        if (_JsonValue.HasMember(GLTFTEXT("ior")) && _JsonValue[GLTFTEXT("ior")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("ior")) && _JsonValue[GLTFTEXT("ior")].IsNumber())
         {
             _rData.ior = _JsonValue[GLTFTEXT("ior")].GetFloat();
         }
@@ -4296,15 +4296,15 @@ namespace libgltf
         {
             _rData.type = _JsonValue[GLTFTEXT("type")].GetString();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("minimumValue")) && _JsonValue[GLTFTEXT("minimumValue")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("minimumValue")) && _JsonValue[GLTFTEXT("minimumValue")].IsNumber())
         {
             _rData.minimumValue = _JsonValue[GLTFTEXT("minimumValue")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("maximumValue")) && _JsonValue[GLTFTEXT("maximumValue")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("maximumValue")) && _JsonValue[GLTFTEXT("maximumValue")].IsNumber())
         {
             _rData.maximumValue = _JsonValue[GLTFTEXT("maximumValue")].GetFloat();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("initialValue")) && _JsonValue[GLTFTEXT("initialValue")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("initialValue")) && _JsonValue[GLTFTEXT("initialValue")].IsNumber())
         {
             _rData.initialValue = _JsonValue[GLTFTEXT("initialValue")].GetFloat();
         }
@@ -4618,7 +4618,7 @@ namespace libgltf
         {
             _rData.name = _JsonValue[GLTFTEXT("name")].GetString();
         }
-        if (_JsonValue.HasMember(GLTFTEXT("efficiency")) && _JsonValue[GLTFTEXT("efficiency")].IsFloat())
+        if (_JsonValue.HasMember(GLTFTEXT("efficiency")) && _JsonValue[GLTFTEXT("efficiency")].IsNumber())
         {
             _rData.efficiency = _JsonValue[GLTFTEXT("efficiency")].GetFloat();
         }
