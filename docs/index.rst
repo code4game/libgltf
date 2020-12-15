@@ -59,11 +59,11 @@ Getting Started
 
    Run :code:`cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
 
-#. Build the project and generate the the static library :code:`libgltf.(lib/a)`
+#. Build the project and generate the static library :code:`libgltf.(lib/a)`
 #. Include :code:`libgltf/libgltf.h` in your project.
 #. Link the static library :code:`libgltf.(lib/a)` in your project.
 
-   You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the `Google's Draco`_.
+   You have to link the static library `draco.lib` or `draco.a` with your project, if you want to support the `Google's Draco`_.
    And you can find the draco in the external folder.
 
 Code example:
@@ -160,7 +160,7 @@ Character encoding
 Supports Google's draco
 -----------------------
 
-You can update the Google's draco submodule in external/draco or pull the draco repo by yourself.
+You can update Google's draco submodule in external/draco or pull the draco repo by yourself.
 
 Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
 
@@ -170,7 +170,7 @@ Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRAC
 Download libraries
 ------------------
 
-This project is compiled by github action, and you can download the compiled library with `Google's Draco`_ from `the action page`_ or `the release page`_.
+This project is compiled by GitHub action, and you can download the compiled library with `Google's Draco`_ from `the action page`_ or `the release page`_.
 
    In `the action page`_ or `the release page`_, libraries was compiled with `MultiThreading` (/MT or /MTd) for **windows**.
 
