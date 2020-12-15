@@ -12,6 +12,7 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/context:python)
 
+[![Gitter](https://badges.gitter.im/code4game/libgltf.svg)](https://gitter.im/code4game/libgltf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Support](https://img.shields.io/badge/support-buy%20a%20cup%20of%20coffee-orange.svg?style=flat)](https://c4gio.itch.io/libgltf-ue4)
 [![Become a patreon](https://img.shields.io/badge/donation-become%20a%20patreon-orange.svg?style=flat)](https://www.patreon.com/bePatron?u=7553208)
 
