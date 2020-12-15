@@ -56,10 +56,10 @@ It was used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
     > Run `git submodule update --init`
 2. Generate the project by [CMake]
     > Run `cmake -G "[GENERATOR BY YOUR SYSTEM]" [LIBGLTF FOLDER]`
-3. Build the project and generate the the static library `libgltf.lib` or `libgltf.a`
+3. Build the project and generate the static library `libgltf.lib` or `libgltf.a`
 4. Include `libgltf/libgltf.h` in your project.
 5. Link the static library `libgltf.lib` or `libgltf.a` in your project.
-    > You have to link the static library `draco.lib` or `draco.a` with your project, if you want support the [Google's Draco].
+    > You have to link the static library `draco.lib` or `draco.a` with your project, if you want to support the [Google's Draco].
     > And you can find the draco in the external folder.
 
 Code example:
