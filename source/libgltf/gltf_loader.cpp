@@ -251,11 +251,6 @@ namespace libgltf
             if (glb_chunk_bin.type != ms_GLBChunkTypeBIN) return false;
             data.resize(glb_chunk_bin.length);
             ::memcpy(data.data(), default_file_data.data() + offset, glb_chunk_bin.length);
-            size_t slash_index = data_type.find_last_of('/');
-            if (data_type.size() > (slash_index + 1))
-            {
-                data_type = data_type.substr(slash_index + 1);
-            }
             return true;
         }
         else
@@ -265,21 +260,18 @@ namespace libgltf
             size_t data_index = 0;
             if (UriParse(uri, data_type, data_encode, data_index))
             {
-                size_t slash_index = data_type.find_last_of('/');
-                if (data_type.size() > (slash_index + 1))
-                {
-                    data_type = data_type.substr(slash_index + 1);
-                }
                 return (StringEqual(data_encode, GLTFTEXT("base64"), false) && base64::Decode(uri.substr(data_index), data));
             }
         }
+
         /// try to load from file
         if (!m_pFileLoader->Load(uri)) return false;
+
         data = (*m_pFileLoader)[uri];
         size_t dot_index = uri.find_last_of('.');
         if (uri.size() > (dot_index + 1))
         {
-            data_type = uri.substr(dot_index + 1);
+            data_type = "file/" + uri.substr(dot_index + 1);
         }
         return true;
     }

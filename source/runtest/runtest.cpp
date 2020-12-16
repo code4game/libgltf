@@ -229,7 +229,6 @@ int main(int _iArgc, char* _pcArgv[])
     std::vector<uint8_t> image0_data;
     libgltf::string_t image0_data_type;
     gltf_loader->GetOrLoadImageData(0, image0_data, image0_data_type);
-    
 
 #if defined(LIBGLTF_BUILD_COVERAGE)
     const std::string obj_file_path =
