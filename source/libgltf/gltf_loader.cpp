@@ -54,6 +54,10 @@ namespace libgltf
             buffer_data_temp = buffer_data;
             buffer_data_temp.buffer += m_pBufferView->byteOffset;
             buffer_data_temp.bufferSize -= m_pBufferView->byteOffset;
+            if (m_pBufferView->byteLength < static_cast<size_t>(buffer_data_temp.bufferSize))
+            {
+                buffer_data_temp.bufferSize = m_pBufferView->byteLength;
+            }
             buffer_data_temp.bufferStride = static_cast<size_t>(m_pBufferView->byteStride);
             return (*m_pBufferViewStream << buffer_data_temp);
         }
@@ -61,6 +65,27 @@ namespace libgltf
     private:
         const std::shared_ptr<SBufferView>& m_pBufferView;
         std::shared_ptr<IBufferViewStream> m_pBufferViewStream;
+    };
+
+    class CBufferViewStream : public IBufferViewStream
+    {
+    public:
+        explicit CBufferViewStream(std::vector<uint8_t>& data)
+            : m_Data(data)
+        {
+            //
+        }
+
+    public:
+        virtual bool operator<<(const SBufferData& buffer_data)
+        {
+            m_Data.resize(buffer_data.bufferSize);
+            ::memcpy(&m_Data[0], buffer_data.buffer, m_Data.size());
+            return true;
+        }
+
+    private:
+        std::vector<uint8_t>& m_Data;
     };
 
     class CAccessorBufferViewStream : public IBufferViewStream
@@ -271,7 +296,16 @@ namespace libgltf
     {
         if (!image) return false;
         data_type = image->mimeType;
-        return LoadByUri(image->uri, data, data_type);
+        if (!image->uri.empty())
+        {
+            return LoadByUri(image->uri, data, data_type);
+        }
+        if (image->bufferView)
+        {
+            std::shared_ptr<CBufferViewStream> image_stream = std::make_shared<CBufferViewStream>(data);
+            return GetOrLoadBufferViewData(static_cast<size_t>(int32_t(*image->bufferView)), image_stream);
+        }
+        return false;
     }
 
     bool CGlTFLoader::GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream)
