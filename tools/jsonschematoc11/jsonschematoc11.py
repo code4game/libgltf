@@ -182,6 +182,14 @@ class C11TypeLibrary(object):
             if code_header_parser_lines:
                 header_file.write(u'\n')
 
+            code_header_declare_line = u'%s// declare all types\n' % (begin_space)
+            header_file.write(code_header_declare_line)
+            for key in self.c11Types:
+                c11_type = self.c11Types[key]
+                code_header_declare_line = u'%sstruct %s;\n' % (begin_space, c11_type.codeTypeName())
+                header_file.write(code_header_declare_line)
+            header_file.write(u'\n')
+                
             parent_type_names = []
             for key in self.c11Types:
                 c11_type = self.c11Types[key]
@@ -279,6 +287,7 @@ class C11TypeLibrary(object):
             header_file.write(u'#pragma once\n')
             header_file.write(u'\n')
             header_file.write(u'#include "%spch.h"\n' % codeFileName)
+            header_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             header_file.write(u'\n')
             header_file.write(u'#include <memory>\n')
             header_file.write(u'#include <vector>\n')

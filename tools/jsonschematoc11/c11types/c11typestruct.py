@@ -99,9 +99,9 @@ class C11TypeStruct(C11Type):
             print(u':todo:')
         if withDeclare:
             if withDocument:
-                codeLine = u'TDataDoc<struct %s>' % codeLine
+                codeLine = u'TDataDoc<%s>' % codeLine
             else:
-                codeLine = u'struct %s' % codeLine
+                codeLine = u'%s' % codeLine
         else:
             if withDocument:
                 codeLine = u'TDataDoc<%s>' % codeLine
