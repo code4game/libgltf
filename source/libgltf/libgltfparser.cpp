@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2021 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -2374,7 +2374,7 @@ namespace libgltf
         if (!_rData.data.targets.empty())
         {
             GLTFCharValue json_value;
-            if (!(TDataDoc<std::vector<std::shared_ptr<SGlTFId>>>(_rData.data.targets, _rData.doc) >> json_value)) return false;
+            if (!(TDataDoc<std::vector<std::map<string_t, std::shared_ptr<SGlTFId>>>>(_rData.data.targets, _rData.doc) >> json_value)) return false;
             _JsonValue.AddMember(GLTFTEXT("targets"), json_value, _rData.doc->GetAllocator());
         }
         return true;

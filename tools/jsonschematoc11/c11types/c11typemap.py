@@ -49,23 +49,14 @@ class C11TypeMap(C11Type):
         if not isinstance(self.c11Type, C11TypeStruct):
             return (0, None)
         schemaValueType = None
-        schemaValueItem = self.schemaValue
-        if u'items' in self.schemaValue:
-            schemaValueItem = self.schemaValue[u'items']
-        if schemaValueItem == None:
-            return (1, u'Can\'t find the items in schema of array')
-        if u'$ref' in schemaValueItem:
-            schemaValueType = schemaValueItem[u'$ref']
-        if schemaValueType not in c11Types:
-            if u'additionalProperties' in schemaValueItem:
-                schemaValueAdditionalProperties = schemaValueItem[u'additionalProperties']
-                if u'$ref' in schemaValueAdditionalProperties:
-                    schemaValueType = schemaValueAdditionalProperties[u'$ref']
+        if u'$ref' in self.schemaValue:
+            schemaValueType = self.schemaValue[u'$ref']
         if schemaValueType in c11Types:
             self.c11Type = c11Types[schemaValueType]
         else:
             from .c11typenone import C11TypeNone
             self.c11Type = C11TypeNone()
+        self.c11Type.revise(c11Types)
         return (0, u'')
 
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):

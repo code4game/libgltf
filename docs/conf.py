@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'libgltf'
-copyright = '2020, Alex Chi'
-author = 'Alex Chi'
+copyright = '2021, Code 4 Game'
+author = 'Xing Ji'
 
 
 # -- General configuration ---------------------------------------------------

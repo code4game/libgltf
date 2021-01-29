@@ -10,10 +10,15 @@ class C11TypeArray(C11Type):
     def buildC11Type(cls, schemaValue):
         c11Type = None
         schemaValueType = None
+        variableSchemaValue = schemaValue
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
+            if schemaValueType == u'object' and u'additionalProperties' in schemaValue:
+                schemaValueType = u'map'
+                variableSchemaValue = schemaValue[u'additionalProperties']
         elif u'$ref' in schemaValue:
             schemaValueType = schemaValue[u'$ref']
+
         if schemaValueType == u'bool' or schemaValueType == u'boolean':
             from .c11typebool import C11TypeBool
             c11Type = C11TypeBool()
@@ -28,6 +33,10 @@ class C11TypeArray(C11Type):
             c11Type = C11TypeString()
         elif schemaValueType == u'array':
             c11Type = C11TypeArray()
+        elif schemaValueType == u'map':
+            from .c11typemap import C11TypeMap
+            c11Type = C11TypeMap()
+            c11Type.setItemSchema(variableSchemaValue)
         if c11Type is None:
             from .c11typestruct import C11TypeStruct
             c11Type = C11TypeStruct()
@@ -46,7 +55,8 @@ class C11TypeArray(C11Type):
 
     def revise(self, c11Types):
         from .c11typestruct import C11TypeStruct
-        if not isinstance(self.c11Type, C11TypeStruct):
+        from .c11typemap import C11TypeMap
+        if not isinstance(self.c11Type, C11TypeStruct) and not isinstance(self.c11Type, C11TypeMap):
             return (0, None)
         schemaValueType = None
         schemaValueItem = None
@@ -56,14 +66,16 @@ class C11TypeArray(C11Type):
             schemaValueItem = self.schemaValue
         if schemaValueItem is None:
             return (1, u'Can\'t find the items in schema of array')
-        if u'$ref' in schemaValueItem:
+        elif u'$ref' in schemaValueItem:
             schemaValueType = schemaValueItem[u'$ref']
         if schemaValueType not in c11Types:
             if u'additionalProperties' in schemaValueItem:
                 schemaValueAdditionalProperties = schemaValueItem[u'additionalProperties']
                 if u'$ref' in schemaValueAdditionalProperties:
                     schemaValueType = schemaValueAdditionalProperties[u'$ref']
-        if schemaValueType in c11Types:
+        if isinstance(self.c11Type, C11TypeMap):
+            self.c11Type.revise(c11Types)
+        elif schemaValueType in c11Types:
             self.c11Type = c11Types[schemaValueType]
         else:
             from .c11typenone import C11TypeNone
