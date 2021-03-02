@@ -4,6 +4,7 @@
 [![libgltf document](https://readthedocs.org/projects/libgltf/badge/?version=latest)](http://libgltf.rtfd.io/)
 [![visit milestones](https://img.shields.io/badge/visit-milestones-blue.svg?style=flat)](https://github.com/code4game/libgltf/milestones)
 [![CII best practices](https://bestpractices.coreinfrastructure.org/projects/1434/badge)](https://bestpractices.coreinfrastructure.org/projects/1434)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf?ref=badge_shield)
 
 [![build](https://github.com/code4game/libgltf/workflows/build/badge.svg)](https://github.com/code4game/libgltf/actions?query=workflow%3Abuild)
 [![Coverage Status](https://coveralls.io/repos/github/code4game/libgltf/badge.svg)](https://coveralls.io/github/code4game/libgltf)
@@ -81,3 +82,6 @@ This software is released under the MIT license.
 [glTF 2.0]: https://www.khronos.org/gltf/
 [Google's Draco]: https://github.com/google/draco
 [CMake]: https://cmake.org/
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf?ref=badge_large)
