@@ -1,6 +1,3 @@
-from abc import abstractmethod
-
-
 class C11Type(object):
 
     """basic type."""
