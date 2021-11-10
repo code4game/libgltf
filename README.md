@@ -6,7 +6,7 @@
 
 [![build](https://github.com/code4game/libgltf/workflows/build/badge.svg)](https://github.com/code4game/libgltf/actions?query=workflow%3Abuild)
 [![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
-[![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5480b79467244c528a22defcf1fd9c4f)](https://www.codacy.com/gh/code4game/libgltf/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/context:python)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcode4game%2Flibgltf?ref=badge_shield)
