@@ -1,7 +1,7 @@
 import sys
 import os
 import argparse
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 import logging
 import json
 
@@ -182,6 +182,14 @@ class C11TypeLibrary(object):
             if code_header_parser_lines:
                 header_file.write(u'\n')
 
+            code_header_declare_line = u'%s// declare all types\n' % (begin_space)
+            header_file.write(code_header_declare_line)
+            for key in self.c11Types:
+                c11_type = self.c11Types[key]
+                code_header_declare_line = u'%sstruct %s;\n' % (begin_space, c11_type.codeTypeName())
+                header_file.write(code_header_declare_line)
+            header_file.write(u'\n')
+                
             parent_type_names = []
             for key in self.c11Types:
                 c11_type = self.c11Types[key]
@@ -223,7 +231,7 @@ class C11TypeLibrary(object):
                         source_file.write(u'\n')
 
             source_file.write(u'#include "%spch.h"\n' % codeFileName)
-            source_file.write(u'#include "%s.h"\n' % codeFileName)
+            source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
             begin_space = u''
@@ -279,6 +287,7 @@ class C11TypeLibrary(object):
             header_file.write(u'#pragma once\n')
             header_file.write(u'\n')
             header_file.write(u'#include "%spch.h"\n' % codeFileName)
+            header_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             header_file.write(u'\n')
             header_file.write(u'#include <memory>\n')
             header_file.write(u'#include <vector>\n')
@@ -333,7 +342,7 @@ class C11TypeLibrary(object):
 
             source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%sparser.h"\n' % codeFileName)
-            source_file.write(u'#include "%s.h"\n' % codeFileName)
+            source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
             begin_space = u''
@@ -396,7 +405,7 @@ class C11TypeLibrary(object):
 
             source_file.write(u'%sbool operator<<(float& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    if (_JsonValue.IsFloat())\n' % begin_space)
+            source_file.write(u'%s    if (_JsonValue.IsNumber())\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
             source_file.write(u'%s        _rData = _JsonValue.GetFloat();\n' % begin_space)
             source_file.write(u'%s        return true;\n' % begin_space)
@@ -520,7 +529,7 @@ class C11TypeLibrary(object):
 
 def JSONSchemaToC11(argv):
     parser = argparse.ArgumentParser(description=u'Generate c11 code by json schema.')
-    parser.add_argument(u'configFile', metavar=u'config_file', type=file, help=u'The configuration file')
+    parser.add_argument(u'configFile', metavar=u'config_file', type=open, help=u'The configuration file')
     args = parser.parse_args(argv)
 
     if not args.configFile:
@@ -562,7 +571,7 @@ def JSONSchemaToC11(argv):
     for extensions_schema_directory in extensions_schema_directories:
         (error_code, error_message) = c11_type_library.addSchemaDirectory(extensions_schema_directory, config)
         if error_code != 0:
-            print error_code, error_message
+            print(error_code, error_message)
             return (error_code, error_message)
     (error_code, error_message) = c11_type_library.preprocess()
     if error_code != 0:

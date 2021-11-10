@@ -1,12 +1,12 @@
 '''struct type'''
 
-from c11type import C11Type
-from c11typebool import C11TypeBool
-from c11typeinteger import C11TypeInteger
-from c11typenumber import C11TypeNumber
-from c11typestring import C11TypeString
-from c11typearray import C11TypeArray
-from c11variable import C11Variable
+from .c11type import C11Type
+from .c11typebool import C11TypeBool
+from .c11typeinteger import C11TypeInteger
+from .c11typenumber import C11TypeNumber
+from .c11typestring import C11TypeString
+from .c11typearray import C11TypeArray
+from .c11variable import C11Variable
 
 class C11TypeStruct(C11Type):
     '''struct type'''
@@ -99,9 +99,9 @@ class C11TypeStruct(C11Type):
             print(u':todo:')
         if withDeclare:
             if withDocument:
-                codeLine = u'TDataDoc<struct %s>' % codeLine
+                codeLine = u'TDataDoc<%s>' % codeLine
             else:
-                codeLine = u'struct %s' % codeLine
+                codeLine = u'%s' % codeLine
         else:
             if withDocument:
                 codeLine = u'TDataDoc<%s>' % codeLine

@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -54,6 +54,10 @@ namespace libgltf
             buffer_data_temp = buffer_data;
             buffer_data_temp.buffer += m_pBufferView->byteOffset;
             buffer_data_temp.bufferSize -= m_pBufferView->byteOffset;
+            if (m_pBufferView->byteLength < static_cast<size_t>(buffer_data_temp.bufferSize))
+            {
+                buffer_data_temp.bufferSize = m_pBufferView->byteLength;
+            }
             buffer_data_temp.bufferStride = static_cast<size_t>(m_pBufferView->byteStride);
             return (*m_pBufferViewStream << buffer_data_temp);
         }
@@ -61,6 +65,27 @@ namespace libgltf
     private:
         const std::shared_ptr<SBufferView>& m_pBufferView;
         std::shared_ptr<IBufferViewStream> m_pBufferViewStream;
+    };
+
+    class CBufferViewStream : public IBufferViewStream
+    {
+    public:
+        explicit CBufferViewStream(std::vector<uint8_t>& data)
+            : m_Data(data)
+        {
+            //
+        }
+
+    public:
+        virtual bool operator<<(const SBufferData& buffer_data)
+        {
+            m_Data.resize(buffer_data.bufferSize);
+            ::memcpy(&m_Data[0], buffer_data.buffer, m_Data.size());
+            return true;
+        }
+
+    private:
+        std::vector<uint8_t>& m_Data;
     };
 
     class CAccessorBufferViewStream : public IBufferViewStream
@@ -145,7 +170,7 @@ namespace libgltf
 
     CGlTFLoader::CGlTFLoader(const string_t& _sFilePath)
         : m_glTF(nullptr)
-        , m_pFileLoader(std::make_shared<CFileLoader>())
+        , m_pFileLoader(std::make_shared<CFileLoader>(CPath(_sFilePath).Parent()))
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
         , m_pGoogleDraco(std::make_shared<CGoogleDraco>())
 #endif
@@ -226,11 +251,6 @@ namespace libgltf
             if (glb_chunk_bin.type != ms_GLBChunkTypeBIN) return false;
             data.resize(glb_chunk_bin.length);
             ::memcpy(data.data(), default_file_data.data() + offset, glb_chunk_bin.length);
-            size_t slash_index = data_type.find_last_of('/');
-            if (data_type.size() > (slash_index + 1))
-            {
-                data_type = data_type.substr(slash_index + 1);
-            }
             return true;
         }
         else
@@ -240,21 +260,18 @@ namespace libgltf
             size_t data_index = 0;
             if (UriParse(uri, data_type, data_encode, data_index))
             {
-                size_t slash_index = data_type.find_last_of('/');
-                if (data_type.size() > (slash_index + 1))
-                {
-                    data_type = data_type.substr(slash_index + 1);
-                }
                 return (StringEqual(data_encode, GLTFTEXT("base64"), false) && base64::Decode(uri.substr(data_index), data));
             }
         }
+
         /// try to load from file
         if (!m_pFileLoader->Load(uri)) return false;
+
         data = (*m_pFileLoader)[uri];
         size_t dot_index = uri.find_last_of('.');
         if (uri.size() > (dot_index + 1))
         {
-            data_type = uri.substr(dot_index + 1);
+            data_type = "file/" + uri.substr(dot_index + 1);
         }
         return true;
     }
@@ -271,7 +288,16 @@ namespace libgltf
     {
         if (!image) return false;
         data_type = image->mimeType;
-        return LoadByUri(image->uri, data, data_type);
+        if (!image->uri.empty())
+        {
+            return LoadByUri(image->uri, data, data_type);
+        }
+        if (image->bufferView)
+        {
+            std::shared_ptr<CBufferViewStream> image_stream = std::make_shared<CBufferViewStream>(data);
+            return GetOrLoadBufferViewData(static_cast<size_t>(int32_t(*image->bufferView)), image_stream);
+        }
+        return false;
     }
 
     bool CGlTFLoader::GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream)

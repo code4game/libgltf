@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -136,11 +136,15 @@ namespace libgltf
         return current_path;
     }
 
-    CFileLoader::CFileLoader()
-        : m_RootPath(GetCWD())
+    CFileLoader::CFileLoader(const string_t& _sRootPath /*= GLTFTEXT("")*/)
+        : m_RootPath(_sRootPath.empty() ? GetCWD() : _sRootPath)
+        , m_FilePath()
         , m_FileDatas()
     {
-        //
+        if (m_RootPath.IsRelative())
+        {
+            m_RootPath = GetCWD();
+        }
     }
 
     bool CFileLoader::Load(const string_t& _sFilePath)
@@ -164,6 +168,7 @@ namespace libgltf
             found_filedata.resize(file_size);
             file_stream.read((char*)found_filedata.data(), file_size);
         }
+        m_FilePath.SetPath(_sFilePath);
         return true;
     }
 
@@ -174,7 +179,7 @@ namespace libgltf
 
     const std::vector<uint8_t>& CFileLoader::operator[](const string_t& file) const
     {
-        return Find(CPath(file.empty() ? GLTFTEXT("") : file.c_str()));
+        return Find(CPath(file.empty() ? string_t(m_FilePath) : file.c_str()));
     }
 
     bool CFileLoader::ReadByte(const string_t& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const

@@ -1,4 +1,4 @@
-from c11type import C11Type
+from .c11type import C11Type
 
 class C11TypeNumber(C11Type):
     def __init__(self):
@@ -30,7 +30,7 @@ class C11TypeNumber(C11Type):
 
     @classmethod
     def codeJsonCheck(cls):
-        return u'IsFloat()'
+        return u'IsNumber()'
 
     @classmethod
     def codeJsonSet(cls, dataName, variableName):

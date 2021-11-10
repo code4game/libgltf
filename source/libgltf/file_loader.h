@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2020 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -58,7 +58,7 @@ namespace libgltf
         typedef std::map<CPath, std::vector<uint8_t>> TFileDatas;
 
     public:
-        explicit CFileLoader();
+        explicit CFileLoader(const string_t& _sRootPath = GLTFTEXT(""));
 
     public:
         bool Load(const string_t& _sFilePath);
@@ -75,6 +75,7 @@ namespace libgltf
 
     private:
         CPath m_RootPath;
+        CPath m_FilePath;
         TFileDatas m_FileDatas;
     };
 }

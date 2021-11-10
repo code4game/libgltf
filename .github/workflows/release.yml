@@ -1,10 +1,10 @@
-name: 'build'
+name: 'release'
 
 on:
   push:
-    branches: [ '*' ]
+    tags: [ '*' ]
     paths-ignore:
-    - '!.github/build.yml'
+    - '!.github/release.yml'
     - 'docs/**'
     - '.coveralls.yml'
     - '.readthedocs.yml'
@@ -38,12 +38,18 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: 'build and make'
       run: |
-        cmake -B build/win64 -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/win64 --config Debug
-        cmake --build build/win64 --config Release
-        cmake -B build/win32 -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE
-        cmake --build build/win32 --config Debug
-        cmake --build build/win32 --config Release
+        mkdir build && cd build/
+        mkdir win64 && cd win64/
+        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
+        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
+        cd ../
+        mkdir win32 && cd win32/
+        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
+        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
+        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
+        cd ../
+        cd ../
     - name: 'ready artifact'
       run: |
         xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
@@ -242,3 +248,80 @@ jobs:
       with:
         name: libgltf.ios
         path: output/
+
+  release:
+    name: 'release'
+    runs-on: ubuntu-latest
+    needs: [ windows, linux, macos, android, ios ]
+    steps:
+    - name: 'get version by tag'
+      id: get_version
+      uses: battila7/get-version-action@v2
+    - name: 'create release'
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: '${{ github.ref }}'
+        release_name: 'Release v${{ github.ref }}'
+        body: ''
+        draft: false
+        prerelease: false
+    - name: 'download artifact'
+      uses: actions/download-artifact@v2
+      with:
+        path: 'output/'
+    - name: 'package release asset'
+      run: |
+        cd libgltf.windows/ && zip -r package.zip ./* && cd ../
+        cd libgltf.linux/ && zip -r package.zip ./* && cd ../
+        cd libgltf.macos/ && zip -r package.zip ./* && cd ../
+        cd libgltf.android.api19/ && zip -r package.zip ./* && cd ../
+        cd libgltf.ios/ && zip -r package.zip ./* && cd ../
+      working-directory: 'output/'
+    - name: 'upload release asset windows'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'output/libgltf.windows/package.zip'
+        asset_name: 'libgltf.v${{ steps.get_version.outputs.version }}.windows.zip'
+        asset_content_type: application/zip
+    - name: 'upload release asset linux'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'output/libgltf.linux/package.zip'
+        asset_name: 'libgltf.v${{ steps.get_version.outputs.version }}.linux.zip'
+        asset_content_type: application/zip
+    - name: 'upload release asset macos'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'output/libgltf.macos/package.zip'
+        asset_name: 'libgltf.v${{ steps.get_version.outputs.version }}.macos.zip'
+        asset_content_type: application/zip
+    - name: 'upload release asset android api19'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'output/libgltf.android.api19/package.zip'
+        asset_name: 'libgltf.v${{ steps.get_version.outputs.version }}.android.api19.zip'
+        asset_content_type: application/zip
+    - name: 'upload release asset ios'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'output/libgltf.ios/package.zip'
+        asset_name: 'libgltf.v${{ steps.get_version.outputs.version }}.ios.zip'
+        asset_content_type: application/zip

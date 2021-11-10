@@ -11,11 +11,18 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_draco_mesh_compressionextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_draco_mesh_compression"), json_value, _rData.doc->GetAllocator());
     }
-    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_lights_punctual.schema.json"))
+    else if (extensionValue->schemaType == GLTFTEXT("node.KHR_lights_punctual.schema.json"))
     {
         const SKHR_lights_punctualnodeextension& extension = *((const SKHR_lights_punctualnodeextension*)extensionValue.get());
         GLTFCharValue json_value;
         if (!(TDataDoc<SKHR_lights_punctualnodeextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_lights_punctual"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_lights_punctual.schema.json"))
+    {
+        const SKHR_lights_punctualglTFextension& extension = *((const SKHR_lights_punctualglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_lights_punctualglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_lights_punctual"), json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_clearcoat.schema.json"))
@@ -25,12 +32,33 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_materials_clearcoatglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_materials_clearcoat"), json_value, _rData.doc->GetAllocator());
     }
-    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_pbrSpecularGlossiness.schema.json"))
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_ior.schema.json"))
     {
-        const SKHR_materials_pbrSpecularGlossinessglTFextension& extension = *((const SKHR_materials_pbrSpecularGlossinessglTFextension*)extensionValue.get());
+        const SKHR_materials_iorglTFextension& extension = *((const SKHR_materials_iorglTFextension*)extensionValue.get());
         GLTFCharValue json_value;
-        if (!(TDataDoc<SKHR_materials_pbrSpecularGlossinessglTFextension>(extension, _rData.doc) >> json_value)) return false;
-        _JsonValue.AddMember(GLTFTEXT("KHR_materials_pbrSpecularGlossiness"), json_value, _rData.doc->GetAllocator());
+        if (!(TDataDoc<SKHR_materials_iorglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_ior"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_sheen.schema.json"))
+    {
+        const SKHR_materials_sheenglTFextension& extension = *((const SKHR_materials_sheenglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_sheenglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_sheen"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_specular.schema.json"))
+    {
+        const SKHR_materials_specularglTFextension& extension = *((const SKHR_materials_specularglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_specularglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_specular"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_transmission.schema.json"))
+    {
+        const SKHR_materials_transmissionglTFextension& extension = *((const SKHR_materials_transmissionglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_transmissionglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_transmission"), json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_unlit.schema.json"))
     {
@@ -39,12 +67,19 @@ for (const std::pair<string_t, std::shared_ptr<SObject>>& extensionProperty : _r
         if (!(TDataDoc<SKHR_materials_unlitglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember(GLTFTEXT("KHR_materials_unlit"), json_value, _rData.doc->GetAllocator());
     }
-    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_techniques_webgl.schema.json"))
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_variants.schema.json"))
     {
-        const SKHR_techniques_webglmaterialextension& extension = *((const SKHR_techniques_webglmaterialextension*)extensionValue.get());
+        const SKHR_materials_variantsglTFextension& extension = *((const SKHR_materials_variantsglTFextension*)extensionValue.get());
         GLTFCharValue json_value;
-        if (!(TDataDoc<SKHR_techniques_webglmaterialextension>(extension, _rData.doc) >> json_value)) return false;
-        _JsonValue.AddMember(GLTFTEXT("KHR_techniques_webgl"), json_value, _rData.doc->GetAllocator());
+        if (!(TDataDoc<SKHR_materials_variantsglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_variants"), json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_materials_volume.schema.json"))
+    {
+        const SKHR_materials_volumeglTFextension& extension = *((const SKHR_materials_volumeglTFextension*)extensionValue.get());
+        GLTFCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_volumeglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember(GLTFTEXT("KHR_materials_volume"), json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == GLTFTEXT("glTF.KHR_texture_transform.schema.json"))
     {
