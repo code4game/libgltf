@@ -1,6 +1,7 @@
 """basic type."""
 
 class C11Type(object):
+
     """basic type."""
 
     def __init__(self):

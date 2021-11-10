@@ -9,6 +9,7 @@ from .c11typearray import C11TypeArray
 from .c11variable import C11Variable
 
 class C11TypeStruct(C11Type):
+
     """struct type."""
 
     def __init__(self):
