@@ -2,6 +2,7 @@ from .c11type import C11Type
 
 class C11TypeInteger(C11Type):
     def __init__(self):
+        """construct and declare some vars"""
         C11Type.__init__(self)
         self.typeName = u'int32_t'
 
@@ -10,13 +11,13 @@ class C11TypeInteger(C11Type):
         self.typeName = u'int32_t'
 
     @classmethod
-    def codeDefaultValue(cls, schemaDefaultValue):
+    def codeDefaultValue(self, schemaDefaultValue):
         if schemaDefaultValue != None:
             return u'%d' % schemaDefaultValue
         return u'0'
 
     @classmethod
-    def codeDefaultValueArray(cls, schemaDefaultValues):
+    def codeDefaultValueArray(self, schemaDefaultValues):
         if schemaDefaultValues is None or isinstance(schemaDefaultValues, list) or len(schemaDefaultValues) <= 0:
             return u''
         code_default_value = u''
@@ -27,13 +28,13 @@ class C11TypeInteger(C11Type):
         return u'{ %s }' % code_default_value
 
     @classmethod
-    def codeJsonCheck(cls):
+    def codeJsonCheck(self):
         return u'IsInt()'
 
     @classmethod
-    def codeJsonSet(cls, dataName, variableName):
+    def codeJsonSet(self, dataName, variableName):
         return u'%s.%s = _JsonValue[GLTFTEXT("%s")].GetInt();' % (dataName, variableName, variableName)
 
     @classmethod
-    def codeJsonGet(cls, dataName, variableName):
+    def codeJsonGet(self, dataName, variableName):
         return u'_JsonValue[GLTFTEXT("%s")].SetInt(%s.%s);' % (variableName, dataName, variableName)

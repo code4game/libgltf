@@ -2,12 +2,12 @@ from .c11type import C11Type
 
 class C11TypeArray(C11Type):
     def __init__(self):
+        """construct and declare some vars"""
         C11Type.__init__(self)
         self.typeName = u'std::vector'
         self.c11Type = None
 
-    @classmethod
-    def buildC11Type(cls, schemaValue):
+    def buildC11Type(self, schemaValue):
         c11Type = None
         schemaValueType = None
         variableSchemaValue = schemaValue

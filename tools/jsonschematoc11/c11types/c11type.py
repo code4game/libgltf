@@ -1,9 +1,10 @@
-'''basic type'''
+"""basic type"""
 
 class C11Type(object):
-    '''basic type'''
+    """basic type"""
 
     def __init__(self):
+        """construct and declare some vars"""
         self.schemaName = None
         self.schemaValue = None
         self.typeName = None
@@ -26,8 +27,7 @@ class C11Type(object):
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']
 
-    @classmethod
-    def revise(cls, c11Types):
+    def revise(self, c11Types):
         return (0, u'')
 
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
@@ -39,30 +39,23 @@ class C11Type(object):
     def codeSetDefaultInConstructor(self):
         pass
 
-    @classmethod
-    def codeHeader(cls, codeTypeNames):
+    def codeHeader(self, codeTypeNames):
         return [u'']
 
-    @classmethod
-    def codeSource(cls, codeTypeNames):
+    def codeSource(self, codeTypeNames):
         return [u'']
 
-    @classmethod
-    def codeDefaultValue(cls, schemaDefaultValue):
+    def codeDefaultValue(self, schemaDefaultValue):
         return u''
 
-    @classmethod
-    def codeDefaultValueArray(cls, schemaDefaultValue):
+    def codeDefaultValueArray(self, schemaDefaultValue):
         return u''
 
-    @classmethod
-    def codeJsonCheck(cls):
+    def codeJsonCheck(self):
         return None
 
-    @classmethod
-    def codeJsonSet(cls, dataName, variableName):
+    def codeJsonSet(self, dataName, variableName):
         return None
 
-    @classmethod
-    def codeJsonGet(cls, dataName, variableName):
+    def codeJsonGet(self, dataName, variableName):
         return None

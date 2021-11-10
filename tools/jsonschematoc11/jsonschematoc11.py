@@ -13,6 +13,7 @@ logger = logging.getLogger(name=u'JSONSchemaToC11')
 
 class C11TypeLibrary(object):
     def __init__(self):
+        """construct and declare some vars"""
         self.c11Types = dict()
 
     def setVersion(self, major=0, minor=0, patch=0):
@@ -189,7 +190,7 @@ class C11TypeLibrary(object):
                 code_header_declare_line = u'%sstruct %s;\n' % (begin_space, c11_type.codeTypeName())
                 header_file.write(code_header_declare_line)
             header_file.write(u'\n')
-                
+
             parent_type_names = []
             for key in self.c11Types:
                 c11_type = self.c11Types[key]
