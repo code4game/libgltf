@@ -5,7 +5,9 @@
 [![visit milestones](https://img.shields.io/badge/visit-milestones-blue.svg?style=flat)](https://github.com/code4game/libgltf/milestones)
 
 [![build](https://github.com/code4game/libgltf/workflows/build/badge.svg)](https://github.com/code4game/libgltf/actions?query=workflow%3Abuild)
-[![Coverage Status](https://coveralls.io/repos/github/code4game/libgltf/badge.svg)](https://coveralls.io/github/code4game/libgltf)
+[![build with draco](https://github.com/code4game/libgltf/workflows/build%20with%20draco/badge.svg)](https://github.com/code4game/libgltf/actions?query=workflow%3A%22build+with+draco%22)
+
+[![Coverage status from coveralls](https://coveralls.io/repos/github/code4game/libgltf/badge.svg?branch=master)](https://coveralls.io/github/code4game/libgltf?branch=master)
 [![Codacy](https://api.codacy.com/project/badge/Grade/fa7ee9a5bc9b4befb703298ca721bc9a)](https://www.codacy.com/app/code4game/libgltf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=code4game/libgltf&amp;utm_campaign=Badge_Grade)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/code4game/libgltf.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/code4game/libgltf/context:python)
 
