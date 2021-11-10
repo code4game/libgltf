@@ -1,8 +1,13 @@
 # Change Log
 
+## 0.1.9 (2021-11-10)
+
+* Update glTF
+* Supports more material extensions
+
 ## 0.1.8 (2021-01-29)
 
-* Fix a bug: the parser can't parse the array that it's item type is a map
+* Fix a bug: the parser can't parse the array that the type of  its item is a map
 
 ## 0.1.7 (2020-10-15)
 
