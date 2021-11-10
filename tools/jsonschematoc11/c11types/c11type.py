@@ -27,35 +27,46 @@ class C11Type(object):
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']
 
+    @classmethod
     def revise(self, c11Types):
         return (0, u'')
 
+    @classmethod
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         return self.typeName
 
+    @classmethod
     def codeDefineVariable(self, variableName, withDeclare=False, withDefault=False):
         pass
 
+    @classmethod
     def codeSetDefaultInConstructor(self):
         pass
 
+    @classmethod
     def codeHeader(self, codeTypeNames):
         return [u'']
 
+    @classmethod
     def codeSource(self, codeTypeNames):
         return [u'']
 
+    @classmethod
     def codeDefaultValue(self, schemaDefaultValue):
         return u''
 
+    @classmethod
     def codeDefaultValueArray(self, schemaDefaultValue):
         return u''
 
+    @classmethod
     def codeJsonCheck(self):
         return None
 
+    @classmethod
     def codeJsonSet(self, dataName, variableName):
         return None
 
+    @classmethod
     def codeJsonGet(self, dataName, variableName):
         return None
