@@ -11,7 +11,6 @@ class C11TypeArray(C11Type):
         c11Type = None
         schemaValueType = None
         variableSchemaValue = schemaValue
-        doallof = False
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
             if schemaValueType == u'object':
