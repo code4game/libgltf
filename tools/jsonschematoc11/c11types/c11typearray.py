@@ -2,7 +2,7 @@ from .c11type import C11Type
 
 class C11TypeArray(C11Type):
     def __init__(self):
-        """construct and declare some vars"""
+        """construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'std::vector'
         self.c11Type = None

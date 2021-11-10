@@ -13,7 +13,7 @@ logger = logging.getLogger(name=u'JSONSchemaToC11')
 
 class C11TypeLibrary(object):
     def __init__(self):
-        """construct and declare some vars"""
+        """construct and declare some vars."""
         self.c11Types = dict()
 
     def setVersion(self, major=0, minor=0, patch=0):

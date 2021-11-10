@@ -3,10 +3,10 @@
 from .c11type import C11Type
 
 class C11TypeString(C11Type):
-    """strig type"""
+    """strig type."""
 
     def __init__(self):
-        """construct and declare some vars"""
+        """construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'string_t'
 

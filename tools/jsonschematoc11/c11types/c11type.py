@@ -1,10 +1,10 @@
-"""basic type"""
+"""basic type."""
 
 class C11Type(object):
-    """basic type"""
+    """basic type."""
 
     def __init__(self):
-        """construct and declare some vars"""
+        """construct and declare some vars."""
         self.schemaName = None
         self.schemaValue = None
         self.typeName = None
