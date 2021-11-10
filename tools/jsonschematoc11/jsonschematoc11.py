@@ -13,7 +13,7 @@ logger = logging.getLogger(name=u'JSONSchemaToC11')
 
 class C11TypeLibrary(object):
     def __init__(self):
-        """construct and declare some vars."""
+        """Construct and declare some vars."""
         self.c11Types = dict()
 
     def setVersion(self, major=0, minor=0, patch=0):
@@ -92,7 +92,6 @@ class C11TypeLibrary(object):
         code_lines.append(u'#define LIBGLTF_PATCH_VERSION    %s' % self.patch)
         return code_lines
 
-    @classmethod
     def codeHeaderParser(self):
         code_lines = []
         code_lines.append(u'struct SGlTF;')
@@ -109,7 +108,6 @@ class C11TypeLibrary(object):
         code_lines.append(u'};')
         return code_lines
 
-    @classmethod
     def codeSourceParser(self):
         code_lines = []
         code_lines.append(u'SObject::SObject()')

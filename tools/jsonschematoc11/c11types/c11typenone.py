@@ -2,7 +2,7 @@ from .c11type import C11Type
 
 class C11TypeNone(C11Type):
     def __init__(self):
-        """construct and declare some vars."""
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'none'
 

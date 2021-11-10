@@ -1,5 +1,3 @@
-"""struct type."""
-
 from .c11type import C11Type
 from .c11typebool import C11TypeBool
 from .c11typeinteger import C11TypeInteger
@@ -13,7 +11,7 @@ class C11TypeStruct(C11Type):
     """struct type."""
 
     def __init__(self):
-        """construct and declare some vars."""
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.parents = dict()
         self.variables = dict()

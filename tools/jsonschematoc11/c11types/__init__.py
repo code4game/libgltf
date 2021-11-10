@@ -1,3 +1,5 @@
+"""Build C11 types."""
+
 from .c11typebool import C11TypeBool
 from .c11typeinteger import C11TypeInteger
 from .c11typenumber import C11TypeNumber

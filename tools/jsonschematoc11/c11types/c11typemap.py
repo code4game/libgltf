@@ -1,5 +1,3 @@
-"""map type."""
-
 from .c11type import C11Type
 
 class C11TypeMap(C11Type):
@@ -7,12 +5,11 @@ class C11TypeMap(C11Type):
     """map type."""
 
     def __init__(self):
-        """construct and declare some vars."""
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'std::map'
         self.c11Type = None
 
-    @classmethod
     def buildC11Type(self, schemaValue):
         c11Type = None
         if u'type' in schemaValue:
@@ -66,14 +63,11 @@ class C11TypeMap(C11Type):
         #    return u'TDataDoc<%s<string_t, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
         return u'%s<string_t, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
 
-    @classmethod
     def codeJsonCheck(self):
         return u'IsObject()'
 
-    @classmethod
     def codeJsonSet(self, dataName, variableName):
         return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
 
-    @classmethod
     def codeJsonGet(self, dataName, variableName):
         return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)

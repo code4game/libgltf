@@ -1,5 +1,3 @@
-"""variable."""
-
 from .c11typebool import C11TypeBool
 from .c11typeinteger import C11TypeInteger
 from .c11typenumber import C11TypeNumber
@@ -13,7 +11,7 @@ class C11Variable(object):
     """variable."""
 
     def __init__(self, name, schemaValue):
-        """construct and declare some vars."""
+        """Construct and declare some vars."""
         self.schemaValue = schemaValue
         self.typeName = ""
         self.c11Type = C11TypeNone()
