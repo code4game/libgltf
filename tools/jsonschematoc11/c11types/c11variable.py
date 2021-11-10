@@ -95,7 +95,7 @@ class C11Variable(object):
         codeLines = []
         codeCheckLine = self.c11Type.codeJsonCheck()
         if isSet:
-            if codeCheckLine == None or len(codeCheckLine) <= 0:
+            if codeCheckLine is None or len(codeCheckLine) <= 0:
                 codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")))' % self.name)
             else:
                 codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")) && _JsonValue[GLTFTEXT("%s")].%s)' % (self.name, self.name, codeCheckLine))

@@ -558,9 +558,9 @@ def JSONSchemaToC11(argv):
         return (1, u'Invalid output header path')
     if output_source_path != None and not os.path.exists(output_source_path):
         return (1, u'Invalid output source path')
-    if output_header_path == None:
+    if output_header_path is None:
         output_header_path = u'./'
-    if output_source_path == None:
+    if output_source_path is None:
         output_source_path = u'./'
 
     c11_type_library = C11TypeLibrary()

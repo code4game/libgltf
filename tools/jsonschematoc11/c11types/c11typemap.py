@@ -30,7 +30,7 @@ class C11TypeMap(C11Type):
             elif schemaValueType == u'array':
                 from .c11typearray import C11TypeArray
                 c11Type = C11TypeArray()
-        if c11Type == None:
+        if c11Type is None:
             from .c11typestruct import C11TypeStruct
             c11Type = C11TypeStruct()
         return (c11Type, 0, None)

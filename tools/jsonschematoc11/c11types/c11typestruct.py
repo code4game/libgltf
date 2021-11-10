@@ -31,7 +31,7 @@ class C11TypeStruct(C11Type):
                 self.c11Type = C11TypeString()
             elif schemaValueType == u'array':
                 self.c11Type = C11TypeArray()
-        if self.c11Type == None:
+        if self.c11Type is None:
             if u'allOf' in schemaValue:
                 schemaValueAllOf = schemaValue[u'allOf']
                 for schemaValueAllOfItem in schemaValueAllOf:
@@ -94,7 +94,7 @@ class C11TypeStruct(C11Type):
 
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         codeLine = self.typeName
-        if self.typeName == None:
+        if self.typeName is None:
             #TODO:
             print(u':todo:')
         if withDeclare:
@@ -337,7 +337,7 @@ class C11TypeStruct(C11Type):
         return u'nullptr'
 
     def codeJsonCheck(self):
-        if self.c11Type == None:
+        if self.c11Type is None:
             return u'IsObject()'
         return self.c11Type.codeJsonCheck()
 
