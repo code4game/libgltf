@@ -30,11 +30,29 @@ if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_clearcoat")) && _JsonValue[GLTF
     if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_clearcoat")])) return false;
     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_clearcoat"), extension));
 }
-if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_pbrSpecularGlossiness")) && _JsonValue[GLTFTEXT("KHR_materials_pbrSpecularGlossiness")].IsObject())
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_ior")) && _JsonValue[GLTFTEXT("KHR_materials_ior")].IsObject())
 {
-    std::shared_ptr<SKHR_materials_pbrSpecularGlossinessglTFextension> extension;
-    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_pbrSpecularGlossiness")])) return false;
-    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_pbrSpecularGlossiness"), extension));
+    std::shared_ptr<SKHR_materials_iorglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_ior")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_ior"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_sheen")) && _JsonValue[GLTFTEXT("KHR_materials_sheen")].IsObject())
+{
+    std::shared_ptr<SKHR_materials_sheenglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_sheen")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_sheen"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_specular")) && _JsonValue[GLTFTEXT("KHR_materials_specular")].IsObject())
+{
+    std::shared_ptr<SKHR_materials_specularglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_specular")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_specular"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_transmission")) && _JsonValue[GLTFTEXT("KHR_materials_transmission")].IsObject())
+{
+    std::shared_ptr<SKHR_materials_transmissionglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_transmission")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_transmission"), extension));
 }
 if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_unlit")) && _JsonValue[GLTFTEXT("KHR_materials_unlit")].IsObject())
 {
@@ -42,11 +60,17 @@ if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_unlit")) && _JsonValue[GLTFTEXT
     if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_unlit")])) return false;
     _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_unlit"), extension));
 }
-if (_JsonValue.HasMember(GLTFTEXT("KHR_techniques_webgl")) && _JsonValue[GLTFTEXT("KHR_techniques_webgl")].IsObject())
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_variants")) && _JsonValue[GLTFTEXT("KHR_materials_variants")].IsObject())
 {
-    std::shared_ptr<SKHR_techniques_webglmaterialextension> extension;
-    if (!(extension << _JsonValue[GLTFTEXT("KHR_techniques_webgl")])) return false;
-    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_techniques_webgl"), extension));
+    std::shared_ptr<SKHR_materials_variantsglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_variants")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_variants"), extension));
+}
+if (_JsonValue.HasMember(GLTFTEXT("KHR_materials_volume")) && _JsonValue[GLTFTEXT("KHR_materials_volume")].IsObject())
+{
+    std::shared_ptr<SKHR_materials_volumeglTFextension> extension;
+    if (!(extension << _JsonValue[GLTFTEXT("KHR_materials_volume")])) return false;
+    _rData.properties.insert(std::make_pair(GLTFTEXT("KHR_materials_volume"), extension));
 }
 if (_JsonValue.HasMember(GLTFTEXT("KHR_texture_transform")) && _JsonValue[GLTFTEXT("KHR_texture_transform")].IsObject())
 {

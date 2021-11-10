@@ -38,18 +38,12 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: 'build and make'
       run: |
-        mkdir build && cd build/
-        mkdir win64 && cd win64/
-        cmake -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="x64"
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="x64"
-        cd ../
-        mkdir win32 && cd win32/
-        cmake -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE ../../
-        msbuild libgltf.sln /t:Build /p:Configuration="Release" /p:Platform="Win32"
-        msbuild libgltf.sln /t:Build /p:Configuration="Debug" /p:Platform="Win32"
-        cd ../
-        cd ../
+        cmake -B build/win64 -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
+        cmake --build build/win64 --config Debug
+        cmake --build build/win64 --config Release
+        cmake -B build/win32 -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE
+        cmake --build build/win32 --config Debug
+        cmake --build build/win32 --config Release
     - name: 'ready artifact'
       run: |
         xcopy /D /S /Y build\win64\draco\*.h output\include\draco\

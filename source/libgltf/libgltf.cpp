@@ -639,18 +639,60 @@ namespace libgltf
         return true;
     }
 
-    SKHR_materials_pbrSpecularGlossinessglTFextension::SKHR_materials_pbrSpecularGlossinessglTFextension()
+    SKHR_materials_iorglTFextension::SKHR_materials_iorglTFextension()
         : SGlTFProperty()
-        , diffuseFactor({ 1.000000f, 1.000000f, 1.000000f, 1.000000f })
-        , diffuseTexture(nullptr)
-        , specularFactor({ 1.000000f, 1.000000f, 1.000000f })
-        , glossinessFactor(1.000000f)
-        , specularGlossinessTexture(nullptr)
+        , ior(1.500000f)
     {
         //
     }
 
-    SKHR_materials_pbrSpecularGlossinessglTFextension::operator bool() const
+    SKHR_materials_iorglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_sheenglTFextension::SKHR_materials_sheenglTFextension()
+        : SGlTFProperty()
+        , sheenColorFactor({ 0.000000f, 0.000000f, 0.000000f })
+        , sheenColorTexture(nullptr)
+        , sheenRoughnessFactor(0.000000f)
+        , sheenRoughnessTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_sheenglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_specularglTFextension::SKHR_materials_specularglTFextension()
+        : SGlTFProperty()
+        , specularFactor(1.000000f)
+        , specularTexture(nullptr)
+        , specularColorFactor({ 1.000000f, 1.000000f, 1.000000f })
+        , specularColorTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_specularglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_transmissionglTFextension::SKHR_materials_transmissionglTFextension()
+        : SGlTFProperty()
+        , transmissionFactor(0.000000f)
+        , transmissionTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_transmissionglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -668,117 +710,43 @@ namespace libgltf
         return true;
     }
 
-    SKHR_techniques_webglglTFextension::SKHR_techniques_webglglTFextension()
+    SKHR_materials_variantsglTFextension::SKHR_materials_variantsglTFextension()
         : SGlTFProperty()
-        , programs()
-        , shaders()
-        , techniques()
+        , variants()
     {
         //
     }
 
-    SKHR_techniques_webglglTFextension::operator bool() const
+    SKHR_materials_variantsglTFextension::operator bool() const
     {
         //TODO:
         return true;
     }
 
-    SKHR_techniques_webglmaterialextension::SKHR_techniques_webglmaterialextension()
+    SKHR_materials_variantsmeshprimitiveextension::SKHR_materials_variantsmeshprimitiveextension()
         : SGlTFProperty()
-        , technique(nullptr)
-        , values()
+        , mappings()
     {
         //
     }
 
-    SKHR_techniques_webglmaterialextension::operator bool() const
+    SKHR_materials_variantsmeshprimitiveextension::operator bool() const
     {
         //TODO:
         return true;
     }
 
-    SProgram::SProgram()
-        : SGlTFChildofRootProperty()
-        , fragmentShader(nullptr)
-        , vertexShader(nullptr)
-        , glExtensions()
-    {
-        //
-    }
-
-    SProgram::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SShader::SShader()
-        : SGlTFChildofRootProperty()
-        , uri(GLTFTEXT(""))
-        , type(0)
-        , bufferView(nullptr)
-    {
-        //
-    }
-
-    SShader::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SAttribute::SAttribute()
+    SKHR_materials_volumeglTFextension::SKHR_materials_volumeglTFextension()
         : SGlTFProperty()
-        , semantic(GLTFTEXT(""))
+        , thicknessFactor(0.000000f)
+        , thicknessTexture(nullptr)
+        , attenuationDistance(0.0f)
+        , attenuationColor({ 1.000000f, 1.000000f, 1.000000f })
     {
         //
     }
 
-    SAttribute::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    STechnique::STechnique()
-        : SGlTFChildofRootProperty()
-        , program(nullptr)
-        , attributes()
-        , uniforms()
-    {
-        //
-    }
-
-    STechnique::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SUniform::SUniform()
-        : SGlTFProperty()
-        , count(0)
-        , node(nullptr)
-        , type(0)
-        , semantic(GLTFTEXT(""))
-        , value(nullptr)
-    {
-        //
-    }
-
-    SUniform::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SUniformValue::SUniformValue()
-        : SObject()
-    {
-        //
-    }
-
-    SUniformValue::operator bool() const
+    SKHR_materials_volumeglTFextension::operator bool() const
     {
         //TODO:
         return true;

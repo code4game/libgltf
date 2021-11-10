@@ -104,16 +104,14 @@ namespace libgltf
     struct SLightspot;
     struct SKHR_lights_punctualnodeextension;
     struct SKHR_materials_clearcoatglTFextension;
-    struct SKHR_materials_pbrSpecularGlossinessglTFextension;
+    struct SKHR_materials_iorglTFextension;
+    struct SKHR_materials_sheenglTFextension;
+    struct SKHR_materials_specularglTFextension;
+    struct SKHR_materials_transmissionglTFextension;
     struct SKHR_materials_unlitglTFextension;
-    struct SKHR_techniques_webglglTFextension;
-    struct SKHR_techniques_webglmaterialextension;
-    struct SProgram;
-    struct SShader;
-    struct SAttribute;
-    struct STechnique;
-    struct SUniform;
-    struct SUniformValue;
+    struct SKHR_materials_variantsglTFextension;
+    struct SKHR_materials_variantsmeshprimitiveextension;
+    struct SKHR_materials_volumeglTFextension;
     struct SKHR_texture_transformtextureInfoextension;
     struct SADOBE_materials_thin_transparencyglTFextension;
     struct SArticulation;
@@ -159,7 +157,7 @@ namespace libgltf
 
     /*!
      * struct: SAccessor
-     * A typed view into a bufferView.  A bufferView contains raw binary data.  An accessor provides a typed view into a bufferView or a subset of a bufferView similar to how WebGL's `vertexAttribPointer()` defines an attribute in a buffer.
+     * A typed view into a buffer view that contains raw binary data.
      */
     struct SAccessor : SGlTFChildofRootProperty
     {
@@ -170,27 +168,27 @@ namespace libgltf
 
         // The index of the bufferView.
         std::shared_ptr<SGlTFId> bufferView;
-        // The offset relative to the start of the bufferView in bytes.
+        // The offset relative to the start of the buffer view in bytes.
         int32_t byteOffset;
-        // The datatype of components in the attribute.
+        // The datatype of the accessor's components.
         int32_t componentType;
-        // Specifies whether integer data values should be normalized.
+        // Specifies whether integer data values are normalized before usage.
         bool normalized;
-        // The number of attributes referenced by this accessor.
+        // The number of elements referenced by this accessor.
         int32_t count;
-        // Specifies if the attribute is a scalar, vector, or matrix.
+        // Specifies if the accessor's elements are scalars, vectors, or matrices.
         string_t type;
-        // Maximum value of each component in this attribute.
+        // Maximum value of each component in this accessor.
         std::vector<float> max;
-        // Minimum value of each component in this attribute.
+        // Minimum value of each component in this accessor.
         std::vector<float> min;
-        // Sparse storage of attributes that deviate from their initialization value.
+        // Sparse storage of elements that deviate from their initialization value.
         std::shared_ptr<SAccessorSparse> sparse;
     };
 
     /*!
      * struct: SAccessorSparseIndices
-     * Indices of those attributes that deviate from their initialization value.
+     * An object pointing to a buffer view containing the indices of deviating accessor values. The number of indices is equal to `accessor.sparse.count`. Indices **MUST** strictly increase.
      */
     struct SAccessorSparseIndices : SGlTFProperty
     {
@@ -199,9 +197,9 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of the bufferView with sparse indices. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target.
+        // The index of the buffer view with sparse indices. The referenced buffer view **MUST NOT** have its `target` or `byteStride` properties defined. The buffer view and the optional `byteOffset` **MUST** be aligned to the `componentType` byte length.
         std::shared_ptr<SGlTFId> bufferView;
-        // The offset relative to the start of the bufferView in bytes. Must be aligned.
+        // The offset relative to the start of the buffer view in bytes.
         int32_t byteOffset;
         // The indices data type.
         int32_t componentType;
@@ -209,7 +207,7 @@ namespace libgltf
 
     /*!
      * struct: SAccessorSparse
-     * Sparse storage of attributes that deviate from their initialization value.
+     * Sparse storage of accessor values that deviate from their initialization value.
      */
     struct SAccessorSparse : SGlTFProperty
     {
@@ -218,17 +216,17 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // Number of entries stored in the sparse array.
+        // Number of deviating accessor values stored in the sparse array.
         int32_t count;
-        // Index array of size `count` that points to those accessor attributes that deviate from their initialization value. Indices must strictly increase.
+        // An object pointing to a buffer view containing the indices of deviating accessor values. The number of indices is equal to `count`. Indices **MUST** strictly increase.
         std::shared_ptr<SAccessorSparseIndices> indices;
-        // Array of size `count` times number of components, storing the displaced accessor attributes pointed by `indices`. Substituted values must have the same `componentType` and number of components as the base accessor.
+        // An object pointing to a buffer view containing the deviating accessor values.
         std::shared_ptr<SAccessorSparseValues> values;
     };
 
     /*!
      * struct: SAccessorSparseValues
-     * Array of size `accessor.sparse.count` times number of components storing the displaced accessor attributes pointed by `accessor.sparse.indices`.
+     * An object pointing to a buffer view containing the deviating accessor values. The number of elements is equal to `accessor.sparse.count` times number of components. The elements have the same component type as the base accessor. The elements are tightly packed. Data **MUST** be aligned following the same rules as the base accessor.
      */
     struct SAccessorSparseValues : SGlTFProperty
     {
@@ -237,15 +235,15 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of the bufferView with sparse values. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target.
+        // The index of the bufferView with sparse values. The referenced buffer view **MUST NOT** have its `target` or `byteStride` properties defined.
         std::shared_ptr<SGlTFId> bufferView;
-        // The offset relative to the start of the bufferView in bytes. Must be aligned.
+        // The offset relative to the start of the bufferView in bytes.
         int32_t byteOffset;
     };
 
     /*!
      * struct: SAnimationChannel
-     * Targets an animation's sampler at a node's property.
+     * An animation channel combines an animation sampler with a target property being animated.
      */
     struct SAnimationChannel : SGlTFProperty
     {
@@ -256,13 +254,13 @@ namespace libgltf
 
         // The index of a sampler in this animation used to compute the value for the target.
         std::shared_ptr<SGlTFId> sampler;
-        // The index of the node and TRS property to target.
+        // The descriptor of the animated property.
         std::shared_ptr<SAnimationChannelTarget> target;
     };
 
     /*!
      * struct: SAnimationChannelTarget
-     * The index of the node and TRS property that an animation channel targets.
+     * The descriptor of the animated property.
      */
     struct SAnimationChannelTarget : SGlTFProperty
     {
@@ -271,15 +269,15 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of the node to target.
+        // The index of the node to animate. When undefined, the animated object **MAY** be defined by an extension.
         std::shared_ptr<SGlTFId> node;
-        // The name of the node's TRS property to modify, or the "weights" of the Morph Targets it instantiates. For the "translation" property, the values that are provided by the sampler are the translation along the x, y, and z axes. For the "rotation" property, the values are a quaternion in the order (x, y, z, w), where w is the scalar. For the "scale" property, the values are the scaling factors along the x, y, and z axes.
+        // The name of the node's TRS property to animate, or the `"weights"` of the Morph Targets it instantiates. For the `"translation"` property, the values that are provided by the sampler are the translation along the X, Y, and Z axes. For the `"rotation"` property, the values are a quaternion in the order (x, y, z, w), where w is the scalar. For the `"scale"` property, the values are the scaling factors along the X, Y, and Z axes.
         string_t path;
     };
 
     /*!
      * struct: SAnimationSampler
-     * Combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target).
+     * An animation sampler combines timestamps with a sequence of output values and defines an interpolation algorithm.
      */
     struct SAnimationSampler : SGlTFProperty
     {
@@ -288,7 +286,7 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of an accessor containing keyframe input values, e.g., time.
+        // The index of an accessor containing keyframe timestamps.
         std::shared_ptr<SGlTFId> input;
         // Interpolation algorithm.
         string_t interpolation;
@@ -307,9 +305,9 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // An array of channels, each of which targets an animation's sampler at a node's property. Different channels of the same animation can't have equal targets.
+        // An array of animation channels. An animation channel combines an animation sampler with a target property being animated. Different channels of the same animation **MUST NOT** have the same targets.
         std::vector<std::shared_ptr<SAnimationChannel>> channels;
-        // An array of samplers that combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target).
+        // An array of animation samplers. An animation sampler combines timestamps with a sequence of output values and defines an interpolation algorithm.
         std::vector<std::shared_ptr<SAnimationSampler>> samplers;
     };
 
@@ -328,9 +326,9 @@ namespace libgltf
         string_t copyright;
         // Tool that generated this glTF model.  Useful for debugging.
         string_t generator;
-        // The glTF version that this asset targets.
+        // The glTF version in the form of `<major>.<minor>` that this asset targets.
         string_t version;
-        // The minimum glTF version that this asset targets.
+        // The minimum glTF version in the form of `<major>.<minor>` that this asset targets. This property **MUST NOT** be greater than the asset version.
         string_t minVersion;
     };
 
@@ -345,7 +343,7 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The uri of the buffer.
+        // The URI (or IRI) of the buffer.
         string_t uri;
         // The length of the buffer in bytes.
         int32_t byteLength;
@@ -366,11 +364,11 @@ namespace libgltf
         std::shared_ptr<SGlTFId> buffer;
         // The offset into the buffer in bytes.
         int32_t byteOffset;
-        // The total byte length of the buffer view.
+        // The length of the bufferView in bytes.
         int32_t byteLength;
         // The stride, in bytes.
         int32_t byteStride;
-        // The target that the GPU buffer should be bound to.
+        // The hint representing the intended GPU buffer type to use with this buffer view.
         int32_t target;
     };
 
@@ -385,11 +383,11 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The floating-point horizontal magnification of the view. Must not be zero.
+        // The floating-point horizontal magnification of the view. This value **MUST NOT** be equal to zero. This value **SHOULD NOT** be negative.
         float xmag;
-        // The floating-point vertical magnification of the view. Must not be zero.
+        // The floating-point vertical magnification of the view. This value **MUST NOT** be equal to zero. This value **SHOULD NOT** be negative.
         float ymag;
-        // The floating-point distance to the far clipping plane. `zfar` must be greater than `znear`.
+        // The floating-point distance to the far clipping plane. This value **MUST NOT** be equal to zero. `zfar` **MUST** be greater than `znear`.
         float zfar;
         // The floating-point distance to the near clipping plane.
         float znear;
@@ -408,7 +406,7 @@ namespace libgltf
 
         // The floating-point aspect ratio of the field of view.
         float aspectRatio;
-        // The floating-point vertical field of view in radians.
+        // The floating-point vertical field of view in radians. This value **SHOULD** be less than π.
         float yfov;
         // The floating-point distance to the far clipping plane.
         float zfar;
@@ -418,7 +416,7 @@ namespace libgltf
 
     /*!
      * struct: SCamera
-     * A camera's projection.  A node can reference a camera to apply a transform to place the camera in the scene.
+     * A camera's projection.  A node **MAY** reference a camera to apply a transform to place the camera in the scene.
      */
     struct SCamera : SGlTFChildofRootProperty
     {
@@ -427,9 +425,9 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // An orthographic camera containing properties to create an orthographic projection matrix.
+        // An orthographic camera containing properties to create an orthographic projection matrix. This property **MUST NOT** be defined when `perspective` is defined.
         std::shared_ptr<SCameraOrthographic> orthographic;
-        // A perspective camera containing properties to create a perspective projection matrix.
+        // A perspective camera containing properties to create a perspective projection matrix. This property **MUST NOT** be defined when `orthographic` is defined.
         std::shared_ptr<SCameraPerspective> perspective;
         // Specifies if the camera uses a perspective or orthographic projection.
         string_t type;
@@ -437,7 +435,7 @@ namespace libgltf
 
     /*!
      * struct: SExtension
-     * Dictionary object with extension-specific objects.
+     * JSON object with extension-specific objects.
      */
     struct SExtension : SObject
     {
@@ -473,7 +471,7 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // Names of glTF extensions used somewhere in this asset.
+        // Names of glTF extensions used in this asset.
         std::vector<string_t> extensionsUsed;
         // Names of glTF extensions required to properly load this asset.
         std::vector<string_t> extensionsRequired;
@@ -526,7 +524,7 @@ namespace libgltf
 
     /*!
      * struct: SImage
-     * Image data used to create a texture. Image can be referenced by URI or `bufferView` index. `mimeType` is required in the latter case.
+     * Image data used to create a texture. Image **MAY** be referenced by an URI (or IRI) or a buffer view index.
      */
     struct SImage : SGlTFChildofRootProperty
     {
@@ -535,11 +533,11 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The uri of the image.
+        // The URI (or IRI) of the image.
         string_t uri;
-        // The image's MIME type. Required if `bufferView` is defined.
+        // The image's media type. This field **MUST** be defined when `bufferView` is defined.
         string_t mimeType;
-        // The index of the bufferView that contains the image. Use this instead of the image's uri property.
+        // The index of the bufferView that contains the image. This field **MUST NOT** be defined when `uri` is defined.
         std::shared_ptr<SGlTFId> bufferView;
     };
 
@@ -570,7 +568,7 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The scalar multiplier applied to each normal vector of the normal texture.
+        // The scalar parameter applied to each normal vector of the normal texture.
         float scale;
     };
 
@@ -599,13 +597,13 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The material's base color factor.
+        // The factors for the base color of the material.
         std::vector<float> baseColorFactor;
         // The base color texture.
         std::shared_ptr<STextureInfo> baseColorTexture;
-        // The metalness of the material.
+        // The factor for the metalness of the material.
         float metallicFactor;
-        // The roughness of the material.
+        // The factor for the roughness of the material.
         float roughnessFactor;
         // The metallic-roughness texture.
         std::shared_ptr<STextureInfo> metallicRoughnessTexture;
@@ -622,15 +620,15 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology. When not specified, all the default values of `pbrMetallicRoughness` apply.
+        // A set of parameter values that are used to define the metallic-roughness material model from Physically Based Rendering (PBR) methodology. When undefined, all the default values of `pbrMetallicRoughness` **MUST** apply.
         std::shared_ptr<SMaterialPBRMetallicRoughness> pbrMetallicRoughness;
-        // The normal map texture.
+        // The tangent space normal texture.
         std::shared_ptr<SMaterialNormalTextureInfo> normalTexture;
-        // The occlusion map texture.
+        // The occlusion texture.
         std::shared_ptr<SMaterialOcclusionTextureInfo> occlusionTexture;
-        // The emissive map texture.
+        // The emissive texture.
         std::shared_ptr<STextureInfo> emissiveTexture;
-        // The emissive color of the material.
+        // The factors for the emissive color of the material.
         std::vector<float> emissiveFactor;
         // The alpha rendering mode of the material.
         string_t alphaMode;
@@ -651,21 +649,21 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // A dictionary object, where each key corresponds to mesh attribute semantic and each value is the index of the accessor containing attribute's data.
+        // A plain JSON object, where each key corresponds to a mesh attribute semantic and each value is the index of the accessor containing attribute's data.
         std::map<string_t, std::shared_ptr<SGlTFId>> attributes;
-        // The index of the accessor that contains the indices.
+        // The index of the accessor that contains the vertex indices.
         std::shared_ptr<SGlTFId> indices;
         // The index of the material to apply to this primitive when rendering.
         std::shared_ptr<SGlTFId> material;
-        // The type of primitives to render.
+        // The topology type of primitives to render.
         int32_t mode;
-        // An array of Morph Targets, each  Morph Target is a dictionary mapping attributes (only `POSITION`, `NORMAL`, and `TANGENT` supported) to their deviations in the Morph Target.
+        // An array of morph targets.
         std::vector<std::map<string_t, std::shared_ptr<SGlTFId>>> targets;
     };
 
     /*!
      * struct: SMesh
-     * A set of primitives to be rendered.  A node can contain one mesh.  A node's transform places the mesh in the scene.
+     * A set of primitives to be rendered.  Its global transform is defined by a node that references it.
      */
     struct SMesh : SGlTFChildofRootProperty
     {
@@ -674,15 +672,15 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // An array of primitives, each defining geometry to be rendered with a material.
+        // An array of primitives, each defining geometry to be rendered.
         std::vector<std::shared_ptr<SMeshPrimitive>> primitives;
-        // Array of weights to be applied to the Morph Targets.
+        // Array of weights to be applied to the morph targets. The number of array elements **MUST** match the number of morph targets.
         std::vector<float> weights;
     };
 
     /*!
      * struct: SNode
-     * A node in the node hierarchy.  When the node contains `skin`, all `mesh.primitives` must contain `JOINTS_0` and `WEIGHTS_0` attributes.  A node can have either a `matrix` or any combination of `translation`/`rotation`/`scale` (TRS) properties. TRS properties are converted to matrices and postmultiplied in the `T * R * S` order to compose the transformation matrix; first the scale is applied to the vertices, then the rotation, and then the translation. If none are provided, the transform is the identity. When a node is targeted for animation (referenced by an animation.channel.target), only TRS properties may be present; `matrix` will not be present.
+     * A node in the node hierarchy.  When the node contains `skin`, all `mesh.primitives` **MUST** contain `JOINTS_0` and `WEIGHTS_0` attributes.  A node **MAY** have either a `matrix` or any combination of `translation`/`rotation`/`scale` (TRS) properties. TRS properties are converted to matrices and postmultiplied in the `T * R * S` order to compose the transformation matrix; first the scale is applied to the vertices, then the rotation, and then the translation. If none are provided, the transform is the identity. When a node is targeted for animation (referenced by an animation.channel.target), `matrix` **MUST NOT** be present.
      */
     struct SNode : SGlTFChildofRootProperty
     {
@@ -707,7 +705,7 @@ namespace libgltf
         std::vector<float> scale;
         // The node's translation along the x, y, and z axes.
         std::vector<float> translation;
-        // The weights of the instantiated Morph Target. Number of elements must match number of Morph Targets of used mesh.
+        // The weights of the instantiated morph target. The number of array elements **MUST** match the number of morph targets of the referenced mesh. When defined, `mesh` **MUST** also be defined.
         std::vector<float> weights;
     };
 
@@ -726,9 +724,9 @@ namespace libgltf
         int32_t magFilter;
         // Minification filter.
         int32_t minFilter;
-        // s wrapping mode.
+        // S (U) wrapping mode.
         int32_t wrapS;
-        // t wrapping mode.
+        // T (V) wrapping mode.
         int32_t wrapT;
     };
 
@@ -758,7 +756,7 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of the accessor containing the floating-point 4x4 inverse-bind matrices.  The default is that each matrix is a 4x4 identity matrix, which implies that inverse-bind matrices were pre-applied.
+        // The index of the accessor containing the floating-point 4x4 inverse-bind matrices.
         std::shared_ptr<SGlTFId> inverseBindMatrices;
         // The index of the node used as a skeleton root.
         std::shared_ptr<SGlTFId> skeleton;
@@ -777,9 +775,9 @@ namespace libgltf
         // Check valid
         operator bool() const;
 
-        // The index of the sampler used by this texture. When undefined, a sampler with repeat wrapping and auto filtering should be used.
+        // The index of the sampler used by this texture. When undefined, a sampler with repeat wrapping and auto filtering **SHOULD** be used.
         std::shared_ptr<SGlTFId> sampler;
-        // The index of the image used by this texture. When undefined, it is expected that an extension or other mechanism will supply an alternate texture source, otherwise behavior is undefined.
+        // The index of the image used by this texture. When undefined, an extension or other mechanism **SHOULD** supply an alternate texture source, otherwise behavior is undefined.
         std::shared_ptr<SGlTFId> source;
     };
 
@@ -888,26 +886,77 @@ namespace libgltf
     };
 
     /*!
-     * struct: SKHR_materials_pbrSpecularGlossinessglTFextension
-     * glTF extension that defines the specular-glossiness material model from Physically-Based Rendering (PBR) methodology.
+     * struct: SKHR_materials_iorglTFextension
+     * glTF extension that defines the index of refraction of a material.
      */
-    struct SKHR_materials_pbrSpecularGlossinessglTFextension : SGlTFProperty
+    struct SKHR_materials_iorglTFextension : SGlTFProperty
     {
-        SKHR_materials_pbrSpecularGlossinessglTFextension();
+        SKHR_materials_iorglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // The reflected diffuse factor of the material.
-        std::vector<float> diffuseFactor;
-        // The diffuse texture.
-        std::shared_ptr<STextureInfo> diffuseTexture;
-        // The specular RGB color of the material.
-        std::vector<float> specularFactor;
-        // The glossiness or smoothness of the material.
-        float glossinessFactor;
-        // The specular-glossiness texture.
-        std::shared_ptr<STextureInfo> specularGlossinessTexture;
+        // The index of refraction.
+        float ior;
+    };
+
+    /*!
+     * struct: SKHR_materials_sheenglTFextension
+     * glTF extension that defines the sheen material model.
+     */
+    struct SKHR_materials_sheenglTFextension : SGlTFProperty
+    {
+        SKHR_materials_sheenglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // Color of the sheen layer (in linear space).
+        std::vector<float> sheenColorFactor;
+        // The sheen color (RGB) texture.
+        std::shared_ptr<STextureInfo> sheenColorTexture;
+        // The sheen layer roughness.
+        float sheenRoughnessFactor;
+        // The sheen roughness (Alpha) texture.
+        std::shared_ptr<STextureInfo> sheenRoughnessTexture;
+    };
+
+    /*!
+     * struct: SKHR_materials_specularglTFextension
+     * glTF extension that defines the strength of the specular reflection.
+     */
+    struct SKHR_materials_specularglTFextension : SGlTFProperty
+    {
+        SKHR_materials_specularglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The strength of the specular reflection.
+        float specularFactor;
+        // A texture that defines the specular factor in the alpha channel.
+        std::shared_ptr<STextureInfo> specularTexture;
+        // The F0 RGB color of the specular reflection.
+        std::vector<float> specularColorFactor;
+        // A texture that defines the F0 color of the specular reflection.
+        std::shared_ptr<STextureInfo> specularColorTexture;
+    };
+
+    /*!
+     * struct: SKHR_materials_transmissionglTFextension
+     * glTF extension that defines the optical transmission of a material.
+     */
+    struct SKHR_materials_transmissionglTFextension : SGlTFProperty
+    {
+        SKHR_materials_transmissionglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The base percentage of light transmitted through the surface.
+        float transmissionFactor;
+        // A texture that defines the transmission percentage of the surface, sampled from the R channel. These values are linear, and will be multiplied by transmissionFactor.
+        std::shared_ptr<STextureInfo> transmissionTexture;
     };
 
     /*!
@@ -923,145 +972,52 @@ namespace libgltf
     };
 
     /*!
-     * struct: SKHR_techniques_webglglTFextension
-     * Instances of shading techniques with external shader programs along with their parameterized values.  Shading techniques describe data types and semantics for GLSL vertex and fragment shader programs.
+     * struct: SKHR_materials_variantsglTFextension
+     * glTF extension that defines a material variations for mesh primivites
      */
-    struct SKHR_techniques_webglglTFextension : SGlTFProperty
+    struct SKHR_materials_variantsglTFextension : SGlTFProperty
     {
-        SKHR_techniques_webglglTFextension();
+        SKHR_materials_variantsglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // An array of `Program` objects.
-        std::vector<std::shared_ptr<SProgram>> programs;
-        // An array of `Shader` objects.
-        std::vector<std::shared_ptr<SShader>> shaders;
-        // An array of `Technique` objects.
-        std::vector<std::shared_ptr<STechnique>> techniques;
+        std::vector<std::shared_ptr<SGlTFChildofRootProperty>> variants;
     };
 
     /*!
-     * struct: SKHR_techniques_webglmaterialextension
-     * The technique to use for a material and any additional uniform values.
+     * struct: SKHR_materials_variantsmeshprimitiveextension
      */
-    struct SKHR_techniques_webglmaterialextension : SGlTFProperty
+    struct SKHR_materials_variantsmeshprimitiveextension : SGlTFProperty
     {
-        SKHR_techniques_webglmaterialextension();
+        SKHR_materials_variantsmeshprimitiveextension();
 
         // Check valid
         operator bool() const;
 
-        // The index of the technique.
-        std::shared_ptr<SGlTFId> technique;
-        // Dictionary object of uniform values.
-        std::map<string_t, std::shared_ptr<SUniformValue>> values;
+        // A list of material to variant mappings
+        std::vector<std::shared_ptr<SGlTFProperty>> mappings;
     };
 
     /*!
-     * struct: SProgram
-     * A shader program, including its vertex and fragment shaders.
+     * struct: SKHR_materials_volumeglTFextension
+     * glTF extension that defines the parameters for the volume of a material.
      */
-    struct SProgram : SGlTFChildofRootProperty
+    struct SKHR_materials_volumeglTFextension : SGlTFProperty
     {
-        SProgram();
+        SKHR_materials_volumeglTFextension();
 
         // Check valid
         operator bool() const;
 
-        // The index of the fragment shader.
-        std::shared_ptr<SGlTFId> fragmentShader;
-        // The index of the vertex shader.
-        std::shared_ptr<SGlTFId> vertexShader;
-        // The names of required WebGL 1.0 extensions.
-        std::vector<string_t> glExtensions;
-    };
-
-    /*!
-     * struct: SShader
-     * A vertex or fragment shader. Exactly one of `uri` or `bufferView` must be provided for the GLSL source.
-     */
-    struct SShader : SGlTFChildofRootProperty
-    {
-        SShader();
-
-        // Check valid
-        operator bool() const;
-
-        // The uri of the GLSL source.
-        string_t uri;
-        // The shader stage.
-        int32_t type;
-        // The index of the bufferView that contains the GLSL shader source. Use this instead of the shader's uri property.
-        std::shared_ptr<SGlTFId> bufferView;
-    };
-
-    /*!
-     * struct: SAttribute
-     * An attribute input to a technique and the corresponding semantic.
-     */
-    struct SAttribute : SGlTFProperty
-    {
-        SAttribute();
-
-        // Check valid
-        operator bool() const;
-
-        // Identifies a mesh attribute semantic.
-        string_t semantic;
-    };
-
-    /*!
-     * struct: STechnique
-     * A template for material appearances.
-     */
-    struct STechnique : SGlTFChildofRootProperty
-    {
-        STechnique();
-
-        // Check valid
-        operator bool() const;
-
-        // The index of the program.
-        std::shared_ptr<SGlTFId> program;
-        // A dictionary object of `Attribute` objects.
-        std::map<string_t, std::shared_ptr<SAttribute>> attributes;
-        // A dictionary object of `Uniform` objects.
-        std::map<string_t, std::shared_ptr<SUniform>> uniforms;
-    };
-
-    /*!
-     * struct: SUniform
-     * A uniform input to a technique, and an optional semantic and value.
-     */
-    struct SUniform : SGlTFProperty
-    {
-        SUniform();
-
-        // Check valid
-        operator bool() const;
-
-        // When defined, the uniform is an array of count elements of the specified type.  Otherwise, the uniform is not an array.
-        int32_t count;
-        // The index of the node whose transform is used as the uniform's value.
-        std::shared_ptr<SGlTFId> node;
-        // The uniform type.
-        int32_t type;
-        // Identifies a uniform with a well-known meaning.
-        string_t semantic;
-        // The value of the uniform.
-        std::shared_ptr<SUniformValue> value;
-    };
-
-    /*!
-     * struct: SUniformValue
-     */
-    struct SUniformValue : SObject
-    {
-        SUniformValue();
-
-        // Check valid
-        operator bool() const;
+        // Thickness of the volume.
+        float thicknessFactor;
+        // Texture that defines the thickness of the volume, stored in the G channel.
+        std::shared_ptr<STextureInfo> thicknessTexture;
+        // Average distance that light travels in the medium before interacting with a particle.
+        float attenuationDistance;
+        // Color that white light turns into due to absorption when reaching the attenuation distance.
+        std::vector<float> attenuationColor;
     };
 
     /*!

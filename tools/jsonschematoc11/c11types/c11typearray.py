@@ -11,11 +11,18 @@ class C11TypeArray(C11Type):
         c11Type = None
         schemaValueType = None
         variableSchemaValue = schemaValue
+        doallof = False
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
-            if schemaValueType == u'object' and u'additionalProperties' in schemaValue:
-                schemaValueType = u'map'
-                variableSchemaValue = schemaValue[u'additionalProperties']
+            if schemaValueType == u'object':
+                if u'additionalProperties' in schemaValue:
+                    schemaValueType = u'map'
+                    variableSchemaValue = schemaValue[u'additionalProperties']
+                elif u'allOf' in schemaValue and len(schemaValue[u'allOf']) > 0 and u'$ref' in schemaValue[u'allOf'][0]:
+                    schemaValueType = schemaValue[u'allOf'][0][u'$ref']
+                    #print(schemaValueType)
+                    #schemaValueType = u'array'
+                    #doallof = True
         elif u'$ref' in schemaValue:
             schemaValueType = schemaValue[u'$ref']
 
@@ -66,6 +73,8 @@ class C11TypeArray(C11Type):
             schemaValueItem = self.schemaValue
         if schemaValueItem is None:
             return (1, u'Can\'t find the items in schema of array')
+        elif u'type' in schemaValueItem and schemaValueItem[u'type'] == 'object' and u'allOf' in schemaValueItem and len(schemaValueItem[u'allOf']) > 0 and u'$ref' in schemaValueItem[u'allOf'][0]:
+            schemaValueType = schemaValueItem[u'allOf'][0][u'$ref']
         elif u'$ref' in schemaValueItem:
             schemaValueType = schemaValueItem[u'$ref']
         if schemaValueType not in c11Types:

@@ -28,8 +28,14 @@ Features
 * Supports some extensions
    * `KHR_draco_mesh_compression` - `Google's Draco`_
    * `KHR_lights_punctual`
-   * `KHR_materials_pbrSpecularGlossiness`
    * `KHR_materials_clearcoat`
+   * `KHR_materials_ior`
+   * `KHR_materials_sheen`
+   * `KHR_materials_specular`
+   * `KHR_materials_transmission`
+   * `KHR_materials_unlit`
+   * `KHR_materials_variants`
+   * `KHR_materials_volume`
    * and more
 * Platforms
    * Windows
@@ -140,8 +146,7 @@ Regenerate new code by the glTF schema
 Generate the c++11 code:
 
    * You can update the c++11 source code by :code:`jsonschematoc11`.
-   * You need update the submodule :code:`external/glTF`
-   * It runs in **Python2**
+   * You need update and pull the submodule :code:`external/glTF`
 
 #. Run :code:`update_parser_by_scheme.bat`
 
