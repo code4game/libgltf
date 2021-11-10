@@ -166,7 +166,9 @@ namespace libgltf
         {
             file_stream.seekg(0, std::ios::beg);
             found_filedata.resize(file_size);
-            file_stream.read((char*)found_filedata.data(), file_size);
+            size_t read_size = file_stream.read((char*)found_filedata.data(), file_size);
+            if (read_size == -1 || read_size != file_size)
+                return false;
         }
         m_FilePath.SetPath(_sFilePath);
         return true;
