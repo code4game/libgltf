@@ -270,7 +270,7 @@ namespace libgltf
         size_t dot_index = uri.find_last_of('.');
         if (uri.size() > (dot_index + 1))
         {
-            data_type = "file/" + uri.substr(dot_index + 1);
+            data_type = GLTFTEXT("file/") + uri.substr(dot_index + 1);
         }
         return true;
     }

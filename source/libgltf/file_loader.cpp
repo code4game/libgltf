@@ -125,12 +125,20 @@ namespace libgltf
         current_path = current_path_temp;
 #else
         char current_path_temp[FILENAME_MAX];
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
+#   if defined(LIBGLTF_PLATFORM_WINDOWS)
         _getcwd(current_path_temp, sizeof(current_path_temp));
-#else
+#   else
         getcwd(current_path_temp, sizeof(current_path_temp));
-#endif
+#   endif
+#       if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
+        current_path = UTF8ToUTF16(current_path_temp);
+#       elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
+        current_path = UTF8ToUTF32(current_path_temp);
+#       elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
+        current_path = UTF8ToUNICODE(current_path_temp);
+#       else
         current_path = current_path_temp;
+#       endif
 #endif
         return current_path;
     }
@@ -150,13 +158,20 @@ namespace libgltf
     {
         CPath file_path(_sFilePath);
         if (file_path.IsRelative())
-        {
             file_path = m_RootPath / file_path;
-        }
+
         std::vector<uint8_t>& found_filedata = FindOrAdd(CPath(_sFilePath));
         if (!found_filedata.empty()) return true;
 
+#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
+        std::ifstream file_stream(UTF16ToUTF8(file_path), std::ios::in | std::ios::binary);
+#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
+        std::ifstream file_stream(UTF32ToUTF8(file_path), std::ios::in | std::ios::binary);
+#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
+        std::ifstream file_stream(UNICODEToUTF8(file_path), std::ios::in | std::ios::binary);
+#else
         std::ifstream file_stream(file_path, std::ios::in | std::ios::binary);
+#endif
         if (!file_stream.is_open()) return false;
 
         file_stream.seekg(0, std::ios::end);
