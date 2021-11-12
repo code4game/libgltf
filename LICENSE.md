@@ -1,4 +1,4 @@
-MIT License
+This software is released under the MIT license.
 
 Copyright (c) 2017-2021 Code 4 Game, Org. All Rights Reserved.
 

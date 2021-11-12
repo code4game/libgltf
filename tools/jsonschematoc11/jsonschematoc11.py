@@ -133,13 +133,15 @@ class C11TypeLibrary(object):
             source_file_path = os.path.join(outputSourcePath, source_file_path)
 
         with open(header_file_path, u'w') as header_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
+                        header_file.write(u'/*\n')
                         code_file_lines = code_file.readlines()
                         for code_file_line in code_file_lines:
-                            header_file.write(code_file_line)
+                            header_file.write(u' * ' + code_file_line)
+                        header_file.write(u' */\n')
                         header_file.write(u'\n')
 
             if config is not None and config.has_option(u'code.headers', u'header.include'):
@@ -238,13 +240,15 @@ class C11TypeLibrary(object):
                         header_file.write(u'\n')
 
         with open(source_file_path, u'w') as source_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_file_lines = code_file.readlines()
+                        source_file.write(u'/*\n')
                         for code_file_line in code_file_lines:
-                            source_file.write(code_file_line)
+                            source_file.write(u' * ' + code_file_line)
+                        source_file.write(u' */')
                         source_file.write(u'\n')
 
             source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
@@ -291,13 +295,15 @@ class C11TypeLibrary(object):
             header_file_path = os.path.join(outputSourcePath, header_file_path)
             source_file_path = os.path.join(outputSourcePath, source_file_path)
         with open(header_file_path, u'w') as header_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_file_lines = code_file.readlines()
+                        header_file.write(u'/*\n')
                         for code_file_line in code_file_lines:
-                            header_file.write(code_file_line)
+                            header_file.write(u' * ' + code_file_line)
+                        header_file.write(u' */\n')
                         header_file.write(u'\n')
 
             header_file.write(u'#pragma once\n')
@@ -350,13 +356,15 @@ class C11TypeLibrary(object):
                 header_file.write(u'}\n')
 
         with open(source_file_path, u'w') as source_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
+                        source_file.write(u'/*\n')
                         code_file_lines = code_file.readlines()
                         for code_file_line in code_file_lines:
-                            source_file.write(code_file_line)
+                            source_file.write(u' * ' + code_file_line)
+                        source_file.write(u' */\n')
                         source_file.write(u'\n')
 
             source_file.write(u'#include "%sparser.h"\n' % codeFileName)
