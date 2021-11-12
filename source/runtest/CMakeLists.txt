@@ -3,6 +3,7 @@ set(SOURCE_FILE_PATH ${SOURCE_PATH}/runtest)
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}
     ${SOURCE_FILE_PATH}
+    ${OUT_PATH}/include
     )
 include_directories(${INCLUDE_PATH_LIST})
 
