@@ -6,6 +6,7 @@ on:
     paths-ignore:
     - '!.github/release.yml'
     - 'docs/**'
+    - 'resource/**'
     - '.coveralls.yml'
     - '.readthedocs.yml'
     - '.git*'
