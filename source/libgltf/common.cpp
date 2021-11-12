@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "common.h"
 
 #include <cassert>

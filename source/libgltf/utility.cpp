@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "utility.h"
+#include "libgltfparser.h"
 
 #include "common.h"
 

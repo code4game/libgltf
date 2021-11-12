@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "gltf_loader.h"
 
 #include "utility.h"

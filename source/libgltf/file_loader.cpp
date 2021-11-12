@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "file_loader.h"
 
 #include <fstream>

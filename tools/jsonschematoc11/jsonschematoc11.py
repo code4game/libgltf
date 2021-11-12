@@ -247,7 +247,6 @@ class C11TypeLibrary(object):
                             source_file.write(code_file_line)
                         source_file.write(u'\n')
 
-            source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
@@ -303,12 +302,15 @@ class C11TypeLibrary(object):
 
             header_file.write(u'#pragma once\n')
             header_file.write(u'\n')
-            header_file.write(u'#include "%spch.h"\n' % codeFileName)
-            header_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
-            header_file.write(u'\n')
-            header_file.write(u'#include <memory>\n')
-            header_file.write(u'#include <vector>\n')
-            header_file.write(u'\n')
+
+            if config is not None and config.has_option(u'code.parser', u'header'):
+                code_file_path = config.get(u'code.parser', u'header')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
+                        header_file.write(u'\n')
 
             begin_space = u''
             if nameSpace != None:
@@ -357,9 +359,7 @@ class C11TypeLibrary(object):
                             source_file.write(code_file_line)
                         source_file.write(u'\n')
 
-            source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%sparser.h"\n' % codeFileName)
-            source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
             begin_space = u''

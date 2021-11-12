@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "libgltf/libgltf.h"
 
 namespace libgltf

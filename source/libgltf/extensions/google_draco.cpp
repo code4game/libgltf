@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "google_draco.h"
 
 #include <draco/compression/decode.h>
