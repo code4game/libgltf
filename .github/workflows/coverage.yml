@@ -48,7 +48,7 @@ jobs:
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/MetalRoughSpheres/glTF/MetalRoughSpheres.gltf
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/MultiUVTest/glTF/MultiUVTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/Triangle/glTF/Triangle.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/Triangle/glTF/三角形.gltf
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
         valgrind --leak-check=full --show-leak-kinds=all ./../output/bin/linux/runtest ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf

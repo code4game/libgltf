@@ -80,6 +80,16 @@ namespace libgltf
         return CPath(index < m_sPath.size() ? m_sPath.substr(0, index) : GLTFTEXT(""));
     }
 
+    CPath CPath::Filename() const
+    {
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
+        size_t index = m_sPath.find_last_of(GLTFTEXT('\\'));
+#else
+        size_t index = m_sPath.find_last_of(GLTFTEXT('/'));
+#endif
+        return CPath(index < m_sPath.size() ? m_sPath.substr(index + 1, m_sPath.size() - 1) : GLTFTEXT(""));
+    }
+
     CPath::operator string_t() const
     {
         return m_sPath;
@@ -149,9 +159,7 @@ namespace libgltf
         , m_FileDatas()
     {
         if (m_RootPath.IsRelative())
-        {
-            m_RootPath = GetCWD();
-        }
+            m_RootPath = GetCWD().append(GLTFTEXT("/")).append(m_RootPath);
     }
 
     bool CFileLoader::Load(const string_t& _sFilePath)

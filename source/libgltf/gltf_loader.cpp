@@ -176,8 +176,9 @@ namespace libgltf
         , m_CacheBufferDatas()
         , m_CacheImageDatas()
     {
-        if (!m_pFileLoader->Load(_sFilePath)) return;
-        if (!m_pFileLoader->ReadByte(_sFilePath, 0, &m_GLBHeader, sizeof(m_GLBHeader))) return;
+        CPath file_path(_sFilePath);
+        if (!m_pFileLoader->Load(file_path.Filename())) return;
+        if (!m_pFileLoader->ReadByte(file_path.Filename(), 0, &m_GLBHeader, sizeof(m_GLBHeader))) return;
 
         /// is a glb file?
         if (m_GLBHeader.magic == ms_GLBMagicEntry)
@@ -186,7 +187,7 @@ namespace libgltf
                 /// collect all chunks
                 SGLBChunk glb_chunk;
                 size_t offset = sizeof(m_GLBHeader);
-                while (m_pFileLoader->ReadByte(_sFilePath, offset, &glb_chunk, sizeof(glb_chunk)))
+                while (m_pFileLoader->ReadByte(file_path.Filename(), offset, &glb_chunk, sizeof(glb_chunk)))
                 {
                     offset += sizeof(glb_chunk) + glb_chunk.length;
                     m_vGLBChunks.push_back(glb_chunk);
@@ -209,7 +210,7 @@ namespace libgltf
                 if (glb_chunk_json.type == ms_GLBChunkTypeJSON)
                 {
                     m_glTF = std::make_shared<SGlTF>();
-                    if (!(m_glTF << m_pFileLoader->AsString(_sFilePath, offset, glb_chunk_json.length)))
+                    if (!(m_glTF << m_pFileLoader->AsString(file_path.Filename(), offset, glb_chunk_json.length)))
                     {
                         m_glTF = nullptr;
                     }
@@ -219,7 +220,7 @@ namespace libgltf
         else
         {
             m_glTF = std::make_shared<SGlTF>();
-            if (!(m_glTF << m_pFileLoader->AsString(_sFilePath)))
+            if (!(m_glTF << m_pFileLoader->AsString(file_path.Filename())))
             {
                 m_glTF = nullptr;
             }

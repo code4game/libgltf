@@ -40,6 +40,7 @@ namespace libgltf
         void SetPath(const string_t& _sPath);
         bool IsRelative() const;
         CPath Parent() const;
+        CPath Filename() const;
 
     public:
         operator string_t() const;
