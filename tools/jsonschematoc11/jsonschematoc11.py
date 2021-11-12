@@ -125,7 +125,7 @@ class C11TypeLibrary(object):
         return (0, u'')
 
     def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, nameSpace=None, config=None):
-        header_file_path = u'%s.h' % codeFileName
+        header_file_path = u'%s.h.cmakein' % codeFileName
         source_file_path = u'%s.cpp' % codeFileName
         if outputHeaderPath is not None:
             header_file_path = os.path.join(outputHeaderPath, header_file_path)
@@ -144,6 +144,15 @@ class C11TypeLibrary(object):
 
             if config is not None and config.has_option(u'code.headers', u'header.include'):
                 code_file_path = config.get(u'code.headers', u'header.include')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
+                        header_file.write(u'\n')
+
+            if config is not None and config.has_option(u'code.headers', u'header.begin'):
+                code_file_path = config.get(u'code.headers', u'header.begin')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_header_extra_lines = code_file.readlines()
@@ -218,6 +227,15 @@ class C11TypeLibrary(object):
 
             if nameSpace != None:
                 header_file.write(u'}\n')
+
+            if config is not None and config.has_option(u'code.headers', u'header.end'):
+                code_file_path = config.get(u'code.headers', u'header.end')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
+                        header_file.write(u'\n')
 
         with open(source_file_path, u'w') as source_file:
             if config is not None and config.has_option(u'code', u'licnese'):

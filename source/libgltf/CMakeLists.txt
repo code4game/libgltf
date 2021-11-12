@@ -4,8 +4,9 @@ set(SOURCE_FILE_PATH ${SOURCE_PATH}/libgltf)
 
 set(CODE_FILE_LIST)
 
+configure_file(libgltf.h.cmakein ${OUT_PATH}/include/libgltf/libgltf.h @ONLY)
 set(HEADER_FILE_LIST
-    ${HEADER_PATH}/libgltf/libgltf.h
+    ${OUT_PATH}/include/libgltf/libgltf.h
     )
 set(CODE_FILE_LIST
     ${CODE_FILE_LIST}
@@ -77,6 +78,7 @@ set(INCLUDE_PATH_LIST
     ${HEADER_PATH}
     ${SOURCE_FILE_PATH}
     ${EXTERNAL_PATH}/rapidjson/include
+    ${OUT_PATH}/include
     )
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_PATH_LIST})
 
@@ -90,18 +92,4 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
     if(LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE)
         add_dependencies(${PROJECT_NAME} dracodec)
     endif()
-endif()
-
-if(${LIBGLTF_PLATFORM_WINDOWS})
-    add_custom_command(TARGET ${PROJECT_NAME}
-        POST_BUILD
-        COMMAND xcopy ARGS "/D /S /Y \"${ROOT_PATH}\\include\\*\" \"${OUT_PATH}\\include\\\""
-        COMMENT "sync the head file"
-        )
-else()
-    add_custom_command(TARGET ${PROJECT_NAME}
-        POST_BUILD
-        COMMAND rsync -a -delete ${ROOT_PATH}/include ${OUT_PATH}/
-        COMMENT "sync the head file"
-        )
 endif()
