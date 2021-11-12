@@ -144,8 +144,8 @@ class C11TypeLibrary(object):
                         header_file.write(u' */\n')
                         header_file.write(u'\n')
 
-            if config is not None and config.has_option(u'code.headers', u'header.include'):
-                code_file_path = config.get(u'code.headers', u'header.include')
+            if config is not None and config.has_option(u'code.headers', u'header.begin'):
+                code_file_path = config.get(u'code.headers', u'header.begin')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_header_extra_lines = code_file.readlines()
@@ -153,8 +153,8 @@ class C11TypeLibrary(object):
                             header_file.write(code_header_extra_line)
                         header_file.write(u'\n')
 
-            if config is not None and config.has_option(u'code.headers', u'header.begin'):
-                code_file_path = config.get(u'code.headers', u'header.begin')
+            if config is not None and config.has_option(u'code.headers', u'header.include'):
+                code_file_path = config.get(u'code.headers', u'header.include')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_header_extra_lines = code_file.readlines()

@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+#ifndef LIBGLTF_H
+#define LIBGLTF_H
+
 #include <cstdint>
 #include <cstring>
 #include <string>
@@ -33,9 +36,6 @@
 #cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UTF16
 #cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UTF32
 #cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE
-
-#ifndef LIBGLTF_H
-#define LIBGLTF_H
 
 #define LIBGLTF_MAJOR_VERSION    0
 #define LIBGLTF_MINOR_VERSION    1
