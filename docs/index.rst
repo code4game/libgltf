@@ -169,8 +169,8 @@ You can update Google's draco submodule in external/draco or pull the draco repo
 
 Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
 
-* Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_DEBUG`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_RELEASE`, :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_DEBUG` and :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_RELEASE`.
-* Or enable the :code:`LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE` to compile with the submodule - *external/draco*.
+* Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACO_DEBUG`.
+* And compile with the submodule - *external/draco*.
 
 Download libraries
 ------------------

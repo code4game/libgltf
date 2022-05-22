@@ -39,24 +39,24 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: 'build and make'
       run: |
-        cmake -B build/win64 -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/win64 --target dracodec --target dracoenc --target libgltf --config Debug
-        cmake --build build/win64 --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/win32 -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE
-        cmake --build build/win32 --target dracodec --target dracoenc --target libgltf --config Debug
-        cmake --build build/win32 --target dracodec --target dracoenc --target libgltf --config Release
+        cmake -B build/win64 -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/win64 --target libgltf --config Debug
+        cmake --build build/win64 --target libgltf --config Release
+        cmake -B build/win32 -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_BUILD_MSVC_WITH_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/win32 --target libgltf --config Debug
+        cmake --build build/win32 --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
         xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
-        xcopy /D /S /Y build\win64\external\draco\Release\dracodec.lib output\lib\win64\Release\
-        xcopy /D /S /Y build\win64\external\draco\Release\dracoenc.lib output\lib\win64\Release\
-        xcopy /D /S /Y build\win64\external\draco\Debug\dracodecd.lib output\lib\win64\Debug\
-        xcopy /D /S /Y build\win64\external\draco\Debug\dracoencd.lib output\lib\win64\Debug\
-        xcopy /D /S /Y build\win32\external\draco\Release\dracodec.lib output\lib\win32\Release\
-        xcopy /D /S /Y build\win32\external\draco\Release\dracoenc.lib output\lib\win32\Release\
-        xcopy /D /S /Y build\win32\external\draco\Debug\dracodecd.lib output\lib\win32\Debug\
-        xcopy /D /S /Y build\win32\external\draco\Debug\dracoencd.lib output\lib\win32\Debug\
+        xcopy /D /S /Y build\win64\external\draco\Release\draco.lib output\lib\win64\Release\
+        xcopy /D /S /Y build\win64\external\draco\Release\draco_core.lib output\lib\win64\Release\
+        xcopy /D /S /Y build\win64\external\draco\Debug\dracod.lib output\lib\win64\Debug\
+        xcopy /D /S /Y build\win64\external\draco\Debug\draco_cored.lib output\lib\win64\Debug\
+        xcopy /D /S /Y build\win32\external\draco\Release\draco.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win32\external\draco\Release\draco_core.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win32\external\draco\Debug\dracod.lib output\lib\win32\Debug\
+        xcopy /D /S /Y build\win32\external\draco\Debug\draco_cored.lib output\lib\win32\Debug\
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -76,14 +76,14 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        cmake -B build -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build --target dracodec --target dracoenc --target libgltf --config Release
+        cmake -B build -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp -a build/external/draco/dracodec.a output/lib/linux/dracodec.a
-        cp -a build/external/draco/dracoenc.a output/lib/linux/dracoenc.a
+        cp -a build/external/draco/draco.a output/lib/linux/draco.a
+        cp -a build/external/draco/draco_core.a output/lib/linux/draco_core.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -103,14 +103,14 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        cmake -B build -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build --target dracodec --target dracoenc --target libgltf --config Release
+        cmake -B build -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
-        cp build/external/draco/dracodec.a output/lib/macos/dracodec.a
-        cp build/external/draco/dracoenc.a output/lib/macos/dracoenc.a
+        cp build/external/draco/draco.a output/lib/macos/draco.a
+        cp build/external/draco/draco_core.a output/lib/macos/draco_core.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -134,30 +134,30 @@ jobs:
     - name: 'build and make'
       run: |
         export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
-        cmake -B build/armeabi-v7a -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/armeabi-v7a --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/armeabi-v7a-with-neon -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=TRUE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/armeabi-v7a-with-neon --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/arm64-v8a -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/arm64-v8a --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/x86 -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/x86 --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/x86_64 -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/x86_64 --target dracodec --target dracoenc --target libgltf --config Release
+        cmake -B build/armeabi-v7a -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/armeabi-v7a --target libgltf --config Release
+        cmake -B build/armeabi-v7a-with-neon -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=TRUE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/armeabi-v7a-with-neon --target libgltf --config Release
+        cmake -B build/arm64-v8a -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/arm64-v8a --target libgltf --config Release
+        cmake -B build/x86 -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/x86 --target libgltf --config Release
+        cmake -B build/x86_64 -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/x86_64 --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a/draco/ output/include/draco/
-        cp -a build/armeabi-v7a/external/draco/dracodec.a output/lib/android/armeabi-v7a/dracodec.a
-        cp -a build/armeabi-v7a/external/draco/dracoenc.a output/lib/android/armeabi-v7a/dracoenc.a
-        cp -a build/armeabi-v7a-with-neon/external/draco/dracodec.a output/lib/android/armeabi-v7a-with-neon/dracodec.a
-        cp -a build/armeabi-v7a-with-neon/external/draco/dracoenc.a output/lib/android/armeabi-v7a-with-neon/dracoenc.a
-        cp -a build/arm64-v8a/external/draco/dracodec.a output/lib/android/arm64-v8a/dracodec.a
-        cp -a build/arm64-v8a/external/draco/dracoenc.a output/lib/android/arm64-v8a/dracoenc.a
-        cp -a build/x86/external/draco/dracodec.a output/lib/android/x86/dracodec.a
-        cp -a build/x86/external/draco/dracoenc.a output/lib/android/x86/dracoenc.a
-        cp -a build/x86_64/external/draco/dracodec.a output/lib/android/x86_64/dracodec.a
-        cp -a build/x86_64/external/draco/dracoenc.a output/lib/android/x86_64/dracoenc.a
+        cp -a build/armeabi-v7a/external/draco/draco.a output/lib/android/armeabi-v7a/draco.a
+        cp -a build/armeabi-v7a/external/draco/draco_core.a output/lib/android/armeabi-v7a/draco_core.a
+        cp -a build/armeabi-v7a-with-neon/external/draco/draco.a output/lib/android/armeabi-v7a-with-neon/draco.a
+        cp -a build/armeabi-v7a-with-neon/external/draco/draco_core.a output/lib/android/armeabi-v7a-with-neon/draco_core.a
+        cp -a build/arm64-v8a/external/draco/draco.a output/lib/android/arm64-v8a/draco.a
+        cp -a build/arm64-v8a/external/draco/draco_core.a output/lib/android/arm64-v8a/draco_core.a
+        cp -a build/x86/external/draco/draco.a output/lib/android/x86/draco.a
+        cp -a build/x86/external/draco/draco_core.a output/lib/android/x86/draco_core.a
+        cp -a build/x86_64/external/draco/draco.a output/lib/android/x86_64/draco.a
+        cp -a build/x86_64/external/draco/draco_core.a output/lib/android/x86_64/draco_core.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -178,22 +178,22 @@ jobs:
         git submodule update --init external/ios-cmake
     - name: 'build and make'
       run: |
-        cmake -B build/iphoneos -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/iphoneos --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/watchos -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/watchos --target dracodec --target dracoenc --target libgltf --config Release
-        cmake -B build/simulator -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE -DLIBGLTF_USE_GOOGLE_DRACO_SUBMODULE=TRUE .
-        cmake --build build/simulator --target dracodec --target dracoenc --target libgltf --config Release
+        cmake -B build/iphoneos -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DLIBGLTF_BUILD_RUNTEST=FALSE -DIOS_PLATFORM=OS -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/iphoneos --target libgltf --config Release
+        cmake -B build/watchos -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=WATCHOS -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/watchos --target libgltf --config Release
+        cmake -B build/simulator -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../external/ios-cmake/toolchain/iOS.cmake -DIOS_PLATFORM=SIMULATOR -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_PLATFORM_IOS=TRUE -DLIBGLTF_CHARACTOR_ENCODING=UTF8 -DLIBGLTF_USE_GOOGLE_DRACO=TRUE .
+        cmake --build build/simulator --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
-        cp build/iphoneos/external/draco/dracodec.a output/lib/ios/os/dracodec.a
-        cp build/iphoneos/external/draco/dracoenc.a output/lib/ios/os/dracoenc.a
-        cp build/watchos/external/draco/dracodec.a output/lib/ios/watchos/dracodec.a
-        cp build/watchos/external/draco/dracoenc.a output/lib/ios/watchos/dracoenc.a
-        cp build/simulator/external/draco/dracodec.a output/lib/ios/simulator/dracodec.a
-        cp build/simulator/external/draco/dracoenc.a output/lib/ios/simulator/dracoenc.a
+        cp build/iphoneos/external/draco/draco.a output/lib/ios/os/draco.a
+        cp build/iphoneos/external/draco/draco_core.a output/lib/ios/os/draco_core.a
+        cp build/watchos/external/draco/draco.a output/lib/ios/watchos/draco.a
+        cp build/watchos/external/draco/draco_core.a output/lib/ios/watchos/draco_core.a
+        cp build/simulator/external/draco/draco.a output/lib/ios/simulator/draco.a
+        cp build/simulator/external/draco/draco_core.a output/lib/ios/simulator/draco_core.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:

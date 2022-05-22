@@ -61,17 +61,7 @@ elseif(${LIBGLTF_PLATFORM_IOS})
     set(OUT_LIB_PATH "${OUT_LIB_PATH}/${IOS_PLATFORM_PATH}")
 endif()
 
-set(RUNTIME_OUTPUT_PATH ${OUT_BIN_PATH})
-set(LIBRARY_OUTPUT_PATH ${OUT_LIB_PATH})
-
 add_library(${PROJECT_NAME} STATIC ${CODE_FILE_LIST})
-
-set_target_properties(${PROJECT_NAME}
-    PROPERTIES
-        FOLDER main
-        RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
-        LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-    )
 
 set(INCLUDE_PATH_LIST
     ${HEADER_PATH}
@@ -87,8 +77,19 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
             ${GOOGLE_DRACO_PATH_INCLUDE}
             ${GOOGLE_DRACO_PATH_BUILD}
         )
-    add_definitions(-DLIBGLTF_USE_GOOGLE_DRACO)
-    if(LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE)
-        add_dependencies(${PROJECT_NAME} dracodec)
-    endif()
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE
+            LIBGLTF_USE_GOOGLE_DRACO
+        )
+    add_dependencies(${PROJECT_NAME}
+        draco
+        draco_core
+        )
 endif()
+
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
+        FOLDER main
+        ARCHIVE_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
+        RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
+    )

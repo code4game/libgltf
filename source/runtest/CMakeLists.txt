@@ -1,3 +1,5 @@
+project(runtest)
+
 set(SOURCE_FILE_PATH ${SOURCE_PATH}/runtest)
 
 set(INCLUDE_PATH_LIST
@@ -36,37 +38,15 @@ set_target_properties(runtest PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
     )
 
-if(${LIBGLTF_PLATFORM_WINDOWS})
-    set(LIBRARY_PATH_LIST
-        debug libgltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
-        optimized libgltf${STATIC_LIBRARY_EXTENSION}
-        )
-elseif(${LIBGLTF_PLATFORM_LINUX} OR ${LIBGLTF_PLATFORM_MACOS})
-    set(LIBRARY_PATH_LIST
-        debug gltf${CMAKE_DEBUG_POSTFIX}${STATIC_LIBRARY_EXTENSION}
-        optimized gltf${STATIC_LIBRARY_EXTENSION}
-        )
-endif()
-target_link_libraries(runtest ${LIBRARY_PATH_LIST})
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        libgltf
+    )
 
 if(LIBGLTF_USE_GOOGLE_DRACO)
-    if(LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE)
-        set(LIBRARY_PATH_LIST_GOOGLE_DRACO
-            dracodec
-            dracoenc
-            )
-    else()
-        set(LIBRARY_PATH_LIST_GOOGLE_DRACO
-            debug ${GOOGLE_DRACO_LIBRARY_DRACODEC_DEBUG}
-            optimized ${GOOGLE_DRACO_LIBRARY_DRACODEC_RELEASE}
-            debug ${GOOGLE_DRACO_LIBRARY_DRACOENC_DEBUG}
-            optimized ${GOOGLE_DRACO_LIBRARY_DRACOENC_RELEASE}
-            )
-    endif()
-    target_link_libraries(runtest ${LIBRARY_PATH_LIST_GOOGLE_DRACO})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            draco
+            draco_core
+        )
 endif()
-
-set(DEPENDANCY_LIST
-    libgltf
-    )
-add_dependencies(runtest ${DEPENDANCY_LIST})
