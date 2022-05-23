@@ -81,9 +81,10 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
         PRIVATE
             LIBGLTF_USE_GOOGLE_DRACO
         )
-    add_dependencies(${PROJECT_NAME}
-        draco
-        draco_core
+    target_link_libraries(${PROJECT_NAME}
+        PUBLIC
+            draco
+            draco_core
         )
 endif()
 

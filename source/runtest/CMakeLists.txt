@@ -31,22 +31,14 @@ add_executable(runtest
     ${SOURCE_FILE_LIST}
     )
 
-set_target_properties(runtest PROPERTIES
-    FOLDER main
-    EXECUTABLE_OUTPUT_PATH ${OUT_BIN_PATH}
-    RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
-    LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-    )
-
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         libgltf
     )
 
-if(LIBGLTF_USE_GOOGLE_DRACO)
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-            draco
-            draco_core
-        )
-endif()
+set_target_properties(runtest
+    PROPERTIES
+        FOLDER main
+        ARCHIVE_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
+        RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
+    )
