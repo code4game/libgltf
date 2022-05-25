@@ -1,1 +1,1 @@
-std::map<string_t, std::shared_ptr<struct SObject>> properties;
+std::map<std::string, std::shared_ptr<struct SObject>> properties;

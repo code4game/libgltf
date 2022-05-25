@@ -155,13 +155,6 @@ Generate the c++11 code:
 
 #. Build your version by CMake_.
 
-Character encoding
-------------------
-
-* You can set :code:`LIBGLTF_CHARACTOR_ENCODING` in CMake_ to set the encoding.
-* Supports :code:`UTF8`, :code:`UTF16`, :code:`UTF32` or :code:`UNICODE`.
-* The default encoding is :code:`UTF8`.
-
 Supports Google's draco
 -----------------------
 

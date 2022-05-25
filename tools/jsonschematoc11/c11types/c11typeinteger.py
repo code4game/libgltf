@@ -29,7 +29,7 @@ class C11TypeInteger(C11Type):
         return u'IsInt()'
 
     def codeJsonSet(self, dataName, variableName):
-        return u'%s.%s = _JsonValue[GLTFTEXT("%s")].GetInt();' % (dataName, variableName, variableName)
+        return u'%s.%s = _JsonValue["%s"].GetInt();' % (dataName, variableName, variableName)
 
     def codeJsonGet(self, dataName, variableName):
-        return u'_JsonValue[GLTFTEXT("%s")].SetInt(%s.%s);' % (variableName, dataName, variableName)
+        return u'_JsonValue["%s"].SetInt(%s.%s);' % (variableName, dataName, variableName)

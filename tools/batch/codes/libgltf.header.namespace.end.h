@@ -79,25 +79,25 @@
 
     struct SAccessorType
     {
-        string_t text;
+        std::string text;
         size_t dimension;
     };
 
     const SAccessorType GSAccessorTypes[uint8_t(EAccessorType::MAX)] = {
-        SAccessorType{ GLTFTEXT("")         , 0  },
-        SAccessorType{ GLTFTEXT("SCALAR")   , 1  },
-        SAccessorType{ GLTFTEXT("VEC2")     , 2  },
-        SAccessorType{ GLTFTEXT("VEC3")     , 3  },
-        SAccessorType{ GLTFTEXT("VEC4")     , 4  },
-        SAccessorType{ GLTFTEXT("MAT2")     , 4  },
-        SAccessorType{ GLTFTEXT("MAT3")     , 9  },
-        SAccessorType{ GLTFTEXT("MAT4")     , 16 }
+        SAccessorType{ ""         , 0  },
+        SAccessorType{ "SCALAR"   , 1  },
+        SAccessorType{ "VEC2"     , 2  },
+        SAccessorType{ "VEC3"     , 3  },
+        SAccessorType{ "VEC4"     , 4  },
+        SAccessorType{ "MAT2"     , 4  },
+        SAccessorType{ "MAT3"     , 9  },
+        SAccessorType{ "MAT4"     , 16 }
     };
 
     int32_t AccessorComponentTypeToInt32(EAccessorComponentType _eType);
     EAccessorComponentType Int32ToAccessorComponentType(int32_t _iValue);
-    const string_t& AccessorTypeToText(EAccessorType _eType);
-    EAccessorType TextToAccessorType(const string_t& _eText, bool _bCaseCensitive = true);
+    const std::string& AccessorTypeToText(EAccessorType _eType);
+    EAccessorType TextToAccessorType(const std::string& _eText, bool _bCaseCensitive = true);
     size_t SizeOfAccessorComponentType(EAccessorComponentType _eType);
     size_t DimensionOfAccessorType(EAccessorType _eType);
     size_t SizeOfAccessor(EAccessorComponentType _eAccessorComponentType, size_t _iCount, EAccessorType _eAccessorType);
@@ -116,9 +116,9 @@
         _Vector.Resize(count);\
         for (size_t i = 0; i < count; ++i)\
         {\
-            for (size_t j = 0; j < dimensionof_accessor_type; ++j)\
+            for (size_t j = 0; j < dimension_of_accessor_type; ++j)\
             {\
-                _Vector[i][j] = static_cast<typename TVector::TComponent>(*((TType*)bufferData.buffer + i * dimensionof_accessor_type + j));\
+                _Vector[i][j] = static_cast<typename TVector::TComponent>(*((TType*)bufferData.buffer + i * dimension_of_accessor_type + j));\
             }\
         }\
     } break
@@ -129,19 +129,21 @@
         SAccessorData();
 
         EAccessorComponentType componentType;
-        size_t count;
-        EAccessorType type;
-        size_t bufferStride;
-        SBufferData bufferData;
+        size_t                 count;
+        EAccessorType          type;
+        size_t                 bufferStride;
+        SBufferData            bufferData;
 
         template<typename TVector>
         bool operator>>(TVector& _Vector) const
         {
-            const size_t dimensionof_accessor_type = DimensionOfAccessorType(type);
+            const size_t dimension_of_accessor_type = DimensionOfAccessorType(type);
             // not allow to convert to another with the different dimension
-            if (dimensionof_accessor_type != TVector::Dimension) return false;
+            if (dimension_of_accessor_type != TVector::Dimension) return false;
+
             const size_t sizeof_data = SizeOfAccessor(componentType, 1, type);
             if (bufferStride != 0 && bufferStride != sizeof_data) return false;
+
             const size_t sizeof_accessor = sizeof_data * count;
             if (sizeof_accessor > bufferData.bufferSize) return false;
 
@@ -166,6 +168,7 @@
                         LIBGLTF_ACCESSORCOMPONENT_CASE(float    , EAccessorComponentType::FLOAT         );
 
                     default:
+                        // not support
                         return false;
                     }
                 }
@@ -256,7 +259,16 @@
     class IglTFLoader
     {
     public:
-        static std::shared_ptr<IglTFLoader> Create(const string_t& file);
+        class IStreams
+        {
+        public:
+            virtual std::istream Read() const                      = 0;
+            virtual std::istream Read(const std::string& _path) const = 0;
+        };
+
+    public:
+        static std::shared_ptr<IglTFLoader> Create(const std::string& file);
+        static std::shared_ptr<IglTFLoader> Create(const std::shared_ptr<IStreams>& _streams_ptr);
 
     public:
         /// get the glTF structure
@@ -266,8 +278,8 @@
         virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
 
         /// load the attribute data like position, normal, texcoord, etc
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
 
         /// load the image data and type
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type) = 0;
+        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) = 0;
     };

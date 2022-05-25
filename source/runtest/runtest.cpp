@@ -93,11 +93,7 @@ void SaveAsOBJ(const std::string& _sFilePath
     obj_stream.close();
 }
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
-int _tmain(int _iArgc, wchar_t* _pcArgv[])
-#else
 int main(int _iArgc, char* _pcArgv[])
-#endif
 {
 #if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -109,96 +105,14 @@ int main(int _iArgc, char* _pcArgv[])
     int error_code = 1;
 #endif
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
-    std::wstring input_file_path;
-#else
-    std::string input_file_path;
-#endif
-
-    {
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
-        std::wstringstream argument;
-#else
-        std::stringstream argument;
-#endif
-        argument << _pcArgv[1];
-        input_file_path = argument.str();
-    }
-
+    const  std::string input_file_path = _pcArgv[1];
     if (input_file_path.length() == 0)
     {
         printf("Command line format: runtest input_file_path\n");
-
-#if defined(LIBGLTF_BUILD_COVERAGE)
-        const libgltf::string_t s_test = "s_test";
-        {
-            // test string convert
-            const std::u16string s_u16 = libgltf::UTF8ToUTF16(s_test);
-            const std::string s_u8_from_u16 = libgltf::UTF16ToUTF8(s_u16);
-            if (s_u8_from_u16 != s_test)
-            {
-                printf("convert failed between utf8 and utf16\n");
-            }
-
-            const std::u32string s_u32 = libgltf::UTF8ToUTF32(s_test);
-            const std::string s_u8_from_u32 = libgltf::UTF32ToUTF8(s_u32);
-            if (s_u8_from_u32 != s_test)
-            {
-                printf("convert failed between utf8 and utf32\n");
-            }
-        }
-        {
-            // test base64
-            {
-                const libgltf::string_t s_encode = libgltf::base64::Encode(s_test);
-                const libgltf::string_t s_decode = libgltf::base64::Decode(s_encode);
-                if (s_test != s_decode)
-                {
-                    printf("failed to encode and decode the string!\n");
-                }
-                else
-                {
-                    std::vector<uint8_t> v_decode;
-                    if (libgltf::base64::Decode(s_encode, v_decode))
-                    {
-                        libgltf::string_t s_result;
-                        if (libgltf::base64::Encode(v_decode, s_result))
-                        {
-                            if (s_encode != s_result)
-                            {
-                                printf("failed to decode and encode the data\n");
-                            }
-                        }
-                        else
-                        {
-                            printf("failed to encode\n");
-                        }
-                    }
-                    else
-                    {
-                        printf("failed to decode\n");
-                    }
-                }
-            }
-        }
-#endif
         return error_code;
     }
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(libgltf::UTF8ToUTF16(input_file_path));
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(libgltf::UTF8ToUTF32(input_file_path));
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
     std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(input_file_path);
-#else
-    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(libgltf::UTF8ToUNICODE(input_file_path));
-#endif
-#else
-    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(input_file_path);
-#endif
-    
     std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
     if (loaded_gltf)
     {
@@ -216,41 +130,24 @@ int main(int _iArgc, char* _pcArgv[])
 
     libgltf::TDimensionVector<3, float> position_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("position"), position_stream);
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
 
     libgltf::TDimensionVector<3, float> normal_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > normal_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(normal_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("normal"), normal_stream);
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
 
     libgltf::TDimensionVector<2, float> texcoord_0_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, GLTFTEXT("texcoord_0"), texcoord_0_stream);
+    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
 
     std::vector<uint8_t> image0_data;
-    libgltf::string_t image0_data_type;
+    std::string image0_data_type;
     gltf_loader->GetOrLoadImageData(0, image0_data, image0_data_type);
 
 #if defined(LIBGLTF_BUILD_COVERAGE)
-    const std::string obj_file_path =
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE) && defined(LIBGLTF_PLATFORM_WINDOWS)
-        libgltf::UNICODEToUTF8(input_file_path + GLTFTEXT(".obj"));
-#else
-        input_file_path + GLTFTEXT(".obj");
-#endif
+    const std::string obj_file_path = input_file_path + ".obj";
     SaveAsOBJ(obj_file_path, triangle_data, position_data, texcoord_0_data, normal_data);
 #endif
-
-    //TODO: just convert to json, save the mesh or image data to file in future
-    libgltf::string_t output_content;
-    if (loaded_gltf >> output_content)
-    {
-        printf("operator >> Success\n");
-    }
-    else
-    {
-        printf("operator >> Failed\n");
-        return error_code;
-    }
 
     return 0;
 }

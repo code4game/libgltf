@@ -34,23 +34,23 @@ namespace libgltf
     public:
         CPath();
         CPath(const CPath& _Another);
-        explicit CPath(const string_t& _sPath);
+        explicit CPath(const std::string& _sPath);
 
     public:
-        void SetPath(const string_t& _sPath);
+        void SetPath(const std::string& _sPath);
         bool IsRelative() const;
         CPath Parent() const;
         CPath Filename() const;
 
     public:
-        operator string_t() const;
+        operator std::string() const;
         CPath& operator=(const CPath& _Another);
-        CPath& operator=(const string_t& _sPath);
+        CPath& operator=(const std::string& _sPath);
         CPath operator/(const CPath& _Another) const;
         bool operator<(const CPath& _Another) const;
 
     private:
-        string_t m_sPath;
+        std::string m_sPath;
     };
 
     /// a file loader, a file pool
@@ -59,16 +59,16 @@ namespace libgltf
         typedef std::map<CPath, std::vector<uint8_t>> TFileDatas;
 
     public:
-        explicit CFileLoader(const string_t& _sRootPath = GLTFTEXT(""));
+        explicit CFileLoader(const std::string& _sRootPath = "");
 
     public:
-        bool Load(const string_t& _sFilePath);
+        bool Load(const std::string& _sFilePath);
         void Release();
 
     public:
-        const std::vector<uint8_t>& operator[](const string_t& file) const;
-        bool ReadByte(const string_t& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const;
-        string_t AsString(const string_t& file, size_t _Offset = 0, size_t _Size = 0) const;
+        const std::vector<uint8_t>& operator[](const std::string& file) const;
+        bool ReadByte(const std::string& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const;
+        std::string AsString(const std::string& file, size_t _Offset = 0, size_t _Size = 0) const;
 
     protected:
         const std::vector<uint8_t>& Find(const CPath& _sFilePath) const;

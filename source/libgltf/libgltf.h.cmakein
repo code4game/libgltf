@@ -26,16 +26,10 @@
 #define LIBGLTF_H
 
 #include <cstdint>
-#include <cstring>
 #include <string>
 #include <vector>
 #include <map>
 #include <memory>
-
-#cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UTF8
-#cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UTF16
-#cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UTF32
-#cmakedefine LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE
 
 #define LIBGLTF_MAJOR_VERSION    0
 #define LIBGLTF_MINOR_VERSION    1
@@ -43,23 +37,10 @@
 
 namespace libgltf
 {
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-#   define      GLTFTEXT(t)             u##t
-    typedef std::u16string              string_t;
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-#   define      GLTFTEXT(t)             U##t
-    typedef std::u32string              string_t;
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-#   define      GLTFTEXT(t)             L##t
-    typedef std::wstring                string_t;
-#else
-#   define      GLTFTEXT(t)             t
-    typedef std::string                 string_t;
-#endif
 
     struct SGlTF;
-    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const string_t& _sContent);
-    bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, string_t& _sContent);
+    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::string& _sContent);
+    bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, std::string& _sContent);
     
     /*!
      * struct: SObject
@@ -67,7 +48,7 @@ namespace libgltf
     struct SObject
     {
         SObject();
-        string_t schemaType;
+        std::string schemaType;
     };
 
     // declare all types
@@ -158,7 +139,7 @@ namespace libgltf
         operator bool() const;
 
         // The user-defined name of this object.
-        string_t name;
+        std::string name;
     };
 
     /*!
@@ -183,7 +164,7 @@ namespace libgltf
         // The number of elements referenced by this accessor.
         int32_t count;
         // Specifies if the accessor's elements are scalars, vectors, or matrices.
-        string_t type;
+        std::string type;
         // Maximum value of each component in this accessor.
         std::vector<float> max;
         // Minimum value of each component in this accessor.
@@ -278,7 +259,7 @@ namespace libgltf
         // The index of the node to animate. When undefined, the animated object **MAY** be defined by an extension.
         std::shared_ptr<SGlTFId> node;
         // The name of the node's TRS property to animate, or the `"weights"` of the Morph Targets it instantiates. For the `"translation"` property, the values that are provided by the sampler are the translation along the X, Y, and Z axes. For the `"rotation"` property, the values are a quaternion in the order (x, y, z, w), where w is the scalar. For the `"scale"` property, the values are the scaling factors along the X, Y, and Z axes.
-        string_t path;
+        std::string path;
     };
 
     /*!
@@ -295,7 +276,7 @@ namespace libgltf
         // The index of an accessor containing keyframe timestamps.
         std::shared_ptr<SGlTFId> input;
         // Interpolation algorithm.
-        string_t interpolation;
+        std::string interpolation;
         // The index of an accessor, containing keyframe output values.
         std::shared_ptr<SGlTFId> output;
     };
@@ -329,13 +310,13 @@ namespace libgltf
         operator bool() const;
 
         // A copyright message suitable for display to credit the content creator.
-        string_t copyright;
+        std::string copyright;
         // Tool that generated this glTF model.  Useful for debugging.
-        string_t generator;
+        std::string generator;
         // The glTF version in the form of `<major>.<minor>` that this asset targets.
-        string_t version;
+        std::string version;
         // The minimum glTF version in the form of `<major>.<minor>` that this asset targets. This property **MUST NOT** be greater than the asset version.
-        string_t minVersion;
+        std::string minVersion;
     };
 
     /*!
@@ -350,7 +331,7 @@ namespace libgltf
         operator bool() const;
 
         // The URI (or IRI) of the buffer.
-        string_t uri;
+        std::string uri;
         // The length of the buffer in bytes.
         int32_t byteLength;
     };
@@ -436,7 +417,7 @@ namespace libgltf
         // A perspective camera containing properties to create a perspective projection matrix. This property **MUST NOT** be defined when `orthographic` is defined.
         std::shared_ptr<SCameraPerspective> perspective;
         // Specifies if the camera uses a perspective or orthographic projection.
-        string_t type;
+        std::string type;
     };
 
     /*!
@@ -451,7 +432,7 @@ namespace libgltf
         operator bool() const;
 
         // Manual code lines
-        std::map<string_t, std::shared_ptr<struct SObject>> properties;
+        std::map<std::string, std::shared_ptr<struct SObject>> properties;
     };
 
     /*!
@@ -478,9 +459,9 @@ namespace libgltf
         operator bool() const;
 
         // Names of glTF extensions used in this asset.
-        std::vector<string_t> extensionsUsed;
+        std::vector<std::string> extensionsUsed;
         // Names of glTF extensions required to properly load this asset.
-        std::vector<string_t> extensionsRequired;
+        std::vector<std::string> extensionsRequired;
         // An array of accessors.
         std::vector<std::shared_ptr<SAccessor>> accessors;
         // An array of keyframe animations.
@@ -540,9 +521,9 @@ namespace libgltf
         operator bool() const;
 
         // The URI (or IRI) of the image.
-        string_t uri;
+        std::string uri;
         // The image's media type. This field **MUST** be defined when `bufferView` is defined.
-        string_t mimeType;
+        std::string mimeType;
         // The index of the bufferView that contains the image. This field **MUST NOT** be defined when `uri` is defined.
         std::shared_ptr<SGlTFId> bufferView;
     };
@@ -637,7 +618,7 @@ namespace libgltf
         // The factors for the emissive color of the material.
         std::vector<float> emissiveFactor;
         // The alpha rendering mode of the material.
-        string_t alphaMode;
+        std::string alphaMode;
         // The alpha cutoff value of the material.
         float alphaCutoff;
         // Specifies whether the material is double sided.
@@ -656,7 +637,7 @@ namespace libgltf
         operator bool() const;
 
         // A plain JSON object, where each key corresponds to a mesh attribute semantic and each value is the index of the accessor containing attribute's data.
-        std::map<string_t, std::shared_ptr<SGlTFId>> attributes;
+        std::map<std::string, std::shared_ptr<SGlTFId>> attributes;
         // The index of the accessor that contains the vertex indices.
         std::shared_ptr<SGlTFId> indices;
         // The index of the material to apply to this primitive when rendering.
@@ -664,7 +645,7 @@ namespace libgltf
         // The topology type of primitives to render.
         int32_t mode;
         // An array of morph targets.
-        std::vector<std::map<string_t, std::shared_ptr<SGlTFId>>> targets;
+        std::vector<std::map<std::string, std::shared_ptr<SGlTFId>>> targets;
     };
 
     /*!
@@ -800,7 +781,7 @@ namespace libgltf
         // The index of the bufferView.
         std::shared_ptr<SGlTFId> bufferView;
         // A dictionary object, where each key corresponds to an attribute and its unique attribute id stored in the compressed geometry.
-        std::map<string_t, std::shared_ptr<SGlTFId>> attributes;
+        std::map<std::string, std::shared_ptr<SGlTFId>> attributes;
     };
 
     /*!
@@ -833,7 +814,7 @@ namespace libgltf
         float intensity;
         std::shared_ptr<SLightspot> spot;
         // Specifies the light type.
-        string_t type;
+        std::string type;
         // A distance cutoff at which the light's intensity may be considered to have reached zero.
         float range;
     };
@@ -1078,7 +1059,7 @@ namespace libgltf
         operator bool() const;
 
         // The name of this articulation.  The articulation name must be unique within this model.  Articulation names may not contain spaces.
-        string_t name;
+        std::string name;
         // An array of stages, each of which defines a degree of freedom of movement.
         std::vector<std::shared_ptr<SArticulationStage>> stages;
         // The local forward vector for the associated node, for the purpose of pointing at a target or other object.
@@ -1097,9 +1078,9 @@ namespace libgltf
         operator bool() const;
 
         // The name of this articulation stage.  The articulation stage name must be unique only within the containing articulation.  Articulation Stage names may not contain spaces.
-        string_t name;
+        std::string name;
         // The type of motion applied by this articulation stage.
-        string_t type;
+        std::string type;
         // The minimum value for the range of motion of this articulation stage.
         float minimumValue;
         // The maximum value for the range of motion of this articulation stage.
@@ -1137,7 +1118,7 @@ namespace libgltf
         // Set to true to indicate that this node's origin and orientation act as an attach point for external objects, analysis, or effects.
         bool isAttachPoint;
         // The name of an Articulation that applies to this node.
-        string_t articulationName;
+        std::string articulationName;
     };
 
     /*!
@@ -1167,7 +1148,7 @@ namespace libgltf
         operator bool() const;
 
         // The name of a Solar Panel Group that includes this node.
-        string_t solarPanelGroupName;
+        std::string solarPanelGroupName;
         // Set to true to indicate that this node's geometry does not obscure any sensors' view in the STK Sensor Obscuration tool.
         bool noObscuration;
     };
@@ -1184,7 +1165,7 @@ namespace libgltf
         operator bool() const;
 
         // The name of this solar panel group.  The group name must be unique within this model, and may not contain spaces.
-        string_t name;
+        std::string name;
         // The percentage, from 0.0 to 100.0, of how efficiently the solar cells convert solar to electrical energy.
         float efficiency;
     };
@@ -1216,7 +1197,7 @@ namespace libgltf
         operator bool() const;
 
         // A dictionary object, where each key corresponds to instance attribute and each value is the index of the accessor containing attribute's data. Attributes TRANSLATION, ROTATION, SCALE define instance transformation. For "TRANSLATION" the values are FLOAT_VEC3's specifying translation along the x, y, and z axes. For "ROTATION" the values are VEC4's specifying rotation as a quaternion in the order (x, y, z, w), where w is the scalar, with component type `FLOAT` or normalized integer. For "SCALE" the values are FLOAT_VEC3's specifying scaling factors along the x, y, and z axes.
-        std::map<string_t, std::shared_ptr<SGlTFId>> attributes;
+        std::map<std::string, std::shared_ptr<SGlTFId>> attributes;
     };
 
     /*!
@@ -1345,25 +1326,25 @@ namespace libgltf
 
     struct SAccessorType
     {
-        string_t text;
+        std::string text;
         size_t dimension;
     };
 
     const SAccessorType GSAccessorTypes[uint8_t(EAccessorType::MAX)] = {
-        SAccessorType{ GLTFTEXT("")         , 0  },
-        SAccessorType{ GLTFTEXT("SCALAR")   , 1  },
-        SAccessorType{ GLTFTEXT("VEC2")     , 2  },
-        SAccessorType{ GLTFTEXT("VEC3")     , 3  },
-        SAccessorType{ GLTFTEXT("VEC4")     , 4  },
-        SAccessorType{ GLTFTEXT("MAT2")     , 4  },
-        SAccessorType{ GLTFTEXT("MAT3")     , 9  },
-        SAccessorType{ GLTFTEXT("MAT4")     , 16 }
+        SAccessorType{ ""         , 0  },
+        SAccessorType{ "SCALAR"   , 1  },
+        SAccessorType{ "VEC2"     , 2  },
+        SAccessorType{ "VEC3"     , 3  },
+        SAccessorType{ "VEC4"     , 4  },
+        SAccessorType{ "MAT2"     , 4  },
+        SAccessorType{ "MAT3"     , 9  },
+        SAccessorType{ "MAT4"     , 16 }
     };
 
     int32_t AccessorComponentTypeToInt32(EAccessorComponentType _eType);
     EAccessorComponentType Int32ToAccessorComponentType(int32_t _iValue);
-    const string_t& AccessorTypeToText(EAccessorType _eType);
-    EAccessorType TextToAccessorType(const string_t& _eText, bool _bCaseCensitive = true);
+    const std::string& AccessorTypeToText(EAccessorType _eType);
+    EAccessorType TextToAccessorType(const std::string& _eText, bool _bCaseCensitive = true);
     size_t SizeOfAccessorComponentType(EAccessorComponentType _eType);
     size_t DimensionOfAccessorType(EAccessorType _eType);
     size_t SizeOfAccessor(EAccessorComponentType _eAccessorComponentType, size_t _iCount, EAccessorType _eAccessorType);
@@ -1382,9 +1363,9 @@ namespace libgltf
         _Vector.Resize(count);\
         for (size_t i = 0; i < count; ++i)\
         {\
-            for (size_t j = 0; j < dimensionof_accessor_type; ++j)\
+            for (size_t j = 0; j < dimension_of_accessor_type; ++j)\
             {\
-                _Vector[i][j] = static_cast<typename TVector::TComponent>(*((TType*)bufferData.buffer + i * dimensionof_accessor_type + j));\
+                _Vector[i][j] = static_cast<typename TVector::TComponent>(*((TType*)bufferData.buffer + i * dimension_of_accessor_type + j));\
             }\
         }\
     } break
@@ -1395,19 +1376,21 @@ namespace libgltf
         SAccessorData();
 
         EAccessorComponentType componentType;
-        size_t count;
-        EAccessorType type;
-        size_t bufferStride;
-        SBufferData bufferData;
+        size_t                 count;
+        EAccessorType          type;
+        size_t                 bufferStride;
+        SBufferData            bufferData;
 
         template<typename TVector>
         bool operator>>(TVector& _Vector) const
         {
-            const size_t dimensionof_accessor_type = DimensionOfAccessorType(type);
+            const size_t dimension_of_accessor_type = DimensionOfAccessorType(type);
             // not allow to convert to another with the different dimension
-            if (dimensionof_accessor_type != TVector::Dimension) return false;
+            if (dimension_of_accessor_type != TVector::Dimension) return false;
+
             const size_t sizeof_data = SizeOfAccessor(componentType, 1, type);
             if (bufferStride != 0 && bufferStride != sizeof_data) return false;
+
             const size_t sizeof_accessor = sizeof_data * count;
             if (sizeof_accessor > bufferData.bufferSize) return false;
 
@@ -1432,6 +1415,7 @@ namespace libgltf
                         LIBGLTF_ACCESSORCOMPONENT_CASE(float    , EAccessorComponentType::FLOAT         );
 
                     default:
+                        // not support
                         return false;
                     }
                 }
@@ -1522,7 +1506,16 @@ namespace libgltf
     class IglTFLoader
     {
     public:
-        static std::shared_ptr<IglTFLoader> Create(const string_t& file);
+        class IStreams
+        {
+        public:
+            virtual std::istream Read() const                      = 0;
+            virtual std::istream Read(const std::string& _path) const = 0;
+        };
+
+    public:
+        static std::shared_ptr<IglTFLoader> Create(const std::string& file);
+        static std::shared_ptr<IglTFLoader> Create(const std::shared_ptr<IStreams>& _streams_ptr);
 
     public:
         /// get the glTF structure
@@ -1532,10 +1525,10 @@ namespace libgltf
         virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
 
         /// load the attribute data like position, normal, texcoord, etc
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
 
         /// load the image data and type
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type) = 0;
+        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) = 0;
     };
 
 }

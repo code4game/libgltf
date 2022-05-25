@@ -60,12 +60,12 @@ namespace libgltf
         };
 
     public:
-        explicit CGlTFLoader(const string_t& file);
+        explicit CGlTFLoader(const std::string& file);
 
     protected:
-        bool LoadByUri(const string_t& uri, std::vector<uint8_t>& data, string_t& data_type);
+        bool LoadByUri(const std::string& uri, std::vector<uint8_t>& data, std::string& data_type);
         bool LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data);
-        bool LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, string_t& data_type);
+        bool LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type);
         bool GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream);
         bool GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream);
         bool GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream);
@@ -73,8 +73,8 @@ namespace libgltf
     public:
         virtual std::weak_ptr<SGlTF> glTF() override;
         virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type) override;
+        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) override;
+        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) override;
 
     protected:
         std::shared_ptr<SGlTF> m_glTF;
@@ -87,7 +87,7 @@ namespace libgltf
         std::shared_ptr<class CGoogleDraco> m_pGoogleDraco;
 #endif
         std::map<size_t, std::vector<uint8_t>> m_CacheBufferDatas;
-        std::map<size_t, std::pair<std::vector<uint8_t>, string_t>> m_CacheImageDatas;
+        std::map<size_t, std::pair<std::vector<uint8_t>, std::string>> m_CacheImageDatas;
 
     public:
         static const uint32_t ms_GLBMagicEntry;

@@ -33,7 +33,7 @@ class C11TypeBool(C11Type):
         return u'IsBool()'
 
     def codeJsonSet(self, dataName, variableName):
-        return u'%s.%s = _JsonValue[GLTFTEXT("%s")].GetBool();' % (dataName, variableName, variableName)
+        return u'%s.%s = _JsonValue["%s"].GetBool();' % (dataName, variableName, variableName)
 
     def codeJsonGet(self, dataName, variableName):
-        return u'_JsonValue[GLTFTEXT("%s")].SetBool(%s.%s);' % (variableName, dataName, variableName)
+        return u'_JsonValue["%s"].SetBool(%s.%s);' % (variableName, dataName, variableName)

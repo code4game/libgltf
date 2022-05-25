@@ -60,14 +60,14 @@ class C11TypeMap(C11Type):
 
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         #if withDocument:
-        #    return u'TDataDoc<%s<string_t, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
-        return u'%s<string_t, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
+        #    return u'TDataDoc<%s<std::string, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
+        return u'%s<std::string, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
 
     def codeJsonCheck(self):
         return u'IsObject()'
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s << _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)
 
     def codeJsonGet(self, dataName, variableName):
-        return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s >> _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)

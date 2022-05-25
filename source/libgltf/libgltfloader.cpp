@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -44,12 +44,12 @@ namespace libgltf
         return EAccessorComponentType::NONE;
     }
 
-    const libgltf::string_t& AccessorTypeToText(EAccessorType _eType)
+    const std::string& AccessorTypeToText(EAccessorType _eType)
     {
         return GSAccessorTypes[uint8_t(_eType)].text;
     }
 
-    EAccessorType TextToAccessorType(const string_t& _sText, bool _bCaseCensitive /*= true*/)
+    EAccessorType TextToAccessorType(const std::string& _sText, bool _bCaseCensitive /*= true*/)
     {
         for (uint8_t i = 0; i < uint8_t(EAccessorType::MAX); ++i)
         {
@@ -92,7 +92,7 @@ namespace libgltf
         //
     }
 
-    std::shared_ptr<IglTFLoader> IglTFLoader::Create(const string_t& file)
+    std::shared_ptr<IglTFLoader> IglTFLoader::Create(const std::string& file)
     {
         return std::make_shared<CGlTFLoader>(file);
     }

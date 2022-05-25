@@ -29,16 +29,8 @@
 namespace libgltf
 {
     static const std::vector<uint8_t> GSDataEmpty;
-    static const string_t GSStringEmpty = GLTFTEXT("");
+    static const std::string GSStringEmpty = "";
 
     /// check
     void Verify(bool condition);
-    
-    /// string convert
-    std::u16string UTF8ToUTF16(const std::string& _sValue);
-    std::string UTF16ToUTF8(const std::u16string& _sValue);
-    std::u32string UTF8ToUTF32(const std::string& _sValue);
-    std::string UTF32ToUTF8(const std::u32string& _sValue);
-    std::wstring UTF8ToUNICODE(const std::string& _sValue);
-    std::string UNICODEToUTF8(const std::wstring& _sValue);
 }

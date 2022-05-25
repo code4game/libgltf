@@ -167,7 +167,7 @@ namespace libgltf
         //
     }
 
-    CGlTFLoader::CGlTFLoader(const string_t& _sFilePath)
+    CGlTFLoader::CGlTFLoader(const std::string& _sFilePath)
         : m_glTF(nullptr)
         , m_pFileLoader(std::make_shared<CFileLoader>(CPath(_sFilePath).Parent()))
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
@@ -227,14 +227,14 @@ namespace libgltf
         }
     }
 
-    bool CGlTFLoader::LoadByUri(const string_t& uri, std::vector<uint8_t>& data, string_t& data_type)
+    bool CGlTFLoader::LoadByUri(const std::string& uri, std::vector<uint8_t>& data, std::string& data_type)
     {
         if (m_GLBHeader.magic != ms_GLBMagicEntry && uri.empty()) return false;
 
         if (uri.empty())
         {
             /// load the data if the file is .glb
-            const std::vector<uint8_t>& default_file_data = (*m_pFileLoader)[GLTFTEXT("")];
+            const std::vector<uint8_t>& default_file_data = (*m_pFileLoader)[""];
             if (default_file_data.empty()) return false;
             SGLBChunk glb_chunk_bin;
             size_t offset = sizeof(m_GLBHeader);
@@ -256,11 +256,11 @@ namespace libgltf
         else
         {
             /// support embedded
-            string_t data_encode;
+            std::string data_encode;
             size_t data_index = 0;
             if (UriParse(uri, data_type, data_encode, data_index))
             {
-                return (StringEqual(data_encode, GLTFTEXT("base64"), false) && base64::Decode(uri.substr(data_index), data));
+                return (StringEqual(data_encode, "base64", false) && base64::Decode(uri.substr(data_index), data));
             }
         }
 
@@ -271,7 +271,7 @@ namespace libgltf
         size_t dot_index = uri.find_last_of('.');
         if (uri.size() > (dot_index + 1))
         {
-            data_type = GLTFTEXT("file/") + uri.substr(dot_index + 1);
+            data_type = "file/" + uri.substr(dot_index + 1);
         }
         return true;
     }
@@ -279,12 +279,12 @@ namespace libgltf
     bool CGlTFLoader::LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data)
     {
         if (!buffer) return false;
-        string_t data_type;
+        std::string data_type;
         if (!LoadByUri(buffer->uri, data, data_type)) return false;
         return (data.size() == buffer->byteLength);
     }
 
-    bool CGlTFLoader::LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, string_t& data_type)
+    bool CGlTFLoader::LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type)
     {
         if (!image) return false;
         data_type = image->mimeType;
@@ -359,7 +359,7 @@ namespace libgltf
         {
             const std::shared_ptr<SExtension>& extensions = primitive->extensions;
             std::shared_ptr<SObject> extension;
-            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, GLTFTEXT("KHR_draco_mesh_compression"), extension))
+            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
                 SKHR_draco_mesh_compressionextension* extension_draco = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
@@ -375,7 +375,7 @@ namespace libgltf
         return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*primitive->indices)), accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CGlTFLoader::GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream)
     {
         if (!m_glTF) return false;
         if (m_glTF->meshes.size() <= mesh_index) return false;
@@ -388,7 +388,7 @@ namespace libgltf
         {
             const std::shared_ptr<SExtension>& extensions = primitive->extensions;
             std::shared_ptr<SObject> extension;
-            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, GLTFTEXT("KHR_draco_mesh_compression"), extension))
+            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
                 SKHR_draco_mesh_compressionextension* extension_draco = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
@@ -403,17 +403,17 @@ namespace libgltf
             }
         }
 
-        const std::map<string_t, std::shared_ptr<SGlTFId>>& primitive_attributes = primitive->attributes;
+        const std::map<std::string, std::shared_ptr<SGlTFId>>& primitive_attributes = primitive->attributes;
         std::shared_ptr<SGlTFId> attribute_access;
         if (!StringMapFind<std::shared_ptr<SGlTFId>>(primitive_attributes, attribute, attribute_access, false)) return false;
         return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*attribute_access)), accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type)
+    bool CGlTFLoader::GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type)
     {
         if (!m_glTF) return false;
         if (m_glTF->images.size() <= index) return false;
-        std::map<size_t, std::pair<std::vector<uint8_t>, string_t>>::const_iterator found = m_CacheImageDatas.find(index);
+        std::map<size_t, std::pair<std::vector<uint8_t>, std::string>>::const_iterator found = m_CacheImageDatas.find(index);
         if (found != m_CacheImageDatas.end())
         {
             data = found->second.first;

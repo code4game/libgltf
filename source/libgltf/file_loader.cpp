@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Alex Chi, The Code 4 Game Organization
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,34 +29,34 @@
 namespace libgltf
 {
     CPath::CPath()
-        : m_sPath(GLTFTEXT(""))
+        : m_sPath("")
     {
         //
     }
 
     CPath::CPath(const CPath& _Another)
-        : m_sPath(GLTFTEXT(""))
+        : m_sPath("")
     {
         SetPath(_Another);
     }
 
-    CPath::CPath(const string_t& _sPath)
-        : m_sPath(GLTFTEXT(""))
+    CPath::CPath(const std::string& _sPath)
+        : m_sPath("")
     {
         SetPath(_sPath);
     }
 
-    void CPath::SetPath(const string_t& _sPath)
+    void CPath::SetPath(const std::string& _sPath)
     {
         m_sPath = _sPath;
         for (auto& c : m_sPath)
         {
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
-            if (c != GLTFTEXT('/')) continue;
-            c = GLTFTEXT('\\');
+            if (c != '/') continue;
+            c = '\\';
 #else
-            if (c != GLTFTEXT('\\')) continue;
-            c = GLTFTEXT('/');
+            if (c != '\\') continue;
+            c = '/';
 #endif
         }
     }
@@ -64,44 +64,44 @@ namespace libgltf
     bool CPath::IsRelative() const
     {
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
-        return (m_sPath.find_first_of(GLTFTEXT(":")) > m_sPath.size());
+        return (m_sPath.find_first_of(":") > m_sPath.size());
 #else
-        return (m_sPath[0] != GLTFTEXT('/'));
+        return (m_sPath[0] != '/');
 #endif
     }
 
     CPath CPath::Parent() const
     {
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
-        size_t index = m_sPath.find_last_of(GLTFTEXT('\\'));
+        size_t index = m_sPath.find_last_of('\\');
 #else
-        size_t index = m_sPath.find_last_of(GLTFTEXT('/'));
+        size_t index = m_sPath.find_last_of('/');
 #endif
-        return CPath(index < m_sPath.size() ? m_sPath.substr(0, index) : GLTFTEXT(""));
+        return CPath(index < m_sPath.size() ? m_sPath.substr(0, index) : "");
     }
 
     CPath CPath::Filename() const
     {
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
-        size_t index = m_sPath.find_last_of(GLTFTEXT('\\'));
+        size_t index = m_sPath.find_last_of('\\');
 #else
-        size_t index = m_sPath.find_last_of(GLTFTEXT('/'));
+        size_t index = m_sPath.find_last_of('/');
 #endif
-        return CPath(index < m_sPath.size() ? m_sPath.substr(index + 1, m_sPath.size() - 1) : GLTFTEXT(""));
+        return CPath(index < m_sPath.size() ? m_sPath.substr(index + 1, m_sPath.size() - 1) : "");
     }
 
-    CPath::operator string_t() const
+    CPath::operator std::string() const
     {
         return m_sPath;
     }
 
     CPath& CPath::operator=(const CPath& _Another)
     {
-        SetPath(string_t(_Another));
+        SetPath(std::string(_Another));
         return (*this);
     }
 
-    CPath& CPath::operator=(const string_t& _sPath)
+    CPath& CPath::operator=(const std::string& _sPath)
     {
         SetPath(_sPath);
         return (*this);
@@ -110,15 +110,15 @@ namespace libgltf
     CPath CPath::operator/(const CPath& _Another) const
     {
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
-        return CPath(m_sPath + GLTFTEXT("\\") + string_t(_Another));
+        return CPath(m_sPath + "\\" + std::string(_Another));
 #else
-        return CPath(m_sPath + GLTFTEXT("/") + string_t(_Another));
+        return CPath(m_sPath + "/" + std::string(_Another));
 #endif
     }
 
     bool CPath::operator<(const CPath& _Another) const
     {
-        return (m_sPath < string_t(_Another));
+        return (m_sPath < std::string(_Another));
     }
 
 #if defined(LIBGLTF_PLATFORM_WINDOWS)
@@ -126,43 +126,29 @@ namespace libgltf
 #else
 #include <unistd.h>
 #endif
-    string_t GetCWD()
+    std::string GetCWD()
     {
-        string_t current_path;
-#if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-        wchar_t current_path_temp[FILENAME_MAX];
-        _wgetcwd(current_path_temp, sizeof(current_path_temp));
-        current_path = current_path_temp;
-#else
+        std::string current_path;
         char current_path_temp[FILENAME_MAX];
-#   if defined(LIBGLTF_PLATFORM_WINDOWS)
+#if defined(LIBGLTF_PLATFORM_WINDOWS)
         _getcwd(current_path_temp, sizeof(current_path_temp));
-#   else
+#else
         getcwd(current_path_temp, sizeof(current_path_temp));
-#   endif
-#       if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-        current_path = UTF8ToUTF16(current_path_temp);
-#       elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-        current_path = UTF8ToUTF32(current_path_temp);
-#       elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-        current_path = UTF8ToUNICODE(current_path_temp);
-#       else
-        current_path = current_path_temp;
-#       endif
 #endif
+        current_path = current_path_temp;
         return current_path;
     }
 
-    CFileLoader::CFileLoader(const string_t& _sRootPath /*= GLTFTEXT("")*/)
+    CFileLoader::CFileLoader(const std::string& _sRootPath /*= ""*/)
         : m_RootPath(_sRootPath.empty() ? GetCWD() : _sRootPath)
         , m_FilePath()
         , m_FileDatas()
     {
         if (m_RootPath.IsRelative())
-            m_RootPath = GetCWD().append(GLTFTEXT("/")).append(m_RootPath);
+            m_RootPath = GetCWD().append("/").append(m_RootPath);
     }
 
-    bool CFileLoader::Load(const string_t& _sFilePath)
+    bool CFileLoader::Load(const std::string& _sFilePath)
     {
         CPath file_path(_sFilePath);
         if (file_path.IsRelative())
@@ -170,16 +156,7 @@ namespace libgltf
 
         std::vector<uint8_t>& found_filedata = FindOrAdd(CPath(_sFilePath));
         if (!found_filedata.empty()) return true;
-
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-        std::ifstream file_stream(UTF16ToUTF8(file_path), std::ios::in | std::ios::binary);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-        std::ifstream file_stream(UTF32ToUTF8(file_path), std::ios::in | std::ios::binary);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-        std::ifstream file_stream(UNICODEToUTF8(file_path), std::ios::in | std::ios::binary);
-#else
         std::ifstream file_stream(file_path, std::ios::in | std::ios::binary);
-#endif
         if (!file_stream.is_open()) return false;
 
         file_stream.seekg(0, std::ios::end);
@@ -201,12 +178,12 @@ namespace libgltf
         m_FileDatas.clear();
     }
 
-    const std::vector<uint8_t>& CFileLoader::operator[](const string_t& file) const
+    const std::vector<uint8_t>& CFileLoader::operator[](const std::string& file) const
     {
-        return Find(CPath(file.empty() ? string_t(m_FilePath) : file.c_str()));
+        return Find(CPath(file.empty() ? std::string(m_FilePath) : file.c_str()));
     }
 
-    bool CFileLoader::ReadByte(const string_t& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const
+    bool CFileLoader::ReadByte(const std::string& _sFilePath, size_t _Offset, void* _pData, size_t _Size) const
     {
         const std::vector<uint8_t>& file_data = (*this)[_sFilePath];
         if (file_data.empty()) return false;
@@ -215,25 +192,17 @@ namespace libgltf
         return true;
     }
 
-    string_t CFileLoader::AsString(const string_t& _sFilePath, size_t _Offset /*= 0*/, size_t _Size /*= 0*/) const
+    std::string CFileLoader::AsString(const std::string& _sFilePath, size_t _Offset /*= 0*/, size_t _Size /*= 0*/) const
     {
         const std::vector<uint8_t>& file_data = (*this)[_sFilePath];
-        if (file_data.empty()) return string_t();
-        if (_Size != 0 && file_data.size() < (_Offset + _Size)) return string_t();
+        if (file_data.empty()) return std::string();
+        if (_Size != 0 && file_data.size() < (_Offset + _Size)) return std::string();
 
         std::string file_content;
         file_content.resize(_Size == 0 ? (sizeof(uint8_t) * file_data.size() / sizeof(std::string::value_type) + 1) : (sizeof(uint8_t) * _Size / sizeof(std::string::value_type) + 1), 0);
         ::memcpy((uint8_t*)file_content.data(), _Size == 0 ? ((uint8_t*)file_data.data()) : ((uint8_t*)file_data.data() + _Offset), _Size == 0 ? (sizeof(uint8_t) * file_data.size()) : (sizeof(uint8_t) * _Size));
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-        return UTF8ToUTF16(file_content);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-        return UTF8ToUTF32(file_content);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-        return UTF8ToUNICODE(file_content);
-#else
         return file_content;
-#endif
     }
 
     const std::vector<uint8_t>& CFileLoader::Find(const CPath& file) const

@@ -237,17 +237,17 @@ class C11TypeStruct(C11Type):
 
     def codeParserHeader(self):
         codeLines = []
-        codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
-        codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
-        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(%s& _rData, const JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True)))
+        codeLines.append(u'bool operator<<(%s& _rData, const JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, JSONCharValue& _JsonValue);' % (self.codeTypeName(withDeclare=True, asVariable=True)))
         return codeLines
 
     def codeParserSource(self):
         codeLines = []
-        codeLines.append(u'bool operator<<(%s& _rData, const GLTFCharValue& _JsonValue)' % (self.codeTypeName()))
+        codeLines.append(u'bool operator<<(%s& _rData, const JSONCharValue& _JsonValue)' % (self.codeTypeName()))
         codeLines.append(u'{')
         if self.manualCodeParsersFrom is not None and len(self.manualCodeParsersFrom) > 0:
             codeLines.append(u'    // Manual code lines')
@@ -270,12 +270,12 @@ class C11TypeStruct(C11Type):
                     for codeParserLine in codeParserLines:
                         codeLines.append(u'    %s' % codeParserLine)
 
-            codeLines.append(u'    _rData.schemaType = GLTFTEXT("%s");' % (self.schemaName))
+            codeLines.append(u'    _rData.schemaType = "%s";' % (self.schemaName))
             codeLines.append(u'    return true;')
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName()))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, JSONCharValue& _JsonValue)' % (self.codeTypeName()))
         codeLines.append(u'{')
         if self.manualCodeParsersTo is not None and len(self.manualCodeParsersTo) > 0:
             codeLines.append(u'    // Manual code lines')
@@ -305,7 +305,7 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator<<(%s& _pData, const GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator<<(%s& _pData, const JSONCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    %s data_ptr = !!_pData ? _pData : std::make_shared<%s>();' % (self.codeTypeName(asVariable=True), self.codeTypeName()))
         codeLines.append(u'    if (!(*data_ptr << _JsonValue)) return false;')
@@ -314,20 +314,20 @@ class C11TypeStruct(C11Type):
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<%s>& _rData, JSONCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    if (!_rData.data) return false;')
         codeLines.append(u'    return (TDataDoc<%s>(*_rData.data, _rData.doc) >> _JsonValue);' % self.codeTypeName())
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator<<(std::vector<%s>& _vDatas, const JSONCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    return operator<< <%s>(_vDatas, _JsonValue);' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'}')
         codeLines.append(u'')
 
-        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, GLTFCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
+        codeLines.append(u'bool operator>>(const TDataDoc<std::vector<%s>>& _rData, JSONCharValue& _JsonValue)' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'{')
         codeLines.append(u'    return operator>> <%s>(_rData, _JsonValue);' % (self.codeTypeName(asVariable=True)))
         codeLines.append(u'}')
@@ -342,7 +342,7 @@ class C11TypeStruct(C11Type):
         return self.c11Type.codeJsonCheck()
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s << _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)
 
     def codeJsonGet(self, dataName, variableName):
-        return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s >> _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)
