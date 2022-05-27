@@ -131,35 +131,39 @@ int main(int _iArgc, char* _pcArgv[])
             return stream_ptr;
         });
     const std::unique_ptr<libgltf::SGlTF>& loaded_gltf = gltf_loader->glTF();
-    if (loaded_gltf)
+    if (!loaded_gltf)
     {
-        printf("operator << Success\n");
-    }
-    else
-    {
-        printf("operator << Failed\n");
+        printf("Failed\n");
         return error_code;
     }
 
-    libgltf::TVertexList<1, size_t>                                            triangle_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>> triangle_stream =
-        std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>>(triangle_data);
-    gltf_loader->LoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
+    libgltf::TVertexList<1, size_t> triangle_data;
+    {
+        std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>> accessor_stream =
+            std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>>(triangle_data);
+        gltf_loader->LoadMeshPrimitiveIndicesData(0, 0, accessor_stream);
+    }
 
-    libgltf::TVertexList<3, float>                                            position_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> position_stream =
-        std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(position_data);
-    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
+    libgltf::TVertexList<3, float> position_data;
+    {
+        std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> accessor_stream =
+            std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(position_data);
+        gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "position", accessor_stream);
+    }
 
-    libgltf::TVertexList<3, float>                                            normal_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> normal_stream =
-        std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(normal_data);
-    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
+    libgltf::TVertexList<3, float> normal_data;
+    {
+        std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> accessor_stream =
+            std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(normal_data);
+        gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "normal", accessor_stream);
+    }
 
-    libgltf::TVertexList<2, float>                                            texcoord_0_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>> texcoord_0_stream =
-        std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>>(texcoord_0_data);
-    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
+    libgltf::TVertexList<2, float> texcoord_0_data;
+    {
+        std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>> accessor_stream =
+            std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>>(texcoord_0_data);
+        gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", accessor_stream);
+    }
 
     std::vector<uint8_t> image0_data;
     std::string          image0_data_type;
@@ -170,5 +174,6 @@ int main(int _iArgc, char* _pcArgv[])
     SaveAsOBJ(obj_file_path, triangle_data, position_data, texcoord_0_data, normal_data);
 #endif
 
+    printf("Success\n");
     return 0;
 }
