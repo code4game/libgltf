@@ -4,9 +4,6 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
-#include <memory>
-#include <vector>
-
 namespace libgltf
 {
     typedef rapidjson::UTF8<char>                          JSONChar;

@@ -259,20 +259,11 @@
     class IglTFLoader
     {
     public:
-        class IStreams
-        {
-        public:
-            virtual std::istream Read() const                      = 0;
-            virtual std::istream Read(const std::string& _path) const = 0;
-        };
-
-    public:
-        static std::shared_ptr<IglTFLoader> Create(const std::string& file);
-        static std::shared_ptr<IglTFLoader> Create(const std::shared_ptr<IStreams>& _streams_ptr);
+        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
 
     public:
         /// get the glTF structure
-        virtual std::weak_ptr<struct SGlTF> glTF() = 0;
+        virtual const std::unique_ptr<SGlTF>& glTF() const = 0;
 
         /// load the indices data
         virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;

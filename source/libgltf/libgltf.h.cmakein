@@ -41,8 +41,8 @@ namespace libgltf
 {
 
     struct SGlTF;
-    bool operator<<(SGlTF& _pGlTF, const std::string& _sContent);
-    bool operator>>(const SGlTF& _pGlTF, std::string& _sContent);
+    bool operator<<(SGlTF& _gltf, const std::string& _sContent);
+    bool operator>>(const SGlTF& _gltf, std::string& _sContent);
     
     /*!
      * struct: SObject
@@ -1508,7 +1508,6 @@ namespace libgltf
     class IglTFLoader
     {
     public:
-        static std::shared_ptr<IglTFLoader> Create(const std::string& file);
         static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
 
     public:

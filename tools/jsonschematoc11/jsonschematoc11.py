@@ -95,8 +95,8 @@ class C11TypeLibrary(object):
     def codeHeaderParser(self):
         code_lines = []
         code_lines.append(u'struct SGlTF;')
-        code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::string& _sContent);')
-        code_lines.append(u'bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, std::string& _sContent);')
+        code_lines.append(u'bool operator<<(SGlTF& _gltf, const std::string& _sContent);')
+        code_lines.append(u'bool operator>>(const SGlTF& _gltf, std::string& _sContent);')
         code_lines.append(u'')
         code_lines.append(u'/*!')
         code_lines.append(u' * struct: SObject')
@@ -376,20 +376,19 @@ class C11TypeLibrary(object):
                 source_file.write(u'{\n')
                 begin_space = u'    '
 
-            source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::string& _sContent)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(SGlTF& _gltf, const std::string& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    JSONCharDocument json_doc;\n' % begin_space)
             source_file.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % begin_space)
             source_file.write(u'%s    if (!json_doc.IsObject()) return false;\n' % begin_space)
-            source_file.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % begin_space)
+            source_file.write(u'%s    return (_gltf << json_doc.GetObject());\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, std::string& _sContent)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const SGlTF& _gltf, std::string& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    if (!_pGlTF) return false;\n' % begin_space)
             source_file.write(u'%s    JSONCharDocument json_doc;\n' % begin_space)
-            source_file.write(u'%s    if (!(TDataDoc<SGlTF>(*_pGlTF, &json_doc) >> json_doc)) return false;\n' % begin_space)
+            source_file.write(u'%s    if (!(TDataDoc<SGlTF>(_gltf, &json_doc) >> json_doc)) return false;\n' % begin_space)
             source_file.write(u'%s    JSONStringBuffer json_string_buffer;\n' % begin_space)
             source_file.write(u'%s    JSONWriter json_writer(json_string_buffer);\n' % begin_space)
             source_file.write(u'%s    if (!json_doc.Accept(json_writer)) return false;\n' % begin_space)
