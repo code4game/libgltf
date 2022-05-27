@@ -25,8 +25,6 @@ set(SOURCE_FILE_LIST
     ${SOURCE_FILE_PATH}/utility.cpp
     ${SOURCE_FILE_PATH}/gltf_loader.h
     ${SOURCE_FILE_PATH}/gltf_loader.cpp
-    ${SOURCE_FILE_PATH}/file_loader.h
-    ${SOURCE_FILE_PATH}/file_loader.cpp
     )
 set(CODE_FILE_LIST
     ${CODE_FILE_LIST}

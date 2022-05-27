@@ -25,7 +25,6 @@
 #pragma once
 
 #include "libgltf/libgltf.h"
-#include "file_loader.h"
 
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
 #    include "extensions/google_draco.h"
@@ -36,13 +35,13 @@ namespace libgltf
     class IBufferStream
     {
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) = 0;
+        virtual bool operator<<(const SBufferData& _buffer_data) = 0;
     };
 
     class IBufferViewStream
     {
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) = 0;
+        virtual bool operator<<(const SBufferData& _buffer_data) = 0;
     };
 
     class CglTFLoader : public IglTFLoader
@@ -69,22 +68,22 @@ namespace libgltf
 
     protected:
         bool LoadByUri(const std::string& _uri, const uint8_t*& _data_ptr, std::size_t& _data_size, std::string& _data_type);
-        bool LoadBuffer(const std::shared_ptr<SBuffer>& buffer, const uint8_t*& _data_ptr, std::size_t& _data_size);
-        bool LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type);
-        bool GetOrLoadBufferData(std::size_t index, std::shared_ptr<IBufferStream>& buffer_stream);
-        bool GetOrLoadBufferViewData(std::size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream);
-        bool GetOrLoadAccessorData(std::size_t index, std::shared_ptr<IAccessorStream> accessor_stream);
+        bool LoadBuffer(const std::shared_ptr<SBuffer>& _buffer, const uint8_t*& _data_ptr, std::size_t& _data_size);
+        bool LoadImage(const std::shared_ptr<SImage>& _image, std::vector<uint8_t>& _data, std::string& _type);
+        bool LoadBufferData(std::size_t _index, std::shared_ptr<IBufferStream>& _buffer_stream);
+        bool LoadBufferViewData(std::size_t _index, std::shared_ptr<IBufferViewStream> _buffer_view_stream);
+        bool LoadAccessorData(std::size_t _index, std::shared_ptr<IAccessorStream> _accessor_stream);
 
     public:
         virtual const std::unique_ptr<SGlTF>& glTF() const override;
-        virtual bool                          GetOrLoadMeshPrimitiveIndicesData(std::size_t                      mesh_index, //
-                                                                                std::size_t                      primitive_index,
-                                                                                std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool                          GetOrLoadMeshPrimitiveAttributeData(std::size_t                      mesh_index,
-                                                                                  std::size_t                      primitive_index,
-                                                                                  const std::string&               attribute,
-                                                                                  std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool                          GetOrLoadImageData(std::size_t index, std::vector<uint8_t>& data, std::string& data_type) override;
+        virtual bool                          LoadMeshPrimitiveIndicesData(std::size_t                      _mesh_index, //
+                                                                           std::size_t                      _primitive_index,
+                                                                           std::shared_ptr<IAccessorStream> _accessor_stream) override;
+        virtual bool                          LoadMeshPrimitiveAttributeData(std::size_t                      _mesh_index,
+                                                                             std::size_t                      _primitive_index,
+                                                                             const std::string&               _attribute,
+                                                                             std::shared_ptr<IAccessorStream> _accessor_stream) override;
+        virtual bool                          LoadImageData(std::size_t _index, std::vector<uint8_t>& _data, std::string& _type) override;
 
     protected:
         std::unique_ptr<SGlTF> m_glTF;

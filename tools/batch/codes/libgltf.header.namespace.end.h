@@ -259,18 +259,18 @@
     class IglTFLoader
     {
     public:
-        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
+        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
 
     public:
         /// get the glTF structure
         virtual const std::unique_ptr<SGlTF>& glTF() const = 0;
 
         /// load the indices data
-        virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool LoadMeshPrimitiveIndicesData(size_t _mesh_index, size_t _primitive_index, std::shared_ptr<IAccessorStream> _accessor_stream) = 0;
 
         /// load the attribute data like position, normal, texcoord, etc
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool LoadMeshPrimitiveAttributeData(size_t _mesh_index, size_t _primitive_index, const std::string& _attribute, std::shared_ptr<IAccessorStream> _accessor_stream) = 0;
 
         /// load the image data and type
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) = 0;
+        virtual bool LoadImageData(size_t _index, std::vector<uint8_t>& _data, std::string& _type) = 0;
     };

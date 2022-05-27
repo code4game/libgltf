@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -110,7 +110,7 @@ int main(int _iArgc, char* _pcArgv[])
     const std::string input_file_path = _pcArgv[1];
     if (input_file_path.length() == 0)
     {
-        printf("Usage: runtest `file path`\n");
+        printf("Usage: runtest <file path>\n");
         return error_code;
     }
 
@@ -144,22 +144,22 @@ int main(int _iArgc, char* _pcArgv[])
     libgltf::TVertexList<1, size_t>                                            triangle_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>> triangle_stream =
         std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t>>>(triangle_data);
-    gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
+    gltf_loader->LoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
     libgltf::TVertexList<3, float>                                            position_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> position_stream =
         std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(position_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
+    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
 
     libgltf::TVertexList<3, float>                                            normal_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>> normal_stream =
         std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float>>>(normal_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
+    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
 
     libgltf::TVertexList<2, float>                                            texcoord_0_data;
     std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>> texcoord_0_stream =
         std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<2, float>>>(texcoord_0_data);
-    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
+    gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
 
     std::vector<uint8_t> image0_data;
     std::string          image0_data_type;
