@@ -37,6 +37,9 @@
 #define LIBGLTF_MINOR_VERSION    1
 #define LIBGLTF_PATCH_VERSION    9
 
+#cmakedefine LIBGLTF_WITH_MSVC_MT
+#cmakedefine LIBGLTF_WITH_GOOGLE_DRACO
+
 namespace libgltf
 {
 

@@ -160,7 +160,7 @@ Supports Google's draco
 
 You can update Google's draco submodule in external/draco or pull the draco repo by yourself.
 
-Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
+Check the :code:`LIBGLTF_WITH_GOOGLE_DRACO` or set :code:`LIBGLTF_WITH_GOOGLE_DRACO` is `TRUE`.
 
 * Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACO_DEBUG`.
 * And compile with the submodule - *external/draco*.

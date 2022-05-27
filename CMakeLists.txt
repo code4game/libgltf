@@ -1,25 +1,24 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 project(libgltf)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #enable_testing()
-set(CMAKE_INSTALL_PREFIX "install" CACHE STRING "prefix")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_CXX_STANDARD 17)
 
 # define the platform
-set(LIBGLTF_PLATFORM_WINDOWS    FALSE)
-set(LIBGLTF_PLATFORM_LINUX      FALSE)
-set(LIBGLTF_PLATFORM_MACOS      FALSE)
-set(LIBGLTF_PLATFORM_ANDROID    FALSE)
-set(LIBGLTF_PLATFORM_IOS        FALSE CACHE BOOL "Build for iOS? Just for macOS")
+set(LIBGLTF_PLATFORM_WINDOWS  FALSE)
+set(LIBGLTF_PLATFORM_LINUX    FALSE)
+set(LIBGLTF_PLATFORM_MACOS    FALSE)
+set(LIBGLTF_PLATFORM_ANDROID  FALSE)
+set(LIBGLTF_PLATFORM_IOS      FALSE)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)
-    set(LIBGLTF_BUILD_MSVC_WITH_MT OFF CACHE BOOL "Build MSVC with 'MultiThreading(MT)' or 'MultiThreadingDLL(MD)'?")
-    if(${LIBGLTF_BUILD_MSVC_WITH_MT})
+    set(LIBGLTF_WITH_MSVC_MT OFF CACHE BOOL "Build MSVC with 'MultiThreading(MT)' or 'MultiThreadingDLL(MD)'?")
+    if(${LIBGLTF_WITH_MSVC_MT})
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     else()
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
@@ -88,8 +87,8 @@ set(OUT_BIN_PATH ${OUT_PATH}/bin/${PLATFORM_NAME})
 set(OUT_LIB_PATH ${OUT_PATH}/lib/${PLATFORM_NAME})
 
 # integrate the Google's draco
-set(LIBGLTF_USE_GOOGLE_DRACO OFF CACHE BOOL "Use Google's Draco?")
-if(LIBGLTF_USE_GOOGLE_DRACO)
+set(LIBGLTF_WITH_GOOGLE_DRACO OFF CACHE BOOL "Use Google's Draco?")
+if(LIBGLTF_WITH_GOOGLE_DRACO)
     set(DRACO_GLTF TRUE CACHE BOOL "")
     add_subdirectory(${EXTERNAL_PATH}/draco)
     set_target_properties(draco PROPERTIES FOLDER externals/draco)
@@ -127,7 +126,7 @@ if(LIBGLTF_USE_GOOGLE_DRACO)
     set(GOOGLE_DRACO_PATH_BUILD ${CMAKE_BINARY_DIR})
 endif()
 
-set(LIBGLTF_BUILD_RUNTEST TRUE CACHE BOOL "Build runtest?")
+set(LIBGLTF_BUILD_RUNTEST FALSE CACHE BOOL "Build runtest?")
 
 add_subdirectory(docs)
 add_subdirectory(source)

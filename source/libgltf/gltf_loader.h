@@ -26,7 +26,7 @@
 
 #include "libgltf/libgltf.h"
 
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
 #    include "extensions/google_draco.h"
 #endif
 
@@ -91,7 +91,7 @@ namespace libgltf
     private:
         std::function<std::shared_ptr<std::istream>(const std::string&)>    m_Reader;
         std::map<std::string, std::pair<std::vector<uint8_t>, std::string>> m_CacheDatas;
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
         std::unique_ptr<CGoogleDraco> m_pGoogleDraco;
 #endif
 

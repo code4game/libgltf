@@ -24,9 +24,10 @@
 
 #include "gltf_loader.h"
 
+#include "common.h"
 #include "utility.h"
 
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
 #    include "extensions/google_draco.h"
 #endif
 
@@ -126,7 +127,7 @@ namespace libgltf
         std::shared_ptr<IAccessorStream>  m_pAccessorStream;
     };
 
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
     class CDracoBufferViewStream : public IBufferViewStream
     {
     public:
@@ -183,7 +184,7 @@ namespace libgltf
         : m_glTF(nullptr)
         , m_Reader(_reader)
         , m_CacheDatas()
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
         , m_pGoogleDraco(std::make_unique<CGoogleDraco>())
 #endif
     {
@@ -416,7 +417,7 @@ namespace libgltf
             std::shared_ptr<SObject>           extension;
             if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
                 SKHR_draco_mesh_compressionextension* extension_draco  = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
                 std::size_t                           bufferview_index = static_cast<std::size_t>(int32_t(*extension_draco->bufferView));
                 std::shared_ptr<IBufferViewStream>    buffer_view_stream =
@@ -453,7 +454,7 @@ namespace libgltf
             std::shared_ptr<SObject>           extension;
             if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
                 SKHR_draco_mesh_compressionextension* extension_draco  = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
                 std::size_t                           bufferview_index = static_cast<std::size_t>(int32_t(*extension_draco->bufferView));
                 std::shared_ptr<SGlTFId>              attribute_id;
