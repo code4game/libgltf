@@ -90,6 +90,7 @@ set(OUT_LIB_PATH ${OUT_PATH}/lib/${PLATFORM_NAME})
 # integrate the Google's draco
 set(LIBGLTF_USE_GOOGLE_DRACO OFF CACHE BOOL "Use Google's Draco?")
 if(LIBGLTF_USE_GOOGLE_DRACO)
+    set(DRACO_GLTF TRUE CACHE BOOL "")
     add_subdirectory(${EXTERNAL_PATH}/draco)
     set_target_properties(draco PROPERTIES FOLDER externals/draco)
     set_target_properties(draco_animation PROPERTIES FOLDER externals/draco)
