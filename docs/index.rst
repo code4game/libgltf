@@ -119,23 +119,23 @@ And get the mesh data, like this:
    // get all indices of the triangle
    libgltf::TVertexList<1, size_t> triangle_data;
    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > >(triangle_data);
-   gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
+   gltf_loader->LoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
    // get all points of the triangle
    libgltf::TVertexList<3, float> position_data;
    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > >(position_data);
-   gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
+   gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
 
 Load the image data
 -------------------
 
-You can get the image (data and type) by `libgltf::IglTFLoader::GetOrLoadImageData`, like this:
+You can get the image (data and type) by `libgltf::IglTFLoader::LoadImageData`, like this:
 
 .. code-block:: cpp
 
    std::vector<uint8_t> image0_data;
    libgltf::string_t image0_data_type;
-   gltf_loader->GetOrLoadImageData(0, image0_data, image0_data_type);
+   gltf_loader->LoadImageData(0, image0_data, image0_data_type);
 
 Advance
 ^^^^^^^^^^
