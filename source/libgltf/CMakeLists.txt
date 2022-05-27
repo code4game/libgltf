@@ -74,14 +74,10 @@ if(LIBGLTF_WITH_GOOGLE_DRACO)
             ${GOOGLE_DRACO_PATH_INCLUDE}
             ${GOOGLE_DRACO_PATH_BUILD}
         )
-    target_compile_definitions(${PROJECT_NAME}
-        PRIVATE
-            LIBGLTF_WITH_GOOGLE_DRACO
-        )
     target_link_libraries(${PROJECT_NAME}
         PUBLIC
             draco
-            draco_core
+            #draco_core
         )
 endif()
 
@@ -93,12 +89,31 @@ set_target_properties(${PROJECT_NAME}
         RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
     )
 
+set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+configure_file(${ROOT_PATH}/cmake/libgltf-config.cmake.cmakein ${OUT_PATH}/libgltf-config.cmake @ONLY)
+
 install(
     TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}-targets
-    ARCHIVE       DESTINATION lib
-    LIBRARY       DESTINATION lib
-    RUNTIME       DESTINATION bin
+    EXPORT  ${PROJECT_NAME}-targets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
     )
 
-install(FILES ${HEADER_FILE_LIST} DESTINATION include/${PROJECT_NAME})
+install(FILES ${ROOT_PATH}/LICENSE.md
+    DESTINATION .
+    RENAME libgltf-LICENSE.md
+    )
+install(FILES ${HEADER_FILE_LIST}
+    DESTINATION include/${PROJECT_NAME}
+    )
+install(FILES ${OUT_PATH}/libgltf-config.cmake
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/cmake
+    )
+
+if(LIBGLTF_WITH_GOOGLE_DRACO)
+    install(FILES ${EXTERNAL_PATH}/draco/LICENSE
+        DESTINATION .
+        RENAME draco-LICENSE
+        )
+endif()

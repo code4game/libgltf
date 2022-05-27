@@ -24,11 +24,6 @@
 
 #include "runtest.h"
 
-#if defined(LIBGLTF_BUILD_COVERAGE)
-#    include "../libgltf/common.h"
-#    include "../libgltf/utility.h"
-#endif
-
 #include <string>
 #include <sstream>
 #include <fstream>
