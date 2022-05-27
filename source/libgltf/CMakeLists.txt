@@ -2,40 +2,51 @@ project(libgltf)
 
 add_library(${PROJECT_NAME})
 
-set(SOURCE_FILE_PATH ${SOURCE_PATH}/libgltf)
+set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+configure_file(${PROJECT_NAME}-config.cmake.cmakein ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake @ONLY)
+configure_file(${PROJECT_NAME}.h.cmakein ${CMAKE_BINARY_DIR}/include/libgltf/libgltf.h @ONLY)
 
-configure_file(libgltf.h.cmakein ${OUT_PATH}/include/libgltf/libgltf.h @ONLY)
 set(HEADER_FILE_LIST
-    ${OUT_PATH}/include/libgltf/libgltf.h
+    ${CMAKE_BINARY_DIR}/include/libgltf/libgltf.h
     )
-source_group("header" FILES ${HEADER_FILE_LIST})
+source_group("include" FILES ${HEADER_FILE_LIST})
 target_sources(${PROJECT_NAME}
     PUBLIC
         ${HEADER_FILE_LIST}
     )
 
 set(SOURCE_FILE_LIST
-    ${SOURCE_FILE_PATH}/libgltf.cpp
-    ${SOURCE_FILE_PATH}/libgltfparser.h
-    ${SOURCE_FILE_PATH}/libgltfparser.cpp
-    ${SOURCE_FILE_PATH}/libgltfloader.cpp
-    ${SOURCE_FILE_PATH}/common.h
-    ${SOURCE_FILE_PATH}/common.cpp
-    ${SOURCE_FILE_PATH}/utility.h
-    ${SOURCE_FILE_PATH}/utility.cpp
-    ${SOURCE_FILE_PATH}/gltf_loader.h
-    ${SOURCE_FILE_PATH}/gltf_loader.cpp
+    libgltf.cpp
+    libgltfparser.h
+    libgltfparser.cpp
+    libgltfloader.cpp
+    common.h
+    common.cpp
+    utility.h
+    utility.cpp
+    gltf_loader.h
+    gltf_loader.cpp
     )
-source_group("source" FILES ${SOURCE_FILE_LIST})
+source_group("src" FILES ${SOURCE_FILE_LIST})
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${SOURCE_FILE_LIST}
     )
 
+set(CMAKE_FILE_LIST
+    ${PROJECT_NAME}-config.cmake.cmakein
+    ${PROJECT_NAME}.h.cmakein
+    )
+source_group("cmake" FILES ${CMAKE_FILE_LIST})
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_FILE_LIST}
+    )
+
 if(LIBGLTF_WITH_GOOGLE_DRACO)
     set(SOURCE_FILE_LIST_DRACO
-        ${SOURCE_FILE_PATH}/extensions/google_draco.h
-        ${SOURCE_FILE_PATH}/extensions/google_draco.cpp
+        extensions/google_draco.h
+        extensions/google_draco.cpp
         )
     source_group("source\\extensions" FILES ${SOURCE_FILE_LIST_DRACO})
     target_sources(${PROJECT_NAME}
@@ -50,23 +61,24 @@ if(${LIBGLTF_PLATFORM_ANDROID})
         set(ANDROID_ABI_PATH "${ANDROID_ABI}-with-neon")
     endif()
     string(TOLOWER ${ANDROID_ABI_PATH} ANDROID_ABI_PATH)
-    set(OUT_BIN_PATH "${OUT_BIN_PATH}/${ANDROID_ABI_PATH}")
-    set(OUT_LIB_PATH "${OUT_LIB_PATH}/${ANDROID_ABI_PATH}")
 elseif(${LIBGLTF_PLATFORM_IOS})
     set(IOS_PLATFORM_PATH ${IOS_PLATFORM})
     string(TOLOWER ${IOS_PLATFORM_PATH} IOS_PLATFORM_PATH)
-    set(OUT_BIN_PATH "${OUT_BIN_PATH}/${IOS_PLATFORM_PATH}")
-    set(OUT_LIB_PATH "${OUT_LIB_PATH}/${IOS_PLATFORM_PATH}")
 endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        $<INSTALL_INTERFACE:include>${OUT_PATH}/include
+        $<INSTALL_INTERFACE:include>${CMAKE_BINARY_DIR}/include
     PRIVATE
         ${HEADER_PATH}
         ${SOURCE_FILE_PATH}
         ${EXTERNAL_PATH}/rapidjson/include
     )
+
+#target_link_libraries(${PROJECT_NAME}
+#    PRIVATE
+#        rapidjson
+#    )
 
 if(LIBGLTF_WITH_GOOGLE_DRACO)
     target_include_directories(${PROJECT_NAME}
@@ -84,13 +96,7 @@ endif()
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
         FOLDER main
-        ARCHIVE_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-        LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-        RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
     )
-
-set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
-configure_file(${ROOT_PATH}/cmake/libgltf-config.cmake.cmakein ${OUT_PATH}/libgltf-config.cmake @ONLY)
 
 install(
     TARGETS ${PROJECT_NAME}
@@ -102,12 +108,12 @@ install(
 
 install(FILES ${ROOT_PATH}/LICENSE.md
     DESTINATION .
-    RENAME libgltf-LICENSE.md
+    RENAME LICENSE.md
     )
 install(FILES ${HEADER_FILE_LIST}
     DESTINATION include/${PROJECT_NAME}
     )
-install(FILES ${OUT_PATH}/libgltf-config.cmake
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
     DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/cmake
     )
 
