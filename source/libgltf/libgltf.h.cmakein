@@ -1513,7 +1513,7 @@ namespace libgltf
 
     public:
         /// get the glTF structure
-        virtual std::weak_ptr<struct SGlTF> glTF() = 0;
+        virtual const std::unique_ptr<SGlTF>& glTF() const = 0;
 
         /// load the indices data
         virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;

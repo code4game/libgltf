@@ -92,13 +92,8 @@ namespace libgltf
         //
     }
 
-    std::shared_ptr<IglTFLoader> IglTFLoader::Create(const std::string& file)
-    {
-        return std::make_shared<CGlTFLoader>(file);
-    }
-
     std::shared_ptr<IglTFLoader> IglTFLoader::Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader)
     {
-        return std::make_shared<CGlTFLoader>(_reader);
+        return std::make_shared<CglTFLoader>(_reader);
     }
 }

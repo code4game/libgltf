@@ -45,7 +45,7 @@ namespace libgltf
         virtual bool operator<<(const SBufferData& buffer_data) = 0;
     };
 
-    class CGlTFLoader : public IglTFLoader
+    class CglTFLoader : public IglTFLoader
     {
         struct SGLBHeader
         {
@@ -65,12 +65,12 @@ namespace libgltf
         };
 
     public:
-        explicit CGlTFLoader(const std::string& file);
-        explicit CGlTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
+        explicit CglTFLoader(const std::string& file);
+        explicit CglTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
 
     protected:
-        bool LoadByUri(const std::string& uri, std::vector<uint8_t>& data, std::string& data_type);
-        bool LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data);
+        bool LoadByUri(const std::string& _uri, const uint8_t*& _data_ptr, std::size_t& _data_size, std::string& _data_type);
+        bool LoadBuffer(const std::shared_ptr<SBuffer>& buffer, const uint8_t*& _data_ptr, std::size_t& _data_size);
         bool LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type);
         bool GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream);
         bool GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream);
@@ -91,13 +91,9 @@ namespace libgltf
         std::unique_ptr<SGlTF> m_glTF;
 
     private:
-        std::function<std::shared_ptr<std::istream>(const std::string&)> m_Reader;
-        std::unique_ptr<CFileLoader>                                     m_pFileLoader;
-        std::vector<uint8_t>                                             m_MainData;
-        SGLBHeader*                                                      m_pGLBHeader;
-        std::vector<SGLBChunk*>                                          m_vpGLBChunks;
-        SGLBHeader                                                       m_GLBHeader;
-        std::vector<SGLBChunk>                                           m_vGLBChunks;
+        std::function<std::shared_ptr<std::istream>(const std::string&)>    m_Reader;
+        std::unique_ptr<CFileLoader>                                        m_pFileLoader;
+        std::map<std::string, std::pair<std::vector<uint8_t>, std::string>> m_CacheDatas;
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
         std::unique_ptr<CGoogleDraco> m_pGoogleDraco;
 #endif

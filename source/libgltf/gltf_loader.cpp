@@ -164,7 +164,7 @@ namespace libgltf
     };
 #endif
 
-    CGlTFLoader::SGLBHeader::SGLBHeader()
+    CglTFLoader::SGLBHeader::SGLBHeader()
         : magic(0)
         , version(0)
         , length(0)
@@ -172,14 +172,14 @@ namespace libgltf
         //
     }
 
-    CGlTFLoader::SGLBChunk::SGLBChunk()
+    CglTFLoader::SGLBChunk::SGLBChunk()
         : length(0)
         , type(0)
     {
         //
     }
 
-    CGlTFLoader::CGlTFLoader(const std::string& _sFilePath)
+    CglTFLoader::CglTFLoader(const std::string& _sFilePath)
         : m_glTF(nullptr)
         , m_pFileLoader(std::make_unique<CFileLoader>(CPath(_sFilePath).Parent()))
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
@@ -188,6 +188,7 @@ namespace libgltf
         , m_CacheBufferDatas()
         , m_CacheImageDatas()
     {
+#if 0
         CPath file_path(_sFilePath);
         if (!m_pFileLoader->Load(file_path.Filename()))
             return;
@@ -239,9 +240,10 @@ namespace libgltf
                 m_glTF = nullptr;
             }
         }
+#endif
     }
 
-    CGlTFLoader::CGlTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader)
+    CglTFLoader::CglTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader)
         : m_glTF(nullptr)
         , m_Reader(_reader)
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
@@ -254,58 +256,76 @@ namespace libgltf
         if (!reader_ptr)
             return;
 
-        reader_ptr->seekg(0, std::ios::end);
-        m_MainData.resize(reader_ptr->tellg());
-        reader_ptr->seekg(0, std::ios::beg);
-        if (!m_MainData.empty())
-            reader_ptr->read((std::istream::char_type*)&m_MainData[0], m_MainData.size());
+        m_CacheDatas[""] = std::make_pair<std::vector<uint8_t>, std::string>(std::vector<uint8_t>(), "glb");
+
+        std::vector<uint8_t> data;
+        {
+            reader_ptr->seekg(0, std::ios::end);
+            data.resize(reader_ptr->tellg());
+            reader_ptr->seekg(0, std::ios::beg);
+            if (!data.empty())
+                reader_ptr->read((std::istream::char_type*)&data[0], data.size());
+        }
 
         /// check the format. gltf or glb?
-        if (m_MainData.size() > sizeof(SGLBHeader))
+        const SGLBHeader* glb_header_ptr = nullptr;
+        if (data.size() > sizeof(SGLBHeader))
         {
-            ::memcpy(&m_GLBHeader, &m_MainData[0], sizeof(m_GLBHeader));
-            m_pGLBHeader = (SGLBHeader*)&m_MainData[0];
-            if (m_pGLBHeader->magic != ms_GLBMagicEntry)
-                m_pGLBHeader = nullptr;
+            glb_header_ptr = (SGLBHeader*)&data[0];
+            if (glb_header_ptr->magic != ms_GLBMagicEntry)
+                glb_header_ptr = nullptr;
         }
 
         std::string txt_json;
-
-        if (m_pGLBHeader)
+        if (glb_header_ptr)
         {
             /// collect all chunks
-            std::size_t offset = sizeof(m_GLBHeader);
-            while (offset < m_MainData.size())
+            std::vector<const SGLBChunk*> glb_chunk_ptrs;
+
+            std::size_t offset = sizeof(SGLBHeader);
+            while (offset < data.size())
             {
-                SGLBChunk* glb_chunk_ptr = (SGLBChunk*)&m_MainData[offset];
-                m_vpGLBChunks.push_back(glb_chunk_ptr);
+                const SGLBChunk* glb_chunk_ptr = (SGLBChunk*)&data[offset];
+                glb_chunk_ptrs.push_back(glb_chunk_ptr);
 
                 offset += glb_chunk_ptr->length + sizeof(SGLBChunk);
             }
 
             /// find the json chunk
             const SGLBChunk* glb_chunk_json_ptr = nullptr;
-            for (const SGLBChunk* glb_chunk_ptr : m_vpGLBChunks)
+            for (const SGLBChunk* glb_chunk_ptr : glb_chunk_ptrs)
             {
                 if (glb_chunk_ptr->type != ms_GLBChunkTypeJSON)
                     continue;
 
-                glb_chunk_json_ptr = glb_chunk_ptr;
+                txt_json.resize(glb_chunk_ptr->length);
+                if (!txt_json.empty())
+                    ::memcpy(&txt_json[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
                 break;
             }
 
-            /// parse the json
-            if (glb_chunk_json_ptr)
+            /// find the binary chunk
+            for (const SGLBChunk* glb_chunk_ptr : glb_chunk_ptrs)
             {
-                txt_json.resize(glb_chunk_json_ptr->length);
-                ::memcpy(&txt_json[0], glb_chunk_json_ptr + sizeof(SGLBChunk), glb_chunk_json_ptr->length);
+                if (glb_chunk_ptr->type != ms_GLBChunkTypeBIN)
+                    continue;
+
+                std::pair<std::vector<uint8_t>, std::string>& data = m_CacheDatas[""];
+                data.second.resize(glb_chunk_ptr->length);
+                if (!data.second.empty())
+                    ::memcpy(&data.second[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
+                break;
             }
         }
         else
         {
-            txt_json.resize(m_MainData.size());
-            ::memcpy(&txt_json[0], &m_MainData[0], m_MainData.size());
+            txt_json.resize(data.size());
+            if (!txt_json.empty())
+                ::memcpy(&txt_json[0], &data[0], data.size());
         }
+
+        if (txt_json.empty())
+            return;
 
         m_glTF = std::make_unique<SGlTF>();
         if (!(*m_glTF << txt_json))
@@ -316,77 +336,87 @@ namespace libgltf
         }
     }
 
-    bool CGlTFLoader::LoadByUri(const std::string& uri, std::vector<uint8_t>& data, std::string& data_type)
+    bool CglTFLoader::LoadByUri(const std::string& _uri, const uint8_t*& _data_ptr, std::size_t& _data_size, std::string& _data_type)
     {
-        if (m_GLBHeader.magic != ms_GLBMagicEntry && uri.empty())
-            return false;
-
-        if (uri.empty())
+        std::map<std::string, std::pair<std::vector<uint8_t>, std::string>>::const_iterator it_found = m_CacheDatas.find(_uri);
+        if (it_found != m_CacheDatas.end())
         {
-            /// load the data if the file is .glb
-            const std::vector<uint8_t>& default_file_data = (*m_pFileLoader)[""];
-            if (default_file_data.empty())
-                return false;
-            SGLBChunk glb_chunk_bin;
-            size_t    offset = sizeof(m_GLBHeader);
-            for (const SGLBChunk& glb_chunk : m_vGLBChunks)
-            {
-                offset += sizeof(glb_chunk);
-                if (glb_chunk.type == ms_GLBChunkTypeBIN)
-                {
-                    glb_chunk_bin = glb_chunk;
-                    break;
-                }
-                offset += glb_chunk.length;
-            }
-            if (glb_chunk_bin.type != ms_GLBChunkTypeBIN)
-                return false;
-            data.resize(glb_chunk_bin.length);
-            ::memcpy(data.data(), default_file_data.data() + offset, glb_chunk_bin.length);
+            const std::pair<std::vector<uint8_t>, std::string>& cache_data = it_found->second;
+            _data_ptr                                                      = cache_data.first.data();
+            _data_size                                                     = cache_data.first.size();
+            _data_type                                                     = cache_data.second;
             return true;
         }
-        else
+
+        std::pair<std::vector<uint8_t>, std::string>& cache_data = m_CacheDatas[_uri];
+
+        bool is_loaded = false;
         {
             /// support embedded
             std::string data_encode;
             size_t      data_index = 0;
-            if (UriParse(uri, data_type, data_encode, data_index))
+            if (UriParse(_uri, _data_type, data_encode, data_index))
             {
-                return (StringEqual(data_encode, "base64", false) && base64::Decode(uri.substr(data_index), data));
+                if (!StringEqual(data_encode, "base64", false) && base64::Decode(_uri.substr(data_index), cache_data.first))
+                    return false;
+
+                cache_data.second = "base64";
+
+                is_loaded = true;
             }
         }
 
-        /// try to load from file
-        if (!m_pFileLoader->Load(uri))
-            return false;
-
-        data             = (*m_pFileLoader)[uri];
-        size_t dot_index = uri.find_last_of('.');
-        if (uri.size() > (dot_index + 1))
+        if (!is_loaded)
         {
-            data_type = "file/" + uri.substr(dot_index + 1);
+            /// try to load from file
+            if (std::shared_ptr<std::istream> reader_ptr = m_Reader(_uri))
+            {
+                reader_ptr->seekg(0, std::ios::end);
+                cache_data.first.resize(reader_ptr->tellg());
+                reader_ptr->seekg(0, std::ios::beg);
+                if (!cache_data.first.empty())
+                    reader_ptr->read((std::istream::char_type*)&cache_data.first[0], cache_data.first.size());
+
+                std::string file_type;
+                std::size_t dot_index = _uri.find_last_of('.');
+                if (_uri.size() > (dot_index + 1))
+                    cache_data.second = "file/" + _uri.substr(dot_index + 1);
+
+                is_loaded = true;
+            }
         }
-        return true;
+
+        _data_ptr  = cache_data.first.data();
+        _data_size = cache_data.first.size();
+        _data_type = cache_data.second;
+        return is_loaded;
     }
 
-    bool CGlTFLoader::LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data)
+    bool CglTFLoader::LoadBuffer(const std::shared_ptr<SBuffer>& buffer, const uint8_t*& _data_ptr, std::size_t& _data_size)
     {
         if (!buffer)
             return false;
         std::string data_type;
-        if (!LoadByUri(buffer->uri, data, data_type))
+        if (!LoadByUri(buffer->uri, _data_ptr, _data_size, data_type))
             return false;
-        return (data.size() == buffer->byteLength);
+        return (_data_size == buffer->byteLength);
     }
 
-    bool CGlTFLoader::LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type)
+    bool CglTFLoader::LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, std::string& data_type)
     {
         if (!image)
             return false;
         data_type = image->mimeType;
         if (!image->uri.empty())
         {
-            return LoadByUri(image->uri, data, data_type);
+            const uint8_t* data_ptr  = nullptr;
+            std::size_t    data_size = 0;
+            if (!LoadByUri(image->uri, data_ptr, data_size, data_type))
+                return false;
+
+            data.resize(data_size);
+            ::memcpy(&data[0], data_ptr, data_size);
+            return true;
         }
         if (image->bufferView)
         {
@@ -396,30 +426,14 @@ namespace libgltf
         return false;
     }
 
-    bool CGlTFLoader::GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream)
+    bool CglTFLoader::GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream)
     {
         SBufferData buffer_data;
-        auto        found_iterator = m_CacheBufferDatas.find(index);
-        if (found_iterator != m_CacheBufferDatas.end())
-        {
-            buffer_data.buffer     = found_iterator->second.data();
-            buffer_data.bufferSize = found_iterator->second.size();
-        }
-        else
-        {
-            std::vector<uint8_t> loaded_buffer;
-            if (m_glTF->buffers.size() > index)
-            {
-                LoadBuffer(m_glTF->buffers[index], loaded_buffer);
-            }
-            auto inserted_iterator = m_CacheBufferDatas.insert(std::make_pair(index, loaded_buffer)).first;
-            buffer_data.buffer     = inserted_iterator->second.data();
-            buffer_data.bufferSize = inserted_iterator->second.size();
-        }
+        LoadBuffer(m_glTF->buffers[index], buffer_data.buffer, buffer_data.bufferSize);
         return (*buffer_stream << buffer_data);
     }
 
-    bool CGlTFLoader::GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream)
+    bool CglTFLoader::GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream)
     {
         if (m_glTF->bufferViews.size() <= index)
             return false;
@@ -429,7 +443,7 @@ namespace libgltf
         return GetOrLoadBufferData(static_cast<size_t>(int32_t(*buffer_view->buffer)), buffer_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CglTFLoader::GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream)
     {
         if (!accessor_stream)
             return false;
@@ -441,12 +455,12 @@ namespace libgltf
                                        std::make_shared<CAccessorBufferViewStream>(accessor, accessor_stream));
     }
 
-    const std::unique_ptr<SGlTF>& CGlTFLoader::glTF() const
+    const std::unique_ptr<SGlTF>& CglTFLoader::glTF() const
     {
         return m_glTF;
     }
 
-    bool CGlTFLoader::GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CglTFLoader::GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream)
     {
         if (!m_glTF)
             return false;
@@ -480,7 +494,7 @@ namespace libgltf
         return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*primitive->indices)), accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadMeshPrimitiveAttributeData(size_t                           mesh_index,
+    bool CglTFLoader::GetOrLoadMeshPrimitiveAttributeData(size_t                           mesh_index,
                                                           size_t                           primitive_index,
                                                           const std::string&               attribute,
                                                           std::shared_ptr<IAccessorStream> accessor_stream)
@@ -524,7 +538,7 @@ namespace libgltf
         return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*attribute_access)), accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type)
+    bool CglTFLoader::GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type)
     {
         if (!m_glTF)
             return false;
@@ -544,7 +558,7 @@ namespace libgltf
         return true;
     }
 
-    const uint32_t CGlTFLoader::ms_GLBMagicEntry    = 0x46546C67; // 'glTF'
-    const uint32_t CGlTFLoader::ms_GLBChunkTypeJSON = 0x4E4F534A; // 'JSON'
-    const uint32_t CGlTFLoader::ms_GLBChunkTypeBIN  = 0x004E4942; // 'BIN\0'
+    const uint32_t CglTFLoader::ms_GLBMagicEntry    = 0x46546C67; // 'glTF'
+    const uint32_t CglTFLoader::ms_GLBChunkTypeJSON = 0x4E4F534A; // 'JSON'
+    const uint32_t CglTFLoader::ms_GLBChunkTypeBIN  = 0x004E4942; // 'BIN\0'
 } // namespace libgltf
