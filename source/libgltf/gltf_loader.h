@@ -24,7 +24,12 @@
 
 #pragma once
 
-#include "common.h"
+#include "libgltf/libgltf.h"
+#include "file_loader.h"
+
+#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#    include "extensions/google_draco.h"
+#endif
 
 namespace libgltf
 {
@@ -61,6 +66,7 @@ namespace libgltf
 
     public:
         explicit CGlTFLoader(const std::string& file);
+        explicit CGlTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
 
     protected:
         bool LoadByUri(const std::string& uri, std::vector<uint8_t>& data, std::string& data_type);
@@ -71,22 +77,31 @@ namespace libgltf
         bool GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream);
 
     public:
-        virtual std::weak_ptr<SGlTF> glTF() override;
-        virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) override;
+        virtual const std::unique_ptr<SGlTF>& glTF() const override;
+        virtual bool                          GetOrLoadMeshPrimitiveIndicesData(std::size_t                      mesh_index, //
+                                                                                std::size_t                      primitive_index,
+                                                                                std::shared_ptr<IAccessorStream> accessor_stream) override;
+        virtual bool                          GetOrLoadMeshPrimitiveAttributeData(std::size_t                      mesh_index,
+                                                                                  std::size_t                      primitive_index,
+                                                                                  const std::string&               attribute,
+                                                                                  std::shared_ptr<IAccessorStream> accessor_stream) override;
+        virtual bool                          GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) override;
 
     protected:
-        std::shared_ptr<SGlTF> m_glTF;
+        std::unique_ptr<SGlTF> m_glTF;
 
     private:
-        std::shared_ptr<class CFileLoader> m_pFileLoader;
-        SGLBHeader m_GLBHeader;
-        std::vector<SGLBChunk> m_vGLBChunks;
+        std::function<std::shared_ptr<std::istream>(const std::string&)> m_Reader;
+        std::unique_ptr<CFileLoader>                                     m_pFileLoader;
+        std::vector<uint8_t>                                             m_MainData;
+        SGLBHeader*                                                      m_pGLBHeader;
+        std::vector<SGLBChunk*>                                          m_vpGLBChunks;
+        SGLBHeader                                                       m_GLBHeader;
+        std::vector<SGLBChunk>                                           m_vGLBChunks;
 #if defined(LIBGLTF_USE_GOOGLE_DRACO)
-        std::shared_ptr<class CGoogleDraco> m_pGoogleDraco;
+        std::unique_ptr<CGoogleDraco> m_pGoogleDraco;
 #endif
-        std::map<size_t, std::vector<uint8_t>> m_CacheBufferDatas;
+        std::map<size_t, std::vector<uint8_t>>                         m_CacheBufferDatas;
         std::map<size_t, std::pair<std::vector<uint8_t>, std::string>> m_CacheImageDatas;
 
     public:
@@ -94,4 +109,4 @@ namespace libgltf
         static const uint32_t ms_GLBChunkTypeJSON;
         static const uint32_t ms_GLBChunkTypeBIN;
     };
-}
+} // namespace libgltf

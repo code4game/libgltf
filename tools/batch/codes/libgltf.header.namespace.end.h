@@ -184,11 +184,11 @@
     };
 
     /// a dimension vertex that supports to construct some vertex variables like vec2, vec3, vec4, etc
-    template<size_t VDimension, typename TType>
-    class TDimensionData
+    template<size_t VDim, typename TType>
+    class TVertex
     {
     public:
-        static const size_t Dimension = VDimension;
+        static const size_t Dimension = VDim;
 
     public:
         const TType& operator[](size_t index) const
@@ -206,13 +206,13 @@
     };
 
     /// a vector, contains some vertex datas
-    template<size_t VDimension, typename TType>
-    class TDimensionVector : public std::vector<TDimensionData<VDimension, TType> >
+    template<size_t VDim, typename TType>
+    class TVertexList : public std::vector<TVertex<VDim, TType> >
     {
     public:
-        typedef std::vector<TDimensionData<VDimension, TType> >     TSuper;
-        typedef typename TSuper::value_type                         TValue;
-        typedef TType                                               TComponent;
+        typedef std::vector<TVertex<VDim, TType> > TSuper;
+        typedef typename TSuper::value_type        TValue;
+        typedef TType                              TComponent;
 
     public:
         static const size_t Dimension = TValue::Dimension;

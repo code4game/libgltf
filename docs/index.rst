@@ -117,13 +117,13 @@ And get the mesh data, like this:
 .. code-block:: cpp
 
    // get all indices of the triangle
-   libgltf::TDimensionVector<1, size_t> triangle_data;
-   std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > >(triangle_data);
+   libgltf::TVertexList<1, size_t> triangle_data;
+   std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > >(triangle_data);
    gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
    // get all points of the triangle
-   libgltf::TDimensionVector<3, float> position_data;
-   std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
+   libgltf::TVertexList<3, float> position_data;
+   std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > >(position_data);
    gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
 
 Load the image data

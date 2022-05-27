@@ -32,17 +32,18 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iostream>
+#include <filesystem>
 
-#if defined(LIBGLTF_PLATFORM_WINDOWS)
-#include <tchar.h>
+#if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(_DEBUG)
 #include <crtdbg.h>
 #endif
 
 void SaveAsOBJ(const std::string& _sFilePath
-    , const libgltf::TDimensionVector<1, size_t>& _TriangleIndices
-    , const libgltf::TDimensionVector<3, float>& _VertexPositions
-    , const libgltf::TDimensionVector<2, float>& _VertexTexcoord
-    , const libgltf::TDimensionVector<3, float>& _VertexNormal
+    , const libgltf::TVertexList<1, size_t>& _TriangleIndices
+    , const libgltf::TVertexList<3, float>& _VertexPositions
+    , const libgltf::TVertexList<2, float>& _VertexTexcoord
+    , const libgltf::TVertexList<3, float>& _VertexNormal
     , float _Scale = 100.0f)
 {
     std::ofstream obj_stream(_sFilePath.c_str());
@@ -53,7 +54,7 @@ void SaveAsOBJ(const std::string& _sFilePath
     obj_stream << "# vertex" << std::endl;
     for (size_t i = 0; i < _VertexPositions.size(); ++i)
     {
-        const libgltf::TDimensionVector<3, float>::TValue& position_item = _VertexPositions[i];
+        const libgltf::TVertexList<3, float>::TValue& position_item = _VertexPositions[i];
         obj_stream << "v " << position_item[0] * _Scale << " " << position_item[1] * _Scale << " " << position_item[2] * _Scale << std::endl;
     }
     obj_stream << std::endl;
@@ -61,7 +62,7 @@ void SaveAsOBJ(const std::string& _sFilePath
     obj_stream << "# texcoord" << std::endl;
     for (size_t i = 0; i < _VertexTexcoord.size(); ++i)
     {
-        const libgltf::TDimensionVector<2, float>::TValue& texcoord_0_item = _VertexTexcoord[i];
+        const libgltf::TVertexList<2, float>::TValue& texcoord_0_item = _VertexTexcoord[i];
         obj_stream << "vt " << texcoord_0_item[0] << " " << texcoord_0_item[1] << std::endl;
     }
     obj_stream << std::endl;
@@ -69,7 +70,7 @@ void SaveAsOBJ(const std::string& _sFilePath
     obj_stream << "# normal" << std::endl;
     for (size_t i = 0; i < _VertexNormal.size(); ++i)
     {
-        const libgltf::TDimensionVector<3, float>::TValue& normal_item = _VertexNormal[i];
+        const libgltf::TVertexList<3, float>::TValue& normal_item = _VertexNormal[i];
         obj_stream << "vn " << normal_item[0] << " " << normal_item[1] << " " << normal_item[2] << std::endl;
     }
     obj_stream << std::endl;
@@ -112,8 +113,20 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(input_file_path);
-    std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
+    std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create([input_file_path](const std::string& _path) {
+        //const std::filesystem::path file_path(input_file_path);
+        //file_path.parent_path();
+
+        std::shared_ptr<std::ifstream> ifs = nullptr;
+        if (_path.empty())
+        {
+            ifs = std::make_shared<std::ifstream>(input_file_path, std::ios::in | std::ios::binary);
+        }
+        //TODO:
+        return ifs;
+    });
+    //std::unique_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(input_file_path);
+    const std::unique_ptr<libgltf::SGlTF>& loaded_gltf = gltf_loader->glTF();
     if (loaded_gltf)
     {
         printf("operator << Success\n");
@@ -124,20 +137,20 @@ int main(int _iArgc, char* _pcArgv[])
         return error_code;
     }
 
-    libgltf::TDimensionVector<1, size_t> triangle_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > >(triangle_data);
+    libgltf::TVertexList<1, size_t> triangle_data;
+    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > >(triangle_data);
     gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
-    libgltf::TDimensionVector<3, float> position_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
+    libgltf::TVertexList<3, float> position_data;
+    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > >(position_data);
     gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "position", position_stream);
 
-    libgltf::TDimensionVector<3, float> normal_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > normal_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(normal_data);
+    libgltf::TVertexList<3, float> normal_data;
+    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > > normal_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > >(normal_data);
     gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "normal", normal_stream);
 
-    libgltf::TDimensionVector<2, float> texcoord_0_data;
-    std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<2, float> > >(texcoord_0_data);
+    libgltf::TVertexList<2, float> texcoord_0_data;
+    std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<2, float> > > texcoord_0_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<2, float> > >(texcoord_0_data);
     gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, "texcoord_0", texcoord_0_stream);
 
     std::vector<uint8_t> image0_data;

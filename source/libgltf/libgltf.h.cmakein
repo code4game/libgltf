@@ -30,6 +30,8 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <functional>
+#include <istream>
 
 #define LIBGLTF_MAJOR_VERSION    0
 #define LIBGLTF_MINOR_VERSION    1
@@ -39,8 +41,8 @@ namespace libgltf
 {
 
     struct SGlTF;
-    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::string& _sContent);
-    bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, std::string& _sContent);
+    bool operator<<(SGlTF& _pGlTF, const std::string& _sContent);
+    bool operator>>(const SGlTF& _pGlTF, std::string& _sContent);
     
     /*!
      * struct: SObject
@@ -1431,11 +1433,11 @@ namespace libgltf
     };
 
     /// a dimension vertex that supports to construct some vertex variables like vec2, vec3, vec4, etc
-    template<size_t VDimension, typename TType>
-    class TDimensionData
+    template<size_t VDim, typename TType>
+    class TVertex
     {
     public:
-        static const size_t Dimension = VDimension;
+        static const size_t Dimension = VDim;
 
     public:
         const TType& operator[](size_t index) const
@@ -1453,13 +1455,13 @@ namespace libgltf
     };
 
     /// a vector, contains some vertex datas
-    template<size_t VDimension, typename TType>
-    class TDimensionVector : public std::vector<TDimensionData<VDimension, TType> >
+    template<size_t VDim, typename TType>
+    class TVertexList : public std::vector<TVertex<VDim, TType> >
     {
     public:
-        typedef std::vector<TDimensionData<VDimension, TType> >     TSuper;
-        typedef typename TSuper::value_type                         TValue;
-        typedef TType                                               TComponent;
+        typedef std::vector<TVertex<VDim, TType> > TSuper;
+        typedef typename TSuper::value_type        TValue;
+        typedef TType                              TComponent;
 
     public:
         static const size_t Dimension = TValue::Dimension;
@@ -1506,16 +1508,8 @@ namespace libgltf
     class IglTFLoader
     {
     public:
-        class IStreams
-        {
-        public:
-            virtual std::istream Read() const                      = 0;
-            virtual std::istream Read(const std::string& _path) const = 0;
-        };
-
-    public:
         static std::shared_ptr<IglTFLoader> Create(const std::string& file);
-        static std::shared_ptr<IglTFLoader> Create(const std::shared_ptr<IStreams>& _streams_ptr);
+        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
 
     public:
         /// get the glTF structure

@@ -26,19 +26,18 @@
 
 namespace libgltf
 {
-    bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const std::string& _sContent)
+    bool operator<<(SGlTF& _gltf, const std::string& _sContent)
     {
         JSONCharDocument json_doc;
         json_doc.Parse(_sContent.c_str());
         if (!json_doc.IsObject()) return false;
-        return (_pGlTF << json_doc.GetObject());
+        return (_gltf << json_doc.GetObject());
     }
 
-    bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, std::string& _sContent)
+    bool operator>>(const SGlTF& _gltf, std::string& _sContent)
     {
-        if (!_pGlTF) return false;
         JSONCharDocument json_doc;
-        if (!(TDataDoc<SGlTF>(*_pGlTF, &json_doc) >> json_doc)) return false;
+        if (!(TDataDoc<SGlTF>(_gltf, &json_doc) >> json_doc)) return false;
         JSONStringBuffer json_string_buffer;
         JSONWriter json_writer(json_string_buffer);
         if (!json_doc.Accept(json_writer)) return false;

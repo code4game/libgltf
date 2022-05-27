@@ -3,11 +3,12 @@ cmake_minimum_required(VERSION 3.15)
 project(libgltf)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-enable_testing()
+#enable_testing()
 set(CMAKE_INSTALL_PREFIX "install" CACHE STRING "prefix")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_DEBUG_POSTFIX "d")
+set(CMAKE_CXX_STANDARD 17)
 
 # define the platform
 set(LIBGLTF_PLATFORM_WINDOWS    FALSE)
