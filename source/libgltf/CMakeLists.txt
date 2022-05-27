@@ -68,29 +68,51 @@ endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        $<INSTALL_INTERFACE:include>${CMAKE_BINARY_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
     PRIVATE
         ${HEADER_PATH}
-        ${SOURCE_FILE_PATH}
-        ${EXTERNAL_PATH}/rapidjson/include
+        ${PROJECT_SOURCE_DIR}
     )
 
-#target_link_libraries(${PROJECT_NAME}
-#    PRIVATE
-#        rapidjson
-#    )
-
-if(LIBGLTF_WITH_GOOGLE_DRACO)
+if(RapidJSON_FOUND)
     target_include_directories(${PROJECT_NAME}
         PRIVATE
-            ${GOOGLE_DRACO_PATH_INCLUDE}
-            ${GOOGLE_DRACO_PATH_BUILD}
+            $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIRS}>
         )
-    target_link_libraries(${PROJECT_NAME}
-        PUBLIC
-            draco
-            #draco_core
+elseif(TARGET RapidJSON)
+    get_target_property(RapidJSON_INCLUDE_DIRS RapidJSON INTERFACE_INCLUDE_DIRECTORIES)
+    target_include_directories(${PROJECT_NAME}
+        PRIVATE
+            $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIRS}>
         )
+else()
+    target_include_directories(${PROJECT_NAME}
+        PRIVATE
+            ${EXTERNAL_PATH}/rapidjson/include
+        )
+endif()
+
+if(LIBGLTF_WITH_GOOGLE_DRACO)
+    if(draco_FOUND)
+        target_include_directories(${PROJECT_NAME}
+            PRIVATE
+                $<BUILD_INTERFACE:${draco_INCLUDE_DIRS}>
+            )
+        target_link_libraries(${PROJECT_NAME}
+            PUBLIC
+                $<BUILD_INTERFACE:${draco_LIBRARIES}>
+            )
+    elseif(TARGET draco)
+        target_include_directories(${PROJECT_NAME}
+            PRIVATE
+                ${GOOGLE_DRACO_PATH_INCLUDE}
+                ${GOOGLE_DRACO_PATH_BUILD}
+            )
+        target_link_libraries(${PROJECT_NAME}
+            PUBLIC
+                draco
+            )
+    endif()
 endif()
 
 set_target_properties(${PROJECT_NAME}
@@ -108,18 +130,19 @@ install(
 
 install(FILES ${ROOT_PATH}/LICENSE.md
     DESTINATION .
-    RENAME LICENSE.md
     )
 install(FILES ${HEADER_FILE_LIST}
     DESTINATION include/${PROJECT_NAME}
     )
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/cmake
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}
     )
 
 if(LIBGLTF_WITH_GOOGLE_DRACO)
-    install(FILES ${EXTERNAL_PATH}/draco/LICENSE
-        DESTINATION .
-        RENAME draco-LICENSE
-        )
+    if(NOT draco_FOUND)
+        install(FILES ${EXTERNAL_PATH}/draco/LICENSE
+            DESTINATION .
+            RENAME draco-LICENSE
+            )
+    endif()
 endif()
