@@ -110,7 +110,7 @@ int main(int _iArgc, char* _pcArgv[])
     const std::string input_file_path = _pcArgv[1];
     if (input_file_path.length() == 0)
     {
-        printf("Command line format: runtest input_file_path\n");
+        printf("Usage: runtest `file path`\n");
         return error_code;
     }
 
@@ -130,7 +130,6 @@ int main(int _iArgc, char* _pcArgv[])
             stream_ptr = std::make_shared<std::ifstream>(file_path.string(), std::ios::in | std::ios::binary);
             return stream_ptr;
         });
-    // std::unique_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(input_file_path);
     const std::unique_ptr<libgltf::SGlTF>& loaded_gltf = gltf_loader->glTF();
     if (loaded_gltf)
     {
