@@ -47,12 +47,12 @@ jobs:
         cmake --build build/win32 --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        xcopy /D /S /Y build\win64\draco\*.h build\include\draco\
-        xcopy /D /S /Y external\draco\src\draco\*.h build\include\draco\
-        xcopy /D /S /Y build\win64\external\draco\Release\draco.lib build\lib\win64\Release\
-        xcopy /D /S /Y build\win64\external\draco\Debug\dracod.lib build\lib\win64\Debug\
-        xcopy /D /S /Y build\win32\external\draco\Release\draco.lib build\lib\win32\Release\
-        xcopy /D /S /Y build\win32\external\draco\Debug\dracod.lib build\lib\win32\Debug\
+        xcopy /D /S /Y build\win64\draco\*.h output\include\draco\
+        xcopy /D /S /Y external\draco\src\draco\*.h output\include\draco\
+        xcopy /D /S /Y build\win64\external\draco\Release\draco.lib output\lib\win64\Release\
+        xcopy /D /S /Y build\win64\external\draco\Debug\dracod.lib output\lib\win64\Debug\
+        xcopy /D /S /Y build\win32\external\draco\Release\draco.lib output\lib\win32\Release\
+        xcopy /D /S /Y build\win32\external\draco\Debug\dracod.lib output\lib\win32\Debug\
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -76,9 +76,9 @@ jobs:
         cmake --build build --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/draco/ build/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ build/include/draco/
-        cp -a build/external/draco/draco.a build/lib/linux/draco.a
+        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp -a build/external/draco/draco.a output/lib/linux/draco.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -102,9 +102,9 @@ jobs:
         cmake --build build --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' build/draco/ build/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ build/include/draco/
-        cp build/external/draco/draco.a build/lib/macos/draco.a
+        rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        cp build/external/draco/draco.a output/lib/macos/draco.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -140,13 +140,13 @@ jobs:
         cmake --build build/x86_64 --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ build/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a/draco/ build/include/draco/
-        cp -a build/armeabi-v7a/external/draco/draco.a build/lib/android/armeabi-v7a/draco.a
-        cp -a build/armeabi-v7a-with-neon/external/draco/draco.a build/lib/android/armeabi-v7a-with-neon/draco.a
-        cp -a build/arm64-v8a/external/draco/draco.a build/lib/android/arm64-v8a/draco.a
-        cp -a build/x86/external/draco/draco.a build/lib/android/x86/draco.a
-        cp -a build/x86_64/external/draco/draco.a build/lib/android/x86_64/draco.a
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a/draco/ output/include/draco/
+        cp -a build/armeabi-v7a/external/draco/draco.a output/lib/android/armeabi-v7a/draco.a
+        cp -a build/armeabi-v7a-with-neon/external/draco/draco.a output/lib/android/armeabi-v7a-with-neon/draco.a
+        cp -a build/arm64-v8a/external/draco/draco.a output/lib/android/arm64-v8a/draco.a
+        cp -a build/x86/external/draco/draco.a output/lib/android/x86/draco.a
+        cp -a build/x86_64/external/draco/draco.a output/lib/android/x86_64/draco.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -175,11 +175,11 @@ jobs:
         cmake --build build/simulator --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ build/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ build/include/draco/
-        cp build/iphoneos/external/draco/draco.a build/lib/ios/os/draco.a
-        cp build/watchos/external/draco/draco.a build/lib/ios/watchos/draco.a
-        cp build/simulator/external/draco/draco.a build/lib/ios/simulator/draco.a
+        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/include/draco/
+        rsync -a --include='*.h' -f 'hide,! */' build/iphoneos/draco/ output/include/draco/
+        cp build/iphoneos/external/draco/draco.a output/lib/ios/os/draco.a
+        cp build/watchos/external/draco/draco.a output/lib/ios/watchos/draco.a
+        cp build/simulator/external/draco/draco.a output/lib/ios/simulator/draco.a
     - name: 'upload artifact'
       uses: actions/upload-artifact@v1.0.0
       with:

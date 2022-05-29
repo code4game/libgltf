@@ -136,7 +136,7 @@ if(LIBGLTF_WITH_GOOGLE_DRACO)
     if(NOT draco_FOUND)
         install(FILES ${EXTERNAL_PATH}/draco/LICENSE
             DESTINATION "."
-            RENAME draco-LICENSE
+            RENAME LICENSE-draco
             )
     endif()
 endif()
