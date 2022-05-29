@@ -102,6 +102,17 @@ if(LIBGLTF_WITH_GOOGLE_DRACO)
             PUBLIC
                 ${LIBDRACO_NAME}
             )
+        install(
+            TARGETS ${LIBDRACO_NAME}
+            EXPORT  ${LIBDRACO_NAME}-targets
+            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
+            RUNTIME DESTINATION bin
+            )
+        install(
+            EXPORT      "${LIBDRACO_NAME}-targets"
+            DESTINATION "cmake/${LIBDRACO_NAME}"
+            )
     endif()
 endif()
 
