@@ -1,21 +1,17 @@
 project(libgltf)
 
-add_library(${PROJECT_NAME})
-
 set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 configure_file(${PROJECT_NAME}-config.cmake.cmakein ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake @ONLY)
 configure_file(${PROJECT_NAME}.h.cmakein ${CMAKE_BINARY_DIR}/include/libgltf/libgltf.h @ONLY)
 
-set(HEADER_FILE_LIST
+set(CODE_FILE_LIST)
+set(CODE_FILE_LIST_TEMP
     ${CMAKE_BINARY_DIR}/include/libgltf/libgltf.h
     )
-source_group("include" FILES ${HEADER_FILE_LIST})
-target_sources(${PROJECT_NAME}
-    PUBLIC
-        ${HEADER_FILE_LIST}
-    )
+source_group("include" FILES ${CODE_FILE_LIST_TEMP})
+list(APPEND CODE_FILE_LIST ${CODE_FILE_LIST_TEMP})
 
-set(SOURCE_FILE_LIST
+set(CODE_FILE_LIST_TEMP
     libgltf.cpp
     libgltfparser.h
     libgltfparser.cpp
@@ -27,32 +23,22 @@ set(SOURCE_FILE_LIST
     gltf_loader.h
     gltf_loader.cpp
     )
-source_group("src" FILES ${SOURCE_FILE_LIST})
-target_sources(${PROJECT_NAME}
-    PRIVATE
-        ${SOURCE_FILE_LIST}
-    )
-
-set(CMAKE_FILE_LIST
-    ${PROJECT_NAME}-config.cmake.cmakein
-    ${PROJECT_NAME}.h.cmakein
-    )
-source_group("cmake" FILES ${CMAKE_FILE_LIST})
-target_sources(${PROJECT_NAME}
-    PRIVATE
-        ${CMAKE_FILE_LIST}
-    )
+source_group("src" FILES ${CODE_FILE_LIST_TEMP})
+list(APPEND CODE_FILE_LIST ${CODE_FILE_LIST_TEMP})
 
 if(LIBGLTF_WITH_GOOGLE_DRACO)
-    set(SOURCE_FILE_LIST_DRACO
+    set(CODE_FILE_LIST_TEMP
         extensions/google_draco.h
         extensions/google_draco.cpp
         )
-    source_group("source\\extensions" FILES ${SOURCE_FILE_LIST_DRACO})
-    target_sources(${PROJECT_NAME}
-        PRIVATE
-            ${SOURCE_FILE_LIST_DRACO}
-        )
+    source_group("source\\extensions" FILES ${CODE_FILE_LIST_TEMP})
+    list(APPEND CODE_FILE_LIST ${CODE_FILE_LIST_TEMP})
+endif()
+
+if(${LIBGLTF_BUILD_SHARED})
+    add_library(${PROJECT_NAME} SHARED ${CODE_FILE_LIST})
+else()
+    add_library(${PROJECT_NAME} STATIC ${CODE_FILE_LIST})
 endif()
 
 if(${LIBGLTF_PLATFORM_ANDROID})
@@ -128,20 +114,29 @@ install(
     RUNTIME DESTINATION bin
     )
 
-install(FILES ${ROOT_PATH}/LICENSE.md
-    DESTINATION .
-    )
-install(FILES ${HEADER_FILE_LIST}
-    DESTINATION include/${PROJECT_NAME}
+install(DIRECTORY ${CMAKE_BINARY_DIR}/include
+    DESTINATION "."
     )
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}
+    DESTINATION "share/${PROJECT_NAME}"
     )
+
+install(FILES ${ROOT_PATH}/LICENSE.md
+    DESTINATION "."
+    RENAME LICENSE.md
+    )
+
+if(NOT draco_FOUND)
+    install(FILES ${EXTERNAL_PATH}/rapidjson/license.txt
+        DESTINATION "."
+        RENAME LICENSE-rapidjson.txt
+        )
+endif()
 
 if(LIBGLTF_WITH_GOOGLE_DRACO)
     if(NOT draco_FOUND)
         install(FILES ${EXTERNAL_PATH}/draco/LICENSE
-            DESTINATION .
+            DESTINATION "."
             RENAME draco-LICENSE
             )
     endif()
