@@ -94,27 +94,20 @@ class C11TypeLibrary(object):
 
     def codeDefines(self):
         code_lines = []
-        code_lines.append(u'#cmakedefine LIBGLTF_BUILD_SHARED')
         code_lines.append(u'#cmakedefine LIBGLTF_WITH_MSVC_MT')
         code_lines.append(u'#cmakedefine LIBGLTF_WITH_GOOGLE_DRACO')
-        code_lines.append(u'')
-        code_lines.append(u'#if defined(LIBGLTF_BUILD_SHARED)')
-        code_lines.append(u'#    define LIBGLTF_API __declspec(dllexport)')
-        code_lines.append(u'#else')
-        code_lines.append(u'#    define LIBGLTF_API')
-        code_lines.append(u'#endif')
         return code_lines
 
     def codeHeaderParser(self):
         code_lines = []
-        code_lines.append(u'struct LIBGLTF_API SGlTF;')
+        code_lines.append(u'struct SGlTF;')
         code_lines.append(u'bool operator<<(SGlTF& _gltf, const std::string& _sContent);')
         code_lines.append(u'bool operator>>(const SGlTF& _gltf, std::string& _sContent);')
         code_lines.append(u'')
         code_lines.append(u'/*!')
         code_lines.append(u' * struct: SObject')
         code_lines.append(u' */')
-        code_lines.append(u'struct LIBGLTF_API SObject')
+        code_lines.append(u'struct SObject')
         code_lines.append(u'{')
         code_lines.append(u'    SObject();')
         code_lines.append(u'    std::string schemaType;')

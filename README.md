@@ -23,7 +23,7 @@ It is used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 * Load the gltf/embedded/glb file
 * This is a static library
 * Cross platform
-* C++11
+* C++17
 * Supports the Unicode and UTF8
 * Supports some extensions
   * `KHR_draco_mesh_compression` - [Google's Draco]
