@@ -31,8 +31,6 @@
 #    include "extensions/google_draco.h"
 #endif
 
-#include <sstream>
-
 namespace libgltf
 {
     class CBufferViewBufferStream : public IBufferStream

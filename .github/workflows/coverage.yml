@@ -34,26 +34,26 @@ jobs:
     - name: 'run valgrind and gcovr'
       run: |
         cd build
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/nothing.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Monster/glTF/Monster.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Monster/glTF-Binary/Monster.glb
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Monster/glTF-Draco/Monster.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Cameras/glTF/Cameras.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/MaterialsVariantsShoe/glTF/MaterialsVariantsShoe.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/MetalRoughSpheres/glTF/MetalRoughSpheres.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/MultiUVTest/glTF/MultiUVTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/Triangle/glTF/三角形.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
-        valgrind --leak-check=full --show-leak-kinds=all ./../build/bin/linux/runtest ../external/glTF/extensions/2.0/Khronos/KHR_lights_punctual/schema/examples/lights.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/nothing.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Monster/glTF/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Monster/glTF-Binary/Monster.glb
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Monster/glTF-Draco/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Monster/glTF-Embedded/Monster.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Avocado/glTF-pbrSpecularGlossiness/Avocado.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Cameras/glTF/Cameras.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/EnvironmentTest/glTF-IBL/EnvironmentTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/MaterialsVariantsShoe/glTF/MaterialsVariantsShoe.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/MetalRoughSpheres/glTF/MetalRoughSpheres.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/MorphPrimitivesTest/glTF/MorphPrimitivesTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/MultiUVTest/glTF/MultiUVTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/Triangle/glTF/三角形.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/TriangleWithoutIndices/glTF/TriangleWithoutIndices.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/TwoSidedPlane/glTF/TwoSidedPlane.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/UnlitTest/glTF/UnlitTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../resource/2.0/VertexColorTest/glTF/VertexColorTest.gltf
+        valgrind --leak-check=full --show-leak-kinds=all ./../build/source/runtest/runtest ../external/glTF/extensions/2.0/Khronos/KHR_lights_punctual/schema/examples/lights.gltf
         gcov source/runtest/CMakeFiles/runtest.dir/runtest.cpp.gcda
         gcovr --root=../source/ .
         cd ../

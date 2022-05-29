@@ -76,7 +76,7 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        cmake -B build -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
+        cmake -B build -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
         cmake --build build --target libgltf --config Release
         cmake --install build --prefix output/linux
     - name: 'ready artifact'

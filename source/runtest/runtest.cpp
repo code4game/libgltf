@@ -90,7 +90,7 @@ void SaveAsOBJ(const std::string&                     _sFilePath,
     obj_stream.close();
 }
 
-int main(int _iArgc, char* _pcArgv[])
+int main(int _argc, char* _argv[])
 {
 #if defined(LIBGLTF_PLATFORM_WINDOWS) && defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -102,7 +102,11 @@ int main(int _iArgc, char* _pcArgv[])
     int error_code = 1;
 #endif
 
-    const std::string input_file_path = _pcArgv[1];
+    std::string input_file_path;
+    if (_argc == 2)
+    {
+        input_file_path = _argv[1];
+    }
     if (input_file_path.length() == 0)
     {
         printf("Usage: runtest <file path>\n");

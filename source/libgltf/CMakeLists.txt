@@ -92,7 +92,17 @@ if(LIBGLTF_WITH_GOOGLE_DRACO)
             )
         target_link_libraries(${PROJECT_NAME}
             PUBLIC
-                draco
+                ${LIBDRACO_NAME}
+            )
+    else()
+        target_include_directories(${PROJECT_NAME}
+            PRIVATE
+                ${GOOGLE_DRACO_PATH_INCLUDE}
+                ${GOOGLE_DRACO_PATH_BUILD}
+            )
+        target_link_libraries(${PROJECT_NAME}
+            PUBLIC
+                ${LIBDRACO_NAME}
             )
     endif()
 endif()

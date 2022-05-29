@@ -1,14 +1,20 @@
-/**/.vs
-/**/.vscode
+# vim
+/**/*.*~
+/**/*.swp
 
-/**/output/
-/**/build*/
-/docs/_build
-
+# py
 /**/*.pyc
 /**/*.pyo
 
+# macos
 /**/.DS_Store
 
-/**/*.*~
-/**/*.swp
+# vs
+/**/.vs
+/**/.vscode
+
+# project
+/**/output/
+/**/build*/
+/docs/_build
+/resource/**/*.obj
