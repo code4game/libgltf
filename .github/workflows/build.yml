@@ -47,12 +47,12 @@ jobs:
         cmake --build build/win32 --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        cmake --install build/win64 --prefix output/win64
+        cmake --install build/win64/source/ --prefix output/win64/
         xcopy /D /S /Y external\draco\src\draco\*.h output\win64\include\draco\
         xcopy /D /S /Y build\win64\draco\*.h output\win64\include\draco\
         xcopy /D /S /Y build\win64\external\draco\Release\draco.lib output\win64\lib\Release\
         xcopy /D /S /Y build\win64\external\draco\Debug\dracod.lib output\win64\lib\Debug\
-        cmake --install build/win32 --prefix output/win32
+        cmake --install build/win32source/ --prefix output/win32/
         xcopy /D /S /Y external\draco\src\draco\*.h output\win32\include\draco\
         xcopy /D /S /Y build\win64\draco\*.h output\win32\include\draco\
         xcopy /D /S /Y build\win32\external\draco\Release\draco.lib output\win32\lib\Release\
