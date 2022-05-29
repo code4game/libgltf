@@ -111,6 +111,16 @@ set_target_properties(${PROJECT_NAME}
     )
 
 install(
+    DIRECTORY   "${CMAKE_BINARY_DIR}/include"
+    DESTINATION "."
+    )
+
+install(
+    FILES       "libgltf-config.cmake"
+    DESTINATION "cmake/${PROJECT_NAME}"
+    )
+
+install(
     TARGETS ${PROJECT_NAME}
     EXPORT  ${PROJECT_NAME}-targets
     ARCHIVE DESTINATION lib
@@ -119,11 +129,8 @@ install(
     )
 
 install(
-    DIRECTORY   ${CMAKE_BINARY_DIR}/include
-    DESTINATION "."
-    )
-install(
-    EXPORT  ${PROJECT_NAME}-targets
+    EXPORT      "${PROJECT_NAME}-targets"
+    NAMESPACE   "${PROJECT_NAME}::"
     DESTINATION "cmake/${PROJECT_NAME}"
     )
 
