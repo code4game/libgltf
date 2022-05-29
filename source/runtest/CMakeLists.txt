@@ -35,7 +35,10 @@ target_link_libraries(${PROJECT_NAME}
 set_target_properties(runtest
     PROPERTIES
         FOLDER main
-        ARCHIVE_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-        LIBRARY_OUTPUT_DIRECTORY ${OUT_LIB_PATH}
-        RUNTIME_OUTPUT_DIRECTORY ${OUT_BIN_PATH}
+    )
+
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT  ${PROJECT_NAME}-targets
+    RUNTIME DESTINATION bin
     )
