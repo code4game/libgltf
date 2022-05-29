@@ -47,7 +47,7 @@
     LIBGLTF_ACCESSORCOMPONENTDATA(uint32_t  , EAccessorComponentType::UNSIGNED_INT  );
     LIBGLTF_ACCESSORCOMPONENTDATA(float     , EAccessorComponentType::FLOAT         );
 
-    struct SAccessorComponentType
+    struct LIBGLTF_API SAccessorComponentType
     {
         size_t value;
         size_t size;
@@ -77,7 +77,7 @@
         MAX,
     };
 
-    struct SAccessorType
+    struct LIBGLTF_API SAccessorType
     {
         std::string text;
         size_t dimension;
@@ -102,7 +102,7 @@
     size_t DimensionOfAccessorType(EAccessorType _eType);
     size_t SizeOfAccessor(EAccessorComponentType _eAccessorComponentType, size_t _iCount, EAccessorType _eAccessorType);
 
-    struct SBufferData
+    struct LIBGLTF_API SBufferData
     {
         SBufferData();
 
@@ -124,7 +124,7 @@
     } break
 
     /// help to operate the accessor data
-    struct SAccessorData
+    struct LIBGLTF_API SAccessorData
     {
         SAccessorData();
 
@@ -177,7 +177,7 @@
         }
     };
 
-    class IAccessorStream
+    class LIBGLTF_API IAccessorStream
     {
     public:
         virtual bool operator<<(const SAccessorData& accessor_data) = 0;
@@ -256,7 +256,7 @@
     };
 
     /// gltf loader
-    class IglTFLoader
+    class LIBGLTF_API IglTFLoader
     {
     public:
         static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);

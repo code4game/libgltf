@@ -50,14 +50,14 @@
 namespace libgltf
 {
 
-    struct SGlTF;
+    struct LIBGLTF_API SGlTF;
     bool operator<<(SGlTF& _gltf, const std::string& _sContent);
     bool operator>>(const SGlTF& _gltf, std::string& _sContent);
     
     /*!
      * struct: SObject
      */
-    struct SObject
+    struct LIBGLTF_API SObject
     {
         SObject();
         std::string schemaType;
@@ -129,7 +129,7 @@ namespace libgltf
     /*!
      * struct: SGlTFProperty
      */
-    struct SGlTFProperty : SObject
+    struct LIBGLTF_API SGlTFProperty : SObject
     {
         SGlTFProperty();
 
@@ -143,7 +143,7 @@ namespace libgltf
     /*!
      * struct: SGlTFChildofRootProperty
      */
-    struct SGlTFChildofRootProperty : SGlTFProperty
+    struct LIBGLTF_API SGlTFChildofRootProperty : SGlTFProperty
     {
         SGlTFChildofRootProperty();
 
@@ -158,7 +158,7 @@ namespace libgltf
      * struct: SAccessor
      * A typed view into a buffer view that contains raw binary data.
      */
-    struct SAccessor : SGlTFChildofRootProperty
+    struct LIBGLTF_API SAccessor : SGlTFChildofRootProperty
     {
         SAccessor();
 
@@ -189,7 +189,7 @@ namespace libgltf
      * struct: SAccessorSparseIndices
      * An object pointing to a buffer view containing the indices of deviating accessor values. The number of indices is equal to `accessor.sparse.count`. Indices **MUST** strictly increase.
      */
-    struct SAccessorSparseIndices : SGlTFProperty
+    struct LIBGLTF_API SAccessorSparseIndices : SGlTFProperty
     {
         SAccessorSparseIndices();
 
@@ -208,7 +208,7 @@ namespace libgltf
      * struct: SAccessorSparse
      * Sparse storage of accessor values that deviate from their initialization value.
      */
-    struct SAccessorSparse : SGlTFProperty
+    struct LIBGLTF_API SAccessorSparse : SGlTFProperty
     {
         SAccessorSparse();
 
@@ -227,7 +227,7 @@ namespace libgltf
      * struct: SAccessorSparseValues
      * An object pointing to a buffer view containing the deviating accessor values. The number of elements is equal to `accessor.sparse.count` times number of components. The elements have the same component type as the base accessor. The elements are tightly packed. Data **MUST** be aligned following the same rules as the base accessor.
      */
-    struct SAccessorSparseValues : SGlTFProperty
+    struct LIBGLTF_API SAccessorSparseValues : SGlTFProperty
     {
         SAccessorSparseValues();
 
@@ -244,7 +244,7 @@ namespace libgltf
      * struct: SAnimationChannel
      * An animation channel combines an animation sampler with a target property being animated.
      */
-    struct SAnimationChannel : SGlTFProperty
+    struct LIBGLTF_API SAnimationChannel : SGlTFProperty
     {
         SAnimationChannel();
 
@@ -261,7 +261,7 @@ namespace libgltf
      * struct: SAnimationChannelTarget
      * The descriptor of the animated property.
      */
-    struct SAnimationChannelTarget : SGlTFProperty
+    struct LIBGLTF_API SAnimationChannelTarget : SGlTFProperty
     {
         SAnimationChannelTarget();
 
@@ -278,7 +278,7 @@ namespace libgltf
      * struct: SAnimationSampler
      * An animation sampler combines timestamps with a sequence of output values and defines an interpolation algorithm.
      */
-    struct SAnimationSampler : SGlTFProperty
+    struct LIBGLTF_API SAnimationSampler : SGlTFProperty
     {
         SAnimationSampler();
 
@@ -297,7 +297,7 @@ namespace libgltf
      * struct: SAnimation
      * A keyframe animation.
      */
-    struct SAnimation : SGlTFChildofRootProperty
+    struct LIBGLTF_API SAnimation : SGlTFChildofRootProperty
     {
         SAnimation();
 
@@ -314,7 +314,7 @@ namespace libgltf
      * struct: SAsset
      * Metadata about the glTF asset.
      */
-    struct SAsset : SGlTFProperty
+    struct LIBGLTF_API SAsset : SGlTFProperty
     {
         SAsset();
 
@@ -335,7 +335,7 @@ namespace libgltf
      * struct: SBuffer
      * A buffer points to binary geometry, animation, or skins.
      */
-    struct SBuffer : SGlTFChildofRootProperty
+    struct LIBGLTF_API SBuffer : SGlTFChildofRootProperty
     {
         SBuffer();
 
@@ -352,7 +352,7 @@ namespace libgltf
      * struct: SBufferView
      * A view into a buffer generally representing a subset of the buffer.
      */
-    struct SBufferView : SGlTFChildofRootProperty
+    struct LIBGLTF_API SBufferView : SGlTFChildofRootProperty
     {
         SBufferView();
 
@@ -375,7 +375,7 @@ namespace libgltf
      * struct: SCameraOrthographic
      * An orthographic camera containing properties to create an orthographic projection matrix.
      */
-    struct SCameraOrthographic : SGlTFProperty
+    struct LIBGLTF_API SCameraOrthographic : SGlTFProperty
     {
         SCameraOrthographic();
 
@@ -396,7 +396,7 @@ namespace libgltf
      * struct: SCameraPerspective
      * A perspective camera containing properties to create a perspective projection matrix.
      */
-    struct SCameraPerspective : SGlTFProperty
+    struct LIBGLTF_API SCameraPerspective : SGlTFProperty
     {
         SCameraPerspective();
 
@@ -417,7 +417,7 @@ namespace libgltf
      * struct: SCamera
      * A camera's projection.  A node **MAY** reference a camera to apply a transform to place the camera in the scene.
      */
-    struct SCamera : SGlTFChildofRootProperty
+    struct LIBGLTF_API SCamera : SGlTFChildofRootProperty
     {
         SCamera();
 
@@ -436,7 +436,7 @@ namespace libgltf
      * struct: SExtension
      * JSON object with extension-specific objects.
      */
-    struct SExtension : SObject
+    struct LIBGLTF_API SExtension : SObject
     {
         SExtension();
 
@@ -451,7 +451,7 @@ namespace libgltf
      * struct: SExtras
      * Application-specific data.
      */
-    struct SExtras : SObject
+    struct LIBGLTF_API SExtras : SObject
     {
         SExtras();
 
@@ -463,7 +463,7 @@ namespace libgltf
      * struct: SGlTF
      * The root object for a glTF asset.
      */
-    struct SGlTF : SGlTFProperty
+    struct LIBGLTF_API SGlTF : SGlTFProperty
     {
         SGlTF();
 
@@ -509,7 +509,7 @@ namespace libgltf
     /*!
      * struct: SGlTFId
      */
-    struct SGlTFId : SObject
+    struct LIBGLTF_API SGlTFId : SObject
     {
         SGlTFId();
 
@@ -525,7 +525,7 @@ namespace libgltf
      * struct: SImage
      * Image data used to create a texture. Image **MAY** be referenced by an URI (or IRI) or a buffer view index.
      */
-    struct SImage : SGlTFChildofRootProperty
+    struct LIBGLTF_API SImage : SGlTFChildofRootProperty
     {
         SImage();
 
@@ -544,7 +544,7 @@ namespace libgltf
      * struct: STextureInfo
      * Reference to a texture.
      */
-    struct STextureInfo : SGlTFProperty
+    struct LIBGLTF_API STextureInfo : SGlTFProperty
     {
         STextureInfo();
 
@@ -560,7 +560,7 @@ namespace libgltf
     /*!
      * struct: SMaterialNormalTextureInfo
      */
-    struct SMaterialNormalTextureInfo : STextureInfo
+    struct LIBGLTF_API SMaterialNormalTextureInfo : STextureInfo
     {
         SMaterialNormalTextureInfo();
 
@@ -574,7 +574,7 @@ namespace libgltf
     /*!
      * struct: SMaterialOcclusionTextureInfo
      */
-    struct SMaterialOcclusionTextureInfo : STextureInfo
+    struct LIBGLTF_API SMaterialOcclusionTextureInfo : STextureInfo
     {
         SMaterialOcclusionTextureInfo();
 
@@ -589,7 +589,7 @@ namespace libgltf
      * struct: SMaterialPBRMetallicRoughness
      * A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology.
      */
-    struct SMaterialPBRMetallicRoughness : SGlTFProperty
+    struct LIBGLTF_API SMaterialPBRMetallicRoughness : SGlTFProperty
     {
         SMaterialPBRMetallicRoughness();
 
@@ -612,7 +612,7 @@ namespace libgltf
      * struct: SMaterial
      * The material appearance of a primitive.
      */
-    struct SMaterial : SGlTFChildofRootProperty
+    struct LIBGLTF_API SMaterial : SGlTFChildofRootProperty
     {
         SMaterial();
 
@@ -641,7 +641,7 @@ namespace libgltf
      * struct: SMeshPrimitive
      * Geometry to be rendered with the given material.
      */
-    struct SMeshPrimitive : SGlTFProperty
+    struct LIBGLTF_API SMeshPrimitive : SGlTFProperty
     {
         SMeshPrimitive();
 
@@ -664,7 +664,7 @@ namespace libgltf
      * struct: SMesh
      * A set of primitives to be rendered.  Its global transform is defined by a node that references it.
      */
-    struct SMesh : SGlTFChildofRootProperty
+    struct LIBGLTF_API SMesh : SGlTFChildofRootProperty
     {
         SMesh();
 
@@ -681,7 +681,7 @@ namespace libgltf
      * struct: SNode
      * A node in the node hierarchy.  When the node contains `skin`, all `mesh.primitives` **MUST** contain `JOINTS_0` and `WEIGHTS_0` attributes.  A node **MAY** have either a `matrix` or any combination of `translation`/`rotation`/`scale` (TRS) properties. TRS properties are converted to matrices and postmultiplied in the `T * R * S` order to compose the transformation matrix; first the scale is applied to the vertices, then the rotation, and then the translation. If none are provided, the transform is the identity. When a node is targeted for animation (referenced by an animation.channel.target), `matrix` **MUST NOT** be present.
      */
-    struct SNode : SGlTFChildofRootProperty
+    struct LIBGLTF_API SNode : SGlTFChildofRootProperty
     {
         SNode();
 
@@ -712,7 +712,7 @@ namespace libgltf
      * struct: SSampler
      * Texture sampler properties for filtering and wrapping modes.
      */
-    struct SSampler : SGlTFChildofRootProperty
+    struct LIBGLTF_API SSampler : SGlTFChildofRootProperty
     {
         SSampler();
 
@@ -733,7 +733,7 @@ namespace libgltf
      * struct: SScene
      * The root nodes of a scene.
      */
-    struct SScene : SGlTFChildofRootProperty
+    struct LIBGLTF_API SScene : SGlTFChildofRootProperty
     {
         SScene();
 
@@ -748,7 +748,7 @@ namespace libgltf
      * struct: SSkin
      * Joints and matrices defining a skin.
      */
-    struct SSkin : SGlTFChildofRootProperty
+    struct LIBGLTF_API SSkin : SGlTFChildofRootProperty
     {
         SSkin();
 
@@ -767,7 +767,7 @@ namespace libgltf
      * struct: STexture
      * A texture and its sampler.
      */
-    struct STexture : SGlTFChildofRootProperty
+    struct LIBGLTF_API STexture : SGlTFChildofRootProperty
     {
         STexture();
 
@@ -783,7 +783,7 @@ namespace libgltf
     /*!
      * struct: SKHR_draco_mesh_compressionextension
      */
-    struct SKHR_draco_mesh_compressionextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_draco_mesh_compressionextension : SGlTFProperty
     {
         SKHR_draco_mesh_compressionextension();
 
@@ -799,7 +799,7 @@ namespace libgltf
     /*!
      * struct: SKHR_lights_punctualglTFextension
      */
-    struct SKHR_lights_punctualglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_lights_punctualglTFextension : SGlTFProperty
     {
         SKHR_lights_punctualglTFextension();
 
@@ -813,7 +813,7 @@ namespace libgltf
      * struct: SLight
      * A directional, point, or spot light.
      */
-    struct SLight : SGlTFChildofRootProperty
+    struct LIBGLTF_API SLight : SGlTFChildofRootProperty
     {
         SLight();
 
@@ -834,7 +834,7 @@ namespace libgltf
     /*!
      * struct: SLightspot
      */
-    struct SLightspot : SGlTFProperty
+    struct LIBGLTF_API SLightspot : SGlTFProperty
     {
         SLightspot();
 
@@ -850,7 +850,7 @@ namespace libgltf
     /*!
      * struct: SKHR_lights_punctualnodeextension
      */
-    struct SKHR_lights_punctualnodeextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_lights_punctualnodeextension : SGlTFProperty
     {
         SKHR_lights_punctualnodeextension();
 
@@ -865,7 +865,7 @@ namespace libgltf
      * struct: SKHR_materials_clearcoatglTFextension
      * glTF extension that defines the clearcoat material layer.
      */
-    struct SKHR_materials_clearcoatglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_clearcoatglTFextension : SGlTFProperty
     {
         SKHR_materials_clearcoatglTFextension();
 
@@ -888,7 +888,7 @@ namespace libgltf
      * struct: SKHR_materials_iorglTFextension
      * glTF extension that defines the index of refraction of a material.
      */
-    struct SKHR_materials_iorglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_iorglTFextension : SGlTFProperty
     {
         SKHR_materials_iorglTFextension();
 
@@ -903,7 +903,7 @@ namespace libgltf
      * struct: SKHR_materials_sheenglTFextension
      * glTF extension that defines the sheen material model.
      */
-    struct SKHR_materials_sheenglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_sheenglTFextension : SGlTFProperty
     {
         SKHR_materials_sheenglTFextension();
 
@@ -924,7 +924,7 @@ namespace libgltf
      * struct: SKHR_materials_specularglTFextension
      * glTF extension that defines the strength of the specular reflection.
      */
-    struct SKHR_materials_specularglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_specularglTFextension : SGlTFProperty
     {
         SKHR_materials_specularglTFextension();
 
@@ -945,7 +945,7 @@ namespace libgltf
      * struct: SKHR_materials_transmissionglTFextension
      * glTF extension that defines the optical transmission of a material.
      */
-    struct SKHR_materials_transmissionglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_transmissionglTFextension : SGlTFProperty
     {
         SKHR_materials_transmissionglTFextension();
 
@@ -962,7 +962,7 @@ namespace libgltf
      * struct: SKHR_materials_unlitglTFextension
      * glTF extension that defines the unlit material model.
      */
-    struct SKHR_materials_unlitglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_unlitglTFextension : SGlTFProperty
     {
         SKHR_materials_unlitglTFextension();
 
@@ -974,7 +974,7 @@ namespace libgltf
      * struct: SKHR_materials_variantsglTFextension
      * glTF extension that defines a material variations for mesh primivites
      */
-    struct SKHR_materials_variantsglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_variantsglTFextension : SGlTFProperty
     {
         SKHR_materials_variantsglTFextension();
 
@@ -987,7 +987,7 @@ namespace libgltf
     /*!
      * struct: SKHR_materials_variantsmeshprimitiveextension
      */
-    struct SKHR_materials_variantsmeshprimitiveextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_variantsmeshprimitiveextension : SGlTFProperty
     {
         SKHR_materials_variantsmeshprimitiveextension();
 
@@ -1002,7 +1002,7 @@ namespace libgltf
      * struct: SKHR_materials_volumeglTFextension
      * glTF extension that defines the parameters for the volume of a material.
      */
-    struct SKHR_materials_volumeglTFextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_materials_volumeglTFextension : SGlTFProperty
     {
         SKHR_materials_volumeglTFextension();
 
@@ -1023,7 +1023,7 @@ namespace libgltf
      * struct: SKHR_texture_transformtextureInfoextension
      * glTF extension that enables shifting and scaling UV coordinates on a per-texture basis
      */
-    struct SKHR_texture_transformtextureInfoextension : SGlTFProperty
+    struct LIBGLTF_API SKHR_texture_transformtextureInfoextension : SGlTFProperty
     {
         SKHR_texture_transformtextureInfoextension();
 
@@ -1044,7 +1044,7 @@ namespace libgltf
      * struct: SADOBE_materials_thin_transparencyglTFextension
      * glTF extension that defines properties to model physically plausible optical transparency.
      */
-    struct SADOBE_materials_thin_transparencyglTFextension : SGlTFProperty
+    struct LIBGLTF_API SADOBE_materials_thin_transparencyglTFextension : SGlTFProperty
     {
         SADOBE_materials_thin_transparencyglTFextension();
 
@@ -1063,7 +1063,7 @@ namespace libgltf
      * struct: SArticulation
      * A model articulation definition.
      */
-    struct SArticulation : SGlTFProperty
+    struct LIBGLTF_API SArticulation : SGlTFProperty
     {
         SArticulation();
 
@@ -1082,7 +1082,7 @@ namespace libgltf
      * struct: SArticulationStage
      * One stage of a model articulation definition.
      */
-    struct SArticulationStage : SGlTFProperty
+    struct LIBGLTF_API SArticulationStage : SGlTFProperty
     {
         SArticulationStage();
 
@@ -1105,7 +1105,7 @@ namespace libgltf
      * struct: SAGI_articulationsglTFextension
      * glTF Extension that defines metadata for applying external analysis or effects to a model.
      */
-    struct SAGI_articulationsglTFextension : SGlTFProperty
+    struct LIBGLTF_API SAGI_articulationsglTFextension : SGlTFProperty
     {
         SAGI_articulationsglTFextension();
 
@@ -1120,7 +1120,7 @@ namespace libgltf
      * struct: SAGI_articulationsglTFNodeextension
      * glTF Extension for an individual node in a glTF model, to associate it with the model's root AGI_articulations object.
      */
-    struct SAGI_articulationsglTFNodeextension : SGlTFProperty
+    struct LIBGLTF_API SAGI_articulationsglTFNodeextension : SGlTFProperty
     {
         SAGI_articulationsglTFNodeextension();
 
@@ -1137,7 +1137,7 @@ namespace libgltf
      * struct: SAGI_stk_metadataglTFextension
      * glTF Extension that defines metadata for use with STK (Systems Tool Kit).
      */
-    struct SAGI_stk_metadataglTFextension : SGlTFProperty
+    struct LIBGLTF_API SAGI_stk_metadataglTFextension : SGlTFProperty
     {
         SAGI_stk_metadataglTFextension();
 
@@ -1152,7 +1152,7 @@ namespace libgltf
      * struct: SAGI_stk_metadataglTFNodeextension
      * glTF Extension for an individual node in a glTF model, to associate it with the model's root AGI_stk_metadata object.
      */
-    struct SAGI_stk_metadataglTFNodeextension : SGlTFProperty
+    struct LIBGLTF_API SAGI_stk_metadataglTFNodeextension : SGlTFProperty
     {
         SAGI_stk_metadataglTFNodeextension();
 
@@ -1169,7 +1169,7 @@ namespace libgltf
      * struct: SSolarPanelGroup
      * A solar panel group definition.
      */
-    struct SSolarPanelGroup : SGlTFProperty
+    struct LIBGLTF_API SSolarPanelGroup : SGlTFProperty
     {
         SSolarPanelGroup();
 
@@ -1186,7 +1186,7 @@ namespace libgltf
      * struct: SCESIUM_primitive_outlineglTFprimitiveextension
      * glTF extension for indicating that some edges of a primitive's triangles should be outlined.
      */
-    struct SCESIUM_primitive_outlineglTFprimitiveextension : SGlTFProperty
+    struct LIBGLTF_API SCESIUM_primitive_outlineglTFprimitiveextension : SGlTFProperty
     {
         SCESIUM_primitive_outlineglTFprimitiveextension();
 
@@ -1201,7 +1201,7 @@ namespace libgltf
      * struct: SEXT_mesh_gpu_instancingglTFextension
      * glTF extension defines instance attributes for a node with a mesh.
      */
-    struct SEXT_mesh_gpu_instancingglTFextension : SGlTFProperty
+    struct LIBGLTF_API SEXT_mesh_gpu_instancingglTFextension : SGlTFProperty
     {
         SEXT_mesh_gpu_instancingglTFextension();
 
@@ -1216,7 +1216,7 @@ namespace libgltf
      * struct: SEXT_texture_webpglTFextension
      * glTF extension to specify textures using the WebP image format.
      */
-    struct SEXT_texture_webpglTFextension : SGlTFProperty
+    struct LIBGLTF_API SEXT_texture_webpglTFextension : SGlTFProperty
     {
         SEXT_texture_webpglTFextension();
 
@@ -1231,7 +1231,7 @@ namespace libgltf
      * struct: SMSFT_lodglTFextension
      * glTF extension for specifying levels of detail (LOD).
      */
-    struct SMSFT_lodglTFextension : SGlTFProperty
+    struct LIBGLTF_API SMSFT_lodglTFextension : SGlTFProperty
     {
         SMSFT_lodglTFextension();
 
@@ -1246,7 +1246,7 @@ namespace libgltf
      * struct: SMSFT_texture_ddsextension
      * glTF extension to specify textures using the DirectDraw Surface file format (DDS).
      */
-    struct SMSFT_texture_ddsextension : SGlTFProperty
+    struct LIBGLTF_API SMSFT_texture_ddsextension : SGlTFProperty
     {
         SMSFT_texture_ddsextension();
 
@@ -1306,7 +1306,7 @@ namespace libgltf
     LIBGLTF_ACCESSORCOMPONENTDATA(uint32_t  , EAccessorComponentType::UNSIGNED_INT  );
     LIBGLTF_ACCESSORCOMPONENTDATA(float     , EAccessorComponentType::FLOAT         );
 
-    struct SAccessorComponentType
+    struct LIBGLTF_API SAccessorComponentType
     {
         size_t value;
         size_t size;
@@ -1336,7 +1336,7 @@ namespace libgltf
         MAX,
     };
 
-    struct SAccessorType
+    struct LIBGLTF_API SAccessorType
     {
         std::string text;
         size_t dimension;
@@ -1361,7 +1361,7 @@ namespace libgltf
     size_t DimensionOfAccessorType(EAccessorType _eType);
     size_t SizeOfAccessor(EAccessorComponentType _eAccessorComponentType, size_t _iCount, EAccessorType _eAccessorType);
 
-    struct SBufferData
+    struct LIBGLTF_API SBufferData
     {
         SBufferData();
 
@@ -1383,7 +1383,7 @@ namespace libgltf
     } break
 
     /// help to operate the accessor data
-    struct SAccessorData
+    struct LIBGLTF_API SAccessorData
     {
         SAccessorData();
 
@@ -1436,7 +1436,7 @@ namespace libgltf
         }
     };
 
-    class IAccessorStream
+    class LIBGLTF_API IAccessorStream
     {
     public:
         virtual bool operator<<(const SAccessorData& accessor_data) = 0;
@@ -1518,20 +1518,20 @@ namespace libgltf
     class LIBGLTF_API IglTFLoader
     {
     public:
-        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
+        static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
 
     public:
         /// get the glTF structure
         virtual const std::unique_ptr<SGlTF>& glTF() const = 0;
 
         /// load the indices data
-        virtual bool LoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool LoadMeshPrimitiveIndicesData(size_t _mesh_index, size_t _primitive_index, std::shared_ptr<IAccessorStream> _accessor_stream) = 0;
 
         /// load the attribute data like position, normal, texcoord, etc
-        virtual bool LoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const std::string& attribute, std::shared_ptr<IAccessorStream> accessor_stream) = 0;
+        virtual bool LoadMeshPrimitiveAttributeData(size_t _mesh_index, size_t _primitive_index, const std::string& _attribute, std::shared_ptr<IAccessorStream> _accessor_stream) = 0;
 
         /// load the image data and type
-        virtual bool LoadImageData(size_t index, std::vector<uint8_t>& data, std::string& data_type) = 0;
+        virtual bool LoadImageData(size_t _index, std::vector<uint8_t>& _data, std::string& _type) = 0;
     };
 
 }

@@ -138,7 +138,7 @@ class C11TypeStruct(C11Type):
         if hasattr(self, u'description'):
             codeLines.append(u' * ' + self.description)
         codeLines.append(u' */')
-        codeLines.append(u'struct %s%s' % (self.codeTypeName(), self.codeInheritTypes()))
+        codeLines.append(u'struct LIBGLTF_API %s%s' % (self.codeTypeName(), self.codeInheritTypes()))
         codeLines.append(u'{')
         codeLines.append(u'    %s();' % self.codeTypeName())
         codeLines.append(u'')

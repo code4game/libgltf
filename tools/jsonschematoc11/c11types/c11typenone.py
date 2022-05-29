@@ -16,7 +16,7 @@ class C11TypeNone(C11Type):
             if withDocument:
                 codeLine = u'TDataDoc<struct %s>' % codeLine
             else:
-                codeLine = u'struct %s' % codeLine
+                codeLine = u'struct LIBGLTF_API %s' % codeLine
         else:
             if withDocument:
                 codeLine = u'TDataDoc<%s>' % codeLine

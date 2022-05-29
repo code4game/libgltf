@@ -39,10 +39,10 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: 'build and make'
       run: |
-        cmake -B build/win64 -G "Visual Studio 16 2019" -A "x64" -DLIBGLTF_WITH_MSVC_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
+        cmake -B build/win64 -G "Visual Studio 17 2022" -A "x64" -DLIBGLTF_WITH_MSVC_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
         cmake --build build/win64 --target libgltf --config Debug
         cmake --build build/win64 --target libgltf --config Release
-        cmake -B build/win32 -G "Visual Studio 16 2019" -A "Win32" -DLIBGLTF_WITH_MSVC_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
+        cmake -B build/win32 -G "Visual Studio 17 2022" -A "Win32" -DLIBGLTF_WITH_MSVC_MT=FALSE -DLIBGLTF_BUILD_RUNTEST=FALSE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
         cmake --build build/win32 --target libgltf --config Debug
         cmake --build build/win32 --target libgltf --config Release
     - name: 'ready artifact'
