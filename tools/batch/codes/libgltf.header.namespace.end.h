@@ -153,7 +153,7 @@
                 if (componentType == v_component_type)
                 {
                     _Vector.Resize(count);
-                    ::memcpy(_Vector.Data(), bufferData.buffer, sizeof_accessor);
+                    memcpy(_Vector.Data(), bufferData.buffer, sizeof_accessor);
                 }
                 else
                 {
