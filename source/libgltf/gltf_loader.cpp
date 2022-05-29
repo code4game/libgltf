@@ -84,7 +84,7 @@ namespace libgltf
         virtual bool operator<<(const SBufferData& _buffer_data)
         {
             m_Data.resize(_buffer_data.bufferSize);
-            memcpy(&m_Data[0], _buffer_data.buffer, m_Data.size());
+            ::memcpy(&m_Data[0], _buffer_data.buffer, m_Data.size());
             return true;
         }
 
@@ -236,7 +236,7 @@ namespace libgltf
 
                 txt_json.resize(glb_chunk_ptr->length);
                 if (!txt_json.empty())
-                    memcpy(&txt_json[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
+                    ::memcpy(&txt_json[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
                 break;
             }
 
@@ -249,7 +249,7 @@ namespace libgltf
                 std::pair<std::vector<uint8_t>, std::string>& data = m_CacheDatas[""];
                 data.first.resize(glb_chunk_ptr->length);
                 if (!data.first.empty())
-                    memcpy(&data.first[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
+                    ::memcpy(&data.first[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
                 break;
             }
         }
@@ -257,7 +257,7 @@ namespace libgltf
         {
             txt_json.resize(data.size());
             if (!txt_json.empty())
-                memcpy(&txt_json[0], &data[0], data.size());
+                ::memcpy(&txt_json[0], &data[0], data.size());
         }
 
         if (txt_json.empty())
@@ -352,7 +352,7 @@ namespace libgltf
                 return false;
 
             _data.resize(data_size);
-            memcpy(&_data[0], data_ptr, data_size);
+            ::memcpy(&_data[0], data_ptr, data_size);
             return true;
         }
         if (!_image->bufferView)

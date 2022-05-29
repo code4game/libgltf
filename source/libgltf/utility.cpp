@@ -192,7 +192,7 @@ namespace libgltf
 
             std::vector<uint8_t> data;
             data.resize(value.length());
-            memcpy((void*)data.data(), (void*)value.data(), sizeof(uint8_t) * data.size());
+            ::memcpy((void*)data.data(), (void*)value.data(), sizeof(uint8_t) * data.size());
             std::string result;
             Encode(data, result);
             return result;
@@ -207,7 +207,7 @@ namespace libgltf
 
             std::string result;
             result.resize(data.size());
-            memcpy((void*)result.data(), (void*)data.data(), sizeof(uint8_t) * data.size());
+            ::memcpy((void*)result.data(), (void*)data.data(), sizeof(uint8_t) * data.size());
             return result;
         }
     }
