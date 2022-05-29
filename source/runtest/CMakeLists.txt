@@ -18,7 +18,6 @@ add_executable(runtest
     )
 
 set(INCLUDE_PATH_LIST
-    ${HEADER_PATH}
     ${SOURCE_FILE_PATH}
     ${CMAKE_BINARY_DIR}/include
     )

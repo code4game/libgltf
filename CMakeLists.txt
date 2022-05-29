@@ -69,7 +69,6 @@ if((NOT ${LIBGLTF_PLATFORM_WINDOWS}) AND (NOT ${LIBGLTF_PLATFORM_LINUX}) AND (NO
 endif()
 
 set(ROOT_PATH     "${PROJECT_SOURCE_DIR}")
-set(HEADER_PATH   "${ROOT_PATH}/include")
 set(SOURCE_PATH   "${ROOT_PATH}/source")
 set(TOOLS_PATH    "${ROOT_PATH}/tools")
 set(EXTERNAL_PATH "${ROOT_PATH}/external")

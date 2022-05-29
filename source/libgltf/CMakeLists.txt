@@ -1,7 +1,7 @@
 project(libgltf)
 
-set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
-configure_file(${PROJECT_NAME}-config.cmake.cmakein ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake @ONLY)
+#set(LIBGLTF_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+#configure_file(${PROJECT_NAME}-config.cmake.cmakein ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake @ONLY)
 configure_file(${PROJECT_NAME}.h.cmakein ${CMAKE_BINARY_DIR}/include/libgltf/libgltf.h @ONLY)
 
 set(CODE_FILE_LIST)
@@ -50,9 +50,10 @@ endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        ${CMAKE_BINARY_DIR}/include
+        #${CMAKE_BINARY_DIR}/include
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
-        ${HEADER_PATH}
         ${PROJECT_SOURCE_DIR}
     )
 
@@ -120,11 +121,17 @@ install(
     RUNTIME DESTINATION bin
     )
 
-install(DIRECTORY ${CMAKE_BINARY_DIR}/include
+install(
+    DIRECTORY   ${CMAKE_BINARY_DIR}/include
     DESTINATION "."
     )
-install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    DESTINATION "share/${PROJECT_NAME}"
+#install(
+#    FILES       ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+#    DESTINATION "cmake/${PROJECT_NAME}"
+#    )
+install(
+    EXPORT  ${PROJECT_NAME}-targets
+    DESTINATION "cmake/${PROJECT_NAME}"
     )
 
 install(FILES ${ROOT_PATH}/LICENSE.md
