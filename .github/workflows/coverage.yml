@@ -29,7 +29,7 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_COVERAGE=TRUE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
+        cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLIBGLTF_BUILD_COVERAGE=TRUE -DLIBGLTF_BUILD_RUNTEST=TRUE -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
         cmake --build build --target runtest --config Debug
     - name: 'run valgrind and gcovr'
       run: |
