@@ -107,7 +107,7 @@ jobs:
         cmake --build build --target libgltf --config Release
     - name: 'ready artifact'
       run: |
-        cmake --install build/source/ --prefix output/macro/
+        cmake --install build/source/ --prefix output/macos/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/macos/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/draco/ output/macos/include/draco/
         cp build/external/draco/libdraco.a output/macos/lib/
