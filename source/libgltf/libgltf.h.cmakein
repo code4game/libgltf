@@ -41,6 +41,12 @@
 #cmakedefine LIBGLTF_WITH_MSVC_MT
 #cmakedefine LIBGLTF_WITH_GOOGLE_DRACO
 
+#if defined(LIBGLTF_BUILD_SHARED)
+#    define LIBGLTF_API __declspec(dllexport)
+#else
+#    define LIBGLTF_API
+#endif
+
 namespace libgltf
 {
 
@@ -1509,7 +1515,7 @@ namespace libgltf
     };
 
     /// gltf loader
-    class IglTFLoader
+    class LIBGLTF_API IglTFLoader
     {
     public:
         static std::shared_ptr<IglTFLoader> Create(std::function<std::shared_ptr<std::istream>(const std::string&)> _loader);
