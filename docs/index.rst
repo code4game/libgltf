@@ -76,7 +76,7 @@ Code example:
 
 .. code-block:: cpp
 
-   std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(/*your gltf file*/);
+   std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(/*a function to load the file by std::istream*/);
    gltf_loader->Execute();
    std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
    if (!loaded_gltf)
@@ -101,7 +101,22 @@ You can load the glTF file by the function - :code:`libgltf::IglTFLoader::Create
 
 .. code-block:: cpp
 
-   std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create("Monster.gltf");
+   std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(
+     [](const std::string& _path)
+     {
+         std::filesystem::path file_path;
+         if (_path.empty())
+             file_path = std::filesystem::path("Monster.gltf");
+         else
+             file_path = std::filesystem::path("Monster.gltf").parent_path().append(_path);
+
+         std::shared_ptr<std::istream> stream_ptr = nullptr;
+         if (!std::filesystem::exists(file_path))
+             return stream_ptr;
+
+          stream_ptr = std::make_shared<std::ifstream>(file_path.string(), std::ios::in | std::ios::binary);
+          return stream_ptr;
+      });
    std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
    if (!loaded_gltf)
    {
