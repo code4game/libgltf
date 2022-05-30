@@ -1,5 +1,3 @@
-'''variable'''
-
 from .c11typebool import C11TypeBool
 from .c11typeinteger import C11TypeInteger
 from .c11typenumber import C11TypeNumber
@@ -9,9 +7,11 @@ from .c11typemap import C11TypeMap
 from .c11typenone import C11TypeNone
 
 class C11Variable(object):
-    '''variable'''
+
+    """variable."""
 
     def __init__(self, name, schemaValue):
+        """Construct and declare some vars."""
         self.schemaValue = schemaValue
         self.typeName = ""
         self.c11Type = C11TypeNone()
@@ -95,10 +95,10 @@ class C11Variable(object):
         codeLines = []
         codeCheckLine = self.c11Type.codeJsonCheck()
         if isSet:
-            if codeCheckLine == None or len(codeCheckLine) <= 0:
-                codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")))' % self.name)
+            if codeCheckLine is None or len(codeCheckLine) <= 0:
+                codeLines.append(u'if (_JsonValue.HasMember("%s"))' % self.name)
             else:
-                codeLines.append(u'if (_JsonValue.HasMember(GLTFTEXT("%s")) && _JsonValue[GLTFTEXT("%s")].%s)' % (self.name, self.name, codeCheckLine))
+                codeLines.append(u'if (_JsonValue.HasMember("%s") && _JsonValue["%s"].%s)' % (self.name, self.name, codeCheckLine))
         else:
             if self.typeName == u'array' or self.typeName == u'map':
                 codeLines.append(u'if (!_rData.data.%s.empty())' % self.name)
@@ -110,11 +110,11 @@ class C11Variable(object):
             if codeSetLine != None and len(codeSetLine) > 0:
                 codeLines.append(u'    %s' % (codeSetLine))
         else:
-            codeLines.append(u'    GLTFCharValue json_value;')
+            codeLines.append(u'    JSONCharValue json_value;')
             if self.typeName == u'struct':
                 codeLines.append(u'    if (!(%s(*_rData.data.%s, _rData.doc) >> json_value)) return false;' % (self.c11Type.codeTypeName(withDocument=True), self.name))
             else:
                 codeLines.append(u'    if (!(TDataDoc<%s>(_rData.data.%s, _rData.doc) >> json_value)) return false;' % (self.c11Type.codeTypeName(asVariable=True), self.name))
-            codeLines.append(u'    _JsonValue.AddMember(GLTFTEXT("%s"), json_value, _rData.doc->GetAllocator());' % self.name)
+            codeLines.append(u'    _JsonValue.AddMember("%s", json_value, _rData.doc->GetAllocator());' % self.name)
         codeLines.append(u'}')
         return codeLines

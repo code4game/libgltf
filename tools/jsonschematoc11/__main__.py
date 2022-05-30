@@ -1,3 +1,5 @@
+"""Build C11 code lines."""
+
 import sys
 from jsonschematoc11 import JSONSchemaToC11
 

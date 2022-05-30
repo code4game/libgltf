@@ -28,8 +28,14 @@ Features
 * Supports some extensions
    * `KHR_draco_mesh_compression` - `Google's Draco`_
    * `KHR_lights_punctual`
-   * `KHR_materials_pbrSpecularGlossiness`
    * `KHR_materials_clearcoat`
+   * `KHR_materials_ior`
+   * `KHR_materials_sheen`
+   * `KHR_materials_specular`
+   * `KHR_materials_transmission`
+   * `KHR_materials_unlit`
+   * `KHR_materials_variants`
+   * `KHR_materials_volume`
    * and more
 * Platforms
    * Windows
@@ -111,25 +117,25 @@ And get the mesh data, like this:
 .. code-block:: cpp
 
    // get all indices of the triangle
-   libgltf::TDimensionVector<1, size_t> triangle_data;
-   std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<1, size_t> > >(triangle_data);
-   gltf_loader->GetOrLoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
+   libgltf::TVertexList<1, size_t> triangle_data;
+   std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > > triangle_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<1, size_t> > >(triangle_data);
+   gltf_loader->LoadMeshPrimitiveIndicesData(0, 0, triangle_stream);
 
    // get all points of the triangle
-   libgltf::TDimensionVector<3, float> position_data;
-   std::shared_ptr<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TDimensionVector<3, float> > >(position_data);
-   gltf_loader->GetOrLoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
+   libgltf::TVertexList<3, float> position_data;
+   std::shared_ptr<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > > position_stream = std::make_shared<libgltf::TAccessorStream<libgltf::TVertexList<3, float> > >(position_data);
+   gltf_loader->LoadMeshPrimitiveAttributeData(0, 0, L"position", position_stream);
 
 Load the image data
 -------------------
 
-You can get the image (data and type) by `libgltf::IglTFLoader::GetOrLoadImageData`, like this:
+You can get the image (data and type) by `libgltf::IglTFLoader::LoadImageData`, like this:
 
 .. code-block:: cpp
 
    std::vector<uint8_t> image0_data;
    libgltf::string_t image0_data_type;
-   gltf_loader->GetOrLoadImageData(0, image0_data, image0_data_type);
+   gltf_loader->LoadImageData(0, image0_data, image0_data_type);
 
 Advance
 ^^^^^^^^^^
@@ -140,8 +146,7 @@ Regenerate new code by the glTF schema
 Generate the c++11 code:
 
    * You can update the c++11 source code by :code:`jsonschematoc11`.
-   * You need update the submodule :code:`external/glTF`
-   * It runs in **Python2**
+   * You need update and pull the submodule :code:`external/glTF`
 
 #. Run :code:`update_parser_by_scheme.bat`
 
@@ -150,22 +155,15 @@ Generate the c++11 code:
 
 #. Build your version by CMake_.
 
-Character encoding
-------------------
-
-* You can set :code:`LIBGLTF_CHARACTOR_ENCODING` in CMake_ to set the encoding.
-* Supports :code:`UTF8`, :code:`UTF16`, :code:`UTF32` or :code:`UNICODE`.
-* The default encoding is :code:`UTF8`.
-
 Supports Google's draco
 -----------------------
 
 You can update Google's draco submodule in external/draco or pull the draco repo by yourself.
 
-Check the :code:`LIBGLTF_USE_GOOGLE_DRACO` or set :code:`LIBGLTF_USE_GOOGLE_DRACO` is `TRUE`.
+Check the :code:`LIBGLTF_WITH_GOOGLE_DRACO` or set :code:`LIBGLTF_WITH_GOOGLE_DRACO` is `TRUE`.
 
-* Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_DEBUG`, :code:`GOOGLE_DRACO_LIBRARY_DRACODEC_RELEASE`, :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_DEBUG` and :code:`GOOGLE_DRACO_LIBRARY_DRACOENC_RELEASE`.
-* Or enable the :code:`LIBGLTF_USE_GOOGLE_DRACO_SUBMODULE` to compile with the submodule - *external/draco*.
+* Set the :code:`GOOGLE_DRACO_PATH_INCLUDE`, :code:`GOOGLE_DRACO_PATH_BUILD`, :code:`GOOGLE_DRACO_LIBRARY_DRACO_DEBUG`.
+* And compile with the submodule - *external/draco*.
 
 Download libraries
 ------------------

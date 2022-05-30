@@ -1,18 +1,18 @@
 /*
  * This software is released under the MIT license.
- *
- * Copyright (c) 2017-2021 Code 4 Game, Org. All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
+ * 
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#include "libgltfpch.h"
 #include "libgltf/libgltf.h"
 
 namespace libgltf
 {
     SObject::SObject()
-        : schemaType(GLTFTEXT(""))
+        : schemaType("")
     {
         //
     }
@@ -49,7 +47,7 @@ namespace libgltf
 
     SGlTFChildofRootProperty::SGlTFChildofRootProperty()
         : SGlTFProperty()
-        , name(GLTFTEXT(""))
+        , name("")
     {
         //
     }
@@ -67,7 +65,7 @@ namespace libgltf
         , componentType(0)
         , normalized(false)
         , count(0)
-        , type(GLTFTEXT(""))
+        , type("")
         , max()
         , min()
         , sparse(nullptr)
@@ -142,7 +140,7 @@ namespace libgltf
     SAnimationChannelTarget::SAnimationChannelTarget()
         : SGlTFProperty()
         , node(nullptr)
-        , path(GLTFTEXT(""))
+        , path("")
     {
         //
     }
@@ -156,7 +154,7 @@ namespace libgltf
     SAnimationSampler::SAnimationSampler()
         : SGlTFProperty()
         , input(nullptr)
-        , interpolation(GLTFTEXT("LINEAR"))
+        , interpolation("LINEAR")
         , output(nullptr)
     {
         //
@@ -184,10 +182,10 @@ namespace libgltf
 
     SAsset::SAsset()
         : SGlTFProperty()
-        , copyright(GLTFTEXT(""))
-        , generator(GLTFTEXT(""))
-        , version(GLTFTEXT(""))
-        , minVersion(GLTFTEXT(""))
+        , copyright("")
+        , generator("")
+        , version("")
+        , minVersion("")
     {
         //
     }
@@ -200,7 +198,7 @@ namespace libgltf
 
     SBuffer::SBuffer()
         : SGlTFChildofRootProperty()
-        , uri(GLTFTEXT(""))
+        , uri("")
         , byteLength(0)
     {
         //
@@ -265,7 +263,7 @@ namespace libgltf
         : SGlTFChildofRootProperty()
         , orthographic(nullptr)
         , perspective(nullptr)
-        , type(GLTFTEXT(""))
+        , type("")
     {
         //
     }
@@ -351,8 +349,8 @@ namespace libgltf
 
     SImage::SImage()
         : SGlTFChildofRootProperty()
-        , uri(GLTFTEXT(""))
-        , mimeType(GLTFTEXT(""))
+        , uri("")
+        , mimeType("")
         , bufferView(nullptr)
     {
         //
@@ -428,7 +426,7 @@ namespace libgltf
         , occlusionTexture(nullptr)
         , emissiveTexture(nullptr)
         , emissiveFactor({ 0.000000f, 0.000000f, 0.000000f })
-        , alphaMode(GLTFTEXT("OPAQUE"))
+        , alphaMode("OPAQUE")
         , alphaCutoff(0.500000f)
         , doubleSided(false)
     {
@@ -583,7 +581,7 @@ namespace libgltf
         , color({ 1.000000f, 1.000000f, 1.000000f })
         , intensity(1.000000f)
         , spot(nullptr)
-        , type(GLTFTEXT(""))
+        , type("")
         , range(0.0f)
     {
         //
@@ -639,18 +637,60 @@ namespace libgltf
         return true;
     }
 
-    SKHR_materials_pbrSpecularGlossinessglTFextension::SKHR_materials_pbrSpecularGlossinessglTFextension()
+    SKHR_materials_iorglTFextension::SKHR_materials_iorglTFextension()
         : SGlTFProperty()
-        , diffuseFactor({ 1.000000f, 1.000000f, 1.000000f, 1.000000f })
-        , diffuseTexture(nullptr)
-        , specularFactor({ 1.000000f, 1.000000f, 1.000000f })
-        , glossinessFactor(1.000000f)
-        , specularGlossinessTexture(nullptr)
+        , ior(1.500000f)
     {
         //
     }
 
-    SKHR_materials_pbrSpecularGlossinessglTFextension::operator bool() const
+    SKHR_materials_iorglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_sheenglTFextension::SKHR_materials_sheenglTFextension()
+        : SGlTFProperty()
+        , sheenColorFactor({ 0.000000f, 0.000000f, 0.000000f })
+        , sheenColorTexture(nullptr)
+        , sheenRoughnessFactor(0.000000f)
+        , sheenRoughnessTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_sheenglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_specularglTFextension::SKHR_materials_specularglTFextension()
+        : SGlTFProperty()
+        , specularFactor(1.000000f)
+        , specularTexture(nullptr)
+        , specularColorFactor({ 1.000000f, 1.000000f, 1.000000f })
+        , specularColorTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_specularglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_transmissionglTFextension::SKHR_materials_transmissionglTFextension()
+        : SGlTFProperty()
+        , transmissionFactor(0.000000f)
+        , transmissionTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_transmissionglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -668,117 +708,43 @@ namespace libgltf
         return true;
     }
 
-    SKHR_techniques_webglglTFextension::SKHR_techniques_webglglTFextension()
+    SKHR_materials_variantsglTFextension::SKHR_materials_variantsglTFextension()
         : SGlTFProperty()
-        , programs()
-        , shaders()
-        , techniques()
+        , variants()
     {
         //
     }
 
-    SKHR_techniques_webglglTFextension::operator bool() const
+    SKHR_materials_variantsglTFextension::operator bool() const
     {
         //TODO:
         return true;
     }
 
-    SKHR_techniques_webglmaterialextension::SKHR_techniques_webglmaterialextension()
+    SKHR_materials_variantsmeshprimitiveextension::SKHR_materials_variantsmeshprimitiveextension()
         : SGlTFProperty()
-        , technique(nullptr)
-        , values()
+        , mappings()
     {
         //
     }
 
-    SKHR_techniques_webglmaterialextension::operator bool() const
+    SKHR_materials_variantsmeshprimitiveextension::operator bool() const
     {
         //TODO:
         return true;
     }
 
-    SProgram::SProgram()
-        : SGlTFChildofRootProperty()
-        , fragmentShader(nullptr)
-        , vertexShader(nullptr)
-        , glExtensions()
-    {
-        //
-    }
-
-    SProgram::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SShader::SShader()
-        : SGlTFChildofRootProperty()
-        , uri(GLTFTEXT(""))
-        , type(0)
-        , bufferView(nullptr)
-    {
-        //
-    }
-
-    SShader::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SAttribute::SAttribute()
+    SKHR_materials_volumeglTFextension::SKHR_materials_volumeglTFextension()
         : SGlTFProperty()
-        , semantic(GLTFTEXT(""))
+        , thicknessFactor(0.000000f)
+        , thicknessTexture(nullptr)
+        , attenuationDistance(0.0f)
+        , attenuationColor({ 1.000000f, 1.000000f, 1.000000f })
     {
         //
     }
 
-    SAttribute::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    STechnique::STechnique()
-        : SGlTFChildofRootProperty()
-        , program(nullptr)
-        , attributes()
-        , uniforms()
-    {
-        //
-    }
-
-    STechnique::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SUniform::SUniform()
-        : SGlTFProperty()
-        , count(0)
-        , node(nullptr)
-        , type(0)
-        , semantic(GLTFTEXT(""))
-        , value(nullptr)
-    {
-        //
-    }
-
-    SUniform::operator bool() const
-    {
-        //TODO:
-        return true;
-    }
-
-    SUniformValue::SUniformValue()
-        : SObject()
-    {
-        //
-    }
-
-    SUniformValue::operator bool() const
+    SKHR_materials_volumeglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -817,7 +783,7 @@ namespace libgltf
 
     SArticulation::SArticulation()
         : SGlTFProperty()
-        , name(GLTFTEXT(""))
+        , name("")
         , stages()
         , pointingVector()
     {
@@ -832,8 +798,8 @@ namespace libgltf
 
     SArticulationStage::SArticulationStage()
         : SGlTFProperty()
-        , name(GLTFTEXT(""))
-        , type(GLTFTEXT(""))
+        , name("")
+        , type("")
         , minimumValue(0.0f)
         , maximumValue(0.0f)
         , initialValue(0.0f)
@@ -863,7 +829,7 @@ namespace libgltf
     SAGI_articulationsglTFNodeextension::SAGI_articulationsglTFNodeextension()
         : SGlTFProperty()
         , isAttachPoint(false)
-        , articulationName(GLTFTEXT(""))
+        , articulationName("")
     {
         //
     }
@@ -889,7 +855,7 @@ namespace libgltf
 
     SAGI_stk_metadataglTFNodeextension::SAGI_stk_metadataglTFNodeextension()
         : SGlTFProperty()
-        , solarPanelGroupName(GLTFTEXT(""))
+        , solarPanelGroupName("")
         , noObscuration(false)
     {
         //
@@ -903,7 +869,7 @@ namespace libgltf
 
     SSolarPanelGroup::SSolarPanelGroup()
         : SGlTFProperty()
-        , name(GLTFTEXT(""))
+        , name("")
         , efficiency(0.0f)
     {
         //

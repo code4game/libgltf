@@ -1,17 +1,16 @@
-'''map type'''
-
 from .c11type import C11Type
 
 class C11TypeMap(C11Type):
-    '''map type'''
+
+    """map type."""
 
     def __init__(self):
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'std::map'
         self.c11Type = None
 
-    @classmethod
-    def buildC11Type(cls, schemaValue):
+    def buildC11Type(self, schemaValue):
         c11Type = None
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
@@ -30,7 +29,7 @@ class C11TypeMap(C11Type):
             elif schemaValueType == u'array':
                 from .c11typearray import C11TypeArray
                 c11Type = C11TypeArray()
-        if c11Type == None:
+        if c11Type is None:
             from .c11typestruct import C11TypeStruct
             c11Type = C11TypeStruct()
         return (c11Type, 0, None)
@@ -61,17 +60,14 @@ class C11TypeMap(C11Type):
 
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         #if withDocument:
-        #    return u'TDataDoc<%s<string_t, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
-        return u'%s<string_t, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
+        #    return u'TDataDoc<%s<std::string, %s>>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=True))
+        return u'%s<std::string, %s>' % (self.typeName, self.c11Type.codeTypeName(withDeclare=withDeclare, asVariable=asVariable, withDocument=withDocument))
 
-    @classmethod
-    def codeJsonCheck(cls):
+    def codeJsonCheck(self):
         return u'IsObject()'
 
-    @classmethod
-    def codeJsonSet(cls, dataName, variableName):
-        return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+    def codeJsonSet(self, dataName, variableName):
+        return u'if (!(%s.%s << _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)
 
-    @classmethod
-    def codeJsonGet(cls, dataName, variableName):
-        return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+    def codeJsonGet(self, dataName, variableName):
+        return u'if (!(%s.%s >> _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)

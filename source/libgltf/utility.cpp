@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "utility.h"
+#include "libgltfparser.h"
 
 #include "common.h"
 
@@ -31,27 +31,27 @@
 
 namespace libgltf
 {
-    int8_t CharacterIsAlphabet(string_t::value_type v)
+    int8_t CharacterIsAlphabet(std::string::value_type v)
     {
-        if (v >= GLTFTEXT('a') && v <= GLTFTEXT('z')) return -1;
-        if (v >= GLTFTEXT('A') && v <= GLTFTEXT('Z')) return 1;
+        if (v >= 'a' && v <= 'z') return -1;
+        if (v >= 'A' && v <= 'Z') return 1;
         return 0;
     }
 
-    string_t::value_type CharacterToLower(string_t::value_type v)
+    std::string::value_type CharacterToLower(std::string::value_type v)
     {
         int8_t is_alphabet = CharacterIsAlphabet(v);
         if (is_alphabet == 0 || is_alphabet == -1) return v;
-        return v + GLTFTEXT('a') - GLTFTEXT('A');
+        return v + 'a' - 'A';
     }
 
-    bool CharacterEqual(string_t::value_type v0, string_t::value_type v1, bool case_sensitive = true)
+    bool CharacterEqual(std::string::value_type v0, std::string::value_type v1, bool case_sensitive = true)
     {
         if (case_sensitive) return (v0 == v1);
         return (CharacterToLower(v0) == CharacterToLower(v1));
     }
 
-    bool StringEqual(const string_t& value0, const string_t& value1, bool case_sensitive /*= true*/)
+    bool StringEqual(const std::string& value0, const std::string& value1, bool case_sensitive /*= true*/)
     {
         if (value0.size() != value1.size()) return false;
         if (case_sensitive) return (value0.compare(value1) == 0);
@@ -63,7 +63,7 @@ namespace libgltf
         return true;
     }
 
-    bool StringStartWith(const string_t& value_target, const string_t& value_start, bool case_sensitive /*= true*/)
+    bool StringStartWith(const std::string& value_target, const std::string& value_start, bool case_sensitive /*= true*/)
     {
         if (value_target.size() < value_start.size()) return false;
         return StringEqual(value_target.substr(0, value_start.size()), value_start, case_sensitive);
@@ -74,12 +74,12 @@ namespace libgltf
         /// reference: https://github.com/ReneNyffenegger/cpp-base64
         static const std::string Base64Chars = u8"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-        static inline bool IsIt(GLTFChar v)
+        static inline bool IsIt(char v)
         {
-            return (isalnum(v) || (v == GLTFTEXT('+')) || (v == GLTFTEXT('/')));
+            return (isalnum(v) || (v == '+') || (v == '/'));
         }
 
-        bool Encode(const std::vector<uint8_t>& data, string_t& value)
+        bool Encode(const std::vector<uint8_t>& data, std::string& value)
         {
             value.clear();
             if (data.empty()) return true;
@@ -131,42 +131,24 @@ namespace libgltf
                 }
             }
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-            value = UTF8ToUTF16(result);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-            value = UTF8ToUTF32(result);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-            value = UTF8ToUNICODE(result);
-#else
             value = result;
-#endif
             return true;
         }
 
-        bool Decode(const string_t& value, std::vector<uint8_t>& data)
+        bool Decode(const std::string& value, std::vector<uint8_t>& data)
         {
             data.clear();
             if (value.empty()) return true;
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-            const std::string value_temp = UTF16ToUTF8(value);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-            const std::string value_temp = UTF32ToUTF8(value);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-            const std::string value_temp = UNICODEToUTF8(value);
-#else
-            const std::string& value_temp = value;
-#endif
-
-            size_t in_len = value_temp.size();
+            size_t in_len = value.size();
             size_t i = 0;
             size_t in_ = 0;
             uint8_t char_array_4[4], char_array_3[3];
 
-            while (in_len-- && (value_temp[in_] != '='))
+            while (in_len-- && (value[in_] != '='))
             {
-                if (!IsIt(value_temp[in_])) return false;
-                char_array_4[i++] = value_temp[in_]; in_++;
+                if (!IsIt(value[in_])) return false;
+                char_array_4[i++] = value[in_]; in_++;
                 if (i == 4)
                 {
                     for (i = 0; i < 4; i++)
@@ -204,65 +186,47 @@ namespace libgltf
             return true;
         }
 
-        string_t Encode(const string_t& value)
+        std::string Encode(const std::string& value)
         {
             if (value.empty()) return value;
 
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-            const std::string value_temp = UTF16ToUTF8(value);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-            const std::string value_temp = UTF32ToUTF8(value);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-            const std::string value_temp = UNICODEToUTF8(value);
-#else
-            const std::string& value_temp = value;
-#endif
             std::vector<uint8_t> data;
-            data.resize(value_temp.length());
-            ::memcpy((void*)data.data(), (void*)value_temp.data(), sizeof(uint8_t) * data.size());
-            string_t result;
+            data.resize(value.length());
+            ::memcpy((void*)data.data(), (void*)value.data(), sizeof(uint8_t) * data.size());
+            std::string result;
             Encode(data, result);
             return result;
         }
 
-        string_t Decode(const string_t& value)
+        std::string Decode(const std::string& value)
         {
             if (value.empty()) return value;
 
             std::vector<uint8_t> data;
-            if (!Decode(value, data) || data.empty()) return string_t();
+            if (!Decode(value, data) || data.empty()) return std::string();
 
             std::string result;
             result.resize(data.size());
             ::memcpy((void*)result.data(), (void*)data.data(), sizeof(uint8_t) * data.size());
-
-#if defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF16)
-            return UTF8ToUTF16(result);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UTF32)
-            return UTF8ToUTF32(result);
-#elif defined(LIBGLTF_CHARACTOR_ENCODING_IS_UNICODE)
-            return UTF8ToUNICODE(result);
-#else
             return result;
-#endif
         }
     }
 
-    bool UriParse(const string_t& value, string_t& data_type, string_t& data_encode, size_t& data_start)
+    bool UriParse(const std::string& value, std::string& data_type, std::string& data_encode, size_t& data_start)
     {
-        static const string_t data = GLTFTEXT("data:");
+        static const std::string data = "data:";
         if (!StringStartWith(value, data)) return false;
         static const size_t data_index = data.length();
 
-        size_t slash_index = value.find_first_of(GLTFTEXT("/"), data_index);
+        size_t slash_index = value.find_first_of("/", data_index);
         if (slash_index >= value.length()) return false;
         ++slash_index;
 
-        size_t semicolon_index = value.find_first_of(GLTFTEXT(";"), slash_index);
+        size_t semicolon_index = value.find_first_of(";", slash_index);
         if (semicolon_index >= value.length()) return false;
         ++semicolon_index;
 
-        size_t comma_index = value.find_first_of(GLTFTEXT(","), semicolon_index);
+        size_t comma_index = value.find_first_of(",", semicolon_index);
         if (comma_index >= value.length()) return false;
         ++comma_index;
 

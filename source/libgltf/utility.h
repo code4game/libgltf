@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,20 +28,20 @@
 
 namespace libgltf
 {
-    bool StringEqual(const string_t& value0, const string_t& value1, bool case_sensitive = true);
-    bool StringStartWith(const string_t& value_target, const string_t& value_start, bool case_sensitive = true);
+    bool StringEqual(const std::string& value0, const std::string& value1, bool case_sensitive = true);
+    bool StringStartWith(const std::string& value_target, const std::string& value_start, bool case_sensitive = true);
 
     template<class TType>
-    bool StringMapFind(const std::map<string_t, TType>& value_source, const string_t& value_target, TType& value_founded, bool case_sensitive = true)
+    bool StringMapFind(const std::map<std::string, TType>& value_source, const std::string& value_target, TType& value_founded, bool case_sensitive = true)
     {
         if (case_sensitive)
         {
-            typename std::map<string_t, TType>::const_iterator iterator_founded = value_source.find(value_target);
+            typename std::map<std::string, TType>::const_iterator iterator_founded = value_source.find(value_target);
             if (iterator_founded == value_source.cend()) return false;
             value_founded = iterator_founded->second;
             return true;
         }
-        for (const std::pair<string_t, TType>& item : value_source)
+        for (const std::pair<std::string, TType>& item : value_source)
         {
             if (!StringEqual(item.first, value_target, case_sensitive)) continue;
             value_founded = item.second;
@@ -52,11 +52,11 @@ namespace libgltf
 
     namespace base64
     {
-        bool Encode(const std::vector<uint8_t>& data, string_t& value);
-        bool Decode(const string_t& value, std::vector<uint8_t>& data);
-        string_t Encode(const string_t& value);
-        string_t Decode(const string_t& value);
+        bool Encode(const std::vector<uint8_t>& data, std::string& value);
+        bool Decode(const std::string& value, std::vector<uint8_t>& data);
+        std::string Encode(const std::string& value);
+        std::string Decode(const std::string& value);
     }
 
-    bool UriParse(const string_t& value, string_t& data_type, string_t& data_encode, size_t& data_start);
+    bool UriParse(const std::string& value, std::string& data_type, std::string& data_encode, size_t& data_start);
 }

@@ -1,10 +1,10 @@
-from .c11typenone import C11TypeNone
+"""Build C11 types."""
+
 from .c11typebool import C11TypeBool
 from .c11typeinteger import C11TypeInteger
 from .c11typenumber import C11TypeNumber
 from .c11typestring import C11TypeString
 from .c11typearray import C11TypeArray
-from .c11typemap import C11TypeMap
 from .c11typestruct import C11TypeStruct
 
 def BuildC11Type(schemaName, schemaValue, isSchema=False, manualCodeHeaders=None, manualCodeSourcesVariable=None, manualCodeSourcesFunction=None, manualCodeParsersFrom=None, manualCodeParsersTo=None):

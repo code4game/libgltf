@@ -1,9 +1,11 @@
-'''basic type'''
+import abc
 
 class C11Type(object):
-    '''basic type'''
+
+    """basic type."""
 
     def __init__(self):
+        """Construct and declare some vars."""
         self.schemaName = None
         self.schemaValue = None
         self.typeName = None
@@ -26,43 +28,46 @@ class C11Type(object):
         if u'description' in schemaValue:
             self.description = schemaValue[u'description']
 
-    @classmethod
-    def revise(cls, c11Types):
+    @abc.abstractmethod
+    def revise(self, c11Types):
         return (0, u'')
 
+    @abc.abstractmethod
     def codeTypeName(self, withDeclare=False, asVariable=False, withDocument=False):
         return self.typeName
 
+    @abc.abstractmethod
     def codeDefineVariable(self, variableName, withDeclare=False, withDefault=False):
         pass
 
+    @abc.abstractmethod
     def codeSetDefaultInConstructor(self):
         pass
 
-    @classmethod
-    def codeHeader(cls, codeTypeNames):
+    @abc.abstractmethod
+    def codeHeader(self, codeTypeNames):
         return [u'']
 
-    @classmethod
-    def codeSource(cls, codeTypeNames):
+    @abc.abstractmethod
+    def codeSource(self, codeTypeNames):
         return [u'']
 
-    @classmethod
-    def codeDefaultValue(cls, schemaDefaultValue):
+    @abc.abstractmethod
+    def codeDefaultValue(self, schemaDefaultValue):
         return u''
 
-    @classmethod
-    def codeDefaultValueArray(cls, schemaDefaultValue):
+    @abc.abstractmethod
+    def codeDefaultValueArray(self, schemaDefaultValue):
         return u''
 
-    @classmethod
-    def codeJsonCheck(cls):
+    @abc.abstractmethod
+    def codeJsonCheck(self):
         return None
 
-    @classmethod
-    def codeJsonSet(cls, dataName, variableName):
+    @abc.abstractmethod
+    def codeJsonSet(self, dataName, variableName):
         return None
 
-    @classmethod
-    def codeJsonGet(cls, dataName, variableName):
+    @abc.abstractmethod
+    def codeJsonGet(self, dataName, variableName):
         return None

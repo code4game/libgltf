@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Alex Chi, The Code 4 Game Organization
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,14 +22,13 @@
  * SOFTWARE.
  */
 
-#include "libgltfpch.h"
 #include "gltf_loader.h"
 
+#include "common.h"
 #include "utility.h"
-#include "file_loader.h"
 
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
-#include "extensions/google_draco.h"
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+#    include "extensions/google_draco.h"
 #endif
 
 namespace libgltf
@@ -37,50 +36,53 @@ namespace libgltf
     class CBufferViewBufferStream : public IBufferStream
     {
     public:
-        explicit CBufferViewBufferStream(const std::shared_ptr<SBufferView>& buffer_view, const std::shared_ptr<IBufferViewStream>& buffer_view_stream)
-            : m_pBufferView(buffer_view)
-            , m_pBufferViewStream(buffer_view_stream)
+        explicit CBufferViewBufferStream(const std::shared_ptr<SBufferView>&       _buffer_view,
+                                         const std::shared_ptr<IBufferViewStream>& _buffer_view_stream)
+            : m_pBufferView(_buffer_view)
+            , m_pBufferViewStream(_buffer_view_stream)
         {
             //
         }
 
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) override
+        virtual bool operator<<(const SBufferData& _buffer_data) override
         {
-            if (buffer_data.buffer == nullptr || buffer_data.bufferSize == 0) return false;
-            if (!m_pBufferView || !m_pBufferViewStream) return false;
-            Verify(buffer_data.bufferSize >= static_cast<size_t>(m_pBufferView->byteOffset));
+            if (_buffer_data.buffer == nullptr || _buffer_data.bufferSize == 0)
+                return false;
+            if (!m_pBufferView || !m_pBufferViewStream)
+                return false;
+            Verify(_buffer_data.bufferSize >= static_cast<std::size_t>(m_pBufferView->byteOffset));
             SBufferData buffer_data_temp;
-            buffer_data_temp = buffer_data;
+            buffer_data_temp = _buffer_data;
             buffer_data_temp.buffer += m_pBufferView->byteOffset;
             buffer_data_temp.bufferSize -= m_pBufferView->byteOffset;
-            if (m_pBufferView->byteLength < static_cast<size_t>(buffer_data_temp.bufferSize))
+            if (m_pBufferView->byteLength < static_cast<std::size_t>(buffer_data_temp.bufferSize))
             {
                 buffer_data_temp.bufferSize = m_pBufferView->byteLength;
             }
-            buffer_data_temp.bufferStride = static_cast<size_t>(m_pBufferView->byteStride);
+            buffer_data_temp.bufferStride = static_cast<std::size_t>(m_pBufferView->byteStride);
             return (*m_pBufferViewStream << buffer_data_temp);
         }
 
     private:
         const std::shared_ptr<SBufferView>& m_pBufferView;
-        std::shared_ptr<IBufferViewStream> m_pBufferViewStream;
+        std::shared_ptr<IBufferViewStream>  m_pBufferViewStream;
     };
 
     class CBufferViewStream : public IBufferViewStream
     {
     public:
-        explicit CBufferViewStream(std::vector<uint8_t>& data)
-            : m_Data(data)
+        explicit CBufferViewStream(std::vector<uint8_t>& _data)
+            : m_Data(_data)
         {
             //
         }
 
     public:
-        virtual bool operator<<(const SBufferData& buffer_data)
+        virtual bool operator<<(const SBufferData& _buffer_data)
         {
-            m_Data.resize(buffer_data.bufferSize);
-            ::memcpy(&m_Data[0], buffer_data.buffer, m_Data.size());
+            m_Data.resize(_buffer_data.bufferSize);
+            ::memcpy(&m_Data[0], _buffer_data.buffer, m_Data.size());
             return true;
         }
 
@@ -91,26 +93,28 @@ namespace libgltf
     class CAccessorBufferViewStream : public IBufferViewStream
     {
     public:
-        explicit CAccessorBufferViewStream(const std::shared_ptr<SAccessor>& accessor, const std::shared_ptr<IAccessorStream>& accessor_stream)
-            : m_pAccessor(accessor)
-            , m_pAccessorStream(accessor_stream)
+        explicit CAccessorBufferViewStream(const std::shared_ptr<SAccessor>& _accessor, const std::shared_ptr<IAccessorStream>& _accessor_stream)
+            : m_pAccessor(_accessor)
+            , m_pAccessorStream(_accessor_stream)
         {
             //
         }
 
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) override
+        virtual bool operator<<(const SBufferData& _buffer_data) override
         {
-            if (!m_pAccessor || !m_pAccessorStream) return false;
-            Verify(buffer_data.bufferSize >= static_cast<size_t>(m_pAccessor->byteOffset));
+            if (!m_pAccessor || !m_pAccessorStream)
+                return false;
+            Verify(_buffer_data.bufferSize >= static_cast<std::size_t>(m_pAccessor->byteOffset));
             SAccessorData accessor_data;
-            accessor_data.componentType = Int32ToAccessorComponentType(m_pAccessor->componentType);
-            accessor_data.count = static_cast<size_t>(m_pAccessor->count);
-            accessor_data.type = TextToAccessorType(m_pAccessor->type);
-            accessor_data.bufferStride = buffer_data.bufferStride;
-            const size_t sizeof_accessor = SizeOfAccessor(accessor_data.componentType, accessor_data.count, accessor_data.type);
-            if (sizeof_accessor > (buffer_data.bufferSize - m_pAccessor->byteOffset)) return false;
-            accessor_data.bufferData = buffer_data;
+            accessor_data.componentType       = Int32ToAccessorComponentType(m_pAccessor->componentType);
+            accessor_data.count               = static_cast<std::size_t>(m_pAccessor->count);
+            accessor_data.type                = TextToAccessorType(m_pAccessor->type);
+            accessor_data.bufferStride        = _buffer_data.bufferStride;
+            const std::size_t sizeof_accessor = SizeOfAccessor(accessor_data.componentType, accessor_data.count, accessor_data.type);
+            if (sizeof_accessor > (_buffer_data.bufferSize - m_pAccessor->byteOffset))
+                return false;
+            accessor_data.bufferData = _buffer_data;
             accessor_data.bufferData.buffer += m_pAccessor->byteOffset;
             accessor_data.bufferData.bufferSize -= m_pAccessor->byteOffset;
             return (*m_pAccessorStream << accessor_data);
@@ -118,42 +122,48 @@ namespace libgltf
 
     private:
         const std::shared_ptr<SAccessor>& m_pAccessor;
-        std::shared_ptr<IAccessorStream> m_pAccessorStream;
+        std::shared_ptr<IAccessorStream>  m_pAccessorStream;
     };
 
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
     class CDracoBufferViewStream : public IBufferViewStream
     {
     public:
-        explicit CDracoBufferViewStream(std::shared_ptr<CGoogleDraco>& google_draco, SKHR_draco_mesh_compressionextension* draco_extension, std::shared_ptr<IAccessorStream>& accessor_stream, bool use_attribute_id = false, size_t attribute_id = 0)
-            : m_pGoogleDraco(google_draco)
-            , m_pDracoExtension(draco_extension)
-            , m_pAccessorStream(accessor_stream)
-            , m_bUseAttributeID(use_attribute_id)
-            , m_AttributeID(attribute_id)
+        explicit CDracoBufferViewStream(std::unique_ptr<CGoogleDraco>&        _google_draco,
+                                        SKHR_draco_mesh_compressionextension* _draco_extension,
+                                        std::shared_ptr<IAccessorStream>&     _accessor_stream,
+                                        bool                                  _use_attribute_id = false,
+                                        std::size_t                           _attribute_id     = 0)
+            : m_pGoogleDraco(_google_draco)
+            , m_pDracoExtension(_draco_extension)
+            , m_pAccessorStream(_accessor_stream)
+            , m_bUseAttributeID(_use_attribute_id)
+            , m_AttributeID(_attribute_id)
         {
             //
         }
 
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) override
+        virtual bool operator<<(const SBufferData& _buffer_data) override
         {
-            if (!m_pGoogleDraco || !m_pDracoExtension || !m_pAccessorStream) return false;
-            size_t bufferview_index = static_cast<size_t>(int32_t(*m_pDracoExtension->bufferView));
+            if (!m_pGoogleDraco || !m_pDracoExtension || !m_pAccessorStream)
+                return false;
+
+            std::size_t                         bufferview_index    = static_cast<std::size_t>(int32_t(*m_pDracoExtension->bufferView));
             std::shared_ptr<IGoogleDracoStream> google_draco_stream = IGoogleDracoStream::Create(m_pAccessorStream, m_bUseAttributeID, m_AttributeID);
-            return m_pGoogleDraco->GetOrDecode(bufferview_index, buffer_data, google_draco_stream);
+            return m_pGoogleDraco->GetOrDecode(bufferview_index, _buffer_data, google_draco_stream);
         }
 
     private:
-        std::shared_ptr<CGoogleDraco> m_pGoogleDraco;
+        std::unique_ptr<CGoogleDraco>&        m_pGoogleDraco;
         SKHR_draco_mesh_compressionextension* m_pDracoExtension;
-        std::shared_ptr<IAccessorStream> m_pAccessorStream;
-        bool m_bUseAttributeID;
-        size_t m_AttributeID;
+        std::shared_ptr<IAccessorStream>      m_pAccessorStream;
+        bool                                  m_bUseAttributeID;
+        std::size_t                           m_AttributeID;
     };
 #endif
 
-    CGlTFLoader::SGLBHeader::SGLBHeader()
+    CglTFLoader::SGLBHeader::SGLBHeader()
         : magic(0)
         , version(0)
         , length(0)
@@ -161,272 +171,321 @@ namespace libgltf
         //
     }
 
-    CGlTFLoader::SGLBChunk::SGLBChunk()
+    CglTFLoader::SGLBChunk::SGLBChunk()
         : length(0)
         , type(0)
     {
         //
     }
 
-    CGlTFLoader::CGlTFLoader(const string_t& _sFilePath)
+    CglTFLoader::CglTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader)
         : m_glTF(nullptr)
-        , m_pFileLoader(std::make_shared<CFileLoader>(CPath(_sFilePath).Parent()))
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
-        , m_pGoogleDraco(std::make_shared<CGoogleDraco>())
+        , m_Reader(_reader)
+        , m_CacheDatas()
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+        , m_pGoogleDraco(std::make_unique<CGoogleDraco>())
 #endif
-        , m_CacheBufferDatas()
-        , m_CacheImageDatas()
     {
-        if (!m_pFileLoader->Load(_sFilePath)) return;
-        if (!m_pFileLoader->ReadByte(_sFilePath, 0, &m_GLBHeader, sizeof(m_GLBHeader))) return;
+        std::shared_ptr<std::istream> reader_ptr = m_Reader("");
+        if (!reader_ptr)
+            return;
 
-        /// is a glb file?
-        if (m_GLBHeader.magic == ms_GLBMagicEntry)
+        m_CacheDatas[""] = std::make_pair<std::vector<uint8_t>, std::string>(std::vector<uint8_t>(), "glb");
+
+        std::vector<uint8_t> data;
         {
+            reader_ptr->seekg(0, std::ios::end);
+            data.resize(reader_ptr->tellg());
+            reader_ptr->seekg(0, std::ios::beg);
+            if (!data.empty())
+                reader_ptr->read((std::istream::char_type*)&data[0], data.size());
+        }
+
+        /// check the format. gltf or glb?
+        const SGLBHeader* glb_header_ptr = nullptr;
+        if (data.size() > sizeof(SGLBHeader))
+        {
+            glb_header_ptr = (SGLBHeader*)&data[0];
+            if (glb_header_ptr->magic != ms_GLBMagicEntry)
+                glb_header_ptr = nullptr;
+        }
+
+        std::string txt_json;
+        if (glb_header_ptr)
+        {
+            /// collect all chunks
+            std::vector<const SGLBChunk*> glb_chunk_ptrs;
+
+            std::size_t offset = sizeof(SGLBHeader);
+            while (offset < data.size())
             {
-                /// collect all chunks
-                SGLBChunk glb_chunk;
-                size_t offset = sizeof(m_GLBHeader);
-                while (m_pFileLoader->ReadByte(_sFilePath, offset, &glb_chunk, sizeof(glb_chunk)))
-                {
-                    offset += sizeof(glb_chunk) + glb_chunk.length;
-                    m_vGLBChunks.push_back(glb_chunk);
-                }
+                const SGLBChunk* glb_chunk_ptr = (SGLBChunk*)&data[offset];
+                glb_chunk_ptrs.push_back(glb_chunk_ptr);
+
+                offset += glb_chunk_ptr->length + sizeof(SGLBChunk);
             }
+
+            /// find the json chunk
+            const SGLBChunk* glb_chunk_json_ptr = nullptr;
+            for (const SGLBChunk* glb_chunk_ptr : glb_chunk_ptrs)
             {
-                /// find a json chunk
-                SGLBChunk glb_chunk_json;
-                size_t offset = sizeof(m_GLBHeader);
-                for (const SGLBChunk& glb_chunk : m_vGLBChunks)
-                {
-                    offset += sizeof(glb_chunk);
-                    if (glb_chunk.type == ms_GLBChunkTypeJSON)
-                    {
-                        glb_chunk_json = glb_chunk;
-                        break;
-                    }
-                    offset += glb_chunk.length;
-                }
-                if (glb_chunk_json.type == ms_GLBChunkTypeJSON)
-                {
-                    m_glTF = std::make_shared<SGlTF>();
-                    if (!(m_glTF << m_pFileLoader->AsString(_sFilePath, offset, glb_chunk_json.length)))
-                    {
-                        m_glTF = nullptr;
-                    }
-                }
+                if (glb_chunk_ptr->type != ms_GLBChunkTypeJSON)
+                    continue;
+
+                txt_json.resize(glb_chunk_ptr->length);
+                if (!txt_json.empty())
+                    ::memcpy(&txt_json[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
+                break;
+            }
+
+            /// find the binary chunk
+            for (const SGLBChunk* glb_chunk_ptr : glb_chunk_ptrs)
+            {
+                if (glb_chunk_ptr->type != ms_GLBChunkTypeBIN)
+                    continue;
+
+                std::pair<std::vector<uint8_t>, std::string>& data = m_CacheDatas[""];
+                data.first.resize(glb_chunk_ptr->length);
+                if (!data.first.empty())
+                    ::memcpy(&data.first[0], (const uint8_t*)glb_chunk_ptr + sizeof(SGLBChunk), glb_chunk_ptr->length);
+                break;
             }
         }
         else
         {
-            m_glTF = std::make_shared<SGlTF>();
-            if (!(m_glTF << m_pFileLoader->AsString(_sFilePath)))
-            {
-                m_glTF = nullptr;
-            }
+            txt_json.resize(data.size());
+            if (!txt_json.empty())
+                ::memcpy(&txt_json[0], &data[0], data.size());
+        }
+
+        if (txt_json.empty())
+            return;
+
+        m_glTF = std::make_unique<SGlTF>();
+        if (!(*m_glTF << txt_json))
+            m_glTF = nullptr;
+        else
+        {
+            // TODO: check version?
         }
     }
 
-    bool CGlTFLoader::LoadByUri(const string_t& uri, std::vector<uint8_t>& data, string_t& data_type)
+    bool CglTFLoader::LoadByUri(const std::string& _uri, const uint8_t*& _data_ptr, std::size_t& _data_size, std::string& _data_type)
     {
-        if (m_GLBHeader.magic != ms_GLBMagicEntry && uri.empty()) return false;
-
-        if (uri.empty())
+        std::map<std::string, std::pair<std::vector<uint8_t>, std::string>>::const_iterator it_found = m_CacheDatas.find(_uri);
+        if (it_found != m_CacheDatas.end())
         {
-            /// load the data if the file is .glb
-            const std::vector<uint8_t>& default_file_data = (*m_pFileLoader)[GLTFTEXT("")];
-            if (default_file_data.empty()) return false;
-            SGLBChunk glb_chunk_bin;
-            size_t offset = sizeof(m_GLBHeader);
-            for (const SGLBChunk& glb_chunk : m_vGLBChunks)
-            {
-                offset += sizeof(glb_chunk);
-                if (glb_chunk.type == ms_GLBChunkTypeBIN)
-                {
-                    glb_chunk_bin = glb_chunk;
-                    break;
-                }
-                offset += glb_chunk.length;
-            }
-            if (glb_chunk_bin.type != ms_GLBChunkTypeBIN) return false;
-            data.resize(glb_chunk_bin.length);
-            ::memcpy(data.data(), default_file_data.data() + offset, glb_chunk_bin.length);
+            const std::pair<std::vector<uint8_t>, std::string>& cache_data = it_found->second;
+            _data_ptr                                                      = cache_data.first.data();
+            _data_size                                                     = cache_data.first.size();
+            _data_type                                                     = cache_data.second;
             return true;
         }
-        else
+
+        std::pair<std::vector<uint8_t>, std::string>& cache_data = m_CacheDatas[_uri];
+
+        bool is_loaded = false;
         {
             /// support embedded
-            string_t data_encode;
-            size_t data_index = 0;
-            if (UriParse(uri, data_type, data_encode, data_index))
+            std::string data_encode;
+            std::size_t data_index = 0;
+            if (UriParse(_uri, _data_type, data_encode, data_index))
             {
-                return (StringEqual(data_encode, GLTFTEXT("base64"), false) && base64::Decode(uri.substr(data_index), data));
+                if (!StringEqual(data_encode, "base64", false) && base64::Decode(_uri.substr(data_index), cache_data.first))
+                    return false;
+
+                cache_data.second = "base64";
+
+                is_loaded = true;
             }
         }
 
-        /// try to load from file
-        if (!m_pFileLoader->Load(uri)) return false;
-
-        data = (*m_pFileLoader)[uri];
-        size_t dot_index = uri.find_last_of('.');
-        if (uri.size() > (dot_index + 1))
+        if (!is_loaded)
         {
-            data_type = "file/" + uri.substr(dot_index + 1);
+            /// try to load from file
+            if (std::shared_ptr<std::istream> reader_ptr = m_Reader(_uri))
+            {
+                reader_ptr->seekg(0, std::ios::end);
+                cache_data.first.resize(reader_ptr->tellg());
+                reader_ptr->seekg(0, std::ios::beg);
+                if (!cache_data.first.empty())
+                    reader_ptr->read((std::istream::char_type*)&cache_data.first[0], cache_data.first.size());
+
+                std::string file_type;
+                std::size_t dot_index = _uri.find_last_of('.');
+                if (_uri.size() > (dot_index + 1))
+                    cache_data.second = "file/" + _uri.substr(dot_index + 1);
+
+                is_loaded = true;
+            }
         }
-        return true;
+
+        _data_ptr  = cache_data.first.data();
+        _data_size = cache_data.first.size();
+        _data_type = cache_data.second;
+        return is_loaded;
     }
 
-    bool CGlTFLoader::LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data)
+    bool CglTFLoader::LoadBuffer(const std::shared_ptr<SBuffer>& _buffer, const uint8_t*& _data_ptr, std::size_t& _data_size)
     {
-        if (!buffer) return false;
-        string_t data_type;
-        if (!LoadByUri(buffer->uri, data, data_type)) return false;
-        return (data.size() == buffer->byteLength);
+        if (!_buffer)
+            return false;
+        std::string data_type;
+        if (!LoadByUri(_buffer->uri, _data_ptr, _data_size, data_type))
+            return false;
+        return (_data_size == _buffer->byteLength);
     }
 
-    bool CGlTFLoader::LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, string_t& data_type)
+    bool CglTFLoader::LoadImage(const std::shared_ptr<SImage>& _image, std::vector<uint8_t>& _data, std::string& _type)
     {
-        if (!image) return false;
-        data_type = image->mimeType;
-        if (!image->uri.empty())
+        if (!_image)
+            return false;
+
+        _type = _image->mimeType;
+        if (!_image->uri.empty())
         {
-            return LoadByUri(image->uri, data, data_type);
+            const uint8_t* data_ptr  = nullptr;
+            std::size_t    data_size = 0;
+            if (!LoadByUri(_image->uri, data_ptr, data_size, _type))
+                return false;
+
+            _data.resize(data_size);
+            ::memcpy(&_data[0], data_ptr, data_size);
+            return true;
         }
-        if (image->bufferView)
-        {
-            std::shared_ptr<CBufferViewStream> image_stream = std::make_shared<CBufferViewStream>(data);
-            return GetOrLoadBufferViewData(static_cast<size_t>(int32_t(*image->bufferView)), image_stream);
-        }
-        return false;
+        if (!_image->bufferView)
+            return false;
+
+        std::shared_ptr<CBufferViewStream> image_stream = std::make_shared<CBufferViewStream>(_data);
+        return LoadBufferViewData(static_cast<std::size_t>(int32_t(*_image->bufferView)), image_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream)
+    bool CglTFLoader::LoadBufferData(std::size_t _index, std::shared_ptr<IBufferStream>& _buffer_stream)
     {
         SBufferData buffer_data;
-        auto found_iterator = m_CacheBufferDatas.find(index);
-        if (found_iterator != m_CacheBufferDatas.end())
-        {
-            buffer_data.buffer = found_iterator->second.data();
-            buffer_data.bufferSize = found_iterator->second.size();
-        }
-        else
-        {
-            std::vector<uint8_t> loaded_buffer;
-            if (m_glTF->buffers.size() > index)
-            {
-                LoadBuffer(m_glTF->buffers[index], loaded_buffer);
-            }
-            auto inserted_iterator = m_CacheBufferDatas.insert(std::make_pair(index, loaded_buffer)).first;
-            buffer_data.buffer = inserted_iterator->second.data();
-            buffer_data.bufferSize = inserted_iterator->second.size();
-        }
-        return (*buffer_stream << buffer_data);
+        LoadBuffer(m_glTF->buffers[_index], buffer_data.buffer, buffer_data.bufferSize);
+        return (*_buffer_stream << buffer_data);
     }
 
-    bool CGlTFLoader::GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream)
+    bool CglTFLoader::LoadBufferViewData(std::size_t _index, std::shared_ptr<IBufferViewStream> _buffer_view_stream)
     {
-        if (m_glTF->bufferViews.size() <= index) return false;
-        const std::shared_ptr<SBufferView>& buffer_view = m_glTF->bufferViews[index];
+        if (m_glTF->bufferViews.size() <= _index)
+            return false;
+        const std::shared_ptr<SBufferView>& buffer_view = m_glTF->bufferViews[_index];
         Verify(!!buffer_view);
-        std::shared_ptr<IBufferStream> buffer_stream = std::make_shared<CBufferViewBufferStream>(buffer_view, buffer_view_stream);
-        return GetOrLoadBufferData(static_cast<size_t>(int32_t(*buffer_view->buffer)), buffer_stream);
+        std::shared_ptr<IBufferStream> buffer_stream = std::make_shared<CBufferViewBufferStream>(buffer_view, _buffer_view_stream);
+        return LoadBufferData(static_cast<std::size_t>(int32_t(*buffer_view->buffer)), buffer_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CglTFLoader::LoadAccessorData(std::size_t _index, std::shared_ptr<IAccessorStream> _accessor_stream)
     {
-        if (!accessor_stream) return false;
-        if (m_glTF->accessors.size() <= index) return false;
-        const std::shared_ptr<SAccessor>& accessor = m_glTF->accessors[index];
+        if (!_accessor_stream)
+            return false;
+        if (m_glTF->accessors.size() <= _index)
+            return false;
+        const std::shared_ptr<SAccessor>& accessor = m_glTF->accessors[_index];
         Verify(!!accessor);
-        return GetOrLoadBufferViewData(static_cast<size_t>(int32_t(*accessor->bufferView)), std::make_shared<CAccessorBufferViewStream>(accessor, accessor_stream));
+        return LoadBufferViewData(static_cast<std::size_t>(int32_t(*accessor->bufferView)),
+                                       std::make_shared<CAccessorBufferViewStream>(accessor, _accessor_stream));
     }
 
-    std::weak_ptr<libgltf::SGlTF> CGlTFLoader::glTF()
+    const std::unique_ptr<SGlTF>& CglTFLoader::glTF() const
     {
         return m_glTF;
     }
 
-    bool CGlTFLoader::GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CglTFLoader::LoadMeshPrimitiveIndicesData(std::size_t                      _mesh_index, //
+                                                   std::size_t                      _primitive_index,
+                                                   std::shared_ptr<IAccessorStream> _accessor_stream)
     {
-        if (!m_glTF) return false;
-        if (m_glTF->meshes.size() <= mesh_index) return false;
-        const std::shared_ptr<SMesh>& mesh = m_glTF->meshes[mesh_index];
-        if (!mesh || mesh->primitives.size() <= primitive_index) return false;
-        const std::shared_ptr<SMeshPrimitive>& primitive = mesh->primitives[primitive_index];
-        if (!primitive || !primitive->indices) return false;
+        if (!m_glTF)
+            return false;
+        if (m_glTF->meshes.size() <= _mesh_index)
+            return false;
+        const std::shared_ptr<SMesh>& mesh = m_glTF->meshes[_mesh_index];
+        if (!mesh || mesh->primitives.size() <= _primitive_index)
+            return false;
+        const std::shared_ptr<SMeshPrimitive>& primitive = mesh->primitives[_primitive_index];
+        if (!primitive || !primitive->indices)
+            return false;
 
         if (primitive->extensions)
         {
             const std::shared_ptr<SExtension>& extensions = primitive->extensions;
-            std::shared_ptr<SObject> extension;
-            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, GLTFTEXT("KHR_draco_mesh_compression"), extension))
+            std::shared_ptr<SObject>           extension;
+            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
-                SKHR_draco_mesh_compressionextension* extension_draco = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
-                size_t bufferview_index = static_cast<size_t>(int32_t(*extension_draco->bufferView));
-                std::shared_ptr<IBufferViewStream> buffer_view_stream = std::make_shared<CDracoBufferViewStream>(m_pGoogleDraco, extension_draco, accessor_stream);
-                return GetOrLoadBufferViewData(bufferview_index, buffer_view_stream);
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+                SKHR_draco_mesh_compressionextension* extension_draco  = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
+                std::size_t                           bufferview_index = static_cast<std::size_t>(int32_t(*extension_draco->bufferView));
+                std::shared_ptr<IBufferViewStream>    buffer_view_stream =
+                    std::make_shared<CDracoBufferViewStream>(m_pGoogleDraco, extension_draco, _accessor_stream);
+                return LoadBufferViewData(bufferview_index, buffer_view_stream);
 #else
                 return false;
 #endif
             }
         }
 
-        return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*primitive->indices)), accessor_stream);
+        return LoadAccessorData(static_cast<std::size_t>(int32_t(*primitive->indices)), _accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream)
+    bool CglTFLoader::LoadMeshPrimitiveAttributeData(std::size_t                      _mesh_index,
+                                                     std::size_t                      _primitive_index,
+                                                     const std::string&               _attribute,
+                                                     std::shared_ptr<IAccessorStream> _accessor_stream)
     {
-        if (!m_glTF) return false;
-        if (m_glTF->meshes.size() <= mesh_index) return false;
-        const std::shared_ptr<SMesh>& mesh = m_glTF->meshes[mesh_index];
-        if (!mesh || mesh->primitives.size() <= primitive_index) return false;
-        const std::shared_ptr<SMeshPrimitive>& primitive = mesh->primitives[primitive_index];
-        if (!primitive) return false;
+        if (!m_glTF)
+            return false;
+        if (m_glTF->meshes.size() <= _mesh_index)
+            return false;
+        const std::shared_ptr<SMesh>& mesh = m_glTF->meshes[_mesh_index];
+        if (!mesh || mesh->primitives.size() <= _primitive_index)
+            return false;
+        const std::shared_ptr<SMeshPrimitive>& primitive = mesh->primitives[_primitive_index];
+        if (!primitive)
+            return false;
 
         if (primitive->extensions)
         {
             const std::shared_ptr<SExtension>& extensions = primitive->extensions;
-            std::shared_ptr<SObject> extension;
-            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, GLTFTEXT("KHR_draco_mesh_compression"), extension))
+            std::shared_ptr<SObject>           extension;
+            if (StringMapFind<std::shared_ptr<SObject>>(extensions->properties, "KHR_draco_mesh_compression", extension))
             {
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
-                SKHR_draco_mesh_compressionextension* extension_draco = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
-                size_t bufferview_index = static_cast<size_t>(int32_t(*extension_draco->bufferView));
-                std::shared_ptr<SGlTFId> attribute_id;
-                if (!StringMapFind<std::shared_ptr<SGlTFId>>(extension_draco->attributes, attribute, attribute_id, false)) return false;
-                std::shared_ptr<IBufferViewStream> buffer_view_stream = std::make_shared<CDracoBufferViewStream>(m_pGoogleDraco, extension_draco, accessor_stream, true, static_cast<size_t>(int32_t(*attribute_id)));
-                return GetOrLoadBufferViewData(bufferview_index, buffer_view_stream);
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+                SKHR_draco_mesh_compressionextension* extension_draco  = reinterpret_cast<SKHR_draco_mesh_compressionextension*>(extension.get());
+                std::size_t                           bufferview_index = static_cast<std::size_t>(int32_t(*extension_draco->bufferView));
+                std::shared_ptr<SGlTFId>              attribute_id;
+                if (!StringMapFind<std::shared_ptr<SGlTFId>>(extension_draco->attributes, _attribute, attribute_id, false))
+                    return false;
+                std::shared_ptr<IBufferViewStream> buffer_view_stream = std::make_shared<CDracoBufferViewStream>(
+                    m_pGoogleDraco, extension_draco, _accessor_stream, true, static_cast<std::size_t>(int32_t(*attribute_id)));
+                return LoadBufferViewData(bufferview_index, buffer_view_stream);
 #else
                 return false;
 #endif
             }
         }
 
-        const std::map<string_t, std::shared_ptr<SGlTFId>>& primitive_attributes = primitive->attributes;
-        std::shared_ptr<SGlTFId> attribute_access;
-        if (!StringMapFind<std::shared_ptr<SGlTFId>>(primitive_attributes, attribute, attribute_access, false)) return false;
-        return GetOrLoadAccessorData(static_cast<size_t>(int32_t(*attribute_access)), accessor_stream);
+        const std::map<std::string, std::shared_ptr<SGlTFId>>& primitive_attributes = primitive->attributes;
+        std::shared_ptr<SGlTFId>                               attribute_access;
+        if (!StringMapFind<std::shared_ptr<SGlTFId>>(primitive_attributes, _attribute, attribute_access, false))
+            return false;
+        return LoadAccessorData(static_cast<std::size_t>(int32_t(*attribute_access)), _accessor_stream);
     }
 
-    bool CGlTFLoader::GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type)
+    bool CglTFLoader::LoadImageData(std::size_t _index, std::vector<uint8_t>& _data, std::string& _type)
     {
-        if (!m_glTF) return false;
-        if (m_glTF->images.size() <= index) return false;
-        std::map<size_t, std::pair<std::vector<uint8_t>, string_t>>::const_iterator found = m_CacheImageDatas.find(index);
-        if (found != m_CacheImageDatas.end())
-        {
-            data = found->second.first;
-            data_type = found->second.second;
-            return true;
-        }
-        const std::shared_ptr<SImage>& image = m_glTF->images[index];
-        if (!LoadImage(image, data, data_type)) return false;
-        m_CacheImageDatas.insert(std::make_pair(index, std::make_pair(data, data_type)));
-        return true;
+        if (!m_glTF)
+            return false;
+        if (m_glTF->images.size() <= _index)
+            return false;
+
+        const std::shared_ptr<SImage>& image = m_glTF->images[_index];
+        return LoadImage(image, _data, _type);
     }
 
-    const uint32_t CGlTFLoader::ms_GLBMagicEntry    = 0x46546C67;   // 'glTF'
-    const uint32_t CGlTFLoader::ms_GLBChunkTypeJSON = 0x4E4F534A;   // 'JSON'
-    const uint32_t CGlTFLoader::ms_GLBChunkTypeBIN  = 0x004E4942;   // 'BIN\0'
-}
+    const uint32_t CglTFLoader::ms_GLBMagicEntry    = 0x46546C67; // 'glTF'
+    const uint32_t CglTFLoader::ms_GLBChunkTypeJSON = 0x4E4F534A; // 'JSON'
+    const uint32_t CglTFLoader::ms_GLBChunkTypeBIN  = 0x004E4942; // 'BIN\0'
+} // namespace libgltf

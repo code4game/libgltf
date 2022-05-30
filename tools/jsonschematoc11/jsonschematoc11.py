@@ -13,6 +13,7 @@ logger = logging.getLogger(name=u'JSONSchemaToC11')
 
 class C11TypeLibrary(object):
     def __init__(self):
+        """Construct and declare some vars."""
         self.c11Types = dict()
 
     def setVersion(self, major=0, minor=0, patch=0):
@@ -91,12 +92,17 @@ class C11TypeLibrary(object):
         code_lines.append(u'#define LIBGLTF_PATCH_VERSION    %s' % self.patch)
         return code_lines
 
-    @classmethod
+    def codeDefines(self):
+        code_lines = []
+        code_lines.append(u'#cmakedefine LIBGLTF_WITH_MSVC_MT')
+        code_lines.append(u'#cmakedefine LIBGLTF_WITH_GOOGLE_DRACO')
+        return code_lines
+
     def codeHeaderParser(self):
         code_lines = []
         code_lines.append(u'struct SGlTF;')
-        code_lines.append(u'bool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const string_t& _sContent);')
-        code_lines.append(u'bool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, string_t& _sContent);')
+        code_lines.append(u'bool operator<<(SGlTF& _gltf, const std::string& _sContent);')
+        code_lines.append(u'bool operator>>(const SGlTF& _gltf, std::string& _sContent);')
         code_lines.append(u'')
         code_lines.append(u'/*!')
         code_lines.append(u' * struct: SObject')
@@ -104,15 +110,14 @@ class C11TypeLibrary(object):
         code_lines.append(u'struct SObject')
         code_lines.append(u'{')
         code_lines.append(u'    SObject();')
-        code_lines.append(u'    string_t schemaType;')
+        code_lines.append(u'    std::string schemaType;')
         code_lines.append(u'};')
         return code_lines
 
-    @classmethod
     def codeSourceParser(self):
         code_lines = []
         code_lines.append(u'SObject::SObject()')
-        code_lines.append(u'    : schemaType(GLTFTEXT(""))')
+        code_lines.append(u'    : schemaType("")')
         code_lines.append(u'{')
         code_lines.append(u'    //')
         code_lines.append(u'}')
@@ -126,7 +131,7 @@ class C11TypeLibrary(object):
         return (0, u'')
 
     def generate(self, codeFileName, outputHeaderPath=None, outputSourcePath=None, nameSpace=None, config=None):
-        header_file_path = u'%s.h' % codeFileName
+        header_file_path = u'%s.h.cmakein' % codeFileName
         source_file_path = u'%s.cpp' % codeFileName
         if outputHeaderPath is not None:
             header_file_path = os.path.join(outputHeaderPath, header_file_path)
@@ -134,13 +139,24 @@ class C11TypeLibrary(object):
             source_file_path = os.path.join(outputSourcePath, source_file_path)
 
         with open(header_file_path, u'w') as header_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
+                        header_file.write(u'/*\n')
                         code_file_lines = code_file.readlines()
                         for code_file_line in code_file_lines:
-                            header_file.write(code_file_line)
+                            header_file.write(u' * ' + code_file_line)
+                        header_file.write(u' */\n')
+                        header_file.write(u'\n')
+
+            if config is not None and config.has_option(u'code.headers', u'header.begin'):
+                code_file_path = config.get(u'code.headers', u'header.begin')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
                         header_file.write(u'\n')
 
             if config is not None and config.has_option(u'code.headers', u'header.include'):
@@ -159,6 +175,13 @@ class C11TypeLibrary(object):
                 code_version_parser_line = u'%s%s\n' % (begin_space, code_version_parser_line)
                 header_file.write(code_version_parser_line)
             if code_version_parser_line:
+                header_file.write(u'\n')
+
+            code_defines_parser_lines = self.codeDefines();
+            for code_defines_parser_line in code_defines_parser_lines:
+                code_defines_parser_line = u'%s%s\n' % (begin_space, code_defines_parser_line)
+                header_file.write(code_defines_parser_line)
+            if code_defines_parser_line:
                 header_file.write(u'\n')
 
             if nameSpace is not None:
@@ -189,7 +212,7 @@ class C11TypeLibrary(object):
                 code_header_declare_line = u'%sstruct %s;\n' % (begin_space, c11_type.codeTypeName())
                 header_file.write(code_header_declare_line)
             header_file.write(u'\n')
-                
+
             parent_type_names = []
             for key in self.c11Types:
                 c11_type = self.c11Types[key]
@@ -220,17 +243,27 @@ class C11TypeLibrary(object):
             if nameSpace != None:
                 header_file.write(u'}\n')
 
+            if config is not None and config.has_option(u'code.headers', u'header.end'):
+                code_file_path = config.get(u'code.headers', u'header.end')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
+                        header_file.write(u'\n')
+
         with open(source_file_path, u'w') as source_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_file_lines = code_file.readlines()
+                        source_file.write(u'/*\n')
                         for code_file_line in code_file_lines:
-                            source_file.write(code_file_line)
+                            source_file.write(u' * ' + code_file_line)
+                        source_file.write(u' */')
                         source_file.write(u'\n')
 
-            source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
@@ -275,23 +308,28 @@ class C11TypeLibrary(object):
             header_file_path = os.path.join(outputSourcePath, header_file_path)
             source_file_path = os.path.join(outputSourcePath, source_file_path)
         with open(header_file_path, u'w') as header_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
                         code_file_lines = code_file.readlines()
+                        header_file.write(u'/*\n')
                         for code_file_line in code_file_lines:
-                            header_file.write(code_file_line)
+                            header_file.write(u' * ' + code_file_line)
+                        header_file.write(u' */\n')
                         header_file.write(u'\n')
 
             header_file.write(u'#pragma once\n')
             header_file.write(u'\n')
-            header_file.write(u'#include "%spch.h"\n' % codeFileName)
-            header_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
-            header_file.write(u'\n')
-            header_file.write(u'#include <memory>\n')
-            header_file.write(u'#include <vector>\n')
-            header_file.write(u'\n')
+
+            if config is not None and config.has_option(u'code.parser', u'header'):
+                code_file_path = config.get(u'code.parser', u'header')
+                if os.path.isfile(code_file_path):
+                    with open(code_file_path, u'r') as code_file:
+                        code_header_extra_lines = code_file.readlines()
+                        for code_header_extra_line in code_header_extra_lines:
+                            header_file.write(code_header_extra_line)
+                        header_file.write(u'\n')
 
             begin_space = u''
             if nameSpace != None:
@@ -303,14 +341,14 @@ class C11TypeLibrary(object):
             header_file.write(u'%s%s\n' % (begin_space, u'class TDataDoc'))
             header_file.write(u'%s%s\n' % (begin_space, u'{'))
             header_file.write(u'%s%s\n' % (begin_space, u'public:'))
-            header_file.write(u'%s%s\n' % (begin_space, u'    explicit TDataDoc(const TData& _rData, GLTFCharDocument* _pDoc)'))
+            header_file.write(u'%s%s\n' % (begin_space, u'    explicit TDataDoc(const TData& _rData, JSONCharDocument* _pDoc)'))
             header_file.write(u'%s%s\n' % (begin_space, u'        : data(_rData)'))
             header_file.write(u'%s%s\n' % (begin_space, u'        , doc(_pDoc)'))
             header_file.write(u'%s%s\n' % (begin_space, u'    {'))
             header_file.write(u'%s%s\n' % (begin_space, u'        //'))
             header_file.write(u'%s%s\n' % (begin_space, u'    }'))
             header_file.write(u'%s%s\n' % (begin_space, u'    const TData& data;'))
-            header_file.write(u'%s%s\n' % (begin_space, u'    GLTFCharDocument* doc;'))
+            header_file.write(u'%s%s\n' % (begin_space, u'    JSONCharDocument* doc;'))
             header_file.write(u'%s%s\n' % (begin_space, u'};'))
             header_file.write(u'\n')
 
@@ -331,18 +369,18 @@ class C11TypeLibrary(object):
                 header_file.write(u'}\n')
 
         with open(source_file_path, u'w') as source_file:
-            if config is not None and config.has_option(u'code', u'licnese'):
-                code_file_path = config.get(u'code', u'licnese')
+            if config is not None and config.has_option(u'code', u'license'):
+                code_file_path = config.get(u'code', u'license')
                 if os.path.isfile(code_file_path):
                     with open(code_file_path, u'r') as code_file:
+                        source_file.write(u'/*\n')
                         code_file_lines = code_file.readlines()
                         for code_file_line in code_file_lines:
-                            source_file.write(code_file_line)
+                            source_file.write(u' * ' + code_file_line)
+                        source_file.write(u' */\n')
                         source_file.write(u'\n')
 
-            source_file.write(u'#include "%spch.h"\n' % codeFileName)
             source_file.write(u'#include "%sparser.h"\n' % codeFileName)
-            source_file.write(u'#include "%s/%s.h"\n' % (codeFileName, codeFileName))
             source_file.write(u'\n')
 
             begin_space = u''
@@ -351,29 +389,28 @@ class C11TypeLibrary(object):
                 source_file.write(u'{\n')
                 begin_space = u'    '
 
-            source_file.write(u'%sbool operator<<(std::shared_ptr<SGlTF>& _pGlTF, const string_t& _sContent)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(SGlTF& _gltf, const std::string& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    GLTFCharDocument json_doc;\n' % begin_space)
+            source_file.write(u'%s    JSONCharDocument json_doc;\n' % begin_space)
             source_file.write(u'%s    json_doc.Parse(_sContent.c_str());\n' % begin_space)
             source_file.write(u'%s    if (!json_doc.IsObject()) return false;\n' % begin_space)
-            source_file.write(u'%s    return (_pGlTF << json_doc.GetObject());\n' % begin_space)
+            source_file.write(u'%s    return (_gltf << json_doc.GetObject());\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const std::shared_ptr<SGlTF>& _pGlTF, string_t& _sContent)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const SGlTF& _gltf, std::string& _sContent)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
-            source_file.write(u'%s    if (!_pGlTF) return false;\n' % begin_space)
-            source_file.write(u'%s    GLTFCharDocument json_doc;\n' % begin_space)
-            source_file.write(u'%s    if (!(TDataDoc<SGlTF>(*_pGlTF, &json_doc) >> json_doc)) return false;\n' % begin_space)
-            source_file.write(u'%s    GLTFStringBuffer json_string_buffer;\n' % begin_space)
-            source_file.write(u'%s    GLTFWriter json_writer(json_string_buffer);\n' % begin_space)
+            source_file.write(u'%s    JSONCharDocument json_doc;\n' % begin_space)
+            source_file.write(u'%s    if (!(TDataDoc<SGlTF>(_gltf, &json_doc) >> json_doc)) return false;\n' % begin_space)
+            source_file.write(u'%s    JSONStringBuffer json_string_buffer;\n' % begin_space)
+            source_file.write(u'%s    JSONWriter json_writer(json_string_buffer);\n' % begin_space)
             source_file.write(u'%s    if (!json_doc.Accept(json_writer)) return false;\n' % begin_space)
             source_file.write(u'%s    _sContent = json_string_buffer.GetString();\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(bool& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(bool& _rData, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsBool()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetBool();\n' % begin_space)
@@ -381,14 +418,14 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<bool>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<bool>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetBool(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(int32_t& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(int32_t& _rData, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsInt()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetInt();\n' % begin_space)
@@ -396,14 +433,14 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<int32_t>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<int32_t>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetInt(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(float& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(float& _rData, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_JsonValue.IsNumber())\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
@@ -419,14 +456,14 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<float>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<float>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetFloat(_rData.data);\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator<<(string_t& _rData, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::string& _rData, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsString()) return false;\n' % begin_space)
             source_file.write(u'%s    _rData = _JsonValue.GetString();\n' % begin_space)
@@ -434,7 +471,7 @@ class C11TypeLibrary(object):
             source_file.write(u'%s}\n' % begin_space)
             source_file.write(u'\n')
 
-            source_file.write(u'%sbool operator>>(const TDataDoc<string_t>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<std::string>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_rData.doc) return false;\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetString(_rData.data.c_str(), _rData.doc->GetAllocator());\n' % begin_space)
@@ -443,11 +480,11 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator<<(std::vector<TData>& _vDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::vector<TData>& _vDatas, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsArray()) return false;\n' % begin_space)
             source_file.write(u'%s    std::vector<TData> datas;\n' % begin_space)
-            source_file.write(u'%s    const GLTFCharConstArray& json_array = _JsonValue.GetArray();\n' % begin_space)
+            source_file.write(u'%s    const JSONCharConstArray& json_array = _JsonValue.GetArray();\n' % begin_space)
             source_file.write(u'%s    size_t len = json_array.Size();\n' % begin_space)
             source_file.write(u'%s    if (len == 0) return true;\n' % begin_space)
             source_file.write(u'%s    datas.resize(len);\n' % begin_space)
@@ -462,13 +499,13 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator>>(const TDataDoc<std::vector<TData>>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<std::vector<TData>>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_rData.data.empty() || !_rData.doc) return false;\n' % begin_space)
-            source_file.write(u'%s    GLTFCharValue& json_array = _JsonValue.SetArray();\n' % begin_space)
+            source_file.write(u'%s    JSONCharValue& json_array = _JsonValue.SetArray();\n' % begin_space)
             source_file.write(u'%s    for (const TData& data : _rData.data)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
-            source_file.write(u'%s        GLTFCharValue json_value;\n' % begin_space)
+            source_file.write(u'%s        JSONCharValue json_value;\n' % begin_space)
             source_file.write(u'%s        if (!(TDataDoc<TData>(data, _rData.doc) >> json_value)) return false;\n' % begin_space)
             source_file.write(u'%s        json_array.PushBack(json_value, _rData.doc->GetAllocator());\n' % begin_space)
             source_file.write(u'%s    }\n' % begin_space)
@@ -477,12 +514,12 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator<<(std::map<string_t, TData>& _mDatas, const GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator<<(std::map<std::string, TData>& _mDatas, const JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (!_JsonValue.IsObject()) return false;\n' % begin_space)
-            source_file.write(u'%s    std::map<string_t, TData> datas;\n' % begin_space)
-            source_file.write(u'%s    const GLTFCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
-            source_file.write(u'%s    for (GLTFCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
+            source_file.write(u'%s    std::map<std::string, TData> datas;\n' % begin_space)
+            source_file.write(u'%s    const JSONCharConstObject& json_object = _JsonValue.GetObject();\n' % begin_space)
+            source_file.write(u'%s    for (JSONCharConstObject::ConstMemberIterator cit = json_object.MemberBegin(); cit != json_object.MemberEnd(); ++cit)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
             source_file.write(u'%s        TData data;\n' % begin_space)
             source_file.write(u'%s        if (!(data << cit->value)) return false;\n' % begin_space)
@@ -494,15 +531,15 @@ class C11TypeLibrary(object):
             source_file.write(u'\n')
 
             source_file.write(u'%stemplate<typename TData>\n' % begin_space)
-            source_file.write(u'%sbool operator>>(const TDataDoc<std::map<string_t, TData>>& _rData, GLTFCharValue& _JsonValue)\n' % begin_space)
+            source_file.write(u'%sbool operator>>(const TDataDoc<std::map<std::string, TData>>& _rData, JSONCharValue& _JsonValue)\n' % begin_space)
             source_file.write(u'%s{\n' % begin_space)
             source_file.write(u'%s    if (_rData.data.empty() || !_rData.doc) return false;\n' % begin_space)
             source_file.write(u'%s    _JsonValue.SetObject();\n' % begin_space)
-            source_file.write(u'%s    for (const std::pair<string_t, TData>& data : _rData.data)\n' % begin_space)
+            source_file.write(u'%s    for (const std::pair<std::string, TData>& data : _rData.data)\n' % begin_space)
             source_file.write(u'%s    {\n' % begin_space)
-            source_file.write(u'%s        GLTFCharValue json_value;\n' % begin_space)
+            source_file.write(u'%s        JSONCharValue json_value;\n' % begin_space)
             source_file.write(u'%s        if (!(TDataDoc<TData>(data.second, _rData.doc) >> json_value)) return false;\n' % begin_space)
-            source_file.write(u'%s        GLTFCharValue json_key(data.first.c_str(), _rData.doc->GetAllocator());\n' % begin_space)
+            source_file.write(u'%s        JSONCharValue json_key(data.first.c_str(), _rData.doc->GetAllocator());\n' % begin_space)
             source_file.write(u'%s        _JsonValue.AddMember(json_key, json_value, _rData.doc->GetAllocator());\n' % begin_space)
             source_file.write(u'%s    }\n' % begin_space)
             source_file.write(u'%s    return true;\n' % begin_space)
@@ -558,9 +595,9 @@ def JSONSchemaToC11(argv):
         return (1, u'Invalid output header path')
     if output_source_path != None and not os.path.exists(output_source_path):
         return (1, u'Invalid output source path')
-    if output_header_path == None:
+    if output_header_path is None:
         output_header_path = u'./'
-    if output_source_path == None:
+    if output_source_path is None:
         output_source_path = u'./'
 
     c11_type_library = C11TypeLibrary()

@@ -2,20 +2,19 @@ from .c11type import C11Type
 
 class C11TypeBool(C11Type):
     def __init__(self):
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'bool'
 
     def setSchema(self, schemaName, schemaValue):
         C11Type.setSchema(self, schemaName, schemaValue)
 
-    @classmethod
-    def codeDefaultValue(cls, schemaDefaultValue):
+    def codeDefaultValue(self, schemaDefaultValue):
         if schemaDefaultValue is not None and schemaDefaultValue is True:
             return u'true'
         return u'false'
 
-    @classmethod
-    def codeDefaultValueArray(cls, schemaDefaultValues):
+    def codeDefaultValueArray(self, schemaDefaultValues):
         if schemaDefaultValues is None\
             or not isinstance(schemaDefaultValues, list)\
             or len(schemaDefaultValues) <= 0:
@@ -30,14 +29,11 @@ class C11TypeBool(C11Type):
                 code_default_value = code_default_value + u'false'
         return u'{ %s }' % code_default_value
 
-    @classmethod
-    def codeJsonCheck(cls):
+    def codeJsonCheck(self):
         return u'IsBool()'
 
-    @classmethod
-    def codeJsonSet(cls, dataName, variableName):
-        return u'%s.%s = _JsonValue[GLTFTEXT("%s")].GetBool();' % (dataName, variableName, variableName)
+    def codeJsonSet(self, dataName, variableName):
+        return u'%s.%s = _JsonValue["%s"].GetBool();' % (dataName, variableName, variableName)
 
-    @classmethod
-    def codeJsonGet(cls, dataName, variableName):
-        return u'_JsonValue[GLTFTEXT("%s")].SetBool(%s.%s);' % (variableName, dataName, variableName)
+    def codeJsonGet(self, dataName, variableName):
+        return u'_JsonValue["%s"].SetBool(%s.%s);' % (variableName, dataName, variableName)

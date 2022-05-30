@@ -1,21 +1,30 @@
 from .c11type import C11Type
 
 class C11TypeArray(C11Type):
+
+    """array type"""
+
     def __init__(self):
+        """Construct and declare some vars."""
         C11Type.__init__(self)
         self.typeName = u'std::vector'
         self.c11Type = None
 
-    @classmethod
-    def buildC11Type(cls, schemaValue):
+    def buildC11Type(self, schemaValue):
         c11Type = None
         schemaValueType = None
         variableSchemaValue = schemaValue
         if u'type' in schemaValue:
             schemaValueType = schemaValue[u'type']
-            if schemaValueType == u'object' and u'additionalProperties' in schemaValue:
-                schemaValueType = u'map'
-                variableSchemaValue = schemaValue[u'additionalProperties']
+            if schemaValueType == u'object':
+                if u'additionalProperties' in schemaValue:
+                    schemaValueType = u'map'
+                    variableSchemaValue = schemaValue[u'additionalProperties']
+                elif u'allOf' in schemaValue and len(schemaValue[u'allOf']) > 0 and u'$ref' in schemaValue[u'allOf'][0]:
+                    schemaValueType = schemaValue[u'allOf'][0][u'$ref']
+                    #print(schemaValueType)
+                    #schemaValueType = u'array'
+                    #doallof = True
         elif u'$ref' in schemaValue:
             schemaValueType = schemaValue[u'$ref']
 
@@ -66,6 +75,8 @@ class C11TypeArray(C11Type):
             schemaValueItem = self.schemaValue
         if schemaValueItem is None:
             return (1, u'Can\'t find the items in schema of array')
+        elif u'type' in schemaValueItem and schemaValueItem[u'type'] == 'object' and u'allOf' in schemaValueItem and len(schemaValueItem[u'allOf']) > 0 and u'$ref' in schemaValueItem[u'allOf'][0]:
+            schemaValueType = schemaValueItem[u'allOf'][0][u'$ref']
         elif u'$ref' in schemaValueItem:
             schemaValueType = schemaValueItem[u'$ref']
         if schemaValueType not in c11Types:
@@ -96,7 +107,7 @@ class C11TypeArray(C11Type):
         return u'IsArray()'
 
     def codeJsonSet(self, dataName, variableName):
-        return u'if (!(%s.%s << _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s << _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)
 
     def codeJsonGet(self, dataName, variableName):
-        return u'if (!(%s.%s >> _JsonValue[GLTFTEXT("%s")])) return false;' % (dataName, variableName, variableName)
+        return u'if (!(%s.%s >> _JsonValue["%s"])) return false;' % (dataName, variableName, variableName)

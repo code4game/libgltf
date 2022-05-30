@@ -14,7 +14,6 @@ set(TOOLS_BATCH_FILE_LIST_CODES
     ${TOOLS_BATCH_PATH}/codes/libgltf.header.include.h
     ${TOOLS_BATCH_PATH}/codes/libgltf.header.namespace.begin.h
     ${TOOLS_BATCH_PATH}/codes/libgltf.header.namespace.end.h
-    ${TOOLS_BATCH_PATH}/codes/libgltf.license.h
     )
 
 set(TOOLS_BUILD_FILE_LIST_CONFIG

@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  *
- * Copyright (c) 2017-2021 Code 4 Game, Org. All Rights Reserved.
+ * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,23 +24,27 @@
 
 #pragma once
 
-#include "common.h"
+#include "libgltf/libgltf.h"
+
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+#    include "extensions/google_draco.h"
+#endif
 
 namespace libgltf
 {
     class IBufferStream
     {
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) = 0;
+        virtual bool operator<<(const SBufferData& _buffer_data) = 0;
     };
 
     class IBufferViewStream
     {
     public:
-        virtual bool operator<<(const SBufferData& buffer_data) = 0;
+        virtual bool operator<<(const SBufferData& _buffer_data) = 0;
     };
 
-    class CGlTFLoader : public IglTFLoader
+    class CglTFLoader : public IglTFLoader
     {
         struct SGLBHeader
         {
@@ -60,38 +64,40 @@ namespace libgltf
         };
 
     public:
-        explicit CGlTFLoader(const string_t& file);
+        explicit CglTFLoader(std::function<std::shared_ptr<std::istream>(const std::string&)> _reader);
 
     protected:
-        bool LoadByUri(const string_t& uri, std::vector<uint8_t>& data, string_t& data_type);
-        bool LoadBuffer(const std::shared_ptr<SBuffer>& buffer, std::vector<uint8_t>& data);
-        bool LoadImage(const std::shared_ptr<SImage>& image, std::vector<uint8_t>& data, string_t& data_type);
-        bool GetOrLoadBufferData(size_t index, std::shared_ptr<IBufferStream>& buffer_stream);
-        bool GetOrLoadBufferViewData(size_t index, std::shared_ptr<IBufferViewStream> buffer_view_stream);
-        bool GetOrLoadAccessorData(size_t index, std::shared_ptr<IAccessorStream> accessor_stream);
+        bool LoadByUri(const std::string& _uri, const uint8_t*& _data_ptr, std::size_t& _data_size, std::string& _data_type);
+        bool LoadBuffer(const std::shared_ptr<SBuffer>& _buffer, const uint8_t*& _data_ptr, std::size_t& _data_size);
+        bool LoadImage(const std::shared_ptr<SImage>& _image, std::vector<uint8_t>& _data, std::string& _type);
+        bool LoadBufferData(std::size_t _index, std::shared_ptr<IBufferStream>& _buffer_stream);
+        bool LoadBufferViewData(std::size_t _index, std::shared_ptr<IBufferViewStream> _buffer_view_stream);
+        bool LoadAccessorData(std::size_t _index, std::shared_ptr<IAccessorStream> _accessor_stream);
 
     public:
-        virtual std::weak_ptr<SGlTF> glTF() override;
-        virtual bool GetOrLoadMeshPrimitiveIndicesData(size_t mesh_index, size_t primitive_index, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadMeshPrimitiveAttributeData(size_t mesh_index, size_t primitive_index, const string_t& attribute, std::shared_ptr<IAccessorStream> accessor_stream) override;
-        virtual bool GetOrLoadImageData(size_t index, std::vector<uint8_t>& data, string_t& data_type) override;
+        virtual const std::unique_ptr<SGlTF>& glTF() const override;
+        virtual bool                          LoadMeshPrimitiveIndicesData(std::size_t                      _mesh_index, //
+                                                                           std::size_t                      _primitive_index,
+                                                                           std::shared_ptr<IAccessorStream> _accessor_stream) override;
+        virtual bool                          LoadMeshPrimitiveAttributeData(std::size_t                      _mesh_index,
+                                                                             std::size_t                      _primitive_index,
+                                                                             const std::string&               _attribute,
+                                                                             std::shared_ptr<IAccessorStream> _accessor_stream) override;
+        virtual bool                          LoadImageData(std::size_t _index, std::vector<uint8_t>& _data, std::string& _type) override;
 
     protected:
-        std::shared_ptr<SGlTF> m_glTF;
+        std::unique_ptr<SGlTF> m_glTF;
 
     private:
-        std::shared_ptr<class CFileLoader> m_pFileLoader;
-        SGLBHeader m_GLBHeader;
-        std::vector<SGLBChunk> m_vGLBChunks;
-#if defined(LIBGLTF_USE_GOOGLE_DRACO)
-        std::shared_ptr<class CGoogleDraco> m_pGoogleDraco;
+        std::function<std::shared_ptr<std::istream>(const std::string&)>    m_Reader;
+        std::map<std::string, std::pair<std::vector<uint8_t>, std::string>> m_CacheDatas;
+#if defined(LIBGLTF_WITH_GOOGLE_DRACO)
+        std::unique_ptr<CGoogleDraco> m_pGoogleDraco;
 #endif
-        std::map<size_t, std::vector<uint8_t>> m_CacheBufferDatas;
-        std::map<size_t, std::pair<std::vector<uint8_t>, string_t>> m_CacheImageDatas;
 
     public:
         static const uint32_t ms_GLBMagicEntry;
         static const uint32_t ms_GLBChunkTypeJSON;
         static const uint32_t ms_GLBChunkTypeBIN;
     };
-}
+} // namespace libgltf
