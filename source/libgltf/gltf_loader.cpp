@@ -291,7 +291,7 @@ namespace libgltf
             std::size_t data_index = 0;
             if (UriParse(_uri, _data_type, data_encode, data_index))
             {
-                if (!StringEqual(data_encode, "base64", false) && base64::Decode(_uri.substr(data_index), cache_data.first))
+                if (!StringEqual(data_encode, "base64", false) || !base64::Decode(_uri.substr(data_index), cache_data.first))
                     return false;
 
                 cache_data.second = "base64";
