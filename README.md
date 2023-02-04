@@ -69,7 +69,7 @@ It is used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
 Code example:
 
 ```cpp
-std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(/*your gltf file*/);
+std::shared_ptr<libgltf::IglTFLoader> gltf_loader = libgltf::IglTFLoader::Create(/*a function to load the file by std::istream*/);
 std::shared_ptr<libgltf::SGlTF> loaded_gltf = gltf_loader->glTF().lock();
 if (!loaded_gltf)
 {

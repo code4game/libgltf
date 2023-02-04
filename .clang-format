@@ -56,4 +56,4 @@ SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
 SpacesInCStyleCastParentheses: false
 SpacesInConditionalStatement: false
-Standard: c++17
+Standard: c++11
