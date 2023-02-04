@@ -30,11 +30,23 @@ if (_JsonValue.HasMember("KHR_materials_clearcoat") && _JsonValue["KHR_materials
     if (!(extension << _JsonValue["KHR_materials_clearcoat"])) return false;
     _rData.properties.insert(std::make_pair("KHR_materials_clearcoat", extension));
 }
+if (_JsonValue.HasMember("KHR_materials_emissive_strength") && _JsonValue["KHR_materials_emissive_strength"].IsObject())
+{
+    std::shared_ptr<SKHR_materials_emissive_strengthglTFextension> extension;
+    if (!(extension << _JsonValue["KHR_materials_emissive_strength"])) return false;
+    _rData.properties.insert(std::make_pair("KHR_materials_emissive_strength", extension));
+}
 if (_JsonValue.HasMember("KHR_materials_ior") && _JsonValue["KHR_materials_ior"].IsObject())
 {
     std::shared_ptr<SKHR_materials_iorglTFextension> extension;
     if (!(extension << _JsonValue["KHR_materials_ior"])) return false;
     _rData.properties.insert(std::make_pair("KHR_materials_ior", extension));
+}
+if (_JsonValue.HasMember("KHR_materials_iridescence") && _JsonValue["KHR_materials_iridescence"].IsObject())
+{
+    std::shared_ptr<SKHR_materials_iridescenceglTFextension> extension;
+    if (!(extension << _JsonValue["KHR_materials_iridescence"])) return false;
+    _rData.properties.insert(std::make_pair("KHR_materials_iridescence", extension));
 }
 if (_JsonValue.HasMember("KHR_materials_sheen") && _JsonValue["KHR_materials_sheen"].IsObject())
 {
@@ -102,6 +114,12 @@ if (_JsonValue.HasMember("CESIUM_primitive_outline") && _JsonValue["CESIUM_primi
     if (!(extension << _JsonValue["CESIUM_primitive_outline"])) return false;
     _rData.properties.insert(std::make_pair("CESIUM_primitive_outline", extension));
 }
+if (_JsonValue.HasMember("EXT_lights_ies") && _JsonValue["EXT_lights_ies"].IsObject())
+{
+    std::shared_ptr<SEXT_lights_iesglTFextension> extension;
+    if (!(extension << _JsonValue["EXT_lights_ies"])) return false;
+    _rData.properties.insert(std::make_pair("EXT_lights_ies", extension));
+}
 if (_JsonValue.HasMember("EXT_mesh_gpu_instancing") && _JsonValue["EXT_mesh_gpu_instancing"].IsObject())
 {
     std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension> extension;
@@ -113,6 +131,12 @@ if (_JsonValue.HasMember("EXT_texture_webp") && _JsonValue["EXT_texture_webp"].I
     std::shared_ptr<SEXT_texture_webpglTFextension> extension;
     if (!(extension << _JsonValue["EXT_texture_webp"])) return false;
     _rData.properties.insert(std::make_pair("EXT_texture_webp", extension));
+}
+if (_JsonValue.HasMember("FB_geometry_metadata") && _JsonValue["FB_geometry_metadata"].IsObject())
+{
+    std::shared_ptr<SFB_geometry_metadatasceneextension> extension;
+    if (!(extension << _JsonValue["FB_geometry_metadata"])) return false;
+    _rData.properties.insert(std::make_pair("FB_geometry_metadata", extension));
 }
 if (_JsonValue.HasMember("MSFT_lod") && _JsonValue["MSFT_lod"].IsObject())
 {

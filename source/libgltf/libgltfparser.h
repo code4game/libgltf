@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  * 
- * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
+ * Copyright (c) 2017-2023 Code 4 Game, Org. All Rights Reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -334,12 +334,26 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_clearcoatglTFextension>>>& _rData, JSONCharValue& _JsonValue);
 
+    bool operator<<(SKHR_materials_emissive_strengthglTFextension& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SKHR_materials_emissive_strengthglTFextension>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SKHR_materials_emissive_strengthglTFextension>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_emissive_strengthglTFextension>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SKHR_materials_emissive_strengthglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_emissive_strengthglTFextension>>>& _rData, JSONCharValue& _JsonValue);
+
     bool operator<<(SKHR_materials_iorglTFextension& _rData, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<SKHR_materials_iorglTFextension>& _rData, JSONCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<SKHR_materials_iorglTFextension>& _rData, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_iorglTFextension>>& _rData, JSONCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<SKHR_materials_iorglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_iorglTFextension>>>& _rData, JSONCharValue& _JsonValue);
+
+    bool operator<<(SKHR_materials_iridescenceglTFextension& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SKHR_materials_iridescenceglTFextension>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SKHR_materials_iridescenceglTFextension>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SKHR_materials_iridescenceglTFextension>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SKHR_materials_iridescenceglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SKHR_materials_iridescenceglTFextension>>>& _rData, JSONCharValue& _JsonValue);
 
     bool operator<<(SKHR_materials_sheenglTFextension& _rData, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<SKHR_materials_sheenglTFextension>& _rData, JSONCharValue& _JsonValue);
@@ -460,6 +474,27 @@ namespace libgltf
     bool operator<<(std::vector<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>& _vDatas, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SCESIUM_primitive_outlineglTFprimitiveextension>>>& _rData, JSONCharValue& _JsonValue);
 
+    bool operator<<(SEXT_lights_iesglTFextension& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SEXT_lights_iesglTFextension>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SEXT_lights_iesglTFextension>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_lights_iesglTFextension>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SEXT_lights_iesglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_lights_iesglTFextension>>>& _rData, JSONCharValue& _JsonValue);
+
+    bool operator<<(SLightProfile& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SLightProfile>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SLightProfile>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SLightProfile>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SLightProfile>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SLightProfile>>>& _rData, JSONCharValue& _JsonValue);
+
+    bool operator<<(SEXT_lights_iesnodeextension& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SEXT_lights_iesnodeextension>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SEXT_lights_iesnodeextension>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SEXT_lights_iesnodeextension>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SEXT_lights_iesnodeextension>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_lights_iesnodeextension>>>& _rData, JSONCharValue& _JsonValue);
+
     bool operator<<(SEXT_mesh_gpu_instancingglTFextension& _rData, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<SEXT_mesh_gpu_instancingglTFextension>& _rData, JSONCharValue& _JsonValue);
     bool operator<<(std::shared_ptr<SEXT_mesh_gpu_instancingglTFextension>& _rData, const JSONCharValue& _JsonValue);
@@ -473,6 +508,20 @@ namespace libgltf
     bool operator>>(const TDataDoc<std::shared_ptr<SEXT_texture_webpglTFextension>>& _rData, JSONCharValue& _JsonValue);
     bool operator<<(std::vector<std::shared_ptr<SEXT_texture_webpglTFextension>>& _vDatas, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SEXT_texture_webpglTFextension>>>& _rData, JSONCharValue& _JsonValue);
+
+    bool operator<<(SFB_geometry_metadatasceneextension& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SFB_geometry_metadatasceneextension>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SFB_geometry_metadatasceneextension>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SFB_geometry_metadatasceneextension>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SFB_geometry_metadatasceneextension>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SFB_geometry_metadatasceneextension>>>& _rData, JSONCharValue& _JsonValue);
+
+    bool operator<<(SMinimumandmaximumboundingboxextent& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<SMinimumandmaximumboundingboxextent>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::shared_ptr<SMinimumandmaximumboundingboxextent>& _rData, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::shared_ptr<SMinimumandmaximumboundingboxextent>>& _rData, JSONCharValue& _JsonValue);
+    bool operator<<(std::vector<std::shared_ptr<SMinimumandmaximumboundingboxextent>>& _vDatas, const JSONCharValue& _JsonValue);
+    bool operator>>(const TDataDoc<std::vector<std::shared_ptr<SMinimumandmaximumboundingboxextent>>>& _rData, JSONCharValue& _JsonValue);
 
     bool operator<<(SMSFT_lodglTFextension& _rData, const JSONCharValue& _JsonValue);
     bool operator>>(const TDataDoc<SMSFT_lodglTFextension>& _rData, JSONCharValue& _JsonValue);

@@ -32,12 +32,26 @@ for (const std::pair<std::string, std::shared_ptr<SObject>>& extensionProperty :
         if (!(TDataDoc<SKHR_materials_clearcoatglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember("KHR_materials_clearcoat", json_value, _rData.doc->GetAllocator());
     }
+    else if (extensionValue->schemaType == "glTF.KHR_materials_emissive_strength.schema.json")
+    {
+        const SKHR_materials_emissive_strengthglTFextension& extension = *((const SKHR_materials_emissive_strengthglTFextension*)extensionValue.get());
+        JSONCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_emissive_strengthglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember("KHR_materials_emissive_strength", json_value, _rData.doc->GetAllocator());
+    }
     else if (extensionValue->schemaType == "glTF.KHR_materials_ior.schema.json")
     {
         const SKHR_materials_iorglTFextension& extension = *((const SKHR_materials_iorglTFextension*)extensionValue.get());
         JSONCharValue json_value;
         if (!(TDataDoc<SKHR_materials_iorglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember("KHR_materials_ior", json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == "glTF.KHR_materials_iridescence.schema.json")
+    {
+        const SKHR_materials_iridescenceglTFextension& extension = *((const SKHR_materials_iridescenceglTFextension*)extensionValue.get());
+        JSONCharValue json_value;
+        if (!(TDataDoc<SKHR_materials_iridescenceglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember("KHR_materials_iridescence", json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == "glTF.KHR_materials_sheen.schema.json")
     {
@@ -116,6 +130,13 @@ for (const std::pair<std::string, std::shared_ptr<SObject>>& extensionProperty :
         if (!(TDataDoc<SCESIUM_primitive_outlineglTFprimitiveextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember("CESIUM_primitive_outline", json_value, _rData.doc->GetAllocator());
     }
+    else if (extensionValue->schemaType == "glTF.EXT_lights_ies.schema.json")
+    {
+        const SEXT_lights_iesglTFextension& extension = *((const SEXT_lights_iesglTFextension*)extensionValue.get());
+        JSONCharValue json_value;
+        if (!(TDataDoc<SEXT_lights_iesglTFextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember("EXT_lights_ies", json_value, _rData.doc->GetAllocator());
+    }
     else if (extensionValue->schemaType == "glTF.EXT_mesh_gpu_instancing.schema.json")
     {
         const SEXT_mesh_gpu_instancingglTFextension& extension = *((const SEXT_mesh_gpu_instancingglTFextension*)extensionValue.get());
@@ -129,6 +150,13 @@ for (const std::pair<std::string, std::shared_ptr<SObject>>& extensionProperty :
         JSONCharValue json_value;
         if (!(TDataDoc<SEXT_texture_webpglTFextension>(extension, _rData.doc) >> json_value)) return false;
         _JsonValue.AddMember("EXT_texture_webp", json_value, _rData.doc->GetAllocator());
+    }
+    else if (extensionValue->schemaType == "glTF.FB_geometry_metadata.schema.json")
+    {
+        const SFB_geometry_metadatasceneextension& extension = *((const SFB_geometry_metadatasceneextension*)extensionValue.get());
+        JSONCharValue json_value;
+        if (!(TDataDoc<SFB_geometry_metadatasceneextension>(extension, _rData.doc) >> json_value)) return false;
+        _JsonValue.AddMember("FB_geometry_metadata", json_value, _rData.doc->GetAllocator());
     }
     else if (extensionValue->schemaType == "glTF.MSFT_lod.schema.json")
     {

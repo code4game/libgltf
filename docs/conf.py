@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'libgltf'
-copyright = '2022, Code 4 Game'
+copyright = '2023, Code 4 Game'
 author = 'Xing Ji'
 
 

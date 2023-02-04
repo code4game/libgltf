@@ -29,14 +29,26 @@ Features
    * `KHR_draco_mesh_compression` - `Google's Draco`_
    * `KHR_lights_punctual`
    * `KHR_materials_clearcoat`
+   * `KHR_materials_emissive_strength`
    * `KHR_materials_ior`
+   * `KHR_materials_iridescence`
    * `KHR_materials_sheen`
    * `KHR_materials_specular`
    * `KHR_materials_transmission`
    * `KHR_materials_unlit`
    * `KHR_materials_variants`
    * `KHR_materials_volume`
-   * and more
+   * `KHR_texture_transform`
+   * `ADOBE_materials_thin_transparency`
+   * `AGI_articulations`
+   * `AGI_stk_metadata`
+   * `CESIUM_primitive_outline`
+   * `EXT_lights_ies`
+   * `EXT_mesh_gpu_instancing`
+   * `EXT_texture_webp`
+   * `FB_geometry_metadata`
+   * `MSFT_lod`
+   * `MSFT_texture_dds`
 * Platforms
    * Windows
       * Win32 (win32)

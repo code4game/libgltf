@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  * 
- * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
+ * Copyright (c) 2017-2023 Code 4 Game, Org. All Rights Reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@
 
 #define LIBGLTF_MAJOR_VERSION    0
 #define LIBGLTF_MINOR_VERSION    1
-#define LIBGLTF_PATCH_VERSION    9
+#define LIBGLTF_PATCH_VERSION    10
 
 #cmakedefine LIBGLTF_WITH_MSVC_MT
 #cmakedefine LIBGLTF_WITH_GOOGLE_DRACO
@@ -97,7 +97,9 @@ namespace libgltf
     struct SLightspot;
     struct SKHR_lights_punctualnodeextension;
     struct SKHR_materials_clearcoatglTFextension;
+    struct SKHR_materials_emissive_strengthglTFextension;
     struct SKHR_materials_iorglTFextension;
+    struct SKHR_materials_iridescenceglTFextension;
     struct SKHR_materials_sheenglTFextension;
     struct SKHR_materials_specularglTFextension;
     struct SKHR_materials_transmissionglTFextension;
@@ -115,8 +117,13 @@ namespace libgltf
     struct SAGI_stk_metadataglTFNodeextension;
     struct SSolarPanelGroup;
     struct SCESIUM_primitive_outlineglTFprimitiveextension;
+    struct SEXT_lights_iesglTFextension;
+    struct SLightProfile;
+    struct SEXT_lights_iesnodeextension;
     struct SEXT_mesh_gpu_instancingglTFextension;
     struct SEXT_texture_webpglTFextension;
+    struct SFB_geometry_metadatasceneextension;
+    struct SMinimumandmaximumboundingboxextent;
     struct SMSFT_lodglTFextension;
     struct SMSFT_texture_ddsextension;
 
@@ -879,6 +886,21 @@ namespace libgltf
     };
 
     /*!
+     * struct: SKHR_materials_emissive_strengthglTFextension
+     * glTF extension that adjusts the strength of emissive material properties.
+     */
+    struct SKHR_materials_emissive_strengthglTFextension : SGlTFProperty
+    {
+        SKHR_materials_emissive_strengthglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The strength adjustment to be multiplied with the material's emissive value.
+        float emissiveStrength;
+    };
+
+    /*!
      * struct: SKHR_materials_iorglTFextension
      * glTF extension that defines the index of refraction of a material.
      */
@@ -891,6 +913,31 @@ namespace libgltf
 
         // The index of refraction.
         float ior;
+    };
+
+    /*!
+     * struct: SKHR_materials_iridescenceglTFextension
+     * glTF extension that defines an iridescence effect.
+     */
+    struct SKHR_materials_iridescenceglTFextension : SGlTFProperty
+    {
+        SKHR_materials_iridescenceglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The iridescence intensity factor.
+        float iridescenceFactor;
+        // The iridescence intensity texture.
+        std::shared_ptr<STextureInfo> iridescenceTexture;
+        // The index of refraction of the dielectric thin-film layer.
+        float iridescenceIor;
+        // The minimum thickness of the thin-film layer given in nanometers.
+        float iridescenceThicknessMinimum;
+        // The maximum thickness of the thin-film layer given in nanometers.
+        float iridescenceThicknessMaximum;
+        // The thickness texture of the thin-film layer.
+        std::shared_ptr<STextureInfo> iridescenceThicknessTexture;
     };
 
     /*!
@@ -966,7 +1013,7 @@ namespace libgltf
 
     /*!
      * struct: SKHR_materials_variantsglTFextension
-     * glTF extension that defines a material variations for mesh primivites
+     * glTF extension that defines a material variations for mesh primitives
      */
     struct SKHR_materials_variantsglTFextension : SGlTFProperty
     {
@@ -1192,6 +1239,57 @@ namespace libgltf
     };
 
     /*!
+     * struct: SEXT_lights_iesglTFextension
+     * glTF extension that enables the use of IES light profiles.
+     */
+    struct SEXT_lights_iesglTFextension : SGlTFProperty
+    {
+        SEXT_lights_iesglTFextension();
+
+        // Check valid
+        operator bool() const;
+
+        std::vector<std::shared_ptr<SLightProfile>> lights;
+    };
+
+    /*!
+     * struct: SLightProfile
+     * An IES light profile.
+     */
+    struct SLightProfile : SGlTFChildofRootProperty
+    {
+        SLightProfile();
+
+        // Check valid
+        operator bool() const;
+
+        // The URI (or IRI) of the light profile.
+        std::string uri;
+        // The light profile's media type. This field **MUST** be defined when `bufferView` is defined.
+        std::string mimeType;
+        // The index of the bufferView that contains the IES light profile. This field **MUST NOT** be defined when `uri` is defined.
+        std::shared_ptr<SGlTFId> bufferView;
+    };
+
+    /*!
+     * struct: SEXT_lights_iesnodeextension
+     */
+    struct SEXT_lights_iesnodeextension : SGlTFProperty
+    {
+        SEXT_lights_iesnodeextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The id of the light profile referenced by this node.
+        std::shared_ptr<SGlTFId> light;
+        // Non-negative factor to scale the light's intensity.
+        float multiplier;
+        // RGB value for the light's color in linear space.
+        std::vector<float> color;
+    };
+
+    /*!
      * struct: SEXT_mesh_gpu_instancingglTFextension
      * glTF extension defines instance attributes for a node with a mesh.
      */
@@ -1219,6 +1317,40 @@ namespace libgltf
 
         // The index of the images node which points to a WebP image.
         std::shared_ptr<SGlTFId> source;
+    };
+
+    /*!
+     * struct: SFB_geometry_metadatasceneextension
+     */
+    struct SFB_geometry_metadatasceneextension : SGlTFProperty
+    {
+        SFB_geometry_metadatasceneextension();
+
+        // Check valid
+        operator bool() const;
+
+        // The number of distinct vertices recursively contained in this scene.
+        float vertexCount;
+        // The number of distinct primitives recursively contained in this scene.
+        float primitiveCount;
+        // The bounding box of this scene, in static geometry scene-space coordinates.
+        std::shared_ptr<SMinimumandmaximumboundingboxextent> sceneBounds;
+    };
+
+    /*!
+     * struct: SMinimumandmaximumboundingboxextent
+     */
+    struct SMinimumandmaximumboundingboxextent : SGlTFProperty
+    {
+        SMinimumandmaximumboundingboxextent();
+
+        // Check valid
+        operator bool() const;
+
+        // The bounding box corner with the numerically lowest scene-space coordinates
+        std::vector<float> min;
+        // The bounding box corner with the numerically highest scene-space coordinates
+        std::vector<float> max;
     };
 
     /*!

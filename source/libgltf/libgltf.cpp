@@ -1,7 +1,7 @@
 /*
  * This software is released under the MIT license.
  * 
- * Copyright (c) 2017-2022 Code 4 Game, Org. All Rights Reserved.
+ * Copyright (c) 2017-2023 Code 4 Game, Org. All Rights Reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -637,6 +637,19 @@ namespace libgltf
         return true;
     }
 
+    SKHR_materials_emissive_strengthglTFextension::SKHR_materials_emissive_strengthglTFextension()
+        : SGlTFProperty()
+        , emissiveStrength(1.000000f)
+    {
+        //
+    }
+
+    SKHR_materials_emissive_strengthglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SKHR_materials_iorglTFextension::SKHR_materials_iorglTFextension()
         : SGlTFProperty()
         , ior(1.500000f)
@@ -645,6 +658,24 @@ namespace libgltf
     }
 
     SKHR_materials_iorglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SKHR_materials_iridescenceglTFextension::SKHR_materials_iridescenceglTFextension()
+        : SGlTFProperty()
+        , iridescenceFactor(0.000000f)
+        , iridescenceTexture(nullptr)
+        , iridescenceIor(1.300000f)
+        , iridescenceThicknessMinimum(100.000000f)
+        , iridescenceThicknessMaximum(400.000000f)
+        , iridescenceThicknessTexture(nullptr)
+    {
+        //
+    }
+
+    SKHR_materials_iridescenceglTFextension::operator bool() const
     {
         //TODO:
         return true;
@@ -894,6 +925,49 @@ namespace libgltf
         return true;
     }
 
+    SEXT_lights_iesglTFextension::SEXT_lights_iesglTFextension()
+        : SGlTFProperty()
+        , lights()
+    {
+        //
+    }
+
+    SEXT_lights_iesglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SLightProfile::SLightProfile()
+        : SGlTFChildofRootProperty()
+        , uri("")
+        , mimeType("")
+        , bufferView(nullptr)
+    {
+        //
+    }
+
+    SLightProfile::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SEXT_lights_iesnodeextension::SEXT_lights_iesnodeextension()
+        : SGlTFProperty()
+        , light(nullptr)
+        , multiplier(1.000000f)
+        , color({ 1.000000f, 1.000000f, 1.000000f })
+    {
+        //
+    }
+
+    SEXT_lights_iesnodeextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
     SEXT_mesh_gpu_instancingglTFextension::SEXT_mesh_gpu_instancingglTFextension()
         : SGlTFProperty()
         , attributes()
@@ -915,6 +989,35 @@ namespace libgltf
     }
 
     SEXT_texture_webpglTFextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SFB_geometry_metadatasceneextension::SFB_geometry_metadatasceneextension()
+        : SGlTFProperty()
+        , vertexCount(0.000000f)
+        , primitiveCount(0.000000f)
+        , sceneBounds(nullptr)
+    {
+        //
+    }
+
+    SFB_geometry_metadatasceneextension::operator bool() const
+    {
+        //TODO:
+        return true;
+    }
+
+    SMinimumandmaximumboundingboxextent::SMinimumandmaximumboundingboxextent()
+        : SGlTFProperty()
+        , min()
+        , max()
+    {
+        //
+    }
+
+    SMinimumandmaximumboundingboxextent::operator bool() const
     {
         //TODO:
         return true;
