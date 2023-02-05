@@ -133,7 +133,6 @@ jobs:
         git submodule update --init external/draco
     - name: 'build and make'
       run: |
-        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk-bundle
         cmake -B build/armeabi-v7a -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=FALSE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
         cmake --build build/armeabi-v7a --target libgltf --config Release
         cmake -B build/armeabi-v7a-with-neon -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=TRUE -DANDROID_NDK=$ANDROID_NDK_HOME -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
