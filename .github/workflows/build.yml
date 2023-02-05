@@ -147,10 +147,6 @@ jobs:
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/armeabi-v7a/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a/draco/ output/armeabi-v7a/include/draco/
         cp -a build/armeabi-v7a/external/draco/libdraco.a output/armeabi-v7a/lib/
-        cmake --install build/armeabi-v7a-with-neon/source/ --prefix output/armeabi-v7a-with-neon/
-        rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/armeabi-v7a-with-neon/include/draco/
-        rsync -a --include='*.h' -f 'hide,! */' build/armeabi-v7a-with-neon/draco/ output/armeabi-v7a-with-neon/include/draco/
-        cp -a build/armeabi-v7a-with-neon/external/draco/libdraco.a output/armeabi-v7a-with-neon/lib/
         cmake --install build/arm64-v8a/source/ --prefix output/arm64-v8a/
         rsync -a --include='*.h' -f 'hide,! */' external/draco/src/draco/ output/arm64-v8a/include/draco/
         rsync -a --include='*.h' -f 'hide,! */' build/arm64-v8a/draco/ output/arm64-v8a/include/draco/
