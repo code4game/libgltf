@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.10 (2023-02-06)
+
+* Update glTF
+* Supports more material extensions
+
 ## 0.1.9 (2021-11-10)
 
 * Update glTF
