@@ -3,7 +3,7 @@
 ## 0.1.10 (2023-02-06)
 
 * Update glTF
-* Supports more material extensions
+* Supports more extensions
 * Fix an error when parse the embedded format
 
 ## 0.1.9 (2021-11-10)
