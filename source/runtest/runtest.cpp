@@ -168,11 +168,15 @@ int main(int _argc, char* _argv[])
     std::string          image0_data_type;
     gltf_loader->LoadImageData(0, image0_data, image0_data_type);
 
+    std::string gltf_json;
+    if (!(*loaded_gltf >> gltf_json))
+        printf("Failed to convert to json!\n");
+
 #if defined(LIBGLTF_BUILD_COVERAGE)
     const std::string obj_file_path = input_file_path + ".obj";
     SaveAsOBJ(obj_file_path, triangle_data, position_data, texcoord_0_data, normal_data);
 #endif
 
     printf("Success\n");
-    return 0;
+    return error_code;
 }
