@@ -49,7 +49,6 @@ It is used in [glTFForUE4](https://github.com/code4game/glTFForUE4).
   * `FB_geometry_metadata`
   * `MSFT_lod`
   * `MSFT_texture_dds`
-  * and more
 * Platforms
   * Windows
     * Win32 (win32)
