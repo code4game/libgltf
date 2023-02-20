@@ -22,7 +22,7 @@ jobs:
         sudo pip install wheel
         sudo pip install cpp-coveralls
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson

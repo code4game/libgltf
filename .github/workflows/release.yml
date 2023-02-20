@@ -21,7 +21,7 @@ jobs:
     - name: 'install cppcheck'
       run: sudo apt-get install cppcheck
     - name: 'checkout'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'check'
       run: cppcheck ./ --enable=warning,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i tools/
 
@@ -31,7 +31,7 @@ jobs:
     needs: check
     steps:
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson
@@ -70,7 +70,7 @@ jobs:
     needs: check
     steps:
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson
@@ -97,7 +97,7 @@ jobs:
     needs: check
     steps:
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson
@@ -127,7 +127,7 @@ jobs:
       run: |
         sudo apt-get install ninja-build
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson
@@ -172,7 +172,7 @@ jobs:
     needs: check
     steps:
     - name: 'checkout the project'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: 'update submodules'
       run: |
         git submodule update --init external/rapidjson
