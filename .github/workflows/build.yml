@@ -40,11 +40,11 @@ jobs:
     - name: 'build and make'
       run: |
         cmake -B build/win64 -G "Visual Studio 17 2022" -A "x64" -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
-        cmake --build build/win64 --target libgltf --config Debug
-        cmake --build build/win64 --target libgltf --config Release
+        cmake --build build/win64/ --target libgltf --config Debug
+        cmake --build build/win64/ --target libgltf --config Release
         cmake -B build/win32 -G "Visual Studio 17 2022" -A "Win32" -DLIBGLTF_WITH_GOOGLE_DRACO=TRUE .
-        cmake --build build/win32 --target libgltf --config Debug
-        cmake --build build/win32 --target libgltf --config Release
+        cmake --build build/win32/ --target libgltf --config Debug
+        cmake --build build/win32/ --target libgltf --config Release
     - name: 'ready artifact'
       run: |
         cmake --install build/win64/source/ --prefix output/win64/
@@ -52,7 +52,7 @@ jobs:
         xcopy /D /S /Y build\win64\draco\*.h output\win64\include\draco\
         xcopy /D /S /Y build\win64\external\draco\Release\draco.lib output\win64\lib\Release\
         xcopy /D /S /Y build\win64\external\draco\Debug\dracod.lib output\win64\lib\Debug\
-        cmake --install build/win32source/ --prefix output/win32/
+        cmake --install build/win32/source/ --prefix output/win32/
         xcopy /D /S /Y external\draco\src\draco\*.h output\win32\include\draco\
         xcopy /D /S /Y build\win64\draco\*.h output\win32\include\draco\
         xcopy /D /S /Y build\win32\external\draco\Release\draco.lib output\win32\lib\Release\
